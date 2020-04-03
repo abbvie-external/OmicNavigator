@@ -10,10 +10,14 @@ LazyData: true
 Imports:
   DBI,
   dplyr,
+  rappdirs,
   rlang,
   RSQLite,
   tidyr,
   utils
 Suggests:
-  jsonlite
+    jsonlite,
+    knitr,
+    rmarkdown
 RoxygenNote: 7.1.0
+VignetteBuilder: knitr

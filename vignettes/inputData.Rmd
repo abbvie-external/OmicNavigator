@@ -1,0 +1,29 @@
+---
+title: "inputData"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{inputData}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  error = TRUE
+)
+```
+
+```{r setup}
+library(OmicAnalyzer)
+```
+
+```{r}
+path <- tempfile()
+oa <- OmicAnalyzer(path)
+addStudy(oa, "example")
+addStudy(oa, "example")
+addModel(oa, "example", "model_1", "A linear model")
+addModel(oa, "example", "model_1", "A linear model")
+```
