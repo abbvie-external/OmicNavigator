@@ -2,6 +2,7 @@
 
 S3method(print,OmicAnalyzer)
 export(OmicAnalyzer)
+export(addFeatures)
 export(addModel)
 export(addStudy)
 export(enrichmentNames)

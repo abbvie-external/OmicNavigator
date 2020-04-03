@@ -27,3 +27,13 @@ addStudy(oa, "example")
 addModel(oa, "example", "model_1", "A linear model")
 addModel(oa, "example", "model_1", "A linear model")
 ```
+
+```{r}
+features <- data.frame(
+  featureID = letters[1:3],
+  variable = LETTERS[1:3],
+  stringsAsFactors = FALSE
+)
+
+addFeatures(oa, "example", "model_1", features)
+```
