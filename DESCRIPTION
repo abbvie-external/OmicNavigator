@@ -1,0 +1,19 @@
+Package: OmicAnalyzer
+Type: Package
+Title: The OmicAnalyzer R backend
+Version: 0.1.0
+Author: John Blischak
+Maintainer: John Blischak <john.blischak@abbvie.com>
+License: abbvie
+Encoding: UTF-8
+LazyData: true
+Imports:
+  DBI,
+  dplyr,
+  rlang,
+  RSQLite,
+  tidyr,
+  utils
+Suggests:
+  jsonlite
+RoxygenNote: 7.1.0
