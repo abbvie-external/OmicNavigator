@@ -175,6 +175,62 @@ addSamples <- function(OmicAnalyzer, studyID, samples, sampleID = "sampleID") {
   return(invisible(OmicAnalyzer))
 }
 
+#' @importFrom dplyr "%>%"
+#' @export
+addAssay <- function(OmicAnalyzer, studyID, modelID, assay) {
+  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
+  stopifnot(is.character(studyID), length(studyID) == 1)
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  stopifnot(inherits(assay, "data.frame") || is.matrix(assay))
+
+  dbFile <- paste0(studyID, ".sqlite")
+  databases <- find_databases(OmicAnalyzer$path)
+  if (!dbFile %in% databases) {
+    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
+  }
+  dbPath <- file.path(OmicAnalyzer$path, dbFile)
+  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
+  on.exit(DBI::dbDisconnect(con))
+
+  sampleID_all <- dplyr::tbl(con, "samples") %>%
+    dplyr::select(sampleID) %>%
+    dplyr::collect() %>%
+    unlist()
+
+  if (!all(colnames(assay) %in% sampleID_all)) {
+    stop("The column names contain samples not in the samples table")
+  }
+
+  featureID_all <- dplyr::tbl(con, "features") %>%
+    dplyr::select(featureID) %>%
+    dplyr::collect() %>%
+    unlist()
+
+  if (!all(rownames(assay) %in% featureID_all)) {
+    stop("The row names contain features not in the features table")
+  }
+
+  assay_long <- assay %>%
+    as.data.frame %>%
+    dplyr::mutate(featureID = rownames(.)) %>%
+    tidyr::pivot_longer(cols = -featureID,
+                 names_to = "sampleID",
+                 values_to = "quantification") %>%
+    dplyr::mutate(modelID = modelID) %>%
+    dplyr::select(featureID, sampleID, modelID, quantification)
+
+  DBI::dbWriteTable(con, "assays", assay_long,
+                    field.types = c(
+                      "featureID" = "varchar(50) REFERENCES features (featureID)",
+                      "sampleID" = "varchar(50) REFERENCES samples (sampleID)",
+                      "modelID" = "varchar(100) REFERENCES models (modelID)"
+                    ))
+
+  DBI::dbExecute(con,
+                 "CREATE UNIQUE INDEX assays_index ON assays(featureID, sampleID, modelID)")
+
+  return(invisible(OmicAnalyzer))
+}
 
 # queryDatabase(oa, "example", "SELECT modelID FROM models")
 queryDatabase <- function(OmicAnalyzer, studyID, query) {

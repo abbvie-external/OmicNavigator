@@ -47,3 +47,10 @@ samples <- data.frame(
 
 addSamples(oa, "example", samples)
 ```
+
+```{r}
+assay <- matrix(rnorm(15), nrow = 3, ncol = 5,
+                dimnames = list(features$featureID, samples$sampleID))
+
+addAssay(oa, "example", "model_1", assay)
+```
