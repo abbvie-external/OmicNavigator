@@ -37,3 +37,13 @@ features <- data.frame(
 
 addFeatures(oa, "example", features)
 ```
+
+```{r}
+samples <- data.frame(
+  sampleID = paste("sample", 1:5, sep = "_"),
+  sampleVariable = LETTERS[1:5],
+  stringsAsFactors = FALSE
+)
+
+addSamples(oa, "example", samples)
+```

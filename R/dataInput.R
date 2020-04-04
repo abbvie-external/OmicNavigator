@@ -141,6 +141,40 @@ addFeatures <- function(OmicAnalyzer, studyID, features, featureID = "featureID"
   return(invisible(OmicAnalyzer))
 }
 
+#' @export
+addSamples <- function(OmicAnalyzer, studyID, samples, sampleID = "sampleID") {
+  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
+  stopifnot(is.character(studyID), length(studyID) == 1)
+  stopifnot(inherits(samples, "data.frame"))
+  stopifnot(is.character(sampleID), length(sampleID) == 1)
+
+  if (!sampleID %in% colnames(samples)) {
+    stop(sprintf("features does not have the column \"%s\"", sampleID))
+  }
+
+  is_unique <- length(samples[[sampleID]]) ==
+               length(unique(samples[[sampleID]]))
+  if (!is_unique) {
+    stop(sprintf("The IDs in column \"%s\" are not unique", sampleID))
+  }
+
+  dbFile <- paste0(studyID, ".sqlite")
+  databases <- find_databases(OmicAnalyzer$path)
+  if (!dbFile %in% databases) {
+    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
+  }
+  dbPath <- file.path(OmicAnalyzer$path, dbFile)
+  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
+  on.exit(DBI::dbDisconnect(con))
+
+  DBI::dbWriteTable(con, "samples", samples, overwrite = TRUE,
+                    field.types = c("sampleID" = "varchar(50) PRIMARY KEY"))
+
+  DBI::dbExecute(con,
+                 "CREATE UNIQUE INDEX sample_indx ON samples(sampleID)")
+  return(invisible(OmicAnalyzer))
+}
+
 
 # queryDatabase(oa, "example", "SELECT modelID FROM models")
 queryDatabase <- function(OmicAnalyzer, studyID, query) {
