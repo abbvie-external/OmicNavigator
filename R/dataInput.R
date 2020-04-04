@@ -108,11 +108,9 @@ addModel <- function(OmicAnalyzer, studyID, modelID, description) {
 }
 
 #' @export
-addFeatures <- function(OmicAnalyzer, studyID, modelID, features,
-                        featureID = "featureID") {
+addFeatures <- function(OmicAnalyzer, studyID, features, featureID = "featureID") {
   stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
   stopifnot(is.character(studyID), length(studyID) == 1)
-  stopifnot(is.character(modelID), length(modelID) == 1)
   stopifnot(inherits(features, "data.frame"))
   stopifnot(is.character(featureID), length(featureID) == 1)
 
@@ -135,7 +133,6 @@ addFeatures <- function(OmicAnalyzer, studyID, modelID, features,
   con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
   on.exit(DBI::dbDisconnect(con))
 
-  features$modelID <- modelID
   DBI::dbWriteTable(con, "features", features, overwrite = TRUE,
                     field.types = c("featureID" = "varchar(50) PRIMARY KEY"))
 

@@ -35,5 +35,5 @@ features <- data.frame(
   stringsAsFactors = FALSE
 )
 
-addFeatures(oa, "example", "model_1", features)
+addFeatures(oa, "example", features)
 ```
