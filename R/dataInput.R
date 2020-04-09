@@ -49,6 +49,7 @@ createStudy <- function(name,
   if (!is.null(samples)) study <- addSamples(study, samples = samples)
   if (!is.null(features)) study <- addFeatures(study, features = features)
   if (!is.null(models)) study <- addModels(study, models = models)
+  if (!is.null(assays)) study <- addAssays(study, assays = assays)
   if (!is.null(contrasts)) study <- addContrasts(study, contrasts = contrasts)
   if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
   if (!is.null(inferences)) study <- addInferences(study, inferences = inferences)
@@ -150,7 +151,7 @@ addModels <- function(study, models, overwrite = FALSE) {
 addAssays <- function(study, assays, overwrite = FALSE) {
   stopifnot(inherits(study, "oaStudy"), inherits(assays, "list"))
 
-  if (!all(names(study$models)) %in% names(assays)) {
+  if (!all(names(study$models) %in% names(assays))) {
     stop(sprintf("The names of the list do not include all of the model names"))
   }
 
@@ -167,4 +168,98 @@ addAssays <- function(study, assays, overwrite = FALSE) {
   }
 
   return(study)
+}
+
+#' Export a study
+#'
+#' @param study An OmicAnalyzer study
+#' @param type Export to a RDS file ("rds"), SQLite database ("sqlite"), or an
+#'   R package ("package")
+#' @param path Optional file path to save the object
+#'
+#' @export
+exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL) {
+  stopifnot(inherits(study, "oaStudy"))
+
+  type <- match.arg(type)
+
+  if (type == "rds") {
+    filename <- paste0(study$name, ".rds")
+    if (!is.null(path)) filename <- file.path(path, filename)
+    saveRDS(object = study, file = filename)
+    message(sprintf("Exported study to %s", filename))
+    return(invisible(filename))
+  } else if (type == "sqlite") {
+    filename <- paste0(study$name, ".sqlite")
+    if (!is.null(path)) filename <- file.path(path, filename)
+    createDatabase(study, filename)
+    message(sprintf("Exported study to %s", filename))
+    return(invisible(filename))
+  } else if (type == "package") {
+    directoryname <- paste0("OAstudy", study$name)
+    if (!is.null(path)) directoryname <- file.path(path, directoryname)
+    message(sprintf("Exported study to %s", directoryname))
+    return(invisible(directoryname))
+  }
+}
+
+createDatabase <- function(study, filename) {
+
+  tmpdb <- tempfile(fileext = ".sqlite")
+  con <- DBI::dbConnect(RSQLite::SQLite(), tmpdb)
+
+  # samples
+  fields_samples <- c("varchar(50) PRIMARY KEY")
+  names(fields_samples) <- study$sampleID
+  DBI::dbWriteTable(con, "samples", samples, field.types = fields_samples)
+  DBI::dbExecute(con,
+                 sprintf("CREATE UNIQUE INDEX samples_index ON samples(%s)",
+                         study$sampleID))
+
+  # features
+  fields_features <- c("varchar(50) PRIMARY KEY")
+  names(fields_features) <- study$featureID
+  DBI::dbWriteTable(con, "features", study$features, field.types = fields_features)
+  DBI::dbExecute(con,
+                 sprintf("CREATE UNIQUE INDEX feature_index ON features(%s)",
+                         study$featureID))
+
+  # models
+  models <- data.frame(modelID = names(study$models),
+                       description = study$models,
+                       stringsAsFactors = FALSE)
+  DBI::dbWriteTable(con, "models", models,
+                    field.types = c("modelID" = "varchar(100) PRIMARY KEY",
+                                    "description" = "varchar(200)"))
+
+  # assays
+  assays_long <- vector(mode = "list", length = length(study$assays))
+  for (i in seq_along(study$assays)) {
+    assays_long[[i]] <- study$assays[[i]] %>%
+      as.data.frame %>%
+      dplyr::mutate(featureID = rownames(.)) %>%
+      tidyr::pivot_longer(cols = -featureID,
+                          names_to = "sampleID",
+                          values_to = "quantification") %>%
+      dplyr::mutate(modelID = names(study$assays)[i]) %>%
+      dplyr::select(featureID, sampleID, modelID, quantification)
+  }
+  assays_final <- dplyr::bind_rows(assays_long)
+  colnames(assays_final)[1:2] <- c(study$featureID, study$sampleID)
+  fields_assays <- c(
+    sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
+    sprintf("varchar(50) REFERENCES samples (%s)", study$sampleID),
+    "varchar(100) REFERENCES models (modelID)"
+  )
+  names(fields_assays) <- c(study$featureID, study$sampleID, "modelID")
+  DBI::dbWriteTable(con, "assays", assays_final,
+                    field.types = fields_assays)
+  DBI::dbExecute(con,
+                 sprintf("CREATE UNIQUE INDEX assays_index ON assays(%s, %s, modelID)",
+                         study$featureID, study$sampleID))
+
+  DBI::dbDisconnect(con)
+  file.rename(tmpdb, filename)
+
+  return(invisible(filename))
 }
