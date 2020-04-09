@@ -1,247 +1,170 @@
-#' OmicAnalyzer
+#' Create a study
+#'
+#' @param name Name of the study
+#' @param description Description of the study
+#' @param featureID The column name that contains the unique identifiers for the
+#'   features measured in the study
+#' @param sampleID The column name that contains the unique identifiers for the
+#'   samples measured in the study
+#' @inheritParams addSamples
+#' @inheritParams addFeatures
+#' @inheritParams addModels
+#' @inheritParams addAssays
 #'
 #' @examples
-#' \dontrun{
 #'
-#' oa <- OmicAnalyzer()
-#' }
+#' study <- createStudy(name = "ABC",
+#'                      description = "An analysis of ABC")
 #'
 #' @export
-OmicAnalyzer <- function(path = NULL, libraries = .libPaths()) {
+createStudy <- function(name,
+                        description = name,
+                        samples = NULL,
+                        features = NULL,
+                        models = NULL,
+                        assays = NULL,
+                        contrasts = NULL,
+                        annotations = NULL,
+                        inferences = NULL,
+                        enrichments = NULL,
+                        featureID = "featureID",
+                        sampleID = "sampleID")
+{
+  stopifnot(is.character(name), is.character(description))
 
-  if (is.null(path)) {
-    path <- rappdirs::user_data_dir("OmicAnalyzer")
-  }
+  study <- list(name = name,
+                description = description,
+                samples = NULL,
+                features = NULL,
+                models = NULL,
+                assays = NULL,
+                contrasts = NULL,
+                annotations = NULL,
+                inferences = NULL,
+                enrichments = NULL,
+                featureID = featureID,
+                sampleID = sampleID)
+  class(study) <- "oaStudy"
 
-  if (!dir.exists(path)) {
-    dir.create(path, recursive = TRUE)
-  }
+  if (!is.null(samples)) study <- addSamples(study, samples = samples)
+  if (!is.null(features)) study <- addFeatures(study, features = features)
+  if (!is.null(models)) study <- addModels(study, models = models)
+  if (!is.null(contrasts)) study <- addContrasts(study, contrasts = contrasts)
+  if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
+  if (!is.null(inferences)) study <- addInferences(study, inferences = inferences)
+  if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
 
-  result <- list(path = path, libraries = libraries)
-  class(result) <- "OmicAnalyzer"
-  return(result)
+  return(study)
 }
 
 #' @export
-print.OmicAnalyzer <- function(x, ...) {
+print.oaStudy <- function(x, ...) {
 
   cat("== OmicAnalyzer ==\n")
-  cat(sprintf("Database directory: %s\n", x$path))
-  databases <- find_databases(x$path)
-  cat(sprintf("Found %d study databases\n", length(databases)))
+  cat(sprintf("* Study name: %s\n", x$name))
+  cat(sprintf("* Feature ID column name: %s\n", x$featureID))
+  cat(sprintf("* Sample ID column name: %s\n", x$sampleID))
 
   return(invisible(x))
 }
 
-find_databases <- function(path) {
-  stopifnot(dir.exists(path))
-
-  databases <- list.files(path = path, pattern = "sqlite$")
-
-  return(databases)
-}
-
-#' addStudy
+#' Add sample metadata
 #'
-#' @examples
-#' \dontrun{
+#' @param samples A table of metadata variables that describe the samples in the
+#'   study. The table must contain the unique sampleID used for the study. Also,
+#'   the object must inherit from the class data.frame.
 #'
-#' oa <- OmicAnalyzer()
-#' addStudy(oa, "nameOfStudy")
-#' }
 #' @export
-addStudy <- function(OmicAnalyzer, studyID) {
-  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
-  stopifnot(is.character(studyID), length(studyID) == 1)
+addSamples <- function(study, samples, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(samples, "data.frame"))
 
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    message(sprintf("Adding new study \"%s\"", studyID))
+  if (!study$sampleID %in% colnames(samples)) {
+    stop(
+      sprintf("The samples table doesn't contain the sampleID column named \"%s\"",
+              study$sampleID)
+    )
+  }
+
+  if (overwrite || is.null(study$samples)) {
+    study$samples <- samples
   } else {
-    message(sprintf("Study \"%s\" already exists", studyID))
+    stop("Sample metadata already exists. Set overwrite=TRUE to overwrite.")
   }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  DBI::dbDisconnect(con)
 
-  return(invisible(dbPath))
+  return(study)
 }
 
-#' @importFrom dplyr "%>%"
+#' Add feature metadata
+#'
+#' @param features A table of metadata variables that describe the features in the
+#'   study. The table must contain the unique featureID used for the study. Also,
+#'   the object must inherit from the class data.frame.
+#'
 #' @export
-addModel <- function(OmicAnalyzer, studyID, modelID, description) {
-  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
-  stopifnot(is.character(studyID), length(studyID) == 1)
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  stopifnot(is.character(description), length(description) == 1)
+addFeatures <- function(study, features, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(features, "data.frame"))
 
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
+  if (!study$featureID %in% colnames(features)) {
+    stop(
+      sprintf("The features table doesn't contain the featureID column named \"%s\"",
+              study$featureID)
+    )
   }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  on.exit(DBI::dbDisconnect(con))
 
-  models <- data.frame(modelID = modelID, description = description,
-                       stringsAsFactors = FALSE)
-
-  table_name <- "models"
-  fields <- c("modelID" = "varchar(100) PRIMARY KEY",
-              "description" = "varchar(200)")
-  if (DBI::dbExistsTable(con, table_name)) {
-    models_current <- dplyr::tbl(con, table_name) %>%
-      dplyr::select(modelID) %>%
-      dplyr::collect()
-    if (modelID %in% models_current$modelID) {
-      stop(sprintf("Model \"%s\" already exists", modelID))
-    }
-    DBI::dbWriteTable(con, table_name, models,
-                      overwrite = FALSE, append = TRUE)
+  if (overwrite || is.null(study$features)) {
+    study$features <- features
   } else {
-    DBI::dbWriteTable(con, table_name, models, field.types = fields)
+    stop("Feature metadata already exists. Set overwrite=TRUE to overwrite.")
   }
 
-  return(invisible(modelID))
+  return(study)
 }
 
+#' Add models
+#'
+#' @param models The models analyzed in the study. The input is a named
+#'   character vector. The names correspond to the names of the models. The
+#'   elements correspond to the descriptions of the models.
+#'
 #' @export
-addFeatures <- function(OmicAnalyzer, studyID, features, featureID = "featureID") {
-  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
-  stopifnot(is.character(studyID), length(studyID) == 1)
-  stopifnot(inherits(features, "data.frame"))
-  stopifnot(is.character(featureID), length(featureID) == 1)
+addModels <- function(study, models, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), is.character(models))
 
-  if (!featureID %in% colnames(features)) {
-    stop(sprintf("features does not have the column \"%s\"", featureID))
+  if (overwrite || is.null(study$models)) {
+    study$models <- models
+  } else {
+    stop("Models metadata already exists. Set overwrite=TRUE to overwrite.")
   }
 
-  is_unique <- length(features[[featureID]]) ==
-               length(unique(features[[featureID]]))
-  if (!is_unique) {
-    stop(sprintf("The IDs in column \"%s\" are not unique", featureID))
-  }
-
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
-  }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  on.exit(DBI::dbDisconnect(con))
-
-  DBI::dbWriteTable(con, "features", features, overwrite = TRUE,
-                    field.types = c("featureID" = "varchar(50) PRIMARY KEY"))
-
-  DBI::dbExecute(con,
-                 "CREATE UNIQUE INDEX feature_index ON features(featureID)")
-  return(invisible(OmicAnalyzer))
+  return(study)
 }
 
+#' Add assays
+#'
+#' @param assays The assays from the study. The input is a named list. The names
+#'   of the list correspond to the model names. Each element in the list should
+#'   be a matrix of quantifications for the assays. The column names should be
+#'   the sample IDs and the rows should be the feature IDs.
+#'
 #' @export
-addSamples <- function(OmicAnalyzer, studyID, samples, sampleID = "sampleID") {
-  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
-  stopifnot(is.character(studyID), length(studyID) == 1)
-  stopifnot(inherits(samples, "data.frame"))
-  stopifnot(is.character(sampleID), length(sampleID) == 1)
+addAssays <- function(study, assays, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(assays, "list"))
 
-  if (!sampleID %in% colnames(samples)) {
-    stop(sprintf("features does not have the column \"%s\"", sampleID))
+  if (!all(names(study$models)) %in% names(assays)) {
+    stop(sprintf("The names of the list do not include all of the model names"))
   }
 
-  is_unique <- length(samples[[sampleID]]) ==
-               length(unique(samples[[sampleID]]))
-  if (!is_unique) {
-    stop(sprintf("The IDs in column \"%s\" are not unique", sampleID))
+  for (assay in assays) {
+    stopifnot(inherits(assay, "matrix"))
+    stopifnot(all(colnames(assay) %in% study$samples[[study$sampleID]]))
+    stopifnot(all(rownames(assay) %in% study$features[[study$featureID]]))
   }
 
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
-  }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  on.exit(DBI::dbDisconnect(con))
-
-  DBI::dbWriteTable(con, "samples", samples, overwrite = TRUE,
-                    field.types = c("sampleID" = "varchar(50) PRIMARY KEY"))
-
-  DBI::dbExecute(con,
-                 "CREATE UNIQUE INDEX sample_indx ON samples(sampleID)")
-  return(invisible(OmicAnalyzer))
-}
-
-#' @importFrom dplyr "%>%"
-#' @export
-addAssay <- function(OmicAnalyzer, studyID, modelID, assay) {
-  stopifnot(inherits(OmicAnalyzer, "OmicAnalyzer"))
-  stopifnot(is.character(studyID), length(studyID) == 1)
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  stopifnot(inherits(assay, "data.frame") || is.matrix(assay))
-
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
-  }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  on.exit(DBI::dbDisconnect(con))
-
-  sampleID_all <- dplyr::tbl(con, "samples") %>%
-    dplyr::select(sampleID) %>%
-    dplyr::collect() %>%
-    unlist()
-
-  if (!all(colnames(assay) %in% sampleID_all)) {
-    stop("The column names contain samples not in the samples table")
+  if (overwrite || is.null(study$assays)) {
+    study$assays <- assays
+  } else {
+    stop("assays metadata already exists. Set overwrite=TRUE to overwrite.")
   }
 
-  featureID_all <- dplyr::tbl(con, "features") %>%
-    dplyr::select(featureID) %>%
-    dplyr::collect() %>%
-    unlist()
-
-  if (!all(rownames(assay) %in% featureID_all)) {
-    stop("The row names contain features not in the features table")
-  }
-
-  assay_long <- assay %>%
-    as.data.frame %>%
-    dplyr::mutate(featureID = rownames(.)) %>%
-    tidyr::pivot_longer(cols = -featureID,
-                 names_to = "sampleID",
-                 values_to = "quantification") %>%
-    dplyr::mutate(modelID = modelID) %>%
-    dplyr::select(featureID, sampleID, modelID, quantification)
-
-  DBI::dbWriteTable(con, "assays", assay_long,
-                    field.types = c(
-                      "featureID" = "varchar(50) REFERENCES features (featureID)",
-                      "sampleID" = "varchar(50) REFERENCES samples (sampleID)",
-                      "modelID" = "varchar(100) REFERENCES models (modelID)"
-                    ))
-
-  DBI::dbExecute(con,
-                 "CREATE UNIQUE INDEX assays_index ON assays(featureID, sampleID, modelID)")
-
-  return(invisible(OmicAnalyzer))
-}
-
-# queryDatabase(oa, "example", "SELECT modelID FROM models")
-queryDatabase <- function(OmicAnalyzer, studyID, query) {
-  dbFile <- paste0(studyID, ".sqlite")
-  databases <- find_databases(OmicAnalyzer$path)
-  if (!dbFile %in% databases) {
-    stop(sprintf("Study \"%s\" does not exist. Did you run addStudy()?", studyID))
-  }
-  dbPath <- file.path(OmicAnalyzer$path, dbFile)
-  con <- DBI::dbConnect(RSQLite::SQLite(), dbPath)
-  on.exit(DBI::dbDisconnect(con))
-
-  DBI::dbGetQuery(con, query)
+  return(study)
 }
