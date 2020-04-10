@@ -11,6 +11,7 @@
 #' @inheritParams addModels
 #' @inheritParams addAssays
 #' @inheritParams addContrasts
+#' @inheritParams addAnnotations
 #'
 #' @examples
 #'
@@ -184,7 +185,29 @@ addContrasts <- function(study, contrasts, overwrite = FALSE) {
   if (overwrite || is.null(study$contrasts)) {
     study$contrasts <- contrasts
   } else {
-    stop("The contrasts already exists. Set overwrite=TRUE to overwrite.")
+    stop("The contrasts already exist. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+#' Add annotations
+#'
+#' @param annotations The annotations used for the enrichment analyses. The input
+#' is a nested list. The top-level list contains one entry per annotation
+#' database, e.g. reactome. The names correspond to the name of each annotation
+#' database. Each of these elements should be list of annotation terms. The
+#' names of this sublist correspond to the name of the annotation term. Each of
+#' the annotation terms should be a character vector of feature IDs.
+#'
+#' @export
+addAnnotations <- function(study, annotations, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(annotations, "list"))
+
+  if (overwrite || is.null(study$annotations)) {
+    study$annotations <- annotations
+  } else {
+    stop("The annotations already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)

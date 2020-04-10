@@ -45,6 +45,13 @@ the sample IDs and the rows should be the feature IDs.}
 vector. The names correspond to the name of each contrast. The elements
 correspond to the description of each contrast.}
 
+\item{annotations}{The annotations used for the enrichment analyses. The input
+is a nested list. The top-level list contains one entry per annotation
+database, e.g. reactome. The names correspond to the name of each annotation
+database. Each of these elements should be list of annotation terms. The
+names of this sublist correspond to the name of the annotation term. Each of
+the annotation terms should be a character vector of feature IDs.}
+
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}
 
