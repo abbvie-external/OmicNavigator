@@ -2,6 +2,7 @@
 
 S3method(print,oaStudy)
 export(addAssays)
+export(addContrasts)
 export(addFeatures)
 export(addModels)
 export(addSamples)

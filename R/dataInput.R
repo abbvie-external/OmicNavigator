@@ -10,6 +10,7 @@
 #' @inheritParams addFeatures
 #' @inheritParams addModels
 #' @inheritParams addAssays
+#' @inheritParams addContrasts
 #'
 #' @examples
 #'
@@ -165,6 +166,25 @@ addAssays <- function(study, assays, overwrite = FALSE) {
     study$assays <- assays
   } else {
     stop("assays metadata already exists. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+#' Add contrasts
+#'
+#' @param contrasts The contrasts tested by the model(s). A named character
+#'   vector. The names correspond to the name of each contrast. The elements
+#'   correspond to the description of each contrast.
+#'
+#' @export
+addContrasts <- function(study, contrasts, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), is.character(contrasts))
+
+  if (overwrite || is.null(study$contrasts)) {
+    study$contrasts <- contrasts
+  } else {
+    stop("The contrasts already exists. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)

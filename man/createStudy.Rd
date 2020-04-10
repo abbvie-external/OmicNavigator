@@ -41,6 +41,10 @@ of the list correspond to the model names. Each element in the list should
 be a matrix of quantifications for the assays. The column names should be
 the sample IDs and the rows should be the feature IDs.}
 
+\item{contrasts}{The contrasts tested by the model(s). A named character
+vector. The names correspond to the name of each contrast. The elements
+correspond to the description of each contrast.}
+
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}
 
