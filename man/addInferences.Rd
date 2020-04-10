@@ -7,10 +7,11 @@
 addInferences(study, inferences, overwrite = FALSE)
 }
 \arguments{
-\item{inferences}{The inference results from each model. The input is a named
-list. The names of the list correspond to the model names. Each element in
-the list should be a list of data frames with inference results, one for
-each contrast. The featureID column needs to be included in each table.}
+\item{inferences}{The inference results from each model. The input is a
+nested named list. The names of the list correspond to the model names.
+Each element in the list should be a list of data frames with inference
+results, one for each contrast. The featureID column needs to be included
+in each table.}
 }
 \description{
 Add inference results

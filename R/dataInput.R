@@ -13,6 +13,7 @@
 #' @inheritParams addContrasts
 #' @inheritParams addAnnotations
 #' @inheritParams addInferences
+#' @inheritParams addEnrichments
 #'
 #' @examples
 #'
@@ -216,10 +217,11 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
 
 #' Add inference results
 #'
-#' @param inferences The inference results from each model. The input is a named
-#'   list. The names of the list correspond to the model names. Each element in
-#'   the list should be a list of data frames with inference results, one for
-#'   each contrast. The featureID column needs to be included in each table.
+#' @param inferences The inference results from each model. The input is a
+#'   nested named list. The names of the list correspond to the model names.
+#'   Each element in the list should be a list of data frames with inference
+#'   results, one for each contrast. The featureID column needs to be included
+#'   in each table.
 #'
 #' @export
 addInferences <- function(study, inferences, overwrite = FALSE) {
@@ -247,6 +249,53 @@ addInferences <- function(study, inferences, overwrite = FALSE) {
     study$inferences <- inferences
   } else {
     stop("The inference results already exist. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+#' Add enrichment results
+#'
+#' @param enrichments The enrichment results from each model. The input is a
+#'   nested named list. The names of the list correspond to the model names.
+#'   Each list element should be a list of the contrasts tested. The names
+#'   correspond to the contrast names. Each list element should be another list
+#'   of annotation databases. The names correspond to the annotation databases.
+#'   Each of these elements should be a data frame with enrichment results. Each
+#'   table must have a column named "key" that contains the annotation terms.
+#'
+#' @export
+addEnrichments <- function(study, enrichments, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(enrichments, "list"))
+
+  if (!all(names(study$models) %in% names(enrichments))) {
+    stop(sprintf("The names of the list do not include all of the model names"))
+  }
+
+  for (i in seq_along(enrichments)) {
+    model <- enrichments[[i]]
+    model_name <- names(enrichments)[i]
+    stopifnot(inherits(model, "list"))
+    stopifnot(model_name %in% names(study$models))
+    for (j in seq_along(model)) {
+      contrast <- model[[j]]
+      contrast_name <- names(model)[j]
+      stopifnot(inherits(contrast, "list"))
+      stopifnot(contrast_name %in% names(study$contrasts))
+      for (k in seq_along(contrast)) {
+        annotation <- contrast[[k]]
+        annotation_name <- names(contrast)[k]
+        stopifnot(inherits(annotation, "data.frame"))
+        stopifnot(annotation_name %in% names(study$annotations))
+        stopifnot("key" %in% colnames(annotation))
+      }
+    }
+  }
+
+  if (overwrite || is.null(study$enrichments)) {
+    study$enrichments <- enrichments
+  } else {
+    stop("The enrichment results already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)

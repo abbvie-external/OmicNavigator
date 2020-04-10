@@ -52,10 +52,19 @@ database. Each of these elements should be list of annotation terms. The
 names of this sublist correspond to the name of the annotation term. Each of
 the annotation terms should be a character vector of feature IDs.}
 
-\item{inferences}{The inference results from each model. The input is a named
-list. The names of the list correspond to the model names. Each element in
-the list should be a list of data frames with inference results, one for
-each contrast. The featureID column needs to be included in each table.}
+\item{inferences}{The inference results from each model. The input is a
+nested named list. The names of the list correspond to the model names.
+Each element in the list should be a list of data frames with inference
+results, one for each contrast. The featureID column needs to be included
+in each table.}
+
+\item{enrichments}{The enrichment results from each model. The input is a
+nested named list. The names of the list correspond to the model names.
+Each list element should be a list of the contrasts tested. The names
+correspond to the contrast names. Each list element should be another list
+of annotation databases. The names correspond to the annotation databases.
+Each of these elements should be a data frame with enrichment results. Each
+table must have a column named "key" that contains the annotation terms.}
 
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}
