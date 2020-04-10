@@ -20,12 +20,9 @@ library(OmicAnalyzer)
 ```
 
 ```{r}
-path <- tempfile()
-oa <- OmicAnalyzer(path)
-addStudy(oa, "example")
-addStudy(oa, "example")
-addModel(oa, "example", "model_1", "A linear model")
-addModel(oa, "example", "model_1", "A linear model")
+oa <- createStudy(name = "example",
+                  description = "Example study for vignette")
+oa <- addModels(oa, c(model_1 = "A linear model"))
 ```
 
 ```{r}
@@ -35,7 +32,7 @@ features <- data.frame(
   stringsAsFactors = FALSE
 )
 
-addFeatures(oa, "example", features)
+oa <- addFeatures(oa, features)
 ```
 
 ```{r}
@@ -45,12 +42,16 @@ samples <- data.frame(
   stringsAsFactors = FALSE
 )
 
-addSamples(oa, "example", samples)
+oa <- addSamples(oa, samples)
 ```
 
 ```{r}
 assay <- matrix(rnorm(15), nrow = 3, ncol = 5,
                 dimnames = list(features$featureID, samples$sampleID))
 
-addAssay(oa, "example", "model_1", assay)
+oa <- addAssays(oa, list(model_1 = assay))
+```
+
+```{r}
+oa
 ```

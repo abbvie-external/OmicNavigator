@@ -1,6 +1,8 @@
 Package: OmicAnalyzer
 Type: Package
 Title: The OmicAnalyzer R backend
+Description: Functions to import omics data, create a study package, deploy the
+  dashboard, and query the study data from the dashboard.
 Version: 0.1.0
 Author: John Blischak
 Maintainer: John Blischak <john.blischak@abbvie.com>
@@ -10,7 +12,6 @@ LazyData: true
 Imports:
   DBI,
   dplyr,
-  rappdirs,
   rlang,
   RSQLite,
   tidyr,
