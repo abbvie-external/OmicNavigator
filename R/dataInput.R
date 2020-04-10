@@ -70,6 +70,71 @@ print.oaStudy <- function(x, ...) {
   cat(sprintf("* Feature ID column name: %s\n", x$featureID))
   cat(sprintf("* Sample ID column name: %s\n", x$sampleID))
 
+  if (!is.null(x$samples)) {
+    cat(sprintf("* Samples: %d\n", nrow(x$samples)))
+    cat(sprintf("* Sample metadata variables: %d\n", ncol(x$samples)))
+  }
+
+  if (!is.null(x$features)) {
+    cat(sprintf("* Features: %d\n", nrow(x$features)))
+    cat(sprintf("* Feature metadata variables: %d\n", ncol(x$features)))
+  }
+
+  if (!is.null(x$models)) {
+    cat(sprintf("* Models: %d\n", length(x$models)))
+    for (i in seq_along(x$models)) {
+      cat(sprintf("  * \"%s\"\n", names(x$models)[i]))
+    }
+  }
+
+  if (!is.null(x$assays)) {
+    cat(sprintf("* Assays: %d\n", length(x$assays)))
+    for (i in seq_along(x$assays)) {
+      cat(sprintf("  * \"%s\": %d x %d\n", names(x$assays)[i], nrow(x$assays[[i]]),
+          ncol(x$assays[[i]])))
+    }
+  }
+
+  if (!is.null(x$contrasts)) {
+    cat(sprintf("* Contrasts: %d\n", length(x$contrasts)))
+    for (i in seq_along(x$contrasts)) {
+      cat(sprintf("  * \"%s\"\n", names(x$contrasts)[i]))
+    }
+  }
+
+  if (!is.null(x$annotations)) {
+    cat(sprintf("* Annotations: %d\n", length(x$annotations)))
+    for (i in seq_along(x$annotations)) {
+      cat(sprintf("  * \"%s\"\n", names(x$annotations)[i]))
+    }
+  }
+
+  if (!is.null(x$inferences)) {
+    cat("* Inferences:\n")
+    for (i in seq_along(x$inferences)) {
+      cat(sprintf("  * \"%s\":\n", names(x$inferences)[i]))
+      for (j in seq_along(x$inferences[[i]])) {
+        cat(sprintf("    * \"%s\": %d results\n", names(x$inferences[[i]])[j],
+                    nrow(x$inferences[[i]][[j]])))
+      }
+    }
+  }
+
+  if (!is.null(x$enrichments)) {
+    cat("* Enrichments:\n")
+    for (i in seq_along(x$enrichments)) {
+      cat(sprintf("  * \"%s\":\n", names(x$enrichments)[i]))
+      for (j in seq_along(x$enrichments[[i]])) {
+        cat(sprintf("    * \"%s\":\n", names(x$enrichments[[i]])[j]))
+        for (k in seq_along(x$enrichments[[i]][[j]])) {
+          cat(sprintf("      * \"%s\": %d results\n",
+                      names(x$enrichments[[i]][[j]])[k],
+                      nrow(x$enrichments[[i]][[j]][[k]])))
+        }
+      }
+    }
+  }
+
   return(invisible(x))
 }
 
