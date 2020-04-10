@@ -52,6 +52,11 @@ database. Each of these elements should be list of annotation terms. The
 names of this sublist correspond to the name of the annotation term. Each of
 the annotation terms should be a character vector of feature IDs.}
 
+\item{inferences}{The inference results from each model. The input is a named
+list. The names of the list correspond to the model names. Each element in
+the list should be a list of data frames with inference results, one for
+each contrast. The featureID column needs to be included in each table.}
+
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}
 

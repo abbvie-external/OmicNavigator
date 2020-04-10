@@ -12,6 +12,7 @@
 #' @inheritParams addAssays
 #' @inheritParams addContrasts
 #' @inheritParams addAnnotations
+#' @inheritParams addInferences
 #'
 #' @examples
 #'
@@ -208,6 +209,44 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
     study$annotations <- annotations
   } else {
     stop("The annotations already exist. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+#' Add inference results
+#'
+#' @param inferences The inference results from each model. The input is a named
+#'   list. The names of the list correspond to the model names. Each element in
+#'   the list should be a list of data frames with inference results, one for
+#'   each contrast. The featureID column needs to be included in each table.
+#'
+#' @export
+addInferences <- function(study, inferences, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(inferences, "list"))
+
+  if (!all(names(study$models) %in% names(inferences))) {
+    stop(sprintf("The names of the list do not include all of the model names"))
+  }
+
+  for (i in seq_along(inferences)) {
+    model <- inferences[[i]]
+    model_name <- names(inferences)[i]
+    stopifnot(inherits(model, "list"))
+    stopifnot(model_name %in% names(study$models))
+    for (j in seq_along(model)) {
+      contrast <- model[[j]]
+      contrast_name <- names(model)[j]
+      stopifnot(inherits(contrast, "data.frame"))
+      stopifnot(contrast_name %in% names(study$contrasts))
+      stopifnot(study$featureID %in% colnames(contrast))
+    }
+  }
+
+  if (overwrite || is.null(study$inferences)) {
+    study$inferences <- inferences
+  } else {
+    stop("The inference results already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)
