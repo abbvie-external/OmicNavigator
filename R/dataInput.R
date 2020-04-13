@@ -431,18 +431,21 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
   type <- match.arg(type)
 
   if (type == "rds") {
+    message(sprintf("Exporting study \"%s\" to an RDS file", study$name))
     filename <- paste0(study$name, ".rds")
     if (!is.null(path)) filename <- file.path(path, filename)
     saveRDS(object = study, file = filename)
     message(sprintf("Exported study to %s", filename))
     return(invisible(filename))
   } else if (type == "sqlite") {
+    message(sprintf("Exporting study \"%s\" to an SQLite database", study$name))
     filename <- paste0(study$name, ".sqlite")
     if (!is.null(path)) filename <- file.path(path, filename)
     createDatabase(study, filename)
     message(sprintf("Exported study to %s", filename))
     return(invisible(filename))
   } else if (type == "package") {
+    message(sprintf("Exporting study \"%s\" to an R package", study$name))
     directoryname <- paste0("OAstudy", study$name)
     if (!is.null(path)) directoryname <- file.path(path, directoryname)
     message(sprintf("Exported study to %s", directoryname))
@@ -455,7 +458,9 @@ createDatabase <- function(study, filename) {
   tmpdb <- tempfile(fileext = ".sqlite")
   con <- DBI::dbConnect(RSQLite::SQLite(), tmpdb)
 
-  # samples
+  # samples --------------------------------------------------------------------
+
+  message("* Adding samples")
   fields_samples <- c("varchar(50) PRIMARY KEY")
   names(fields_samples) <- study$sampleID
   DBI::dbWriteTable(con, "samples", samples, field.types = fields_samples)
@@ -463,7 +468,9 @@ createDatabase <- function(study, filename) {
                  sprintf("CREATE UNIQUE INDEX samples_index ON samples(%s)",
                          study$sampleID))
 
-  # features
+  # features -------------------------------------------------------------------
+
+  message("* Adding features")
   fields_features <- c("varchar(50) PRIMARY KEY")
   names(fields_features) <- study$featureID
   DBI::dbWriteTable(con, "features", study$features, field.types = fields_features)
@@ -471,7 +478,9 @@ createDatabase <- function(study, filename) {
                  sprintf("CREATE UNIQUE INDEX feature_index ON features(%s)",
                          study$featureID))
 
-  # models
+  # models ---------------------------------------------------------------------
+
+  message("* Adding models")
   models <- data.frame(modelID = names(study$models),
                        description = study$models,
                        stringsAsFactors = FALSE)
@@ -479,7 +488,9 @@ createDatabase <- function(study, filename) {
                     field.types = c("modelID" = "varchar(100) PRIMARY KEY",
                                     "description" = "varchar(200)"))
 
-  # assays
+  # assays ---------------------------------------------------------------------
+
+  message("* Adding assays")
   assays_long <- vector(mode = "list", length = length(study$assays))
   for (i in seq_along(study$assays)) {
     assays_long[[i]] <- study$assays[[i]] %>%
@@ -504,6 +515,94 @@ createDatabase <- function(study, filename) {
   DBI::dbExecute(con,
                  sprintf("CREATE UNIQUE INDEX assays_index ON assays(%s, %s, modelID)",
                          study$featureID, study$sampleID))
+
+  # contrasts ------------------------------------------------------------------
+
+  message("* Adding contrasts")
+  contrasts <- data.frame(contrastID = names(study$contrasts),
+                          description = study$contrasts,
+                          stringsAsFactors = FALSE)
+  DBI::dbWriteTable(con, "contrasts", contrasts,
+                    field.types = c("contrastID" = "varchar(50) PRIMARY KEY"))
+
+  # annotations ----------------------------------------------------------------
+
+  message("* Adding annotations")
+  annotations <- data.frame(annotationID = names(study$annotations),
+                            stringsAsFactors = FALSE)
+
+  DBI::dbWriteTable(con, "annotations", annotations,
+                    field.types = c("annotationID" = "varchar(50) PRIMARY KEY"))
+
+  terms_list <- list()
+  for (annotationID in names(study$annotations)) {
+    tmp <- data.frame(annotationID = annotationID,
+                      termID = names(study$annotations[[annotationID]]),
+                      stringsAsFactors = FALSE)
+    terms_list <- c(terms_list, list(tmp))
+  }
+
+  terms <- dplyr::bind_rows(terms_list)
+  DBI::dbWriteTable(con, "terms", terms,
+                    field.types = c("annotationID" = "varchar(50) REFERENCES annotations (annotationID)"))
+
+  # inferences -----------------------------------------------------------------
+
+  message("* Adding inferences")
+  inferences_list <- list()
+  for (modelID in names(study$inferences)) {
+    for (contrastID in names(study$inferences[[modelID]])) {
+      tmp <- study$inferences[[modelID]][[contrastID]]
+      tmp$modelID <- modelID
+      tmp$contrastID <- contrastID
+      inferences_list <- c(inferences_list, list(tmp))
+    }
+  }
+
+  inferences <- Reduce(function(x, y) merge(x, y, all = TRUE), inferences_list)
+  fields_inferences <- c(
+    sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
+    "varchar(50) REFERENCES contrasts (contrastID)",
+    "varchar(100) REFERENCES models (modelID)"
+  )
+  names(fields_inferences) <- c(study$featureID, "contrastID", "modelID")
+  DBI::dbWriteTable(con, "inferences", inferences,
+                    field.types = fields_inferences)
+
+  # enrichments ----------------------------------------------------------------
+
+  message("* Adding enrichments")
+  enrichments_list <- list()
+  for (modelID in names(study$enrichments)) {
+    for (contrastID in names(study$enrichments[[modelID]])) {
+      for (annotationID in names(study$enrichments[[modelID]][[contrastID]])) {
+        tmp <- study$enrichments[[modelID]][[contrastID]][[annotationID]]
+        tmp$modelID <- modelID
+        tmp$contrastID <- contrastID
+        tmp$annotationID <- annotationID
+        enrichments_list <- c(enrichments_list, list(tmp))
+      }
+    }
+  }
+
+  enrichments <- Reduce(function(x, y) merge(x, y, all = TRUE), enrichments_list)
+  DBI::dbWriteTable(con, "enrichments", enrichments,
+                    field.types = c(
+                      "modelID" = "varchar(100) REFERENCES models (modelID)",
+                      "contrastID" = "varchar(50) REFERENCES contrasts (contrastID)",
+                      "annotationID" = "varchar(50) REFERENCES annotations (name)",
+                      "key" = "varchar(50) REFERENCES terms (termID)"
+                    ))
+
+  # metaFeatures ---------------------------------------------------------------
+
+  message("* Adding meta-features")
+  fields_metaFeatures <- c(
+    sprintf("varchar(50) REFERENCES features (%s)", study$featureID)
+  )
+  names(fields_metaFeatures) <- study$featureID
+  DBI::dbWriteTable(con, "metaFeatures", study$metaFeatures,
+                    field.types = fields_metaFeatures)
 
   DBI::dbDisconnect(con)
   file.rename(tmpdb, filename)
