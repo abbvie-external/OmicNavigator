@@ -13,7 +13,7 @@ Each list element should be a list of the contrasts tested. The names
 correspond to the contrast names. Each list element should be another list
 of annotation databases. The names correspond to the annotation databases.
 Each of these elements should be a data frame with enrichment results. Each
-table must have a column named "key" that contains the annotation terms.}
+table must have a column named "termID" that contains the annotation terms.}
 }
 \description{
 Add enrichment results

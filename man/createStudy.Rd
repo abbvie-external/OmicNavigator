@@ -46,12 +46,18 @@ the sample IDs and the rows should be the feature IDs.}
 vector. The names correspond to the name of each contrast. The elements
 correspond to the description of each contrast.}
 
-\item{annotations}{The annotations used for the enrichment analyses. The input
-is a nested list. The top-level list contains one entry per annotation
-database, e.g. reactome. The names correspond to the name of each annotation
-database. Each of these elements should be list of annotation terms. The
-names of this sublist correspond to the name of the annotation term. Each of
-the annotation terms should be a character vector of feature IDs.}
+\item{annotations}{The annotations used for the enrichment analyses. The
+input is a nested list. The top-level list contains one entry per
+annotation database, e.g. reactome. The names correspond to the name of
+each annotation database. Each of these elements should be list of that
+contains more information about each annotation database. Specifically the
+sublist should contain 1) \code{description}, a character vector that
+describes the resource, 2) \code{featureID}, the name of the column in the
+features table that was used for the enrichment analysis (if omitted, it is
+assumed to be the main featureID used for the study), and 3) \code{terms},
+a list of annotation terms. The names of \code{terms} sublist correspond to
+the name of the annotation terms. Each of the annotation terms should be a
+character vector of feature IDs.}
 
 \item{inferences}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
@@ -65,7 +71,7 @@ Each list element should be a list of the contrasts tested. The names
 correspond to the contrast names. Each list element should be another list
 of annotation databases. The names correspond to the annotation databases.
 Each of these elements should be a data frame with enrichment results. Each
-table must have a column named "key" that contains the annotation terms.}
+table must have a column named "termID" that contains the annotation terms.}
 
 \item{metaFeatures}{A table of metadata variables that describe the
 meta-features in the study. This is useful anytime there are metadata

@@ -273,16 +273,50 @@ addContrasts <- function(study, contrasts, overwrite = FALSE) {
 
 #' Add annotations
 #'
-#' @param annotations The annotations used for the enrichment analyses. The input
-#' is a nested list. The top-level list contains one entry per annotation
-#' database, e.g. reactome. The names correspond to the name of each annotation
-#' database. Each of these elements should be list of annotation terms. The
-#' names of this sublist correspond to the name of the annotation term. Each of
-#' the annotation terms should be a character vector of feature IDs.
+#' @param annotations The annotations used for the enrichment analyses. The
+#'   input is a nested list. The top-level list contains one entry per
+#'   annotation database, e.g. reactome. The names correspond to the name of
+#'   each annotation database. Each of these elements should be list of that
+#'   contains more information about each annotation database. Specifically the
+#'   sublist should contain 1) \code{description}, a character vector that
+#'   describes the resource, 2) \code{featureID}, the name of the column in the
+#'   features table that was used for the enrichment analysis (if omitted, it is
+#'   assumed to be the main featureID used for the study), and 3) \code{terms},
+#'   a list of annotation terms. The names of \code{terms} sublist correspond to
+#'   the name of the annotation terms. Each of the annotation terms should be a
+#'   character vector of feature IDs.
 #'
 #' @export
 addAnnotations <- function(study, annotations, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(annotations, "list"))
+  stopifnot(inherits(study, "oaStudy"), inherits(annotations, "list"),
+            length(annotations) > 0)
+
+  for (i in seq_along(annotations)) {
+    annotationID <- names(annotations)[i]
+    if (is.null(annotationID)) {
+      stop("The annotation list needs to be named")
+    }
+    if (is.null(annotations[[i]][["description"]])) {
+      annotations[[i]][["description"]] <- sprintf("Annotation terms from %s",
+                                                   annotationID)
+    }
+    if (is.null(annotations[[i]][["featureID"]])) {
+      annotations[[i]][["featureID"]] <- study$featureID
+    }
+    if (!annotations[[i]][["featureID"]] %in% colnames(study$features)) {
+      stop(sprintf("The ID \"%s\" for \"%s\" is not a column in the features table",
+           annotations[[i]][["featureID"]], annotationID))
+    }
+    if (is.null(annotations[[i]][["terms"]])) {
+      stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
+    }
+    universe <- unique(unlist(annotations[[i]][["terms"]]))
+    if (!any(study$features[[study$featureID]] %in% universe)) {
+      stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
+                   annotationID, annotations[[i]][["featureID"]]),
+           "Do you need specify the features column that was used for this enrichment analysis?")
+    }
+  }
 
   if (overwrite || is.null(study$annotations)) {
     study$annotations <- annotations
@@ -340,7 +374,7 @@ addInferences <- function(study, inferences, overwrite = FALSE) {
 #'   correspond to the contrast names. Each list element should be another list
 #'   of annotation databases. The names correspond to the annotation databases.
 #'   Each of these elements should be a data frame with enrichment results. Each
-#'   table must have a column named "key" that contains the annotation terms.
+#'   table must have a column named "termID" that contains the annotation terms.
 #'
 #' @export
 addEnrichments <- function(study, enrichments, overwrite = FALSE) {
@@ -365,7 +399,7 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
         annotation_name <- names(contrast)[k]
         stopifnot(inherits(annotation, "data.frame"))
         stopifnot(annotation_name %in% names(study$annotations))
-        stopifnot("key" %in% colnames(annotation))
+        stopifnot("termID" %in% colnames(annotation))
       }
     }
   }
@@ -529,6 +563,8 @@ createDatabase <- function(study, filename) {
 
   message("* Adding annotations")
   annotations <- data.frame(annotationID = names(study$annotations),
+                            description = vapply(study$annotations, function(x) x[["description"]], character(1)),
+                            featureID = vapply(study$annotations, function(x) x[["featureID"]], character(1)),
                             stringsAsFactors = FALSE)
 
   DBI::dbWriteTable(con, "annotations", annotations,
@@ -537,7 +573,7 @@ createDatabase <- function(study, filename) {
   terms_list <- list()
   for (annotationID in names(study$annotations)) {
     tmp <- data.frame(annotationID = annotationID,
-                      termID = names(study$annotations[[annotationID]]),
+                      termID = names(study$annotations[[annotationID]][["terms"]]),
                       stringsAsFactors = FALSE)
     terms_list <- c(terms_list, list(tmp))
   }
@@ -590,8 +626,8 @@ createDatabase <- function(study, filename) {
                     field.types = c(
                       "modelID" = "varchar(100) REFERENCES models (modelID)",
                       "contrastID" = "varchar(50) REFERENCES contrasts (contrastID)",
-                      "annotationID" = "varchar(50) REFERENCES annotations (name)",
-                      "key" = "varchar(50) REFERENCES terms (termID)"
+                      "annotationID" = "varchar(50) REFERENCES annotations (annotationID)",
+                      "termID" = "varchar(50) REFERENCES terms (termID)"
                     ))
 
   # metaFeatures ---------------------------------------------------------------
