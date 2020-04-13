@@ -368,6 +368,10 @@ addInferences <- function(study, inferences, overwrite = FALSE) {
 
 #' Add enrichment results
 #'
+#' To reduce storage and compute time, it is highly recommended to first filter
+#' the enrichment results for statistical signficance prior to adding them to
+#' the study.
+#'
 #' @param enrichments The enrichment results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
 #'   Each list element should be a list of the contrasts tested. The names
@@ -412,7 +416,6 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
 
   return(study)
 }
-
 
 #' Add meta-feature metadata
 #'
@@ -639,6 +642,33 @@ createDatabase <- function(study, filename) {
   names(fields_metaFeatures) <- study$featureID
   DBI::dbWriteTable(con, "metaFeatures", study$metaFeatures,
                     field.types = fields_metaFeatures)
+
+  # Overlaps -------------------------------------------------------------------
+
+  message("* Calculating overlaps between annotation terms")
+  overlaps_list <- list()
+  for (annotationID in names(study$annotations)) {
+    terms_tmp <- study$annotations[[annotationID]][["terms"]]
+    terms_enriched <- dplyr::tbl(con, "enrichments") %>%
+      dplyr::filter(annotationID == !! annotationID) %>%
+      dplyr::pull(termID) %>%
+      unique()
+    terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enriched]
+    overlaps_tmp <- calc_pairwise_overlaps(terms_tmp)
+    overlaps_tmp$annotationID <- annotationID
+    overlaps_list <- c(overlaps_list, list(overlaps_tmp))
+  }
+  overlaps <- dplyr::bind_rows(overlaps_list)
+
+  DBI::dbWriteTable(con, "overlaps", overlaps,
+                    field.types = c(
+                      "annotationID" = "varchar(50) REFERENCES annotations (annotationID)",
+                      "term1" = "varchar(50) REFERENCES terms (termID)",
+                      "term2" = "varchar(50) REFERENCES terms (termID)",
+                      "overlapSize" = "INTEGER",
+                      "overlap" = "DOUBLE",
+                      "jaccard" = "DOUBLE"
+                    ))
 
   DBI::dbDisconnect(con)
   file.rename(tmpdb, filename)

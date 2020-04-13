@@ -16,5 +16,7 @@ Each of these elements should be a data frame with enrichment results. Each
 table must have a column named "termID" that contains the annotation terms.}
 }
 \description{
-Add enrichment results
+To reduce storage and compute time, it is highly recommended to first filter
+the enrichment results for statistical signficance prior to adding them to
+the study.
 }
