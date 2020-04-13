@@ -15,6 +15,7 @@ createStudy(
   annotations = NULL,
   inferences = NULL,
   enrichments = NULL,
+  metaFeatures = NULL,
   featureID = "featureID",
   sampleID = "sampleID"
 )
@@ -65,6 +66,13 @@ correspond to the contrast names. Each list element should be another list
 of annotation databases. The names correspond to the annotation databases.
 Each of these elements should be a data frame with enrichment results. Each
 table must have a column named "key" that contains the annotation terms.}
+
+\item{metaFeatures}{A table of metadata variables that describe the
+meta-features in the study. This is useful anytime there are metadata
+variables that cannot be mapped 1:1 to your features. For example, a
+peptide may be associated with multiple proteins. The table must contain
+the unique featureID used for the study. Also, the object must inherit from
+the class data.frame.}
 
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}

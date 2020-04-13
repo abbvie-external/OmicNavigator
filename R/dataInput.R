@@ -14,6 +14,7 @@
 #' @inheritParams addAnnotations
 #' @inheritParams addInferences
 #' @inheritParams addEnrichments
+#' @inheritParams addMetaFeatures
 #'
 #' @examples
 #'
@@ -31,6 +32,7 @@ createStudy <- function(name,
                         annotations = NULL,
                         inferences = NULL,
                         enrichments = NULL,
+                        metaFeatures = NULL,
                         featureID = "featureID",
                         sampleID = "sampleID")
 {
@@ -46,6 +48,7 @@ createStudy <- function(name,
                 annotations = NULL,
                 inferences = NULL,
                 enrichments = NULL,
+                metaFeatures = NULL,
                 featureID = featureID,
                 sampleID = sampleID)
   class(study) <- "oaStudy"
@@ -58,6 +61,7 @@ createStudy <- function(name,
   if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
   if (!is.null(inferences)) study <- addInferences(study, inferences = inferences)
   if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
+  if (!is.null(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
 
   return(study)
 }
@@ -78,6 +82,10 @@ print.oaStudy <- function(x, ...) {
   if (!is.null(x$features)) {
     cat(sprintf("* Features: %d\n", nrow(x$features)))
     cat(sprintf("* Feature metadata variables: %d\n", ncol(x$features)))
+  }
+
+  if (!is.null(x$metaFeatures)) {
+    cat(sprintf("* Meta-feature metadata variables: %d\n", ncol(x$metaFeatures) - 1))
   }
 
   if (!is.null(x$models)) {
@@ -179,6 +187,11 @@ addFeatures <- function(study, features, overwrite = FALSE) {
       sprintf("The features table doesn't contain the featureID column named \"%s\"",
               study$featureID)
     )
+  }
+
+  key_column <- features[[study$featureID]]
+  if (length(key_column) != length(unique(key_column))) {
+    stop(sprintf("The key column \"%s\" contains duplicates", study$featureID))
   }
 
   if (overwrite || is.null(study$features)) {
@@ -361,6 +374,44 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
     study$enrichments <- enrichments
   } else {
     stop("The enrichment results already exist. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+
+#' Add meta-feature metadata
+#'
+#' @param metaFeatures A table of metadata variables that describe the
+#'   meta-features in the study. This is useful anytime there are metadata
+#'   variables that cannot be mapped 1:1 to your features. For example, a
+#'   peptide may be associated with multiple proteins. The table must contain
+#'   the unique featureID used for the study. Also, the object must inherit from
+#'   the class data.frame.
+#'
+#' @export
+addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(metaFeatures, "data.frame"))
+
+  if (!study$featureID %in% colnames(metaFeatures)) {
+    stop(
+      sprintf("The metaFeatures table doesn't contain the featureID column named \"%s\"",
+              study$featureID)
+    )
+  }
+
+  if (is.null(study$features)) {
+    stop("Please add the features table with addFeatures() prior to adding the metaFeatures table")
+  }
+
+  if (!all(metaFeatures[[study$featureID]] %in% study$features[[study$featureID]])) {
+    stop("The metaFeatures table contains features that are not in the features table")
+  }
+
+  if (overwrite || is.null(study$metaFeatures)) {
+    study$metaFeatures <- metaFeatures
+  } else {
+    stop("Feature metadata already exists. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)
