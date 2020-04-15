@@ -485,6 +485,7 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
     message(sprintf("Exporting study \"%s\" to an R package", study$name))
     directoryname <- paste0("OAstudy", study$name)
     if (!is.null(path)) directoryname <- file.path(path, directoryname)
+    createPackage(study, directoryname)
     message(sprintf("Exported study to %s", directoryname))
     return(invisible(directoryname))
   }
@@ -674,4 +675,49 @@ createDatabase <- function(study, filename) {
   file.rename(tmpdb, filename)
 
   return(invisible(filename))
+}
+
+createPackage <- function(study, directoryname) {
+
+  pkgname <- basename(directoryname)
+  description <- data.frame(
+    Package = pkgname,
+    Title = sprintf("OmicAnalyzer study %s", study$name),
+    Version = "0.0.0.9000",
+    Description = sprintf("The OmicAnalyzer data package for the study \"%s\"", study$name),
+    stringsAsFactors = FALSE
+  )
+
+  dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
+  description_file <- file.path(directoryname, "DESCRIPTION")
+  write.dcf(description, file = description_file)
+  sqldir <- file.path(directoryname, "inst", "OmicAnalyzer")
+  dir.create(sqldir, showWarnings = FALSE, recursive = TRUE)
+  sqlfile <- file.path(sqldir, paste0(study$name, ".sqlite"))
+  createDatabase(study, sqlfile)
+
+  return(invisible(directoryname))
+}
+
+#' Install a study as an R package
+#'
+#' @export
+installStudy <- function(study, library = .libPaths()[1]) {
+  stopifnot(inherits(study, "oaStudy"), dir.exists(library))
+
+  tmpPkgDir <- exportStudy(study, type = "package", path = tempdir(check = TRUE))
+  on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
+  buildPkg(tmpPkgDir)
+  tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study$name))
+  stopifnot(length(tarball) == 1)
+  on.exit(file.remove(tarball), add = TRUE)
+  install.packages(tarball, lib = library, repos = NULL)
+
+  return(invisible(study))
+}
+
+buildPkg <- function(pkgDir) {
+  r <- file.path(R.home("bin"), "R")
+  system2(r, args = c("CMD", "build", pkgDir))
+  return(invisible(pkgDir))
 }
