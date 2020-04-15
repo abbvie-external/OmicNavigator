@@ -150,7 +150,8 @@ print.oaStudy <- function(x, ...) {
   if (!is.null(x$plots)) {
     cat(sprintf("* Custom plots: %d\n", length(x$plots)))
     for (i in seq_along(x$plots)) {
-      cat(sprintf("  * \"%s\"\n", x$plots[[i]][["displayName"]]))
+      cat(sprintf("  * \"%s\" - \"%s\"\n", names(x$plots)[i],
+                  x$plots[[i]][["displayName"]]))
     }
   }
 
@@ -500,6 +501,7 @@ addPlots <- function(study, plots, overwrite = FALSE) {
   stopifnot(inherits(study, "oaStudy"), inherits(plots, "list"),
             length(plots) > 0)
 
+  # To do: check function signatures
   for (i in seq_along(plots)) {
     plotID <- names(plots)[i]
     if (is.null(plotID)) {
