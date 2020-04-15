@@ -15,6 +15,7 @@
 #' @inheritParams addInferences
 #' @inheritParams addEnrichments
 #' @inheritParams addMetaFeatures
+#' @inheritParams addPlots
 #'
 #' @examples
 #'
@@ -33,6 +34,7 @@ createStudy <- function(name,
                         inferences = NULL,
                         enrichments = NULL,
                         metaFeatures = NULL,
+                        plots = NULL,
                         featureID = "featureID",
                         sampleID = "sampleID")
 {
@@ -49,6 +51,7 @@ createStudy <- function(name,
                 inferences = NULL,
                 enrichments = NULL,
                 metaFeatures = NULL,
+                plots = NULL,
                 featureID = featureID,
                 sampleID = sampleID)
   class(study) <- "oaStudy"
@@ -62,6 +65,7 @@ createStudy <- function(name,
   if (!is.null(inferences)) study <- addInferences(study, inferences = inferences)
   if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
   if (!is.null(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
+  if (!is.null(plots)) study <- addPlots(study, plots = plots)
 
   return(study)
 }
@@ -140,6 +144,13 @@ print.oaStudy <- function(x, ...) {
                       nrow(x$enrichments[[i]][[j]][[k]])))
         }
       }
+    }
+  }
+
+  if (!is.null(x$plots)) {
+    cat(sprintf("* Custom plots: %d\n", length(x$plots)))
+    for (i in seq_along(x$plots)) {
+      cat(sprintf("  * \"%s\"\n", x$plots[[i]][["displayName"]]))
     }
   }
 
@@ -449,6 +460,63 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
     study$metaFeatures <- metaFeatures
   } else {
     stop("Feature metadata already exists. Set overwrite=TRUE to overwrite.")
+  }
+
+  return(study)
+}
+
+#' Add custom plotting functions
+#'
+#' Include custom plots that the app will display when a feature is selected by
+#' the user.
+#'
+#' All custom plotting functions are required to have the same function
+#' signature. The first argument is always \code{x}, which will be a data frame
+#' that combines the sample metadata with a column containing the assay
+#' measurements for a specific feature. That column will always be named
+#' \code{feature}. The second argument, \code{featureName}, is the unique ID of
+#' the feature (idea: pass in the entire row from the features table so that the
+#' user can decide what metadata to display). This is for labeling the plot.
+#'
+#' Note that any ggplot2 plots will require extra care. This is because the
+#' plotting code will be inserted into a study package, and thus must follow the
+#' \href{https://ggplot2.tidyverse.org/dev/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{best
+#' practices for using ggplot2 within packages}. Specifically, when you refer to
+#' columns of the data frame, e.g. \code{aes(x = group)}, you need to prefix it
+#' with \code{.data$}, so that it becomes \code{aes(x = .data$group)}.
+#' Fortunately this latter code will also run fine as you interactively develop
+#' the function.
+#'
+#' @param plots Custom plotting functions. The input is a nested list. Each
+#'   element of the list defines a custom plotting function via a list with
+#'   multiple options. The only required option is \code{definition}, which
+#'   contains the function definition. You can optionally include
+#'   \code{displayName} to control how the plot will be named in the app.
+#'   Lastly, if the plottting function requires external packages, these can be
+#'   defined in the argument \code{packages}.
+#'
+#' @export
+addPlots <- function(study, plots, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(plots, "list"),
+            length(plots) > 0)
+
+  for (i in seq_along(plots)) {
+    plotID <- names(plots)[i]
+    if (is.null(plotID)) {
+      stop("The plots list needs to be named")
+    }
+    if (!is.function(plots[[i]][["definition"]])) {
+      stop(sprintf("%s is missing its function definition", plotID))
+    }
+    if (is.null(plots[[i]][["displayName"]])) {
+      plots[[i]][["displayName"]] <- plotID
+    }
+  }
+
+  if (overwrite || is.null(study$plots)) {
+    study$plots <- plots
+  } else {
+    stop("The plots already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)

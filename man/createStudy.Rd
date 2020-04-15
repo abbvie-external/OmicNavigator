@@ -16,6 +16,7 @@ createStudy(
   inferences = NULL,
   enrichments = NULL,
   metaFeatures = NULL,
+  plots = NULL,
   featureID = "featureID",
   sampleID = "sampleID"
 )
@@ -79,6 +80,14 @@ variables that cannot be mapped 1:1 to your features. For example, a
 peptide may be associated with multiple proteins. The table must contain
 the unique featureID used for the study. Also, the object must inherit from
 the class data.frame.}
+
+\item{plots}{Custom plotting functions. The input is a nested list. Each
+element of the list defines a custom plotting function via a list with
+multiple options. The only required option is \code{definition}, which
+contains the function definition. You can optionally include
+\code{displayName} to control how the plot will be named in the app.
+Lastly, if the plottting function requires external packages, these can be
+defined in the argument \code{packages}.}
 
 \item{featureID}{The column name that contains the unique identifiers for the
 features measured in the study}
