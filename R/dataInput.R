@@ -481,7 +481,7 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
 #'
 #' Note that any ggplot2 plots will require extra care. This is because the
 #' plotting code will be inserted into a study package, and thus must follow the
-#' \href{https://ggplot2.tidyverse.org/dev/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{best
+#' \href{https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{best
 #' practices for using ggplot2 within packages}. Specifically, when you refer to
 #' columns of the data frame, e.g. \code{aes(x = group)}, you need to prefix it
 #' with \code{.data$}, so that it becomes \code{aes(x = .data$group)}.
@@ -749,22 +749,56 @@ createDatabase <- function(study, filename) {
 
 createPackage <- function(study, directoryname) {
 
+  dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
+
+  # DESCRIPTION
+  description_file <- file.path(directoryname, "DESCRIPTION")
   pkgname <- basename(directoryname)
   description <- data.frame(
     Package = pkgname,
     Title = sprintf("OmicAnalyzer study %s", study$name),
     Version = "0.0.0.9000",
-    Description = sprintf("The OmicAnalyzer data package for the study \"%s\"", study$name),
+    Description = sprintf("The OmicAnalyzer data package for the study \"%s\"",
+                          study$name),
     stringsAsFactors = FALSE
   )
-
-  dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
-  description_file <- file.path(directoryname, "DESCRIPTION")
   write.dcf(description, file = description_file)
+
+  # Database
   sqldir <- file.path(directoryname, "inst", "OmicAnalyzer")
   dir.create(sqldir, showWarnings = FALSE, recursive = TRUE)
   sqlfile <- file.path(sqldir, paste0(study$name, ".sqlite"))
   createDatabase(study, sqlfile)
+
+  # Plots
+  if (!is.null(study$plots)) {
+    namespace_file <- file.path(directoryname, "NAMESPACE")
+    r_dir <- file.path(directoryname, "R")
+    dir.create(r_dir, showWarnings = FALSE)
+    r_file <- file.path(r_dir, "plots.R")
+    dependencies <- character()
+    exports <- character()
+    code <- character()
+    for (i in seq_along(study$plots)) {
+      plot_name <- names(study$plots)[i]
+      dependencies <- c(dependencies, study$plots[[i]][["packages"]])
+      exports <- c(exports, sprintf("export(%s)", plot_name))
+      plot_code <- deparse(study$plots[[i]][["definition"]])
+      plot_code[1] <- paste(plot_name, "<-", plot_code[1])
+      code <- c(code, plot_code)
+    }
+    if ("ggplot2" %in% dependencies) {
+      dependencies <- c(dependencies, "rlang")
+      exports <- c(exports, "importFrom(rlang,\".data\")")
+    }
+    dependencies <- sort(unique(dependencies))
+    imports <- paste(dependencies, collapse = ", ")
+    imports <- paste("Imports:", imports)
+    cat(imports, file = description_file, sep = "\n", append = TRUE)
+    exports <- sort(exports)
+    writeLines(exports, namespace_file)
+    writeLines(code, r_file)
+  }
 
   return(invisible(directoryname))
 }

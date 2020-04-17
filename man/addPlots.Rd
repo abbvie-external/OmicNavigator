@@ -30,7 +30,7 @@ user can decide what metadata to display). This is for labeling the plot.
 
 Note that any ggplot2 plots will require extra care. This is because the
 plotting code will be inserted into a study package, and thus must follow the
-\href{https://ggplot2.tidyverse.org/dev/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{best
+\href{https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{best
 practices for using ggplot2 within packages}. Specifically, when you refer to
 columns of the data frame, e.g. \code{aes(x = group)}, you need to prefix it
 with \code{.data$}, so that it becomes \code{aes(x = .data$group)}.
