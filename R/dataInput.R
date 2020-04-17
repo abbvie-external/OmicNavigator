@@ -323,7 +323,7 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
     universe <- unique(unlist(annotations[[i]][["terms"]]))
-    if (!any(study$features[[study$featureID]] %in% universe)) {
+    if (!any(study$features[[annotations[[i]][["featureID"]]]] %in% universe)) {
       stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
                    annotationID, annotations[[i]][["featureID"]]),
            "Do you need specify the features column that was used for this enrichment analysis?")
