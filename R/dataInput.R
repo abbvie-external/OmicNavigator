@@ -706,13 +706,15 @@ createDatabase <- function(study, filename) {
 
   # metaFeatures ---------------------------------------------------------------
 
-  message("* Adding meta-features")
-  fields_metaFeatures <- c(
-    sprintf("varchar(50) REFERENCES features (%s)", study$featureID)
-  )
-  names(fields_metaFeatures) <- study$featureID
-  DBI::dbWriteTable(con, "metaFeatures", study$metaFeatures,
-                    field.types = fields_metaFeatures)
+  if (!is.null(study$metaFeatures)) {
+    message("* Adding meta-features")
+    fields_metaFeatures <- c(
+      sprintf("varchar(50) REFERENCES features (%s)", study$featureID)
+    )
+    names(fields_metaFeatures) <- study$featureID
+    DBI::dbWriteTable(con, "metaFeatures", study$metaFeatures,
+                      field.types = fields_metaFeatures)
+  }
 
   # Overlaps -------------------------------------------------------------------
 
