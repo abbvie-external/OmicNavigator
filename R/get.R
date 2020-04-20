@@ -40,18 +40,8 @@ getModels.SQLiteConnection <- function(study, modelID = NULL) {
 #' @rdname getModels
 #' @export
 getModels.character <- function(study, modelID = NULL, libraries = NULL) {
-
-  pkg <- paste0("OAstudy", study)
-  location <- find.package(pkg, lib.loc = libraries, quiet = TRUE)
-  if (length(location) == 0) {
-    stop(sprintf("Unable to find study package for \"%s\"", study))
-  }
-
-  dbName <- file.path("OmicAnalyzer", paste0(study, ".sqlite"))
-  db <- system.file(dbName, package = pkg, mustWork = TRUE)
-
-  con <- DBI::dbConnect(RSQLite::SQLite(), db)
-  on.exit(DBI::dbDisconnect(con))
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
 
   models <- getModels(con, model = model)
 
@@ -127,18 +117,8 @@ getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = N
 #' @rdname getInferences
 #' @export
 getInferences.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL) {
-
-  pkg <- paste0("OAstudy", study)
-  location <- find.package(pkg, lib.loc = libraries, quiet = TRUE)
-  if (length(location) == 0) {
-    stop(sprintf("Unable to find study package for \"%s\"", study))
-  }
-
-  dbName <- file.path("OmicAnalyzer", paste0(study, ".sqlite"))
-  db <- system.file(dbName, package = pkg, mustWork = TRUE)
-
-  con <- DBI::dbConnect(RSQLite::SQLite(), db)
-  on.exit(DBI::dbDisconnect(con))
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
 
   inferences <- getInferences(con, modelID = modelID, contrastID = contrastID)
 
