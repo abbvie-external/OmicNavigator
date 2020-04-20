@@ -1,9 +1,11 @@
-
+#' Get models from a study
+#'
 #' @export
 getModels <- function(study, model = NULL) {
   UseMethod("getModels")
 }
 
+#' @rdname getModels
 #' @export
 getModels.oaStudy <- function(study, model = NULL) {
   if (is.null(study[["models"]])) {
@@ -13,6 +15,7 @@ getModels.oaStudy <- function(study, model = NULL) {
   return(study[["models"]])
 }
 
+#' @rdname getModels
 #' @export
 getModels.SQLiteConnection <- function(study, model = NULL) {
 
@@ -25,6 +28,7 @@ getModels.SQLiteConnection <- function(study, model = NULL) {
   return(models)
 }
 
+#' @rdname getModels
 #' @export
 getModels.character <- function(study, model = NULL, libraries = NULL) {
 
@@ -50,11 +54,14 @@ getModels.default <- function(study, model = NULL) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get inference results from a study
+#'
 #' @export
 getInferences <- function(study, model = NULL, contrast = NULL) {
   UseMethod("getInferences")
 }
 
+#' @rdname getInferences
 #' @export
 getInferences.oaStudy <- function(study, model = NULL, contrast = NULL) {
   if (is.null(study[["inferences"]])) {
@@ -64,6 +71,7 @@ getInferences.oaStudy <- function(study, model = NULL, contrast = NULL) {
   return(study[["inferences"]])
 }
 
+#' @rdname getInferences
 #' @export
 getInferences.SQLiteConnection <- function(study, model = NULL, contrast = NULL) {
 
@@ -77,6 +85,7 @@ getInferences.SQLiteConnection <- function(study, model = NULL, contrast = NULL)
   return(inferences)
 }
 
+#' @rdname getInferences
 #' @export
 getInferences.character <- function(study, model = NULL, contrast = NULL, libraries = NULL) {
 
