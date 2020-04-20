@@ -1,27 +1,36 @@
 #' Get models from a study
 #'
 #' @export
-getModels <- function(study, model = NULL) {
+getModels <- function(study, modelID = NULL) {
   UseMethod("getModels")
 }
 
 #' @rdname getModels
 #' @export
-getModels.oaStudy <- function(study, model = NULL) {
-  if (is.null(study[["models"]])) {
+getModels.oaStudy <- function(study, modelID = NULL) {
+  models <- study[["models"]]
+  if (is.null(models)) {
     stop(sprintf("No models available for study \"%s\"", study[["name"]]))
   }
 
-  return(study[["models"]])
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    models <- models[modelID]
+  }
+
+  return(models)
 }
 
 #' @rdname getModels
 #' @export
-getModels.SQLiteConnection <- function(study, model = NULL) {
+getModels.SQLiteConnection <- function(study, modelID = NULL) {
 
-  df_models <- study %>%
-    dplyr::tbl("models") %>%
-    dplyr::collect()
+  df_models <- dplyr::tbl(study, "models")
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    df_models <- dplyr::filter(df_models, modelID == !! modelID)
+  }
+  df_models <- dplyr::collect(df_models)
 
   models <- df_models[["description"]]
   names(models) <- df_models[["modelID"]]
@@ -30,7 +39,7 @@ getModels.SQLiteConnection <- function(study, model = NULL) {
 
 #' @rdname getModels
 #' @export
-getModels.character <- function(study, model = NULL, libraries = NULL) {
+getModels.character <- function(study, modelID = NULL, libraries = NULL) {
 
   pkg <- paste0("OAstudy", study)
   location <- find.package(pkg, lib.loc = libraries, quiet = TRUE)
@@ -50,44 +59,74 @@ getModels.character <- function(study, model = NULL, libraries = NULL) {
 }
 
 #' @export
-getModels.default <- function(study, model = NULL) {
+getModels.default <- function(study, modelID = NULL) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
 #' Get inference results from a study
 #'
 #' @export
-getInferences <- function(study, model = NULL, contrast = NULL) {
+getInferences <- function(study, modelID = NULL, contrastID = NULL) {
+  if (is.null(modelID) && !is.null(contrastID)) {
+    stop("Must specify a model in order to specify a contrast")
+  }
+
   UseMethod("getInferences")
 }
 
 #' @rdname getInferences
 #' @export
-getInferences.oaStudy <- function(study, model = NULL, contrast = NULL) {
-  if (is.null(study[["inferences"]])) {
+getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL) {
+  inferences <- study[["inferences"]]
+
+  if (is.null(inferences)) {
     stop(sprintf("No Inferences available for study \"%s\"", study[["name"]]))
   }
 
-  return(study[["inferences"]])
-}
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    if (!modelID %in% names(inferences)) {
+      stop(sprintf("No inference results available for model \"%s\"", modelID))
+    }
+    inferences <- inferences[[modelID]]
+  }
 
-#' @rdname getInferences
-#' @export
-getInferences.SQLiteConnection <- function(study, model = NULL, contrast = NULL) {
-
-  df_inferences <- study %>%
-    dplyr::tbl("inferences") %>%
-    dplyr::collect()
-
-  inferences <- splitTableIntoList(df_inferences, "modelID")
-  inferences <- lapply(inferences, function(x) splitTableIntoList(x, "contrastID"))
+  if (!is.null(contrastID)) {
+    stopifnot(is.character(contrastID), length(contrastID) == 1)
+    if (!contrastID %in% names(inferences)) {
+      stop(sprintf("No inference results available for contrast \"%s\" for model \"%s\"",
+                   contrastID, modelID))
+    }
+    inferences <- inferences[[contrastID]]
+  }
 
   return(inferences)
 }
 
 #' @rdname getInferences
 #' @export
-getInferences.character <- function(study, model = NULL, contrast = NULL, libraries = NULL) {
+getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL) {
+
+  df_inferences <- dplyr::tbl(study, "inferences")
+  if (!is.null(modelID)) {
+    df_inferences <- dplyr::filter(df_inferences, modelID == !! modelID)
+  }
+  if (!is.null(contrastID)) {
+    df_inferences <- dplyr::filter(df_inferences, contrastID == !! contrastID)
+  }
+  df_inferences <- dplyr::collect(df_inferences)
+
+  inferences <- splitTableIntoList(df_inferences, "modelID")
+  inferences <- lapply(inferences, function(x) splitTableIntoList(x, "contrastID"))
+  if (length(inferences) == 1) inferences <- inferences[[1]]
+  if (length(inferences) == 1) inferences <- inferences[[1]]
+
+  return(inferences)
+}
+
+#' @rdname getInferences
+#' @export
+getInferences.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL) {
 
   pkg <- paste0("OAstudy", study)
   location <- find.package(pkg, lib.loc = libraries, quiet = TRUE)
@@ -101,13 +140,13 @@ getInferences.character <- function(study, model = NULL, contrast = NULL, librar
   con <- DBI::dbConnect(RSQLite::SQLite(), db)
   on.exit(DBI::dbDisconnect(con))
 
-  inferences <- getInferences(con, model = model, contrast = contrast)
+  inferences <- getInferences(con, modelID = modelID, contrastID = contrastID)
 
   return(inferences)
 }
 
 #' @export
-getInferences.default <- function(study, model = NULL, contrast = NULL) {
+getInferences.default <- function(study, modelID = NULL, contrastID = NULL) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 

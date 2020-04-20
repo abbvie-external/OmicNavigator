@@ -7,13 +7,13 @@
 \alias{getInferences.character}
 \title{Get inference results from a study}
 \usage{
-getInferences(study, model = NULL, contrast = NULL)
+getInferences(study, modelID = NULL, contrastID = NULL)
 
-\method{getInferences}{oaStudy}(study, model = NULL, contrast = NULL)
+\method{getInferences}{oaStudy}(study, modelID = NULL, contrastID = NULL)
 
-\method{getInferences}{SQLiteConnection}(study, model = NULL, contrast = NULL)
+\method{getInferences}{SQLiteConnection}(study, modelID = NULL, contrastID = NULL)
 
-\method{getInferences}{character}(study, model = NULL, contrast = NULL, libraries = NULL)
+\method{getInferences}{character}(study, modelID = NULL, contrastID = NULL, libraries = NULL)
 }
 \description{
 Get inference results from a study
