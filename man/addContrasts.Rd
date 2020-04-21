@@ -7,8 +7,8 @@
 addContrasts(study, contrasts, overwrite = FALSE)
 }
 \arguments{
-\item{contrasts}{The contrasts tested by the model(s). A named character
-vector. The names correspond to the name of each contrast. The elements
+\item{contrasts}{The contrasts tested by the model(s). A named list.
+The names correspond to the name of each contrast. The elements
 correspond to the description of each contrast.}
 }
 \description{

@@ -8,7 +8,7 @@ addModels(study, models, overwrite = FALSE)
 }
 \arguments{
 \item{models}{The models analyzed in the study. The input is a named
-character vector. The names correspond to the names of the models. The
+list. The names correspond to the names of the models. The
 elements correspond to the descriptions of the models.}
 }
 \description{

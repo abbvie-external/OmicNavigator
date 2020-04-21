@@ -218,12 +218,12 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 #' Add models
 #'
 #' @param models The models analyzed in the study. The input is a named
-#'   character vector. The names correspond to the names of the models. The
+#'   list. The names correspond to the names of the models. The
 #'   elements correspond to the descriptions of the models.
 #'
 #' @export
 addModels <- function(study, models, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), is.character(models))
+  stopifnot(inherits(study, "oaStudy"), inherits(models, "list"))
 
   if (overwrite || is.null(study$models)) {
     study$models <- models
@@ -266,13 +266,13 @@ addAssays <- function(study, assays, overwrite = FALSE) {
 
 #' Add contrasts
 #'
-#' @param contrasts The contrasts tested by the model(s). A named character
-#'   vector. The names correspond to the name of each contrast. The elements
+#' @param contrasts The contrasts tested by the model(s). A named list.
+#'   The names correspond to the name of each contrast. The elements
 #'   correspond to the description of each contrast.
 #'
 #' @export
 addContrasts <- function(study, contrasts, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), is.character(contrasts))
+  stopifnot(inherits(study, "oaStudy"), inherits(contrasts, "list"))
 
   if (overwrite || is.null(study$contrasts)) {
     study$contrasts <- contrasts

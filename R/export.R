@@ -64,7 +64,7 @@ createDatabase <- function(study, filename) {
 
   message("* Adding models")
   models <- data.frame(modelID = names(study$models),
-                       description = study$models,
+                       description = unlist(study$models),
                        stringsAsFactors = FALSE)
   DBI::dbWriteTable(con, "models", models,
                     field.types = c("modelID" = "varchar(100) PRIMARY KEY",
@@ -102,7 +102,7 @@ createDatabase <- function(study, filename) {
 
   message("* Adding contrasts")
   contrasts <- data.frame(contrastID = names(study$contrasts),
-                          description = study$contrasts,
+                          description = unlist(study$contrasts),
                           stringsAsFactors = FALSE)
   DBI::dbWriteTable(con, "contrasts", contrasts,
                     field.types = c("contrastID" = "varchar(50) PRIMARY KEY"))

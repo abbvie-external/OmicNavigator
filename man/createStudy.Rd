@@ -35,7 +35,7 @@ study. The table must contain the unique featureID used for the study. Also,
 the object must inherit from the class data.frame.}
 
 \item{models}{The models analyzed in the study. The input is a named
-character vector. The names correspond to the names of the models. The
+list. The names correspond to the names of the models. The
 elements correspond to the descriptions of the models.}
 
 \item{assays}{The assays from the study. The input is a named list. The names
@@ -43,8 +43,8 @@ of the list correspond to the model names. Each element in the list should
 be a matrix of quantifications for the assays. The column names should be
 the sample IDs and the rows should be the feature IDs.}
 
-\item{contrasts}{The contrasts tested by the model(s). A named character
-vector. The names correspond to the name of each contrast. The elements
+\item{contrasts}{The contrasts tested by the model(s). A named list.
+The names correspond to the name of each contrast. The elements
 correspond to the description of each contrast.}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
