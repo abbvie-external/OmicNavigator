@@ -108,8 +108,8 @@ getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = N
 
   inferences <- splitTableIntoList(df_inferences, "modelID")
   inferences <- lapply(inferences, function(x) splitTableIntoList(x, "contrastID"))
-  if (length(inferences) == 1) inferences <- inferences[[1]]
-  if (length(inferences) == 1) inferences <- inferences[[1]]
+  if (!is.null(modelID)) inferences <- inferences[[1]]
+  if (!is.null(contrastID)) inferences <- inferences[[1]]
 
   return(inferences)
 }
