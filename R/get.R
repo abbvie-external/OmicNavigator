@@ -31,6 +31,9 @@ getModels.SQLiteConnection <- function(study, modelID = NULL) {
     df_models <- dplyr::filter(df_models, modelID == !! modelID)
   }
   df_models <- dplyr::collect(df_models)
+  if (nrow(df_models) == 0) {
+    stop(sprintf("Invalid modelID: \"%s\"", modelID))
+  }
 
   models <- df_models[["description"]]
   names(models) <- df_models[["modelID"]]
@@ -43,7 +46,7 @@ getModels.character <- function(study, modelID = NULL, libraries = NULL) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  models <- getModels(con, model = model)
+  models <- getModels(con, modelID = modelID)
 
   return(models)
 }
@@ -99,12 +102,18 @@ getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = N
 
   df_inferences <- dplyr::tbl(study, "inferences")
   if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
     df_inferences <- dplyr::filter(df_inferences, modelID == !! modelID)
   }
   if (!is.null(contrastID)) {
+    stopifnot(is.character(contrastID), length(contrastID) == 1)
     df_inferences <- dplyr::filter(df_inferences, contrastID == !! contrastID)
   }
   df_inferences <- dplyr::collect(df_inferences)
+  if (nrow(df_inferences) == 0) {
+    stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ncontrastID: \"%s\"",
+                 modelID, contrastID))
+  }
 
   inferences <- splitTableIntoList(df_inferences, "modelID")
   inferences <- lapply(inferences, function(x) splitTableIntoList(x, "contrastID"))

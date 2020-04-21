@@ -18,6 +18,6 @@ connectDatabase <- function(study, libraries = NULL) {
   return(con)
 }
 
-disconnectDatabase <- function() {
+disconnectDatabase <- function(con) {
   DBI::dbDisconnect(con)
 }
