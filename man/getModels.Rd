@@ -7,13 +7,13 @@
 \alias{getModels.character}
 \title{Get models from a study}
 \usage{
-getModels(study, modelID = NULL)
+getModels(study, modelID = NULL, ...)
 
-\method{getModels}{oaStudy}(study, modelID = NULL)
+\method{getModels}{oaStudy}(study, modelID = NULL, ...)
 
-\method{getModels}{SQLiteConnection}(study, modelID = NULL)
+\method{getModels}{SQLiteConnection}(study, modelID = NULL, ...)
 
-\method{getModels}{character}(study, modelID = NULL, libraries = NULL)
+\method{getModels}{character}(study, modelID = NULL, libraries = NULL, ...)
 }
 \description{
 Get models from a study

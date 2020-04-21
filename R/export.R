@@ -291,7 +291,7 @@ installStudy <- function(study, library = .libPaths()[1]) {
   tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study$name))
   stopifnot(length(tarball) == 1)
   on.exit(file.remove(tarball), add = TRUE)
-  install.packages(tarball, lib = library, repos = NULL)
+  utils::install.packages(tarball, lib = library, repos = NULL)
 
   return(invisible(study))
 }

@@ -1,13 +1,13 @@
 #' Get models from a study
 #'
 #' @export
-getModels <- function(study, modelID = NULL) {
+getModels <- function(study, modelID = NULL, ...) {
   UseMethod("getModels")
 }
 
 #' @rdname getModels
 #' @export
-getModels.oaStudy <- function(study, modelID = NULL) {
+getModels.oaStudy <- function(study, modelID = NULL, ...) {
   models <- study[["models"]]
   if (is.null(models)) {
     stop(sprintf("No models available for study \"%s\"", study[["name"]]))
@@ -23,7 +23,7 @@ getModels.oaStudy <- function(study, modelID = NULL) {
 
 #' @rdname getModels
 #' @export
-getModels.SQLiteConnection <- function(study, modelID = NULL) {
+getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
 
   df_models <- dplyr::tbl(study, "models")
   if (!is.null(modelID)) {
@@ -42,7 +42,7 @@ getModels.SQLiteConnection <- function(study, modelID = NULL) {
 
 #' @rdname getModels
 #' @export
-getModels.character <- function(study, modelID = NULL, libraries = NULL) {
+getModels.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
@@ -52,14 +52,14 @@ getModels.character <- function(study, modelID = NULL, libraries = NULL) {
 }
 
 #' @export
-getModels.default <- function(study, modelID = NULL) {
+getModels.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
 #' Get inference results from a study
 #'
 #' @export
-getInferences <- function(study, modelID = NULL, contrastID = NULL) {
+getInferences <- function(study, modelID = NULL, contrastID = NULL, ...) {
   if (is.null(modelID) && !is.null(contrastID)) {
     stop("Must specify a model in order to specify a contrast")
   }
@@ -69,7 +69,7 @@ getInferences <- function(study, modelID = NULL, contrastID = NULL) {
 
 #' @rdname getInferences
 #' @export
-getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL) {
+getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
   inferences <- study[["inferences"]]
 
   if (is.null(inferences)) {
@@ -98,7 +98,7 @@ getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL) {
 
 #' @rdname getInferences
 #' @export
-getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL) {
+getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL, ...) {
 
   df_inferences <- dplyr::tbl(study, "inferences")
   if (!is.null(modelID)) {
@@ -125,7 +125,7 @@ getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = N
 
 #' @rdname getInferences
 #' @export
-getInferences.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL) {
+getInferences.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
@@ -135,7 +135,7 @@ getInferences.character <- function(study, modelID = NULL, contrastID = NULL, li
 }
 
 #' @export
-getInferences.default <- function(study, modelID = NULL, contrastID = NULL) {
+getInferences.default <- function(study, modelID = NULL, contrastID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 

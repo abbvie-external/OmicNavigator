@@ -53,7 +53,7 @@ plotStudy <- function(study, model, featureName, plotName) {
   # Setup for the plot and ensure everything is properly reset after the
   # function returns.
   original_par_settings <- graphics::par(no.readonly = TRUE)
-  on.exit(par(original_par_settings), add = TRUE)
+  on.exit(graphics::par(original_par_settings), add = TRUE)
   for (pkg in p[["packages"]]) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
       stop(sprintf("Package \"%s\" is not installed", pkg))
