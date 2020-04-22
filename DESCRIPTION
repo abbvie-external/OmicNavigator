@@ -17,8 +17,9 @@ Imports:
   tidyr,
   utils
 Suggests:
-    jsonlite,
-    knitr,
-    rmarkdown
+  jsonlite,
+  knitr,
+  rmarkdown,
+  tinytest
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr

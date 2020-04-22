@@ -50,10 +50,49 @@ testModels <- function(n = 3) {
   return(models)
 }
 
-testAssays<- function() return(NULL)
-contrasts = testContrasts<- function() return(NULL)
-annotations = testAnnotations<- function() return(NULL)
-inferences = testInferences<- function() return(NULL)
-enrichments = testEnrichments<- function() return(NULL)
-metaFeatures = testMetaFeatures<- function() return(NULL)
-plots = testPlots<- function() return(NULL)
+testAssays<- function(n = 3, rows = 100, cols = 10) {
+  assays <- vector(mode = "list", length = n)
+  names(assays) <- paste0("model_", seq_len(n))
+  for (i in seq_len(n)) {
+    assays[[i]] <- matrix(rnorm(rows * cols), nrow = rows, ncol = cols)
+    rownames(assays[[i]]) <- paste0("feature_", seq_len(rows))
+    colnames(assays[[i]]) <- paste0("sample_", seq_len(cols))
+  }
+  return(assays)
+}
+
+testContrasts<- function(n = 2) {
+  contrasts <- list()
+  for (i in seq_len(n)) {
+    name <- paste0("contrast_", i)
+    value <- paste("contrast", i)
+    contrasts[[name]] <- value
+  }
+  return(contrasts)
+}
+
+testAnnotations<- function(n = 3, terms = 10, featureID = "featureID") {
+  annotations <- vector(mode = "list", length = n)
+  names(annotations) <- paste0("annotation_", seq_len(n))
+  universe <- paste0("feature_", seq_len(100))
+  for (i in seq_len(n)) {
+    terms_list <- replicate(terms,
+                            sample(universe, size = rpois(1, lambda = 15)),
+                            simplify = FALSE)
+    names(terms_list) <- paste0("term_", seq_len(terms))
+    annotations[[i]] <- list(
+      terms = terms_list,
+      description = sprintf("Terms from %s", names(annotations)[i]),
+      featureID = featureID
+    )
+  }
+  return(annotations)
+}
+
+testInferences<- function() return(NULL)
+
+testEnrichments<- function() return(NULL)
+
+testMetaFeatures<- function() return(NULL)
+
+testPlots<- function() return(NULL)
