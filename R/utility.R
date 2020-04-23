@@ -1,7 +1,3 @@
-# For removing shared database columns that aren't relevant to the filtered
-# result
-is_available <- function(x) !all(is.na(x))
-
 connectDatabase <- function(study, libraries = NULL) {
 
   pkg <- paste0("OAstudy", study)
