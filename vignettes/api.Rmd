@@ -23,8 +23,8 @@ library(OmicAnalyzer)
 tmplib <- tempfile()
 dir.create(tmplib)
 .libPaths(c(tmplib, .libPaths()))
-OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test1"))
-OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test2"))
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 ```
 
 ## Studies
@@ -37,15 +37,14 @@ toJSON(studies, pretty = TRUE)
 ## Models
 
 ```{r}
-(models <- getModels("test1"))
+(models <- getModels("ABC"))
 toJSON(models, pretty = TRUE)
 ```
 
 ## Results
 
 ```{r}
-result <- getResults("test1", "model_1", "test_1")
+result <- getResults("ABC", "model_1", "test_1")
 head(result)
 toJSON(result[1:2, ], pretty = TRUE)
 ```
-
