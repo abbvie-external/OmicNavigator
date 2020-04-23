@@ -79,9 +79,9 @@ getModels.default <- function(study, modelID = NULL, ...) {
 #' Get result results from a study
 #'
 #' @export
-getResults <- function(study, modelID = NULL, contrastID = NULL, ...) {
-  if (is.null(modelID) && !is.null(contrastID)) {
-    stop("Must specify a model in order to specify a contrast")
+getResults <- function(study, modelID = NULL, testID = NULL, ...) {
+  if (is.null(modelID) && !is.null(testID)) {
+    stop("Must specify a model in order to specify a test")
   }
 
   UseMethod("getResults")
@@ -89,7 +89,7 @@ getResults <- function(study, modelID = NULL, contrastID = NULL, ...) {
 
 #' @rdname getResults
 #' @export
-getResults.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
   results <- study[["results"]]
 
   if (is.null(results)) {
@@ -104,13 +104,13 @@ getResults.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
     results <- results[[modelID]]
   }
 
-  if (!is.null(contrastID)) {
-    stopifnot(is.character(contrastID), length(contrastID) == 1)
-    if (!contrastID %in% names(results)) {
-      stop(sprintf("No results available for contrast \"%s\" for model \"%s\"",
-                   contrastID, modelID))
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    if (!testID %in% names(results)) {
+      stop(sprintf("No results available for test \"%s\" for model \"%s\"",
+                   testID, modelID))
     }
-    results <- results[[contrastID]]
+    results <- results[[testID]]
   }
 
   return(results)
@@ -119,44 +119,44 @@ getResults.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
 #' @rdname getResults
 #' @importFrom rlang "!!"
 #' @export
-getResults.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...) {
 
   df_results <- dplyr::tbl(study, "results")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
     df_results <- dplyr::filter(df_results, modelID == !! modelID)
   }
-  if (!is.null(contrastID)) {
-    stopifnot(is.character(contrastID), length(contrastID) == 1)
-    df_results <- dplyr::filter(df_results, contrastID == !! contrastID)
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    df_results <- dplyr::filter(df_results, testID == !! testID)
   }
   df_results <- dplyr::collect(df_results)
   if (nrow(df_results) == 0) {
-    stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ncontrastID: \"%s\"",
-                 modelID, contrastID))
+    stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ntestID: \"%s\"",
+                 modelID, testID))
   }
 
   results <- splitTableIntoList(df_results, "modelID")
-  results <- lapply(results, function(x) splitTableIntoList(x, "contrastID"))
+  results <- lapply(results, function(x) splitTableIntoList(x, "testID"))
   if (!is.null(modelID)) results <- results[[1]]
-  if (!is.null(contrastID)) results <- results[[1]]
+  if (!is.null(testID)) results <- results[[1]]
 
   return(results)
 }
 
 #' @rdname getResults
 #' @export
-getResults.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL, ...) {
+getResults.character <- function(study, modelID = NULL, testID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  results <- getResults(con, modelID = modelID, contrastID = contrastID)
+  results <- getResults(con, modelID = modelID, testID = testID)
 
   return(results)
 }
 
 #' @export
-getResults.default <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults.default <- function(study, modelID = NULL, testID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 

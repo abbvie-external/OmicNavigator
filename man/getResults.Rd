@@ -7,13 +7,13 @@
 \alias{getResults.character}
 \title{Get result results from a study}
 \usage{
-getResults(study, modelID = NULL, contrastID = NULL, ...)
+getResults(study, modelID = NULL, testID = NULL, ...)
 
-\method{getResults}{oaStudy}(study, modelID = NULL, contrastID = NULL, ...)
+\method{getResults}{oaStudy}(study, modelID = NULL, testID = NULL, ...)
 
-\method{getResults}{SQLiteConnection}(study, modelID = NULL, contrastID = NULL, ...)
+\method{getResults}{SQLiteConnection}(study, modelID = NULL, testID = NULL, ...)
 
-\method{getResults}{character}(study, modelID = NULL, contrastID = NULL, libraries = NULL, ...)
+\method{getResults}{character}(study, modelID = NULL, testID = NULL, libraries = NULL, ...)
 }
 \description{
 Get result results from a study

@@ -10,7 +10,7 @@
 #' @inheritParams addFeatures
 #' @inheritParams addModels
 #' @inheritParams addAssays
-#' @inheritParams addContrasts
+#' @inheritParams addTests
 #' @inheritParams addAnnotations
 #' @inheritParams addResults
 #' @inheritParams addEnrichments
@@ -29,7 +29,7 @@ createStudy <- function(name,
                         features = NULL,
                         models = NULL,
                         assays = NULL,
-                        contrasts = NULL,
+                        tests = NULL,
                         annotations = NULL,
                         results = NULL,
                         enrichments = NULL,
@@ -46,7 +46,7 @@ createStudy <- function(name,
                 features = NULL,
                 models = NULL,
                 assays = NULL,
-                contrasts = NULL,
+                tests = NULL,
                 annotations = NULL,
                 results = NULL,
                 enrichments = NULL,
@@ -60,7 +60,7 @@ createStudy <- function(name,
   if (!is.null(features)) study <- addFeatures(study, features = features)
   if (!is.null(models)) study <- addModels(study, models = models)
   if (!is.null(assays)) study <- addAssays(study, assays = assays)
-  if (!is.null(contrasts)) study <- addContrasts(study, contrasts = contrasts)
+  if (!is.null(tests)) study <- addTests(study, tests = tests)
   if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
   if (!is.null(results)) study <- addResults(study, results = results)
   if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
@@ -107,10 +107,10 @@ print.oaStudy <- function(x, ...) {
     }
   }
 
-  if (!is.null(x$contrasts)) {
-    cat(sprintf("* Contrasts: %d\n", length(x$contrasts)))
-    for (i in seq_along(x$contrasts)) {
-      cat(sprintf("  * \"%s\"\n", names(x$contrasts)[i]))
+  if (!is.null(x$tests)) {
+    cat(sprintf("* Tests: %d\n", length(x$tests)))
+    for (i in seq_along(x$tests)) {
+      cat(sprintf("  * \"%s\"\n", names(x$tests)[i]))
     }
   }
 
@@ -264,20 +264,20 @@ addAssays <- function(study, assays, overwrite = FALSE) {
   return(study)
 }
 
-#' Add contrasts
+#' Add tests
 #'
-#' @param contrasts The contrasts tested by the model(s). A named list.
-#'   The names correspond to the name of each contrast. The elements
-#'   correspond to the description of each contrast.
+#' @param tests The tests tested by the model(s). A named list.
+#'   The names correspond to the name of each test. The elements
+#'   correspond to the description of each test.
 #'
 #' @export
-addContrasts <- function(study, contrasts, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(contrasts, "list"))
+addTests <- function(study, tests, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(tests, "list"))
 
-  if (overwrite || is.null(study$contrasts)) {
-    study$contrasts <- contrasts
+  if (overwrite || is.null(study$tests)) {
+    study$tests <- tests
   } else {
-    stop("The contrasts already exist. Set overwrite=TRUE to overwrite.")
+    stop("The tests already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)
@@ -344,7 +344,7 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
 #' @param results The result results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
 #'   Each element in the list should be a list of data frames with result
-#'   results, one for each contrast. The featureID column needs to be included
+#'   results, one for each test. The featureID column needs to be included
 #'   in each table.
 #'
 #' @export
@@ -361,11 +361,11 @@ addResults <- function(study, results, overwrite = FALSE) {
     stopifnot(inherits(model, "list"))
     stopifnot(model_name %in% names(study$models))
     for (j in seq_along(model)) {
-      contrast <- model[[j]]
-      contrast_name <- names(model)[j]
-      stopifnot(inherits(contrast, "data.frame"))
-      stopifnot(contrast_name %in% names(study$contrasts))
-      stopifnot(study$featureID %in% colnames(contrast))
+      test <- model[[j]]
+      test_name <- names(model)[j]
+      stopifnot(inherits(test, "data.frame"))
+      stopifnot(test_name %in% names(study$tests))
+      stopifnot(study$featureID %in% colnames(test))
     }
   }
 
@@ -386,8 +386,8 @@ addResults <- function(study, results, overwrite = FALSE) {
 #'
 #' @param enrichments The enrichment results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
-#'   Each list element should be a list of the contrasts tested. The names
-#'   correspond to the contrast names. Each list element should be another list
+#'   Each list element should be a list of the tests tested. The names
+#'   correspond to the test names. Each list element should be another list
 #'   of annotation databases. The names correspond to the annotation databases.
 #'   Each of these elements should be a data frame with enrichment results. Each
 #'   table must have a column named "termID" that contains the annotation terms.
@@ -406,13 +406,13 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
     stopifnot(inherits(model, "list"))
     stopifnot(model_name %in% names(study$models))
     for (j in seq_along(model)) {
-      contrast <- model[[j]]
-      contrast_name <- names(model)[j]
-      stopifnot(inherits(contrast, "list"))
-      stopifnot(contrast_name %in% names(study$contrasts))
-      for (k in seq_along(contrast)) {
-        annotation <- contrast[[k]]
-        annotation_name <- names(contrast)[k]
+      test <- model[[j]]
+      test_name <- names(model)[j]
+      stopifnot(inherits(test, "list"))
+      stopifnot(test_name %in% names(study$tests))
+      for (k in seq_along(test)) {
+        annotation <- test[[k]]
+        annotation_name <- names(test)[k]
         stopifnot(inherits(annotation, "data.frame"))
         stopifnot(annotation_name %in% names(study$annotations))
         stopifnot("termID" %in% colnames(annotation))

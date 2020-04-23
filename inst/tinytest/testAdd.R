@@ -15,8 +15,8 @@ study <- addModels(study, models = models)
 assays <- OmicAnalyzer:::testAssays()
 study <- addAssays(study, assays = assays)
 
-contrasts <- OmicAnalyzer:::testContrasts()
-study <- addContrasts(study, contrasts = contrasts)
+tests <- OmicAnalyzer:::testTests()
+study <- addTests(study, tests = tests)
 
 annotations <- OmicAnalyzer:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)

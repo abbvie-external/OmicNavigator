@@ -9,8 +9,8 @@ addEnrichments(study, enrichments, overwrite = FALSE)
 \arguments{
 \item{enrichments}{The enrichment results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
-Each list element should be a list of the contrasts tested. The names
-correspond to the contrast names. Each list element should be another list
+Each list element should be a list of the tests tested. The names
+correspond to the test names. Each list element should be another list
 of annotation databases. The names correspond to the annotation databases.
 Each of these elements should be a data frame with enrichment results. Each
 table must have a column named "termID" that contains the annotation terms.}

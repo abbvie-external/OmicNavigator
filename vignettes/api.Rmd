@@ -44,7 +44,7 @@ toJSON(models, pretty = TRUE)
 ## Results
 
 ```{r}
-result <- getResults("test1", "model_1", "contrast_1")
+result <- getResults("test1", "model_1", "test_1")
 head(result)
 toJSON(result[1:2, ], pretty = TRUE)
 ```

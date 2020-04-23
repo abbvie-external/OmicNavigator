@@ -100,14 +100,14 @@ createDatabase <- function(study, filename) {
                  sprintf("CREATE UNIQUE INDEX assays_index ON assays(%s, %s, modelID)",
                          study$featureID, study$sampleID))
 
-  # contrasts ------------------------------------------------------------------
+  # tests ------------------------------------------------------------------
 
-  message("* Adding contrasts")
-  contrasts <- data.frame(contrastID = names(study$contrasts),
-                          description = unlist(study$contrasts),
+  message("* Adding tests")
+  tests <- data.frame(testID = names(study$tests),
+                          description = unlist(study$tests),
                           stringsAsFactors = FALSE)
-  DBI::dbWriteTable(con, "contrasts", contrasts,
-                    field.types = c("contrastID" = "varchar(50) PRIMARY KEY"))
+  DBI::dbWriteTable(con, "tests", tests,
+                    field.types = c("testID" = "varchar(50) PRIMARY KEY"))
 
   # annotations ----------------------------------------------------------------
 
@@ -137,10 +137,10 @@ createDatabase <- function(study, filename) {
   message("* Adding results")
   results_list <- list()
   for (modelID in names(study$results)) {
-    for (contrastID in names(study$results[[modelID]])) {
-      tmp <- study$results[[modelID]][[contrastID]]
+    for (testID in names(study$results[[modelID]])) {
+      tmp <- study$results[[modelID]][[testID]]
       tmp$modelID <- modelID
-      tmp$contrastID <- contrastID
+      tmp$testID <- testID
       results_list <- c(results_list, list(tmp))
     }
   }
@@ -148,10 +148,10 @@ createDatabase <- function(study, filename) {
   results <- Reduce(function(x, y) merge(x, y, all = TRUE), results_list)
   fields_results <- c(
     sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
-    "varchar(50) REFERENCES contrasts (contrastID)",
+    "varchar(50) REFERENCES tests (testID)",
     "varchar(100) REFERENCES models (modelID)"
   )
-  names(fields_results) <- c(study$featureID, "contrastID", "modelID")
+  names(fields_results) <- c(study$featureID, "testID", "modelID")
   DBI::dbWriteTable(con, "results", results,
                     field.types = fields_results)
 
@@ -160,11 +160,11 @@ createDatabase <- function(study, filename) {
   message("* Adding enrichments")
   enrichments_list <- list()
   for (modelID in names(study$enrichments)) {
-    for (contrastID in names(study$enrichments[[modelID]])) {
-      for (annotationID in names(study$enrichments[[modelID]][[contrastID]])) {
-        tmp <- study$enrichments[[modelID]][[contrastID]][[annotationID]]
+    for (testID in names(study$enrichments[[modelID]])) {
+      for (annotationID in names(study$enrichments[[modelID]][[testID]])) {
+        tmp <- study$enrichments[[modelID]][[testID]][[annotationID]]
         tmp$modelID <- modelID
-        tmp$contrastID <- contrastID
+        tmp$testID <- testID
         tmp$annotationID <- annotationID
         enrichments_list <- c(enrichments_list, list(tmp))
       }
@@ -175,7 +175,7 @@ createDatabase <- function(study, filename) {
   DBI::dbWriteTable(con, "enrichments", enrichments,
                     field.types = c(
                       "modelID" = "varchar(100) REFERENCES models (modelID)",
-                      "contrastID" = "varchar(50) REFERENCES contrasts (contrastID)",
+                      "testID" = "varchar(50) REFERENCES tests (testID)",
                       "annotationID" = "varchar(50) REFERENCES annotations (annotationID)",
                       "termID" = "varchar(50) REFERENCES terms (termID)"
                     ))

@@ -12,7 +12,7 @@ testStudy <- function(name,
                        features = testFeatures(seed = seed),
                        models = testModels(),
                        assays = testAssays(seed = seed),
-                       contrasts = testContrasts(),
+                       tests = testTests(),
                        annotations = testAnnotations(seed = seed),
                        results = testResults(seed = seed),
                        enrichments = testEnrichments(seed = seed),
@@ -64,14 +64,14 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
   return(assays)
 }
 
-testContrasts <- function(n = 2) {
-  contrasts <- list()
+testTests <- function(n = 2) {
+  tests <- list()
   for (i in seq_len(n)) {
-    name <- paste0("contrast_", i)
-    value <- paste("contrast", i)
-    contrasts[[name]] <- value
+    name <- paste0("test_", i)
+    value <- paste("test", i)
+    tests[[name]] <- value
   }
-  return(contrasts)
+  return(tests)
 }
 
 testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 12345L) {
@@ -93,14 +93,14 @@ testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 1
   return(annotations)
 }
 
-testResults <- function(n_models = 3, n_contrasts = 2, n_features = 100, seed = 12345L) {
+testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 12345L) {
   set.seed(seed)
   results <- vector(mode = "list", length = n_models)
   names(results) <- paste0("model_", seq_len(n_models))
   for (i in seq_len(n_models)) {
-    results[[i]] <- vector(mode = "list", length = n_contrasts)
-    names(results[[i]]) <- paste0("contrast_", seq_len(n_contrasts))
-    for (j in seq_len(n_contrasts)) {
+    results[[i]] <- vector(mode = "list", length = n_tests)
+    names(results[[i]]) <- paste0("test_", seq_len(n_tests))
+    for (j in seq_len(n_tests)) {
       results[[i]][[j]] <- data.frame(
         featureID = paste0("feature_", seq_len(n_features)),
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
@@ -112,14 +112,14 @@ testResults <- function(n_models = 3, n_contrasts = 2, n_features = 100, seed = 
   return(results)
 }
 
-testEnrichments <- function(n_models = 3, n_contrasts = 2, n_annotations = 3, seed = 12345L) {
+testEnrichments <- function(n_models = 3, n_tests = 2, n_annotations = 3, seed = 12345L) {
   set.seed(seed)
   enrichments <- vector(mode = "list", length = n_models)
   names(enrichments) <- paste0("model_", seq_len(n_models))
   for (i in seq_len(n_models)) {
-    enrichments[[i]] <- vector(mode = "list", length = n_contrasts)
-    names(enrichments[[i]]) <- paste0("contrast_", seq_len(n_contrasts))
-    for (j in seq_len(n_contrasts)) {
+    enrichments[[i]] <- vector(mode = "list", length = n_tests)
+    names(enrichments[[i]]) <- paste0("test_", seq_len(n_tests))
+    for (j in seq_len(n_tests)) {
       enrichments[[i]][[j]] <- vector(mode = "list", length = n_annotations)
       names(enrichments[[i]][[j]]) <- paste0("annotation_", seq_len(n_annotations))
       for (k in seq_len(n_annotations)) {

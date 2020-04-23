@@ -10,7 +10,7 @@ addResults(study, results, overwrite = FALSE)
 \item{results}{The result results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with result
-results, one for each contrast. The featureID column needs to be included
+results, one for each test. The featureID column needs to be included
 in each table.}
 }
 \description{

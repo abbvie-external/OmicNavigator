@@ -11,7 +11,7 @@ createStudy(
   features = NULL,
   models = NULL,
   assays = NULL,
-  contrasts = NULL,
+  tests = NULL,
   annotations = NULL,
   results = NULL,
   enrichments = NULL,
@@ -43,9 +43,9 @@ of the list correspond to the model names. Each element in the list should
 be a matrix of quantifications for the assays. The column names should be
 the sample IDs and the rows should be the feature IDs.}
 
-\item{contrasts}{The contrasts tested by the model(s). A named list.
-The names correspond to the name of each contrast. The elements
-correspond to the description of each contrast.}
+\item{tests}{The tests tested by the model(s). A named list.
+The names correspond to the name of each test. The elements
+correspond to the description of each test.}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per
@@ -63,13 +63,13 @@ character vector of feature IDs.}
 \item{results}{The result results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with result
-results, one for each contrast. The featureID column needs to be included
+results, one for each test. The featureID column needs to be included
 in each table.}
 
 \item{enrichments}{The enrichment results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
-Each list element should be a list of the contrasts tested. The names
-correspond to the contrast names. Each list element should be another list
+Each list element should be a list of the tests tested. The names
+correspond to the test names. Each list element should be another list
 of annotation databases. The names correspond to the annotation databases.
 Each of these elements should be a data frame with enrichment results. Each
 table must have a column named "termID" that contains the annotation terms.}
