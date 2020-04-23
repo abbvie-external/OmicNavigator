@@ -54,7 +54,7 @@ testAssays<- function(n = 3, rows = 100, cols = 10) {
   assays <- vector(mode = "list", length = n)
   names(assays) <- paste0("model_", seq_len(n))
   for (i in seq_len(n)) {
-    assays[[i]] <- matrix(rnorm(rows * cols), nrow = rows, ncol = cols)
+    assays[[i]] <- matrix(stats::rnorm(rows * cols), nrow = rows, ncol = cols)
     rownames(assays[[i]]) <- paste0("feature_", seq_len(rows))
     colnames(assays[[i]]) <- paste0("sample_", seq_len(cols))
   }
@@ -77,7 +77,7 @@ testAnnotations<- function(n = 3, terms = 10, featureID = "featureID") {
   universe <- paste0("feature_", seq_len(100))
   for (i in seq_len(n)) {
     terms_list <- replicate(terms,
-                            sample(universe, size = rpois(1, lambda = 15)),
+                            sample(universe, size = stats::rpois(1, lambda = 15)),
                             simplify = FALSE)
     names(terms_list) <- paste0("term_", seq_len(terms))
     annotations[[i]] <- list(
