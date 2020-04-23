@@ -47,7 +47,7 @@ createDatabase <- function(study, filename) {
   message("* Adding samples")
   fields_samples <- c("varchar(50) PRIMARY KEY")
   names(fields_samples) <- study$sampleID
-  DBI::dbWriteTable(con, "samples", samples, field.types = fields_samples)
+  DBI::dbWriteTable(con, "samples", study$samples, field.types = fields_samples)
   DBI::dbExecute(con,
                  sprintf("CREATE UNIQUE INDEX samples_index ON samples(%s)",
                          study$sampleID))

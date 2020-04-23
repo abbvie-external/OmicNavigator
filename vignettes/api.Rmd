@@ -1,0 +1,51 @@
+---
+title: "OmicAnalyzer API"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{OmicAnalyzer API}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+```{r packages}
+library(jsonlite)
+library(OmicAnalyzer)
+```
+
+```{r test-data, include=FALSE}
+tmplib <- tempfile()
+dir.create(tmplib)
+.libPaths(tmplib)
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test1"))
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test2"))
+```
+
+## Studies
+
+```{r}
+(studies <- getStudies())
+toJSON(studies, pretty = TRUE)
+```
+
+## Models
+
+```{r}
+(models <- getModels("test1"))
+toJSON(models, pretty = TRUE)
+```
+
+## Inferences
+
+```{r}
+inference <- getInferences("test1", "model_1", "contrast_1")
+head(inference)
+toJSON(inference[1:2, ], pretty = TRUE)
+```
+
