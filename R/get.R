@@ -13,6 +13,7 @@ getStudies <- function(libraries = NULL) {
   pkgs_all <- rownames(utils::installed.packages(lib.loc = libraries))
   pkgs_oa <- grep("^OAstudy", pkgs_all, value = TRUE)
   studies <- sub("^OAstudy", "", pkgs_oa)
+  studies <- sort(studies)
 
   return(studies)
 }

@@ -9,7 +9,6 @@ vignette: >
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  collapse = TRUE,
   comment = "#>"
 )
 ```
@@ -29,8 +28,15 @@ OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 
 ## Studies
 
-```{r}
+```{r studies, eval=FALSE}
 (studies <- getStudies())
+```
+
+```{r studies-hidden, echo=FALSE}
+(studies <- getStudies(libraries = tmplib))
+```
+
+```{r studies-json}
 toJSON(studies, pretty = TRUE)
 ```
 
