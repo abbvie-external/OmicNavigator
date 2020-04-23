@@ -1,3 +1,22 @@
+#' Get installed OmicAnalyzer studies
+#'
+#' @param libraries Character vector of library directories to search for study
+#'   packages. If \code{NULL}, uses \code{.libPaths}.
+#'
+#' @return character vector of OmicAnalyzer study packages
+#'
+#' @examples
+#'  getStudies()
+#'
+#' @export
+getStudies <- function(libraries = NULL) {
+  pkgs_all <- rownames(utils::installed.packages(lib.loc = libraries))
+  pkgs_oa <- grep("^OAstudy", pkgs_all, value = TRUE)
+  studies <- sub("^OAstudy", "", pkgs_oa)
+
+  return(studies)
+}
+
 #' Get models from a study
 #'
 #' @export
