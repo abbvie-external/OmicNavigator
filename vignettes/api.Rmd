@@ -22,7 +22,7 @@ library(OmicAnalyzer)
 ```{r test-data, include=FALSE}
 tmplib <- tempfile()
 dir.create(tmplib)
-.libPaths(tmplib)
+.libPaths(c(tmplib, .libPaths()))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test1"))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "test2"))
 ```
