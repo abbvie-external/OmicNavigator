@@ -21,3 +21,13 @@ study <- addContrasts(study, contrasts = contrasts)
 annotations <- OmicAnalyzer:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
 
+inferences <- OmicAnalyzer:::testInferences()
+study <- addInferences(study, inferences = inferences)
+
+enrichments <- OmicAnalyzer:::testEnrichments()
+study <- addEnrichments(study, enrichments = enrichments)
+
+expect_identical(
+  study,
+  OmicAnalyzer:::testStudy(name = "test")
+)

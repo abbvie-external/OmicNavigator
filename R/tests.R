@@ -50,7 +50,7 @@ testModels <- function(n = 3) {
   return(models)
 }
 
-testAssays<- function(n = 3, rows = 100, cols = 10) {
+testAssays <- function(n = 3, rows = 100, cols = 10) {
   assays <- vector(mode = "list", length = n)
   names(assays) <- paste0("model_", seq_len(n))
   for (i in seq_len(n)) {
@@ -61,7 +61,7 @@ testAssays<- function(n = 3, rows = 100, cols = 10) {
   return(assays)
 }
 
-testContrasts<- function(n = 2) {
+testContrasts <- function(n = 2) {
   contrasts <- list()
   for (i in seq_len(n)) {
     name <- paste0("contrast_", i)
@@ -71,7 +71,7 @@ testContrasts<- function(n = 2) {
   return(contrasts)
 }
 
-testAnnotations<- function(n = 3, terms = 10, featureID = "featureID") {
+testAnnotations <- function(n = 3, terms = 10, featureID = "featureID") {
   annotations <- vector(mode = "list", length = n)
   names(annotations) <- paste0("annotation_", seq_len(n))
   universe <- paste0("feature_", seq_len(100))
@@ -89,9 +89,45 @@ testAnnotations<- function(n = 3, terms = 10, featureID = "featureID") {
   return(annotations)
 }
 
-testInferences<- function() return(NULL)
+testInferences <- function(n_models = 3, n_contrasts = 2, n_features = 100) {
+  inferences <- vector(mode = "list", length = n_models)
+  names(inferences) <- paste0("model_", seq_len(n_models))
+  for (i in seq_len(n_models)) {
+    inferences[[i]] <- vector(mode = "list", length = n_contrasts)
+    names(inferences[[i]]) <- paste0("contrast_", seq_len(n_contrasts))
+    for (j in seq_len(n_contrasts)) {
+      inferences[[i]][[j]] <- data.frame(
+        featureID = paste0("feature_", seq_len(n_features)),
+        beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
+        p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
+        stringsAsFactors = FALSE
+      )
+    }
+  }
+  return(inferences)
+}
 
-testEnrichments<- function() return(NULL)
+testEnrichments <- function(n_models = 3, n_contrasts = 2, n_annotations = 3) {
+  enrichments <- vector(mode = "list", length = n_models)
+  names(enrichments) <- paste0("model_", seq_len(n_models))
+  for (i in seq_len(n_models)) {
+    enrichments[[i]] <- vector(mode = "list", length = n_contrasts)
+    names(enrichments[[i]]) <- paste0("contrast_", seq_len(n_contrasts))
+    for (j in seq_len(n_contrasts)) {
+      enrichments[[i]][[j]] <- vector(mode = "list", length = n_annotations)
+      names(enrichments[[i]][[j]]) <- paste0("annotation_", seq_len(n_annotations))
+      for (k in seq_len(n_annotations)) {
+        n_terms <- sample(3:5, 1)
+        enrichments[[i]][[j]][[k]] <- data.frame(
+          termID = paste0("term_", seq_len(n_terms)),
+          p_val = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
+          stringsAsFactors = FALSE
+        )
+      }
+    }
+  }
+  return(enrichments)
+}
 
 testMetaFeatures<- function() return(NULL)
 
