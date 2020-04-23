@@ -21,8 +21,8 @@ study <- addContrasts(study, contrasts = contrasts)
 annotations <- OmicAnalyzer:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
 
-inferences <- OmicAnalyzer:::testInferences()
-study <- addInferences(study, inferences = inferences)
+results <- OmicAnalyzer:::testResults()
+study <- addResults(study, results = results)
 
 enrichments <- OmicAnalyzer:::testEnrichments()
 study <- addEnrichments(study, enrichments = enrichments)

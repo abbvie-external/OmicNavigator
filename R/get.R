@@ -76,87 +76,87 @@ getModels.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
-#' Get inference results from a study
+#' Get result results from a study
 #'
 #' @export
-getInferences <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults <- function(study, modelID = NULL, contrastID = NULL, ...) {
   if (is.null(modelID) && !is.null(contrastID)) {
     stop("Must specify a model in order to specify a contrast")
   }
 
-  UseMethod("getInferences")
+  UseMethod("getResults")
 }
 
-#' @rdname getInferences
+#' @rdname getResults
 #' @export
-getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
-  inferences <- study[["inferences"]]
+getResults.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...) {
+  results <- study[["results"]]
 
-  if (is.null(inferences)) {
-    stop(sprintf("No Inferences available for study \"%s\"", study[["name"]]))
+  if (is.null(results)) {
+    stop(sprintf("No results available for study \"%s\"", study[["name"]]))
   }
 
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    if (!modelID %in% names(inferences)) {
-      stop(sprintf("No inference results available for model \"%s\"", modelID))
+    if (!modelID %in% names(results)) {
+      stop(sprintf("No results available for model \"%s\"", modelID))
     }
-    inferences <- inferences[[modelID]]
+    results <- results[[modelID]]
   }
 
   if (!is.null(contrastID)) {
     stopifnot(is.character(contrastID), length(contrastID) == 1)
-    if (!contrastID %in% names(inferences)) {
-      stop(sprintf("No inference results available for contrast \"%s\" for model \"%s\"",
+    if (!contrastID %in% names(results)) {
+      stop(sprintf("No results available for contrast \"%s\" for model \"%s\"",
                    contrastID, modelID))
     }
-    inferences <- inferences[[contrastID]]
+    results <- results[[contrastID]]
   }
 
-  return(inferences)
+  return(results)
 }
 
-#' @rdname getInferences
+#' @rdname getResults
 #' @importFrom rlang "!!"
 #' @export
-getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL, ...) {
 
-  df_inferences <- dplyr::tbl(study, "inferences")
+  df_results <- dplyr::tbl(study, "results")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_inferences <- dplyr::filter(df_inferences, modelID == !! modelID)
+    df_results <- dplyr::filter(df_results, modelID == !! modelID)
   }
   if (!is.null(contrastID)) {
     stopifnot(is.character(contrastID), length(contrastID) == 1)
-    df_inferences <- dplyr::filter(df_inferences, contrastID == !! contrastID)
+    df_results <- dplyr::filter(df_results, contrastID == !! contrastID)
   }
-  df_inferences <- dplyr::collect(df_inferences)
-  if (nrow(df_inferences) == 0) {
+  df_results <- dplyr::collect(df_results)
+  if (nrow(df_results) == 0) {
     stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ncontrastID: \"%s\"",
                  modelID, contrastID))
   }
 
-  inferences <- splitTableIntoList(df_inferences, "modelID")
-  inferences <- lapply(inferences, function(x) splitTableIntoList(x, "contrastID"))
-  if (!is.null(modelID)) inferences <- inferences[[1]]
-  if (!is.null(contrastID)) inferences <- inferences[[1]]
+  results <- splitTableIntoList(df_results, "modelID")
+  results <- lapply(results, function(x) splitTableIntoList(x, "contrastID"))
+  if (!is.null(modelID)) results <- results[[1]]
+  if (!is.null(contrastID)) results <- results[[1]]
 
-  return(inferences)
+  return(results)
 }
 
-#' @rdname getInferences
+#' @rdname getResults
 #' @export
-getInferences.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL, ...) {
+getResults.character <- function(study, modelID = NULL, contrastID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  inferences <- getInferences(con, modelID = modelID, contrastID = contrastID)
+  results <- getResults(con, modelID = modelID, contrastID = contrastID)
 
-  return(inferences)
+  return(results)
 }
 
 #' @export
-getInferences.default <- function(study, modelID = NULL, contrastID = NULL, ...) {
+getResults.default <- function(study, modelID = NULL, contrastID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 

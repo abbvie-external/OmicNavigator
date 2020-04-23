@@ -13,7 +13,7 @@ createStudy(
   assays = NULL,
   contrasts = NULL,
   annotations = NULL,
-  inferences = NULL,
+  results = NULL,
   enrichments = NULL,
   metaFeatures = NULL,
   plots = NULL,
@@ -60,9 +60,9 @@ a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
 character vector of feature IDs.}
 
-\item{inferences}{The inference results from each model. The input is a
+\item{results}{The result results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
-Each element in the list should be a list of data frames with inference
+Each element in the list should be a list of data frames with result
 results, one for each contrast. The featureID column needs to be included
 in each table.}
 

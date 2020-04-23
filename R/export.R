@@ -132,28 +132,28 @@ createDatabase <- function(study, filename) {
   DBI::dbWriteTable(con, "terms", terms,
                     field.types = c("annotationID" = "varchar(50) REFERENCES annotations (annotationID)"))
 
-  # inferences -----------------------------------------------------------------
+  # results -----------------------------------------------------------------
 
-  message("* Adding inferences")
-  inferences_list <- list()
-  for (modelID in names(study$inferences)) {
-    for (contrastID in names(study$inferences[[modelID]])) {
-      tmp <- study$inferences[[modelID]][[contrastID]]
+  message("* Adding results")
+  results_list <- list()
+  for (modelID in names(study$results)) {
+    for (contrastID in names(study$results[[modelID]])) {
+      tmp <- study$results[[modelID]][[contrastID]]
       tmp$modelID <- modelID
       tmp$contrastID <- contrastID
-      inferences_list <- c(inferences_list, list(tmp))
+      results_list <- c(results_list, list(tmp))
     }
   }
 
-  inferences <- Reduce(function(x, y) merge(x, y, all = TRUE), inferences_list)
-  fields_inferences <- c(
+  results <- Reduce(function(x, y) merge(x, y, all = TRUE), results_list)
+  fields_results <- c(
     sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
     "varchar(50) REFERENCES contrasts (contrastID)",
     "varchar(100) REFERENCES models (modelID)"
   )
-  names(fields_inferences) <- c(study$featureID, "contrastID", "modelID")
-  DBI::dbWriteTable(con, "inferences", inferences,
-                    field.types = fields_inferences)
+  names(fields_results) <- c(study$featureID, "contrastID", "modelID")
+  DBI::dbWriteTable(con, "results", results,
+                    field.types = fields_results)
 
   # enrichments ----------------------------------------------------------------
 

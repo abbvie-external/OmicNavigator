@@ -41,11 +41,11 @@ toJSON(studies, pretty = TRUE)
 toJSON(models, pretty = TRUE)
 ```
 
-## Inferences
+## Results
 
 ```{r}
-inference <- getInferences("test1", "model_1", "contrast_1")
-head(inference)
-toJSON(inference[1:2, ], pretty = TRUE)
+result <- getResults("test1", "model_1", "contrast_1")
+head(result)
+toJSON(result[1:2, ], pretty = TRUE)
 ```
 

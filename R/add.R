@@ -12,7 +12,7 @@
 #' @inheritParams addAssays
 #' @inheritParams addContrasts
 #' @inheritParams addAnnotations
-#' @inheritParams addInferences
+#' @inheritParams addResults
 #' @inheritParams addEnrichments
 #' @inheritParams addMetaFeatures
 #' @inheritParams addPlots
@@ -31,7 +31,7 @@ createStudy <- function(name,
                         assays = NULL,
                         contrasts = NULL,
                         annotations = NULL,
-                        inferences = NULL,
+                        results = NULL,
                         enrichments = NULL,
                         metaFeatures = NULL,
                         plots = NULL,
@@ -48,7 +48,7 @@ createStudy <- function(name,
                 assays = NULL,
                 contrasts = NULL,
                 annotations = NULL,
-                inferences = NULL,
+                results = NULL,
                 enrichments = NULL,
                 metaFeatures = NULL,
                 plots = NULL,
@@ -62,7 +62,7 @@ createStudy <- function(name,
   if (!is.null(assays)) study <- addAssays(study, assays = assays)
   if (!is.null(contrasts)) study <- addContrasts(study, contrasts = contrasts)
   if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
-  if (!is.null(inferences)) study <- addInferences(study, inferences = inferences)
+  if (!is.null(results)) study <- addResults(study, results = results)
   if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
   if (!is.null(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
   if (!is.null(plots)) study <- addPlots(study, plots = plots)
@@ -121,13 +121,13 @@ print.oaStudy <- function(x, ...) {
     }
   }
 
-  if (!is.null(x$inferences)) {
-    cat("* Inferences:\n")
-    for (i in seq_along(x$inferences)) {
-      cat(sprintf("  * \"%s\":\n", names(x$inferences)[i]))
-      for (j in seq_along(x$inferences[[i]])) {
-        cat(sprintf("    * \"%s\": %d results\n", names(x$inferences[[i]])[j],
-                    nrow(x$inferences[[i]][[j]])))
+  if (!is.null(x$results)) {
+    cat("* Results:\n")
+    for (i in seq_along(x$results)) {
+      cat(sprintf("  * \"%s\":\n", names(x$results)[i]))
+      for (j in seq_along(x$results[[i]])) {
+        cat(sprintf("    * \"%s\": %d results\n", names(x$results[[i]])[j],
+                    nrow(x$results[[i]][[j]])))
       }
     }
   }
@@ -339,25 +339,25 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
   return(study)
 }
 
-#' Add inference results
+#' Add result results
 #'
-#' @param inferences The inference results from each model. The input is a
+#' @param results The result results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
-#'   Each element in the list should be a list of data frames with inference
+#'   Each element in the list should be a list of data frames with result
 #'   results, one for each contrast. The featureID column needs to be included
 #'   in each table.
 #'
 #' @export
-addInferences <- function(study, inferences, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(inferences, "list"))
+addResults <- function(study, results, overwrite = FALSE) {
+  stopifnot(inherits(study, "oaStudy"), inherits(results, "list"))
 
-  if (!all(names(study$models) %in% names(inferences))) {
+  if (!all(names(study$models) %in% names(results))) {
     stop(sprintf("The names of the list do not include all of the model names"))
   }
 
-  for (i in seq_along(inferences)) {
-    model <- inferences[[i]]
-    model_name <- names(inferences)[i]
+  for (i in seq_along(results)) {
+    model <- results[[i]]
+    model_name <- names(results)[i]
     stopifnot(inherits(model, "list"))
     stopifnot(model_name %in% names(study$models))
     for (j in seq_along(model)) {
@@ -369,10 +369,10 @@ addInferences <- function(study, inferences, overwrite = FALSE) {
     }
   }
 
-  if (overwrite || is.null(study$inferences)) {
-    study$inferences <- inferences
+  if (overwrite || is.null(study$results)) {
+    study$results <- results
   } else {
-    stop("The inference results already exist. Set overwrite=TRUE to overwrite.")
+    stop("The result results already exist. Set overwrite=TRUE to overwrite.")
   }
 
   return(study)
