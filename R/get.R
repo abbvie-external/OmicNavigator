@@ -22,6 +22,7 @@ getModels.oaStudy <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getModels
+#' @importFrom rlang "!!"
 #' @export
 getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
 
@@ -97,6 +98,7 @@ getInferences.oaStudy <- function(study, modelID = NULL, contrastID = NULL, ...)
 }
 
 #' @rdname getInferences
+#' @importFrom rlang "!!"
 #' @export
 getInferences.SQLiteConnection <- function(study, modelID = NULL, contrastID = NULL, ...) {
 

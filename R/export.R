@@ -35,6 +35,8 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
   }
 }
 
+#' @importFrom dplyr "%>%"
+#' @importFrom rlang "!!"
 createDatabase <- function(study, filename) {
 
   tmpdb <- tempfile(fileext = ".sqlite")
