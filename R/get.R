@@ -55,7 +55,7 @@ getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
     stop(sprintf("Invalid modelID: \"%s\"", modelID))
   }
 
-  models <- df_models[["description"]]
+  models <- as.list(df_models[["description"]])
   names(models) <- df_models[["modelID"]]
   return(models)
 }
