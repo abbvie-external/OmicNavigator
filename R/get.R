@@ -6,10 +6,10 @@
 #' @return character vector of OmicAnalyzer study packages
 #'
 #' @examples
-#'  getStudies()
+#'  getInstalledStudies()
 #'
 #' @export
-getStudies <- function(libraries = NULL) {
+getInstalledStudies <- function(libraries = NULL) {
   pkgs_all <- rownames(utils::installed.packages(lib.loc = libraries))
   pkgs_oa <- grep("^OAstudy", pkgs_all, value = TRUE)
   studies <- sub("^OAstudy", "", pkgs_oa)

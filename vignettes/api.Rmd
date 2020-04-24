@@ -26,14 +26,14 @@ OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 ```
 
-## Studies
+## Installed studies
 
 ```{r studies, eval=FALSE}
-(studies <- getStudies())
+(studies <- getInstalledStudies())
 ```
 
 ```{r studies-hidden, echo=FALSE}
-(studies <- getStudies(libraries = tmplib))
+(studies <- getInstalledStudies(libraries = tmplib))
 ```
 
 ```{r studies-json}
