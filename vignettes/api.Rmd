@@ -47,10 +47,17 @@ toJSON(studies, pretty = TRUE)
 toJSON(models, pretty = TRUE)
 ```
 
+## Tests
+
+```{r}
+(tests <- getTests("ABC", "model_01"))
+toJSON(tests, pretty = TRUE)
+```
+
 ## Results
 
 ```{r}
-result <- getResults("ABC", "model_1", "test_1")
+result <- getResults("ABC", "model_01", "test_01")
 head(result)
 toJSON(result[1:2, ], pretty = TRUE)
 ```

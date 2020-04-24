@@ -89,8 +89,6 @@ expect_error(
   "Can only filter by modelID or testID, not both"
 )
 
-# name **
-
 expect_identical(
   getTests(testStudyName),
   testStudyObj[["tests"]]
