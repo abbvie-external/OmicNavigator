@@ -36,6 +36,9 @@ getModels.oaStudy <- function(study, modelID = NULL, ...) {
 
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
+    if (!modelID %in% names(models)) {
+      stop(sprintf("Study \"%s\" has no model \"%s\"", study[["name"]], modelID))
+    }
     models <- models[modelID]
   }
 
@@ -136,8 +139,12 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
     as.data.frame()
 
   if (nrow(df_results) == 0) {
-    stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ntestID: \"%s\"",
-                 modelID, testID))
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+         if (is.null(testID)) "testID: No filter applied\n"
+         else sprintf("testID: \"%s\"\n", testID)
+    )
   }
 
   results <- splitTableIntoList(df_results, "modelID")
