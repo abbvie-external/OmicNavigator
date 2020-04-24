@@ -11,6 +11,7 @@
 #' @export
 getInstalledStudies <- function(libraries = NULL) {
   pkgs_all <- rownames(utils::installed.packages(lib.loc = libraries))
+  names(pkgs_all) <- NULL
   pkgs_oa <- grep("^OAstudy", pkgs_all, value = TRUE)
   studies <- sub("^OAstudy", "", pkgs_oa)
   studies <- sort(studies)
@@ -131,7 +132,9 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
     stopifnot(is.character(testID), length(testID) == 1)
     df_results <- dplyr::filter(df_results, testID == !! testID)
   }
-  df_results <- dplyr::collect(df_results)
+  df_results <- dplyr::collect(df_results) %>%
+    as.data.frame()
+
   if (nrow(df_results) == 0) {
     stop(sprintf("Invalid filters.\nmodelID: \"%s\"\ntestID: \"%s\"",
                  modelID, testID))
@@ -168,5 +171,8 @@ splitTableIntoList <- function(dataFrame, columnName) {
   splitData <- dataFrame
   splitData[[columnName]] <- NULL
 
-  return(split(splitData, splitVariable))
+  result <- split(splitData, splitVariable)
+  result <- lapply(result, function(x) {rownames(x) <- NULL; x})
+
+  return(result)
 }

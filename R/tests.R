@@ -28,7 +28,7 @@ testSamples <- function(rows = 10, cols = 3, seed = 12345L) {
   set.seed(seed)
   samples <- matrix(sample(letters, size = rows * cols, replace = TRUE),
                     nrow = rows, ncol = cols)
-  sampleID <- paste0("sample_", seq_len(rows))
+  sampleID <- sprintf("sample_%04d", seq_len(rows))
   samples <- cbind(sampleID, samples)
   return(as.data.frame(samples))
 }
@@ -37,7 +37,7 @@ testFeatures <- function(rows = 100, cols = 5, seed = 12345L) {
   set.seed(seed)
   features <- matrix(sample(letters, size = rows * cols, replace = TRUE),
                     nrow = rows, ncol = cols)
-  featureID <- paste0("feature_", seq_len(rows))
+  featureID <- sprintf("feature_%04d", seq_len(rows))
   features <- cbind(featureID, features)
   return(as.data.frame(features))
 }
@@ -45,7 +45,7 @@ testFeatures <- function(rows = 100, cols = 5, seed = 12345L) {
 testModels <- function(n = 3) {
   models <- list()
   for (i in seq_len(n)) {
-    name <- paste0("model_", i)
+    name <- sprintf("model_%02d", i)
     value <- paste("Model", i)
     models[[name]] <- value
   }
@@ -55,11 +55,11 @@ testModels <- function(n = 3) {
 testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
   set.seed(seed)
   assays <- vector(mode = "list", length = n)
-  names(assays) <- paste0("model_", seq_len(n))
+  names(assays) <- sprintf("model_%02d", seq_len(n))
   for (i in seq_len(n)) {
     assays[[i]] <- matrix(stats::rnorm(rows * cols), nrow = rows, ncol = cols)
-    rownames(assays[[i]]) <- paste0("feature_", seq_len(rows))
-    colnames(assays[[i]]) <- paste0("sample_", seq_len(cols))
+    rownames(assays[[i]]) <- sprintf("feature_%04d", seq_len(rows))
+    colnames(assays[[i]]) <- sprintf("sample_%04d", seq_len(cols))
   }
   return(assays)
 }
@@ -67,7 +67,7 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
 testTests <- function(n = 2) {
   tests <- list()
   for (i in seq_len(n)) {
-    name <- paste0("test_", i)
+    name <- sprintf("test_%02d", i)
     value <- paste("test", i)
     tests[[name]] <- value
   }
@@ -77,13 +77,13 @@ testTests <- function(n = 2) {
 testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 12345L) {
   set.seed(12345)
   annotations <- vector(mode = "list", length = n)
-  names(annotations) <- paste0("annotation_", seq_len(n))
-  universe <- paste0("feature_", seq_len(100))
+  names(annotations) <- sprintf("annotation_%02d", seq_len(n))
+  universe <- sprintf("feature_%04d", seq_len(100))
   for (i in seq_len(n)) {
     terms_list <- replicate(terms,
                             sample(universe, size = stats::rpois(1, lambda = 15)),
                             simplify = FALSE)
-    names(terms_list) <- paste0("term_", seq_len(terms))
+    names(terms_list) <- sprintf("term_%02d", seq_len(terms))
     annotations[[i]] <- list(
       terms = terms_list,
       description = sprintf("Terms from %s", names(annotations)[i]),
@@ -96,13 +96,13 @@ testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 1
 testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 12345L) {
   set.seed(seed)
   results <- vector(mode = "list", length = n_models)
-  names(results) <- paste0("model_", seq_len(n_models))
+  names(results) <- sprintf("model_%02d", seq_len(n_models))
   for (i in seq_len(n_models)) {
     results[[i]] <- vector(mode = "list", length = n_tests)
-    names(results[[i]]) <- paste0("test_", seq_len(n_tests))
+    names(results[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
     for (j in seq_len(n_tests)) {
       results[[i]][[j]] <- data.frame(
-        featureID = paste0("feature_", seq_len(n_features)),
+        featureID = sprintf("feature_%04d", seq_len(n_features)),
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
         stringsAsFactors = FALSE
@@ -115,17 +115,17 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
 testEnrichments <- function(n_models = 3, n_tests = 2, n_annotations = 3, seed = 12345L) {
   set.seed(seed)
   enrichments <- vector(mode = "list", length = n_models)
-  names(enrichments) <- paste0("model_", seq_len(n_models))
+  names(enrichments) <- sprintf("model_%02d", seq_len(n_models))
   for (i in seq_len(n_models)) {
     enrichments[[i]] <- vector(mode = "list", length = n_tests)
-    names(enrichments[[i]]) <- paste0("test_", seq_len(n_tests))
+    names(enrichments[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
     for (j in seq_len(n_tests)) {
       enrichments[[i]][[j]] <- vector(mode = "list", length = n_annotations)
-      names(enrichments[[i]][[j]]) <- paste0("annotation_", seq_len(n_annotations))
+      names(enrichments[[i]][[j]]) <- sprintf("annotation_%02d", seq_len(n_annotations))
       for (k in seq_len(n_annotations)) {
         n_terms <- sample(3:5, 1)
         enrichments[[i]][[j]][[k]] <- data.frame(
-          termID = paste0("term_", seq_len(n_terms)),
+          termID = sprintf("term_%02d", seq_len(n_terms)),
           p_val = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
           stringsAsFactors = FALSE
         )
