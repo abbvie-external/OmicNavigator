@@ -81,6 +81,101 @@ getModels.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get tests from a study
+#'
+#' @export
+getTests <- function(study, modelID = NULL, testID = NULL, ...) {
+  if (!is.null(modelID) && !is.null(testID)) {
+    stop("Can only filter by modelID or testID, not both")
+  }
+
+  UseMethod("getTests")
+}
+
+#' @rdname getTests
+#' @export
+getTests.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
+  tests <- study[["tests"]]
+  if (is.null(tests)) {
+    stop(sprintf("No tests available for study \"%s\"", study[["name"]]))
+  }
+
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    models <- study[["models"]]
+    if (!modelID %in% names(models)) {
+      stop(sprintf("Study \"%s\" has no model \"%s\"", study[["name"]], modelID))
+    }
+    # Get the tests per model from results
+    results <- study[["results"]]
+    if (is.null(results)) {
+      stop(sprintf("Study \"%s\" has no results\n", study[["name"]]),
+           "Unable to determine tests per model without them\n",
+           "Use addResults() to add results to the study")
+    }
+    tests_per_model <- names(study[["results"]][[modelID]])
+    tests <- tests[tests_per_model]
+  }
+
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    if (!testID %in% names(tests)) {
+      stop(sprintf("Study \"%s\" has no test \"%s\"", study[["name"]], testID))
+    }
+    tests <- tests[testID]
+  }
+
+  return(tests)
+}
+
+#' @rdname getTests
+#' @importFrom rlang "!!"
+#' @export
+getTests.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...) {
+
+  df_tests <- dplyr::tbl(study, "tests")
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    df_results <- dplyr::tbl(study, "results") %>%
+      dplyr::filter(modelID == !! modelID)
+    df_tests <- df_tests %>%
+      dplyr::semi_join(df_results, by = "testID")
+  }
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    df_tests <- dplyr::filter(df_tests, testID == !! testID)
+  }
+  df_tests <- dplyr::collect(df_tests)
+
+  if (nrow(df_tests) == 0) {
+    if (!is.null(modelID)) {
+      stop(sprintf("Invalid modelID: \"%s\"", modelID))
+    } else {
+      stop(sprintf("Invalid testID: \"%s\"", testID))
+    }
+  }
+
+  tests <- as.list(df_tests[["description"]])
+  names(tests) <- df_tests[["testID"]]
+  return(tests)
+}
+
+#' @rdname getTests
+#' @export
+getTests.character <- function(study, modelID = NULL, testID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  tests <- getTests(con, modelID = modelID, testID = testID)
+
+  return(tests)
+}
+
+#' @export
+getTests.default <- function(study, modelID = NULL, testID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 #' Get result results from a study
 #'
 #' @export

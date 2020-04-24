@@ -56,6 +56,71 @@ expect_error(
   "non-existent-model"
 )
 
+
+# getTests ---------------------------------------------------------------------
+
+expect_identical(
+  getTests(testStudyObj),
+  testStudyObj[["tests"]]
+)
+
+expect_identical(
+  getTests(testStudyObj, testID = testTestName),
+  testStudyObj[["tests"]][testTestName]
+)
+
+expect_error(
+  getTests(testStudyObj, testID = "non-existent-test"),
+  "non-existent-test"
+)
+
+expect_identical(
+  getTests(testStudyObj, modelID = testModelName),
+  testStudyObj[["tests"]][names(testStudyObj[["results"]][[testModelName]])]
+)
+
+expect_error(
+  getTests(testStudyObj, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_error(
+  getTests(testStudyObj, modelID = "not null", testID = "not null"),
+  "Can only filter by modelID or testID, not both"
+)
+
+# name **
+
+expect_identical(
+  getTests(testStudyName),
+  testStudyObj[["tests"]]
+)
+
+expect_identical(
+  getTests(testStudyName, testID = testTestName),
+  testStudyObj[["tests"]][testTestName]
+)
+
+expect_error(
+  getTests(testStudyName, testID = "non-existent-test"),
+  "non-existent-test"
+)
+
+expect_identical(
+  getTests(testStudyName, modelID = testModelName),
+  testStudyObj[["tests"]][names(testStudyObj[["results"]][[testModelName]])]
+)
+
+expect_error(
+  getTests(testStudyName, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_error(
+  getTests(testStudyName, modelID = "not null", testID = "not null"),
+  "Can only filter by modelID or testID, not both"
+)
+
 # getResults -------------------------------------------------------------------
 
 expect_identical(
