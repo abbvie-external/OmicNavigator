@@ -5,7 +5,7 @@
 \alias{getResults.oaStudy}
 \alias{getResults.SQLiteConnection}
 \alias{getResults.character}
-\title{Get result results from a study}
+\title{Get results from a study}
 \usage{
 getResults(study, modelID = NULL, testID = NULL, ...)
 
@@ -16,5 +16,5 @@ getResults(study, modelID = NULL, testID = NULL, ...)
 \method{getResults}{character}(study, modelID = NULL, testID = NULL, libraries = NULL, ...)
 }
 \description{
-Get result results from a study
+Get results from a study
 }

@@ -9,6 +9,7 @@ testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]])[1]
+testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 
 tmplib <- tempfile()
 dir.create(tmplib)
@@ -56,7 +57,6 @@ expect_error(
   "non-existent-model"
 )
 
-
 # getTests ---------------------------------------------------------------------
 
 expect_identical(
@@ -76,7 +76,7 @@ expect_error(
 
 expect_identical(
   getTests(testStudyObj, modelID = testModelName),
-  testStudyObj[["tests"]][names(testStudyObj[["results"]][[testModelName]])]
+  testStudyObj[["tests"]][names(testStudyObj[["enrichments"]][[testModelName]])]
 )
 
 expect_error(
@@ -106,7 +106,7 @@ expect_error(
 
 expect_identical(
   getTests(testStudyName, modelID = testModelName),
-  testStudyObj[["tests"]][names(testStudyObj[["results"]][[testModelName]])]
+  testStudyObj[["tests"]][names(testStudyObj[["enrichments"]][[testModelName]])]
 )
 
 expect_error(
@@ -179,6 +179,108 @@ expect_error(
 expect_error(
   getResults(testStudyName, testID = testTestName),
   "Must specify a model in order to specify a test"
+)
+
+# getEnrichments -------------------------------------------------------------------
+
+expect_identical(
+  getEnrichments(testStudyObj),
+  testStudyObj[["enrichments"]]
+)
+
+expect_identical(
+  getEnrichments(testStudyObj, modelID = testModelName),
+  testStudyObj[["enrichments"]][[testModelName]]
+)
+
+expect_error(
+  getEnrichments(testStudyObj, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_identical(
+  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName),
+  testStudyObj[["enrichments"]][[testModelName]][[testTestName]]
+)
+
+expect_error(
+  getEnrichments(testStudyObj, modelID = testModelName, testID = "non-existent-test"),
+  "non-existent-test"
+)
+
+expect_error(
+  getEnrichments(testStudyObj, testID = testTestName),
+  "Must specify a model in order to specify a test"
+)
+
+expect_identical(
+  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName, annotationID = testAnnotationName),
+  testStudyObj[["enrichments"]][[testModelName]][[testTestName]][[testAnnotationName]]
+)
+
+expect_error(
+  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName, annotationID = "non-existent-annotation"),
+  "non-existent-annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyObj, annotationID = testAnnotationName),
+  "Must specify a test in order to specify an annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName),
+  "Must specify a test in order to specify an annotation"
+)
+
+expect_identical(
+  getEnrichments(testStudyName),
+  testStudyObj[["enrichments"]]
+)
+
+expect_identical(
+  getEnrichments(testStudyName, modelID = testModelName),
+  testStudyObj[["enrichments"]][[testModelName]]
+)
+
+expect_error(
+  getEnrichments(testStudyName, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_identical(
+  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName),
+  testStudyObj[["enrichments"]][[testModelName]][[testTestName]]
+)
+
+expect_error(
+  getEnrichments(testStudyName, modelID = testModelName, testID = "non-existent-test"),
+  "non-existent-test"
+)
+
+expect_error(
+  getEnrichments(testStudyName, testID = testTestName),
+  "Must specify a model in order to specify a test"
+)
+
+expect_identical(
+  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName, annotationID = testAnnotationName),
+  testStudyObj[["enrichments"]][[testModelName]][[testTestName]][[testAnnotationName]]
+)
+
+expect_error(
+  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName, annotationID = "non-existent-annotation"),
+  "non-existent-annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyName, annotationID = testAnnotationName),
+  "Must specify a test in order to specify an annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName),
+  "Must specify a test in order to specify an annotation"
 )
 
 # Teardown ---------------------------------------------------------------------

@@ -71,7 +71,7 @@ getModels.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  models <- getModels(con, modelID = modelID)
+  models <- getModels(con, modelID = modelID, ...)
 
   return(models)
 }
@@ -166,7 +166,7 @@ getTests.character <- function(study, modelID = NULL, testID = NULL, libraries =
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  tests <- getTests(con, modelID = modelID, testID = testID)
+  tests <- getTests(con, modelID = modelID, testID = testID, ...)
 
   return(tests)
 }
@@ -176,7 +176,7 @@ getTests.default <- function(study, modelID = NULL, testID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
-#' Get result results from a study
+#' Get results from a study
 #'
 #' @export
 getResults <- function(study, modelID = NULL, testID = NULL, ...) {
@@ -256,13 +256,124 @@ getResults.character <- function(study, modelID = NULL, testID = NULL, libraries
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  results <- getResults(con, modelID = modelID, testID = testID)
+  results <- getResults(con, modelID = modelID, testID = testID, ...)
 
   return(results)
 }
 
 #' @export
 getResults.default <- function(study, modelID = NULL, testID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
+#' Get enrichments from a study
+#'
+#' @export
+getEnrichments <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+  if (is.null(modelID) && !is.null(testID)) {
+    stop("Must specify a model in order to specify a test")
+  }
+  if (is.null(testID) && !is.null(annotationID)) {
+    stop("Must specify a test in order to specify an annotation")
+  }
+
+  UseMethod("getEnrichments")
+}
+
+#' @rdname getEnrichments
+#' @export
+getEnrichments.oaStudy <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+  enrichments <- study[["enrichments"]]
+
+  if (is.null(enrichments)) {
+    stop(sprintf("No enrichments available for study \"%s\"", study[["name"]]))
+  }
+
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    if (!modelID %in% names(enrichments)) {
+      stop(sprintf("No enrichments available for model \"%s\"", modelID))
+    }
+    enrichments <- enrichments[[modelID]]
+  }
+
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    if (!testID %in% names(enrichments)) {
+      stop(sprintf("No enrichments available for test \"%s\"", testID))
+    }
+    enrichments <- enrichments[[testID]]
+  }
+
+  if (!is.null(annotationID)) {
+    stopifnot(is.character(annotationID), length(annotationID) == 1)
+    if (!annotationID %in% names(enrichments)) {
+      stop(sprintf("No enrichments available for annotation \"%s\" for model \"%s\"",
+                   annotationID, modelID))
+    }
+    enrichments <- enrichments[[annotationID]]
+  }
+
+  return(enrichments)
+}
+
+#' @rdname getEnrichments
+#' @importFrom rlang "!!"
+#' @export
+getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+
+  df_enrichments <- dplyr::tbl(study, "enrichments")
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+  }
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    df_enrichments <- dplyr::filter(df_enrichments, testID == !! testID)
+  }
+  if (!is.null(annotationID)) {
+    stopifnot(is.character(annotationID), length(annotationID) == 1)
+    df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+  }
+  df_enrichments <- dplyr::collect(df_enrichments) %>%
+    as.data.frame()
+
+  if (nrow(df_enrichments) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+         if (is.null(testID)) "testID: No filter applied\n"
+         else sprintf("testID: \"%s\"\n", testID),
+         if (is.null(annotationID)) "annotationID: No filter applied\n"
+         else sprintf("annotationID: \"%s\"\n", annotationID)
+    )
+  }
+
+  enrichments <- splitTableIntoList(df_enrichments, "modelID")
+  enrichments <- lapply(enrichments, function(x) splitTableIntoList(x, "testID"))
+  enrichments <- lapply(enrichments,
+                        function(x) lapply(x,
+                                           function(y) splitTableIntoList(y, "annotationID")))
+  if (!is.null(modelID)) enrichments <- enrichments[[1]]
+  if (!is.null(testID)) enrichments <- enrichments[[1]]
+  if (!is.null(annotationID)) enrichments <- enrichments[[1]]
+
+  return(enrichments)
+}
+
+#' @rdname getEnrichments
+#' @export
+getEnrichments.character <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  enrichments <- getEnrichments(con, modelID = modelID, testID = testID, annotationID = annotationID, ...)
+
+  return(enrichments)
+}
+
+#' @export
+getEnrichments.default <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
