@@ -480,6 +480,78 @@ getEnrichmentsTable.default <- function(study, modelID, annotationID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get enrichments network from a study
+#'
+#' @export
+getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
+  if (is.null(modelID)) {
+    stop("Must specify a model")
+  }
+  if (is.null(annotationID)) {
+    stop("Must specify an annotation")
+  }
+
+  UseMethod("getEnrichmentsNetwork")
+}
+
+#' @rdname getEnrichmentsNetwork
+#' @importFrom rlang "!!"
+#' @export
+getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID, ...) {
+
+  df_enrichments <- dplyr::tbl(study, "enrichments")
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+
+  df_enrichments <- dplyr::collect(df_enrichments) %>%
+    as.data.frame()
+
+  if (nrow(df_enrichments) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+         if (is.null(annotationID)) "annotationID: No filter applied\n"
+         else sprintf("annotationID: \"%s\"\n", annotationID)
+    )
+  }
+
+  list_enrichments <- splitTableIntoList(df_enrichments, "termID")
+  nodes <- vector("list", length = length(list_enrichments))
+  for (i in seq_along(nodes)) {
+    nodes[[i]][["id"]] <- i
+    nodes[[i]][["key"]] <- names(list_enrichments[i])
+    nodes[[i]][["PValue"]] <- list_enrichments[[i]][["PValue"]] # to do: configurable
+  }
+
+  enrichmentsNetwork <- list(nodes = nodes)
+
+  return(enrichmentsNetwork)
+}
+
+#' @rdname getEnrichmentsNetwork
+#' @export
+getEnrichmentsNetwork.character <- function(study, modelID, annotationID, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  enrichments <- getEnrichmentsNetwork(con, modelID = modelID, annotationID = annotationID, ...)
+
+  return(enrichments)
+}
+
+#' @export
+getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
+  if (inherits(study, "oaStudy")) {
+    stop("The Enrichment Network is only available for study packages or databases")
+  }
+
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
+
 # Wrapper around base::split()
 splitTableIntoList <- function(dataFrame, columnName) {
 
