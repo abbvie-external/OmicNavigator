@@ -377,6 +377,109 @@ getEnrichments.default <- function(study, modelID = NULL, testID = NULL, annotat
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get enrichments table from a study
+#'
+#' @export
+getEnrichmentsTable <- function(study, modelID, annotationID, ...) {
+  if (is.null(modelID)) {
+    stop("Must specify a model")
+  }
+  if (is.null(annotationID)) {
+    stop("Must specify an annotation")
+  }
+
+  UseMethod("getEnrichmentsTable")
+}
+
+#' @rdname getEnrichmentsTable
+#' @export
+getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, ...) {
+  enrichments <- study[["enrichments"]]
+
+  if (is.null(enrichments)) {
+    stop(sprintf("No enrichments available for study \"%s\"", study[["name"]]))
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (!modelID %in% names(enrichments)) {
+    stop(sprintf("No enrichments available for model \"%s\"", modelID))
+  }
+  enrichments <- enrichments[[modelID]]
+
+  enrichmentsTable <- lapply(enrichments, combineListIntoTable, "annotationID")
+  enrichmentsTable <- combineListIntoTable(enrichmentsTable, "testID")
+
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  if (!annotationID %in% enrichmentsTable[["annotationID"]]) {
+    stop(sprintf("No enrichments available for annotation \"%s\" for model \"%s\"",
+                 annotationID, modelID))
+  }
+  enrichmentsTable <- enrichmentsTable[enrichmentsTable[["annotationID"]] == annotationID, ]
+  enrichmentsTable[["annotationID"]] <- NULL
+  enrichmentsTable <- tidyr::pivot_wider(
+    enrichmentsTable,
+    names_from = testID,
+    values_from = p_val # to do: make this configurable
+  )
+  enrichmentsTable <- as.data.frame(enrichmentsTable)
+
+  return(enrichmentsTable)
+}
+
+#' @rdname getEnrichmentsTable
+#' @importFrom rlang "!!"
+#' @export
+getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, ...) {
+
+  df_enrichments <- dplyr::tbl(study, "enrichments")
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+
+  df_enrichments <- dplyr::collect(df_enrichments) %>%
+    as.data.frame()
+
+  if (nrow(df_enrichments) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+         if (is.null(annotationID)) "annotationID: No filter applied\n"
+         else sprintf("annotationID: \"%s\"\n", annotationID)
+    )
+  }
+
+  enrichmentsTable <- df_enrichments
+  enrichmentsTable[["annotationID"]] <- NULL
+  enrichmentsTable[["modelID"]] <- NULL
+  enrichmentsTable <- tidyr::pivot_wider(
+    enrichmentsTable,
+    names_from = testID,
+    values_from = p_val # to do: make this configurable
+  )
+  enrichmentsTable <- as.data.frame(enrichmentsTable)
+
+  return(enrichmentsTable)
+}
+
+#' @rdname getEnrichmentsTable
+#' @export
+getEnrichmentsTable.character <- function(study, modelID, annotationID, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  enrichments <- getEnrichmentsTable(con, modelID = modelID, annotationID = annotationID, ...)
+
+  return(enrichments)
+}
+
+#' @export
+getEnrichmentsTable.default <- function(study, modelID, annotationID, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 # Wrapper around base::split()
 splitTableIntoList <- function(dataFrame, columnName) {
 
@@ -388,4 +491,25 @@ splitTableIntoList <- function(dataFrame, columnName) {
   result <- lapply(result, function(x) {rownames(x) <- NULL; x})
 
   return(result)
+}
+
+combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
+  stopifnot(
+    is.list(listObj),
+    length(listObj) > 0,
+    is.character(newColumnName)
+  )
+
+  listNames <- names(listObj)
+  newListObj <- listObj
+  for (i in seq_along(listObj)) {
+    newListObj[[i]][[newColumnName]] <- listNames[i]
+  }
+
+  names(newListObj) <- NULL # to avoid row names in output
+  newTable <- do.call(rbind, newListObj)
+  newColumnIndex <- ncol(newTable)
+  newTable <- newTable[, c(newColumnIndex, seq_len(newColumnIndex - 1))]
+
+  return(newTable)
 }

@@ -42,21 +42,21 @@ toJSON(studies, pretty = TRUE)
 
 ## Models
 
-```{r}
+```{r models}
 (models <- getModels("ABC"))
 toJSON(models, pretty = TRUE)
 ```
 
 ## Tests
 
-```{r}
+```{r tests}
 (tests <- getTests("ABC", "model_01"))
 toJSON(tests, pretty = TRUE)
 ```
 
 ## Results
 
-```{r}
+```{r results}
 result <- getResults("ABC", "model_01", "test_01")
 head(result)
 toJSON(result[1:2, ], pretty = TRUE)
@@ -64,8 +64,16 @@ toJSON(result[1:2, ], pretty = TRUE)
 
 ## Enrichments
 
-```{r}
+```{r enrichments}
 enrichment <- getEnrichments("ABC", "model_01", "test_01", "annotation_01")
 head(enrichment)
 toJSON(enrichment[1:2, ], pretty = TRUE)
+```
+
+## Enrichments table
+
+```{r enrichments-table}
+enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
+head(enrichmentsTable)
+toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
 ```
