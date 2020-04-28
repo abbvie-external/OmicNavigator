@@ -381,13 +381,6 @@ getEnrichments.default <- function(study, modelID = NULL, testID = NULL, annotat
 #'
 #' @export
 getEnrichmentsTable <- function(study, modelID, annotationID, ...) {
-  if (is.null(modelID)) {
-    stop("Must specify a model")
-  }
-  if (is.null(annotationID)) {
-    stop("Must specify an annotation")
-  }
-
   UseMethod("getEnrichmentsTable")
 }
 
@@ -484,13 +477,6 @@ getEnrichmentsTable.default <- function(study, modelID, annotationID, ...) {
 #'
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
-  if (is.null(modelID)) {
-    stop("Must specify a model")
-  }
-  if (is.null(annotationID)) {
-    stop("Must specify an annotation")
-  }
-
   UseMethod("getEnrichmentsNetwork")
 }
 
@@ -499,6 +485,11 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
 #' @export
 getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID, ...) {
 
+  terms <- dplyr::tbl(study, "terms") %>%
+    dplyr::filter(annotationID == !! annotationID) %>%
+    dplyr::group_by(termID) %>%
+    dplyr::tally(name = "geneSetSize")
+
   df_enrichments <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
   df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
@@ -506,10 +497,15 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   stopifnot(is.character(annotationID), length(annotationID) == 1)
   df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
 
-  df_enrichments <- dplyr::collect(df_enrichments) %>%
-    as.data.frame()
+  nodes_long <- df_enrichments %>%
+    dplyr::select(-modelID, -annotationID) %>%
+    dplyr::left_join(terms, by = "termID") %>%
+    dplyr::arrange(testID) %>%
+    dplyr::collect()
 
-  if (nrow(df_enrichments) == 0) {
+  tests <- unique(nodes_long[["testID"]])
+
+  if (nrow(nodes_long) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
@@ -518,15 +514,28 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
     )
   }
 
-  list_enrichments <- splitTableIntoList(df_enrichments, "termID")
-  nodes <- vector("list", length = length(list_enrichments))
-  for (i in seq_along(nodes)) {
-    nodes[[i]][["id"]] <- i
-    nodes[[i]][["key"]] <- names(list_enrichments[i])
-    nodes[[i]][["PValue"]] <- list_enrichments[[i]][["PValue"]] # to do: configurable
-  }
+  nodes <- nodes_long %>%
+    dplyr::group_by(termID) %>%
+    dplyr::summarize(PValue = list(p_val)) %>%
+    dplyr::mutate(id = seq_len(dplyr::n())) %>%
+    dplyr::select(id, termID, PValue) %>%
+    as.data.frame()
 
-  enrichmentsNetwork <- list(nodes = nodes)
+  links <- dplyr::tbl(study, "overlaps") %>%
+    dplyr::filter(annotationID ==  !! annotationID) %>%
+    dplyr::select(-annotationID) %>%
+    dplyr::arrange(term1, term2) %>%
+    dplyr::rename(source = term1, target = term2) %>%
+    dplyr::collect() %>%
+    dplyr::mutate(id = seq_len(dplyr::n())) %>%
+    dplyr::select(id, dplyr::everything()) %>%
+    as.data.frame()
+
+  # Use node IDs with links
+  links[["source"]] <- match(links[["source"]], nodes[["termID"]])
+  links[["target"]] <- match(links[["target"]], nodes[["termID"]])
+
+  enrichmentsNetwork <- list(tests = tests, nodes = nodes, links = links)
 
   return(enrichmentsNetwork)
 }

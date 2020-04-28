@@ -77,3 +77,11 @@ enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
 head(enrichmentsTable)
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
 ```
+
+## Enrichments network
+
+```{r enrichments-network}
+enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
+head(enrichmentsNetwork)
+toJSON(enrichmentsNetwork, pretty = TRUE)
+```
