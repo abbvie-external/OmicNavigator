@@ -200,7 +200,7 @@ createDatabase <- function(study, filename) {
                       field.types = fields_metaFeatures)
   }
 
-  # Overlaps -------------------------------------------------------------------
+  # overlaps -------------------------------------------------------------------
 
   message("* Calculating overlaps between annotation terms")
   overlaps_list <- list()

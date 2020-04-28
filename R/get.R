@@ -527,6 +527,8 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
     dplyr::arrange(term1, term2) %>%
     dplyr::rename(source = term1, target = term2) %>%
     dplyr::collect() %>%
+    dplyr::semi_join(nodes, by = c("source" = "termID")) %>%
+    dplyr::semi_join(nodes, by = c("target" = "termID")) %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
     dplyr::select(id, dplyr::everything()) %>%
     as.data.frame()
