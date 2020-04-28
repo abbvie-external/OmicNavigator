@@ -121,11 +121,19 @@ createDatabase <- function(study, filename) {
                     field.types = c("annotationID" = "varchar(50) PRIMARY KEY"))
 
   terms_list <- list()
-  for (annotationID in names(study$annotations)) {
-    tmp <- data.frame(annotationID = annotationID,
-                      termID = names(study$annotations[[annotationID]][["terms"]]),
-                      stringsAsFactors = FALSE)
-    terms_list <- c(terms_list, list(tmp))
+  for (i in seq_along(study$annotations)) {
+    tmp_annotation <- study$annotations[[i]]
+    tmp_annotationID <- names(study$annotations)[i]
+    tmp_annotation_terms <- tmp_annotation[["terms"]]
+    for (j in seq_along(tmp_annotation_terms)) {
+      tmp_term <- tmp_annotation_terms[[j]]
+      tmp_termID <- names(tmp_annotation_terms)[j]
+      tmp <- data.frame(annotationID = tmp_annotationID,
+                        termID = tmp_termID,
+                        featureID = tmp_term,
+                        stringsAsFactors = FALSE)
+      terms_list <- c(terms_list, list(tmp))
+    }
   }
 
   terms <- dplyr::bind_rows(terms_list)
