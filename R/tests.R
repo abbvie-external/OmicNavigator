@@ -124,11 +124,15 @@ testEnrichments <- function(n_models = 3, n_tests = 2, n_annotations = 3, seed =
       names(enrichments[[i]][[j]]) <- sprintf("annotation_%02d", seq_len(n_annotations))
       for (k in seq_len(n_annotations)) {
         n_terms <- sample(3:5, 1)
-        enrichments[[i]][[j]][[k]] <- data.frame(
+        tmp <- data.frame(
           termID = sprintf("term_%02d", seq_len(n_terms)),
-          p_val = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
+          nominal = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
           stringsAsFactors = FALSE
         )
+        tmp[["description"]] <- sprintf("Description of %s", tmp[["termID"]])
+        tmp[["adjusted"]] <- tmp[["nominal"]] + 0.02
+        tmp <- tmp[, c("termID", "description", "nominal", "adjusted")]
+        enrichments[[i]][[j]][[k]] <- tmp
       }
     }
   }

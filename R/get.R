@@ -413,7 +413,7 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, ...) {
   enrichmentsTable <- tidyr::pivot_wider(
     enrichmentsTable,
     names_from = testID,
-    values_from = p_val # to do: make this configurable
+    values_from = nominal
   )
   enrichmentsTable <- as.data.frame(enrichmentsTable)
 
@@ -450,7 +450,7 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, .
   enrichmentsTable <- tidyr::pivot_wider(
     enrichmentsTable,
     names_from = testID,
-    values_from = p_val # to do: make this configurable
+    values_from = nominal
   )
   enrichmentsTable <- as.data.frame(enrichmentsTable)
 
@@ -515,10 +515,10 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   }
 
   nodes <- nodes_long %>%
-    dplyr::group_by(termID) %>%
-    dplyr::summarize(PValue = list(p_val)) %>%
+    dplyr::group_by(termID, description) %>%
+    dplyr::summarize(nominal = list(nominal), adjusted = list(adjusted)) %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(id, termID, PValue) %>%
+    dplyr::select(id, termID, description, nominal, adjusted) %>%
     as.data.frame()
 
   links <- dplyr::tbl(study, "overlaps") %>%

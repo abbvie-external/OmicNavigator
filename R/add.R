@@ -387,10 +387,12 @@ addResults <- function(study, results, overwrite = FALSE) {
 #' @param enrichments The enrichment results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
 #'   Each list element should be a list of the tests tested. The names
-#'   correspond to the test names. Each list element should be another list
-#'   of annotation databases. The names correspond to the annotation databases.
+#'   correspond to the test names. Each list element should be another list of
+#'   annotation databases. The names correspond to the annotation databases.
 #'   Each of these elements should be a data frame with enrichment results. Each
-#'   table must have a column named "termID" that contains the annotation terms.
+#'   table must contain the following columns: "termID", "description",
+#'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
+#'   adjusting for multiple testing). Any additional columns are ignored.
 #'
 #' @export
 addEnrichments <- function(study, enrichments, overwrite = FALSE) {
@@ -415,7 +417,10 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
         annotation_name <- names(test)[k]
         stopifnot(inherits(annotation, "data.frame"))
         stopifnot(annotation_name %in% names(study$annotations))
-        stopifnot("termID" %in% colnames(annotation))
+        stopifnot(c("termID", "description", "nominal", "adjusted")
+                  %in% colnames(annotation))
+        enrichments[[i]][[j]][[k]] <-
+          annotation[, c("termID", "description", "nominal", "adjusted")]
       }
     }
   }
