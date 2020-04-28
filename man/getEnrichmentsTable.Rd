@@ -7,13 +7,20 @@
 \alias{getEnrichmentsTable.character}
 \title{Get enrichments table from a study}
 \usage{
-getEnrichmentsTable(study, modelID, annotationID, ...)
+getEnrichmentsTable(study, modelID, annotationID, type = "nominal", ...)
 
-\method{getEnrichmentsTable}{oaStudy}(study, modelID, annotationID, ...)
+\method{getEnrichmentsTable}{oaStudy}(study, modelID, annotationID, type = "nominal", ...)
 
-\method{getEnrichmentsTable}{SQLiteConnection}(study, modelID, annotationID, ...)
+\method{getEnrichmentsTable}{SQLiteConnection}(study, modelID, annotationID, type = "nominal", ...)
 
-\method{getEnrichmentsTable}{character}(study, modelID, annotationID, libraries = NULL, ...)
+\method{getEnrichmentsTable}{character}(
+  study,
+  modelID,
+  annotationID,
+  type = "nominal",
+  libraries = NULL,
+  ...
+)
 }
 \description{
 Get enrichments table from a study

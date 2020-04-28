@@ -380,13 +380,15 @@ getEnrichments.default <- function(study, modelID = NULL, testID = NULL, annotat
 #' Get enrichments table from a study
 #'
 #' @export
-getEnrichmentsTable <- function(study, modelID, annotationID, ...) {
+getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", ...) {
+  stopifnot(type %in% c("nominal", "adjusted"))
+
   UseMethod("getEnrichmentsTable")
 }
 
 #' @rdname getEnrichmentsTable
 #' @export
-getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, ...) {
+getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "nominal", ...) {
   enrichments <- study[["enrichments"]]
 
   if (is.null(enrichments)) {
@@ -410,11 +412,22 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, ...) {
   }
   enrichmentsTable <- enrichmentsTable[enrichmentsTable[["annotationID"]] == annotationID, ]
   enrichmentsTable[["annotationID"]] <- NULL
-  enrichmentsTable <- tidyr::pivot_wider(
-    enrichmentsTable,
-    names_from = testID,
-    values_from = nominal
-  )
+  if (type == "nominal") {
+    enrichmentsTable[["adjusted"]] <- NULL
+    enrichmentsTable <- tidyr::pivot_wider(
+      enrichmentsTable,
+      names_from = testID,
+      values_from = nominal
+    )
+  } else {
+    enrichmentsTable[["nominal"]] <- NULL
+    enrichmentsTable <- tidyr::pivot_wider(
+      enrichmentsTable,
+      names_from = testID,
+      values_from = adjusted
+    )
+  }
+
   enrichmentsTable <- as.data.frame(enrichmentsTable)
 
   return(enrichmentsTable)
@@ -423,7 +436,7 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, ...) {
 #' @rdname getEnrichmentsTable
 #' @importFrom rlang "!!"
 #' @export
-getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, ...) {
+getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, type = "nominal", ...) {
 
   df_enrichments <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
@@ -447,11 +460,22 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, .
   enrichmentsTable <- df_enrichments
   enrichmentsTable[["annotationID"]] <- NULL
   enrichmentsTable[["modelID"]] <- NULL
-  enrichmentsTable <- tidyr::pivot_wider(
-    enrichmentsTable,
-    names_from = testID,
-    values_from = nominal
-  )
+  if (type == "nominal") {
+    enrichmentsTable[["adjusted"]] <- NULL
+    enrichmentsTable <- tidyr::pivot_wider(
+      enrichmentsTable,
+      names_from = testID,
+      values_from = nominal
+    )
+  } else {
+    enrichmentsTable[["nominal"]] <- NULL
+    enrichmentsTable <- tidyr::pivot_wider(
+      enrichmentsTable,
+      names_from = testID,
+      values_from = adjusted
+    )
+  }
+
   enrichmentsTable <- as.data.frame(enrichmentsTable)
 
   return(enrichmentsTable)
@@ -459,17 +483,19 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, .
 
 #' @rdname getEnrichmentsTable
 #' @export
-getEnrichmentsTable.character <- function(study, modelID, annotationID, libraries = NULL, ...) {
+getEnrichmentsTable.character <- function(study, modelID, annotationID, type = "nominal", libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  enrichments <- getEnrichmentsTable(con, modelID = modelID, annotationID = annotationID, ...)
+  enrichments <- getEnrichmentsTable(con, modelID = modelID,
+                                     annotationID = annotationID, type = type,
+                                     ...)
 
   return(enrichments)
 }
 
 #' @export
-getEnrichmentsTable.default <- function(study, modelID, annotationID, ...) {
+getEnrichmentsTable.default <- function(study, modelID, annotationID, type = "nominal", ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
