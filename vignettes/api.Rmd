@@ -62,6 +62,14 @@ head(result)
 toJSON(result[1:2, ], pretty = TRUE)
 ```
 
+## Results table
+
+```{r results-table}
+resultsTable <- getResultsTable("ABC", "model_01", "test_01")
+head(resultsTable)
+toJSON(resultsTable[1:2, ], pretty = TRUE)
+```
+
 ## Enrichments
 
 ```{r enrichments}

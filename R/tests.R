@@ -24,22 +24,24 @@ testStudy <- function(name,
   return(study)
 }
 
-testSamples <- function(rows = 10, cols = 3, seed = 12345L) {
+testSamples <- function(rows = 10, cols = 5, seed = 12345L) {
   set.seed(seed)
   samples <- matrix(sample(letters, size = rows * cols, replace = TRUE),
                     nrow = rows, ncol = cols)
+  colnames(samples) <- sprintf("sampleVar%02d", seq_len(cols))
   sampleID <- sprintf("sample_%04d", seq_len(rows))
   samples <- cbind(sampleID, samples)
-  return(as.data.frame(samples))
+  return(as.data.frame(samples, stringsAsFactors = FALSE))
 }
 
-testFeatures <- function(rows = 100, cols = 5, seed = 12345L) {
+testFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
   set.seed(seed)
   features <- matrix(sample(letters, size = rows * cols, replace = TRUE),
                     nrow = rows, ncol = cols)
+  colnames(features) <- sprintf("featureVar%02d", seq_len(cols))
   featureID <- sprintf("feature_%04d", seq_len(rows))
   features <- cbind(featureID, features)
-  return(as.data.frame(features))
+  return(as.data.frame(features, stringsAsFactors = FALSE))
 }
 
 testModels <- function(n = 3) {

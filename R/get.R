@@ -266,6 +266,95 @@ getResults.default <- function(study, modelID = NULL, testID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get results table from a study
+#'
+#' @export
+getResultsTable <- function(study, modelID, testID, ...) {
+  UseMethod("getResultsTable")
+}
+
+#' @rdname getResultsTable
+#' @export
+getResultsTable.oaStudy <- function(study, modelID, testID, ...) {
+  results <- study[["results"]]
+
+  if (is.null(results)) {
+    stop(sprintf("No results available for study \"%s\"", study[["name"]]))
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (!modelID %in% names(results)) {
+    stop(sprintf("No results available for model \"%s\"", modelID))
+  }
+  results <- results[[modelID]]
+
+  stopifnot(is.character(testID), length(testID) == 1)
+  if (!testID %in% names(results)) {
+    stop(sprintf("No results available for test \"%s\" for model \"%s\"",
+                 testID, modelID))
+  }
+  results <- results[[testID]]
+
+  features <- study[["features"]] # to do: replace with getFeatures()
+  resultsTable <- merge(results, features, by = study[["featureID"]],
+                        all.x = TRUE, all.y = FALSE)
+  colOrder <- c(study[["featureID"]],
+                setdiff(colnames(features), study[["featureID"]]),
+                setdiff(colnames(results), study[["featureID"]]))
+  resultsTable <- resultsTable[, colOrder]
+
+  return(resultsTable)
+}
+
+#' @rdname getResultsTable
+#' @importFrom rlang "!!"
+#' @export
+getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
+
+  df_results <- dplyr::tbl(study, "results")
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  df_results <- dplyr::filter(df_results, modelID == !! modelID)
+
+  stopifnot(is.character(testID), length(testID) == 1)
+  df_results <- dplyr::filter(df_results, testID == !! testID)
+
+  df_results <- dplyr::collect(df_results) %>%
+    as.data.frame()
+
+  if (nrow(df_results) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+         if (is.null(testID)) "testID: No filter applied\n"
+         else sprintf("testID: \"%s\"\n", testID)
+    )
+  }
+
+  features <- dplyr::tbl(study, "features") %>% dplyr::collect()
+  resultsTable <- df_results %>%
+    dplyr::select(-modelID, -testID) %>%
+    dplyr::left_join(features)
+
+  return(resultsTable)
+}
+
+#' @rdname getResultsTable
+#' @export
+getResultsTable.character <- function(study, modelID, testID, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  results <- getResultsTable(con, modelID = modelID, testID = testID, ...)
+
+  return(results)
+}
+
+#' @export
+getResultsTable.default <- function(study, modelID, testID, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
+
 #' Get enrichments from a study
 #'
 #' @export
