@@ -85,3 +85,42 @@ listStudies <- function(libraries = NULL) {
 
   return(output)
 }
+
+#' Get the features in a network node
+#'
+#' @importFrom dplyr "%>%"
+#' @importFrom rlang "!!"
+#' @export
+getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  terms <- dplyr::tbl(con, "terms") %>%
+    dplyr::filter(annotationID == !! annotationID,
+                  termID == !! termID) %>%
+    dplyr::collect()
+
+  if (nrow(terms) == 0) {
+    stop("Invalid filters.\n",
+         sprintf("annotationID: \"%s\"\n", annotationID),
+         sprintf("termID: \"%s\"\n", termID)
+    )
+  }
+
+  nodeFeatures <- sort(terms[["featureID"]])
+
+  return(nodeFeatures)
+}
+
+#' Get the shared features in a network link
+#'
+#' @export
+getLinkFeatures <- function(study, annotationID, termID1, termID2) {
+
+  nodeFeatures1 <- getNodeFeatures(study, annotationID, termID1)
+  nodeFeatures2 <- getNodeFeatures(study, annotationID, termID2)
+
+  linkFeatures <- sort(intersect(nodeFeatures1, nodeFeatures2))
+
+  return(linkFeatures)
+}

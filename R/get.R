@@ -354,7 +354,6 @@ getResultsTable.default <- function(study, modelID, testID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
-
 #' Get enrichments from a study
 #'
 #' @export
