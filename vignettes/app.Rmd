@@ -1,0 +1,83 @@
+---
+title: "OmicAnalyzer App"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{OmicAnalyzer App}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+These functions are intended to support the web application via OpenCPU calls.
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  comment = ""
+)
+```
+
+```{r packages}
+library(jsonlite)
+library(OmicAnalyzer)
+```
+
+```{r test-data, include=FALSE}
+tmplib <- tempfile()
+dir.create(tmplib)
+.libPaths(c(tmplib, .libPaths()))
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
+OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
+```
+
+## List studies
+
+List all the available studies along with their models, tests, and annotations.
+
+```{r list-studies, eval=FALSE}
+studies <- listStudies()
+```
+
+```{r list-studies-hidden, echo=FALSE}
+studies <- listStudies(libraries = tmplib)
+```
+
+```{r list-studies-json}
+toJSON(studies, pretty = TRUE)
+```
+
+## Results table
+
+For a given study, model, and test, return a table that contains the feature
+metadata and the inference results.
+
+```{r results-table}
+resultsTable <- getResultsTable("ABC", "model_01", "test_01")
+toJSON(resultsTable[1:2, ], pretty = TRUE)
+```
+
+## Enrichments table
+
+For a given study, model, and annotation, return a table that contains the
+enrichment results. The default is to return the nominal statistical values.
+
+```{r enrichments-table}
+enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
+toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
+```
+
+Set `type = "adjusted"` to obtain statistical values adjusted for multiple
+testing.
+
+```{r enrichments-table-adjusted}
+enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01", type = "adjusted")
+toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
+```
+
+## Enrichments network
+
+For a given study, model, and annotation, return the nodes and links of the
+network graph.
+
+```{r enrichments-network}
+enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
+toJSON(enrichmentsNetwork, pretty = TRUE)
+```

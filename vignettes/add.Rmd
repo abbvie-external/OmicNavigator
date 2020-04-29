@@ -1,0 +1,104 @@
+---
+title: "OmicAnalyzer add() functions"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{inputData}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r setup, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>",
+  error = TRUE
+)
+```
+
+```{r packages}
+library(OmicAnalyzer)
+```
+
+## Create study
+
+```{r createStudy}
+oa <- createStudy(name = "example",
+                  description = "Example study for vignette")
+oa
+```
+
+## Samples
+
+```{r samples, echo=-1}
+samples <- OmicAnalyzer:::testSamples()
+head(samples)
+oa <- addSamples(oa, samples = samples)
+oa
+```
+
+## Features
+
+```{r features, echo=-1}
+features <- OmicAnalyzer:::testFeatures()
+head(features)
+oa <- addFeatures(oa, features = features)
+oa
+```
+
+## Models
+
+```{r models, echo=-1}
+models <- OmicAnalyzer:::testModels()
+models
+oa <- addModels(oa, models = models)
+oa
+```
+
+## Assays
+
+```{r assays, echo=-1}
+assays <- OmicAnalyzer:::testAssays()
+length(assays)
+head(assays[[1]])
+oa <- addAssays(oa, assays = assays)
+oa
+```
+
+## Tests
+
+```{r tests, echo=-1}
+tests <- OmicAnalyzer:::testTests()
+tests
+oa <- addTests(oa, tests = tests)
+oa
+```
+
+## Annotations
+
+```{r annotations, echo=-1}
+annotations <- OmicAnalyzer:::testAnnotations()
+length(annotations)
+str(annotations[[1]])
+oa <- addAnnotations(oa, annotations = annotations)
+oa
+```
+
+## Results
+
+```{r results, echo=-1}
+results <- OmicAnalyzer:::testResults()
+length(results)
+head(results[[1]][[1]])
+oa <- addResults(oa, results = results)
+oa
+```
+
+## Enrichments
+
+```{r enrichments, echo=-1}
+enrichments <- OmicAnalyzer:::testEnrichments()
+length(enrichments)
+head(enrichments[[1]][[1]][[1]])
+oa <- addEnrichments(oa, enrichments = enrichments)
+oa
+```

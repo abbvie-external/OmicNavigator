@@ -1,5 +1,5 @@
 ---
-title: "OmicAnalyzer API"
+title: "OmicAnalyzer get() functions"
 output: rmarkdown::html_vignette
 vignette: >
   %\VignetteIndexEntry{OmicAnalyzer API}
@@ -24,20 +24,6 @@ dir.create(tmplib)
 .libPaths(c(tmplib, .libPaths()))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
-```
-
-## List studies
-
-```{r list-studies, eval=FALSE}
-studies <- getInstalledStudies()
-```
-
-```{r list-studies-hidden, echo=FALSE}
-studies <- listStudies(libraries = tmplib)
-```
-
-```{r list-studies-json}
-toJSON(studies, pretty = TRUE)
 ```
 
 ## Installed studies
@@ -76,14 +62,6 @@ head(result)
 toJSON(result[1:2, ], pretty = TRUE)
 ```
 
-## Results table
-
-```{r results-table}
-resultsTable <- getResultsTable("ABC", "model_01", "test_01")
-head(resultsTable)
-toJSON(resultsTable[1:2, ], pretty = TRUE)
-```
-
 ## Enrichments
 
 ```{r enrichments}
@@ -92,24 +70,3 @@ head(enrichment)
 toJSON(enrichment[1:2, ], pretty = TRUE)
 ```
 
-## Enrichments table
-
-```{r enrichments-table}
-enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
-head(enrichmentsTable)
-toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
-```
-
-```{r enrichments-table-adjusted}
-enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01", type = "adjusted")
-head(enrichmentsTable)
-toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
-```
-
-## Enrichments network
-
-```{r enrichments-network}
-enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
-head(enrichmentsNetwork)
-toJSON(enrichmentsNetwork, pretty = TRUE)
-```
