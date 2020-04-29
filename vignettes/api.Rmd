@@ -26,6 +26,20 @@ OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 ```
 
+## List studies
+
+```{r list-studies, eval=FALSE}
+studies <- getInstalledStudies()
+```
+
+```{r list-studies-hidden, echo=FALSE}
+studies <- listStudies(libraries = tmplib)
+```
+
+```{r list-studies-json}
+toJSON(studies, pretty = TRUE)
+```
+
 ## Installed studies
 
 ```{r studies, eval=FALSE}
