@@ -331,9 +331,14 @@ getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
   }
 
   features <- dplyr::tbl(study, "features") %>% dplyr::collect()
+  featureCols <- colnames(features)
+  featureID <- intersect(featureCols, colnames(df_results))
+  stopifnot(length(featureID) == 1)
+
   resultsTable <- df_results %>%
     dplyr::select(-modelID, -testID) %>%
-    dplyr::left_join(features)
+    dplyr::left_join(features, by = featureID) %>%
+    dplyr::select(!! featureID, !! featureCols, dplyr::everything())
 
   return(resultsTable)
 }
