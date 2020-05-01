@@ -211,7 +211,8 @@ createDatabase <- function(study, filename) {
       dplyr::pull(termID) %>%
       unique()
     terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enriched]
-    overlaps_tmp <- calc_pairwise_overlaps(terms_tmp)
+    overlaps_tmp <- calc_pairwise_overlaps(terms_tmp) %>%
+      dplyr::filter(overlapSize > 0)
     overlaps_tmp$annotationID <- annotationID
     overlaps_list <- c(overlaps_list, list(overlaps_tmp))
   }
