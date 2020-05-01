@@ -636,6 +636,7 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   nodes <- nodes_long %>%
     dplyr::group_by(termID, description, geneSetSize) %>%
     dplyr::summarize(nominal = list(nominal), adjusted = list(adjusted)) %>%
+    dplyr::ungroup() %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
     dplyr::select(id, termID, description, geneSetSize, nominal, adjusted) %>%
     as.data.frame()
