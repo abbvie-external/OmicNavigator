@@ -634,10 +634,10 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   }
 
   nodes <- nodes_long %>%
-    dplyr::group_by(termID, description) %>%
+    dplyr::group_by(termID, description, geneSetSize) %>%
     dplyr::summarize(nominal = list(nominal), adjusted = list(adjusted)) %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(id, termID, description, nominal, adjusted) %>%
+    dplyr::select(id, termID, description, geneSetSize, nominal, adjusted) %>%
     as.data.frame()
 
   links <- dplyr::tbl(study, "overlaps") %>%
