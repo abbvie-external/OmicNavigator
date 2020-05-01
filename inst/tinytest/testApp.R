@@ -15,7 +15,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-OmicAnalyzer::installStudy(testStudyObj)
+suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
 
 # listStudies ------------------------------------------------------------------
 

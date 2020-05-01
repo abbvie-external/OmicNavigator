@@ -303,13 +303,13 @@ installStudy <- function(study, library = .libPaths()[1]) {
   tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study$name))
   stopifnot(length(tarball) == 1)
   on.exit(file.remove(tarball), add = TRUE)
-  utils::install.packages(tarball, lib = library, repos = NULL)
+  utils::install.packages(tarball, lib = library, repos = NULL, quiet = TRUE)
 
   return(invisible(study))
 }
 
 buildPkg <- function(pkgDir) {
   r <- file.path(R.home("bin"), "R")
-  system2(r, args = c("CMD", "build", pkgDir))
+  system2(r, args = c("CMD", "build", pkgDir), stdout = NULL, stderr = NULL)
   return(invisible(pkgDir))
 }
