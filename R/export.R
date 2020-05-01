@@ -241,10 +241,11 @@ createPackage <- function(study, directoryname) {
   # DESCRIPTION
   description_file <- file.path(directoryname, "DESCRIPTION")
   pkgname <- basename(directoryname)
+  pkgversion <- if (is.null(study[["version"]])) "0.0.0.9000" else study[["version"]]
   description <- data.frame(
     Package = pkgname,
     Title = sprintf("OmicAnalyzer study %s", study$name),
-    Version = "0.0.0.9000",
+    Version = pkgversion,
     Description = sprintf("The OmicAnalyzer data package for the study \"%s\"",
                           study$name),
     stringsAsFactors = FALSE

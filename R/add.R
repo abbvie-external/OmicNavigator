@@ -6,6 +6,9 @@
 #'   features measured in the study
 #' @param sampleID The column name that contains the unique identifiers for the
 #'   samples measured in the study
+#' @param version (Optional) Include a version number to track the updates to
+#'   your study package. If you export the study to a package, the version is
+#'   used as the package version.
 #' @inheritParams addSamples
 #' @inheritParams addFeatures
 #' @inheritParams addModels
@@ -36,7 +39,8 @@ createStudy <- function(name,
                         metaFeatures = NULL,
                         plots = NULL,
                         featureID = "featureID",
-                        sampleID = "sampleID")
+                        sampleID = "sampleID",
+                        version = NULL)
 {
   stopifnot(is.character(name), is.character(description))
 
@@ -53,7 +57,8 @@ createStudy <- function(name,
                 metaFeatures = NULL,
                 plots = NULL,
                 featureID = featureID,
-                sampleID = sampleID)
+                sampleID = sampleID,
+                version = version)
   class(study) <- "oaStudy"
 
   if (!is.null(samples)) study <- addSamples(study, samples = samples)

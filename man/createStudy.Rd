@@ -18,7 +18,8 @@ createStudy(
   metaFeatures = NULL,
   plots = NULL,
   featureID = "featureID",
-  sampleID = "sampleID"
+  sampleID = "sampleID",
+  version = NULL
 )
 }
 \arguments{
@@ -96,6 +97,10 @@ features measured in the study}
 
 \item{sampleID}{The column name that contains the unique identifiers for the
 samples measured in the study}
+
+\item{version}{(Optional) Include a version number to track the updates to
+your study package. If you export the study to a package, the version is
+used as the package version.}
 }
 \description{
 Create a study
