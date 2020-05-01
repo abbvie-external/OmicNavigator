@@ -18,7 +18,5 @@ table must contain the following columns: "termID", "description",
 adjusting for multiple testing). Any additional columns are ignored.}
 }
 \description{
-To reduce storage and compute time, it is highly recommended to first filter
-the enrichment results for statistical signficance prior to adding them to
-the study.
+Add enrichment results
 }

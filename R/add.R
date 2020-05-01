@@ -380,10 +380,6 @@ addResults <- function(study, results, overwrite = FALSE) {
 
 #' Add enrichment results
 #'
-#' To reduce storage and compute time, it is highly recommended to first filter
-#' the enrichment results for statistical signficance prior to adding them to
-#' the study.
-#'
 #' @param enrichments The enrichment results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
 #'   Each list element should be a list of the tests tested. The names

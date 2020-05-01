@@ -206,11 +206,11 @@ createDatabase <- function(study, filename) {
   overlaps_list <- list()
   for (annotationID in names(study$annotations)) {
     terms_tmp <- study$annotations[[annotationID]][["terms"]]
-    terms_enriched <- dplyr::tbl(con, "enrichments") %>%
+    terms_enrichments <- dplyr::tbl(con, "enrichments") %>%
       dplyr::filter(annotationID == !! annotationID) %>%
       dplyr::pull(termID) %>%
       unique()
-    terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enriched]
+    terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enrichments]
     overlaps_tmp <- calc_pairwise_overlaps(terms_tmp) %>%
       dplyr::filter(overlapSize > 0)
     overlaps_tmp$annotationID <- annotationID
