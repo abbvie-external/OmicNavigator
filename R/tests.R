@@ -2,7 +2,9 @@
 testStudy <- function(name,
                       description = name,
                       featureID = "featureID",
-                      sampleID = "sampleID", seed = 12345L)
+                      sampleID = "sampleID",
+                      version = NULL,
+                      seed = 12345L)
 {
   stopifnot(is.character(name), is.character(description), is.integer(seed))
 
@@ -19,7 +21,8 @@ testStudy <- function(name,
                        metaFeatures = testMetaFeatures(seed = seed),
                        plots = testPlots(),
                        featureID = featureID,
-                       sampleID = sampleID)
+                       sampleID = sampleID,
+                       version = version)
 
   return(study)
 }
