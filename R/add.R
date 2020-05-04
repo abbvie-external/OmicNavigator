@@ -171,14 +171,8 @@ print.oaStudy <- function(x, ...) {
 #'
 #' @export
 addSamples <- function(study, samples, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(samples, "data.frame"))
-
-  if (!study$sampleID %in% colnames(samples)) {
-    stop(
-      sprintf("The samples table doesn't contain the sampleID column named \"%s\"",
-              study$sampleID)
-    )
-  }
+  checkStudy(study)
+  checkSamples(samples, study)
 
   if (overwrite || is.null(study$samples)) {
     study$samples <- samples
@@ -197,19 +191,8 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 #'
 #' @export
 addFeatures <- function(study, features, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(features, "data.frame"))
-
-  if (!study$featureID %in% colnames(features)) {
-    stop(
-      sprintf("The features table doesn't contain the featureID column named \"%s\"",
-              study$featureID)
-    )
-  }
-
-  key_column <- features[[study$featureID]]
-  if (length(key_column) != length(unique(key_column))) {
-    stop(sprintf("The key column \"%s\" contains duplicates", study$featureID))
-  }
+  checkStudy(study)
+  checkFeatures(features, study)
 
   if (overwrite || is.null(study$features)) {
     study$features <- features
@@ -228,7 +211,8 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 #'
 #' @export
 addModels <- function(study, models, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(models, "list"))
+  checkStudy(study)
+  checkModels(models, study)
 
   if (overwrite || is.null(study$models)) {
     study$models <- models
@@ -248,17 +232,8 @@ addModels <- function(study, models, overwrite = FALSE) {
 #'
 #' @export
 addAssays <- function(study, assays, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(assays, "list"))
-
-  if (!all(names(study$models) %in% names(assays))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
-  }
-
-  for (assay in assays) {
-    stopifnot(inherits(assay, "matrix"))
-    stopifnot(all(colnames(assay) %in% study$samples[[study$sampleID]]))
-    stopifnot(all(rownames(assay) %in% study$features[[study$featureID]]))
-  }
+  checkStudy(study)
+  checkAssays(assays, study)
 
   if (overwrite || is.null(study$assays)) {
     study$assays <- assays
@@ -277,7 +252,8 @@ addAssays <- function(study, assays, overwrite = FALSE) {
 #'
 #' @export
 addTests <- function(study, tests, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(tests, "list"))
+  checkStudy(study)
+  checkTests(tests, study)
 
   if (overwrite || is.null(study$tests)) {
     study$tests <- tests
@@ -305,35 +281,8 @@ addTests <- function(study, tests, overwrite = FALSE) {
 #'
 #' @export
 addAnnotations <- function(study, annotations, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(annotations, "list"),
-            length(annotations) > 0)
-
-  for (i in seq_along(annotations)) {
-    annotationID <- names(annotations)[i]
-    if (is.null(annotationID)) {
-      stop("The annotation list needs to be named")
-    }
-    if (is.null(annotations[[i]][["description"]])) {
-      annotations[[i]][["description"]] <- sprintf("Annotation terms from %s",
-                                                   annotationID)
-    }
-    if (is.null(annotations[[i]][["featureID"]])) {
-      annotations[[i]][["featureID"]] <- study$featureID
-    }
-    if (!annotations[[i]][["featureID"]] %in% colnames(study$features)) {
-      stop(sprintf("The ID \"%s\" for \"%s\" is not a column in the features table",
-           annotations[[i]][["featureID"]], annotationID))
-    }
-    if (is.null(annotations[[i]][["terms"]])) {
-      stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
-    }
-    universe <- unique(unlist(annotations[[i]][["terms"]]))
-    if (!any(study$features[[annotations[[i]][["featureID"]]]] %in% universe)) {
-      stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
-                   annotationID, annotations[[i]][["featureID"]]),
-           "Do you need specify the features column that was used for this enrichment analysis?")
-    }
-  }
+  checkStudy(study)
+  checkAnnotations(annotations, study)
 
   if (overwrite || is.null(study$annotations)) {
     study$annotations <- annotations
@@ -344,35 +293,18 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
   return(study)
 }
 
-#' Add result results
+#' Add inference results
 #'
-#' @param results The result results from each model. The input is a
+#' @param results The inference results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
-#'   Each element in the list should be a list of data frames with result
+#'   Each element in the list should be a list of data frames with inference
 #'   results, one for each test. The featureID column needs to be included
 #'   in each table.
 #'
 #' @export
 addResults <- function(study, results, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(results, "list"))
-
-  if (!all(names(study$models) %in% names(results))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
-  }
-
-  for (i in seq_along(results)) {
-    model <- results[[i]]
-    model_name <- names(results)[i]
-    stopifnot(inherits(model, "list"))
-    stopifnot(model_name %in% names(study$models))
-    for (j in seq_along(model)) {
-      test <- model[[j]]
-      test_name <- names(model)[j]
-      stopifnot(inherits(test, "data.frame"))
-      stopifnot(test_name %in% names(study$tests))
-      stopifnot(study$featureID %in% colnames(test))
-    }
-  }
+  checkStudy(study)
+  checkResults(results, study)
 
   if (overwrite || is.null(study$results)) {
     study$results <- results
@@ -397,34 +329,8 @@ addResults <- function(study, results, overwrite = FALSE) {
 #'
 #' @export
 addEnrichments <- function(study, enrichments, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(enrichments, "list"))
-
-  if (!all(names(study$models) %in% names(enrichments))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
-  }
-
-  for (i in seq_along(enrichments)) {
-    model <- enrichments[[i]]
-    model_name <- names(enrichments)[i]
-    stopifnot(inherits(model, "list"))
-    stopifnot(model_name %in% names(study$models))
-    for (j in seq_along(model)) {
-      test <- model[[j]]
-      test_name <- names(model)[j]
-      stopifnot(inherits(test, "list"))
-      stopifnot(test_name %in% names(study$tests))
-      for (k in seq_along(test)) {
-        annotation <- test[[k]]
-        annotation_name <- names(test)[k]
-        stopifnot(inherits(annotation, "data.frame"))
-        stopifnot(annotation_name %in% names(study$annotations))
-        stopifnot(c("termID", "description", "nominal", "adjusted")
-                  %in% colnames(annotation))
-        enrichments[[i]][[j]][[k]] <-
-          annotation[, c("termID", "description", "nominal", "adjusted")]
-      }
-    }
-  }
+  checkStudy(study)
+  checkEnrichments(enrichments, study)
 
   if (overwrite || is.null(study$enrichments)) {
     study$enrichments <- enrichments
@@ -446,22 +352,8 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(metaFeatures, "data.frame"))
-
-  if (!study$featureID %in% colnames(metaFeatures)) {
-    stop(
-      sprintf("The metaFeatures table doesn't contain the featureID column named \"%s\"",
-              study$featureID)
-    )
-  }
-
-  if (is.null(study$features)) {
-    stop("Please add the features table with addFeatures() prior to adding the metaFeatures table")
-  }
-
-  if (!all(metaFeatures[[study$featureID]] %in% study$features[[study$featureID]])) {
-    stop("The metaFeatures table contains features that are not in the features table")
-  }
+  checkStudy(study)
+  checkMetaFeatures(metaFeatures, study)
 
   if (overwrite || is.null(study$metaFeatures)) {
     study$metaFeatures <- metaFeatures
@@ -504,22 +396,8 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
 #'
 #' @export
 addPlots <- function(study, plots, overwrite = FALSE) {
-  stopifnot(inherits(study, "oaStudy"), inherits(plots, "list"),
-            length(plots) > 0)
-
-  # To do: check function signatures
-  for (i in seq_along(plots)) {
-    plotID <- names(plots)[i]
-    if (is.null(plotID)) {
-      stop("The plots list needs to be named")
-    }
-    if (!is.function(plots[[i]][["definition"]])) {
-      stop(sprintf("%s is missing its function definition", plotID))
-    }
-    if (is.null(plots[[i]][["displayName"]])) {
-      plots[[i]][["displayName"]] <- plotID
-    }
-  }
+  checkStudy(study)
+  checkPlots(plots, study)
 
   if (overwrite || is.null(study$plots)) {
     study$plots <- plots

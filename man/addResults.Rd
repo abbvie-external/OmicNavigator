@@ -2,17 +2,17 @@
 % Please edit documentation in R/add.R
 \name{addResults}
 \alias{addResults}
-\title{Add result results}
+\title{Add inference results}
 \usage{
 addResults(study, results, overwrite = FALSE)
 }
 \arguments{
-\item{results}{The result results from each model. The input is a
+\item{results}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
-Each element in the list should be a list of data frames with result
+Each element in the list should be a list of data frames with inference
 results, one for each test. The featureID column needs to be included
 in each table.}
 }
 \description{
-Add result results
+Add inference results
 }
