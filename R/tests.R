@@ -62,7 +62,9 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
   assays <- vector(mode = "list", length = n)
   names(assays) <- sprintf("model_%02d", seq_len(n))
   for (i in seq_len(n)) {
-    assays[[i]] <- matrix(stats::rnorm(rows * cols), nrow = rows, ncol = cols)
+    assays[[i]] <- matrix(sample(seq(-2, 2, by = 0.0001), size = rows * cols,
+                                 replace = TRUE),
+                          nrow = rows, ncol = cols)
     rownames(assays[[i]]) <- sprintf("feature_%04d", seq_len(rows))
     colnames(assays[[i]]) <- sprintf("sample_%04d", seq_len(cols))
   }
@@ -86,7 +88,7 @@ testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 1
   universe <- sprintf("feature_%04d", seq_len(100))
   for (i in seq_len(n)) {
     terms_list <- replicate(terms,
-                            sample(universe, size = stats::rpois(1, lambda = 15)),
+                            sample(universe, size = sample(5:25, size = 1, replace = TRUE)),
                             simplify = FALSE)
     names(terms_list) <- sprintf("term_%02d", seq_len(terms))
     annotations[[i]] <- list(

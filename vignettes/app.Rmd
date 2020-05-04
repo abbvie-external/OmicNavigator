@@ -97,6 +97,6 @@ For a given study, annotation, and two terms, return the features shared by the
 terms.
 
 ```{r getLinkFeatures}
-linkFeatures <- getLinkFeatures("ABC", "annotation_01", "term_01", "term_02")
+linkFeatures <- getLinkFeatures("ABC", "annotation_01", "term_01", "term_03")
 toJSON(linkFeatures, pretty = TRUE)
 ```
