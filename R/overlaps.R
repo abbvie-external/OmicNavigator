@@ -52,9 +52,9 @@ calc_pairwise_overlaps <- function(sets) {
       overlap_list <- calc_overlap(set1, set2)
       vec_term1[overlaps_index] <- term1
       vec_term2[overlaps_index] <- term2
-      vec_overlapSize[overlaps_index] <- overlap_list$overlapSize
-      vec_overlap[overlaps_index] <- overlap_list$overlap
-      vec_jaccard[overlaps_index] <- overlap_list$jaccard
+      vec_overlapSize[overlaps_index] <- overlap_list[["overlapSize"]]
+      vec_overlap[overlaps_index] <- overlap_list[["overlap"]]
+      vec_jaccard[overlaps_index] <- overlap_list[["jaccard"]]
       overlaps_index <- overlaps_index + 1
     }
   }

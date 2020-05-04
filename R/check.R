@@ -11,10 +11,10 @@ checkSamples <- function(samples, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!study$sampleID %in% colnames(samples)) {
+  if (!study[["sampleID"]] %in% colnames(samples)) {
     stop(
       sprintf("The samples table doesn't contain the sampleID column named \"%s\"",
-              study$sampleID)
+              study[["sampleID"]])
     )
   }
 
@@ -25,16 +25,16 @@ checkFeatures <- function(features, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!study$featureID %in% colnames(features)) {
+  if (!study[["featureID"]] %in% colnames(features)) {
     stop(
       sprintf("The features table doesn't contain the featureID column named \"%s\"",
-              study$featureID)
+              study[["featureID"]])
     )
   }
 
-  key_column <- features[[study$featureID]]
+  key_column <- features[[study[["featureID"]]]]
   if (length(key_column) != length(unique(key_column))) {
-    stop(sprintf("The key column \"%s\" contains duplicates", study$featureID))
+    stop(sprintf("The key column \"%s\" contains duplicates", study[["featureID"]]))
   }
 
   return(NULL)
@@ -51,14 +51,14 @@ checkAssays <- function(assays, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!all(names(study$models) %in% names(assays))) {
+  if (!all(names(study[["models"]]) %in% names(assays))) {
     stop(sprintf("The names of the list do not include all of the model names"))
   }
 
   for (assay in assays) {
     stopifnot(inherits(assay, "matrix"))
-    stopifnot(all(colnames(assay) %in% study$samples[[study$sampleID]]))
-    stopifnot(all(rownames(assay) %in% study$features[[study$featureID]]))
+    stopifnot(all(colnames(assay) %in% study[["samples"]][[study[["sampleID"]]]]))
+    stopifnot(all(rownames(assay) %in% study[["features"]][[study[["featureID"]]]]))
   }
 
   return(NULL)
@@ -88,9 +88,9 @@ checkAnnotations <- function(annotations, study = NULL) {
                                                    annotationID)
     }
     if (is.null(annotations[[i]][["featureID"]])) {
-      annotations[[i]][["featureID"]] <- study$featureID
+      annotations[[i]][["featureID"]] <- study[["featureID"]]
     }
-    if (!annotations[[i]][["featureID"]] %in% colnames(study$features)) {
+    if (!annotations[[i]][["featureID"]] %in% colnames(study[["features"]])) {
       stop(sprintf("The ID \"%s\" for \"%s\" is not a column in the features table",
                    annotations[[i]][["featureID"]], annotationID))
     }
@@ -98,7 +98,7 @@ checkAnnotations <- function(annotations, study = NULL) {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
     universe <- unique(unlist(annotations[[i]][["terms"]]))
-    if (!any(study$features[[annotations[[i]][["featureID"]]]] %in% universe)) {
+    if (!any(study[["features"]][[annotations[[i]][["featureID"]]]] %in% universe)) {
       stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
                    annotationID, annotations[[i]][["featureID"]]),
            "Do you need specify the features column that was used for this enrichment analysis?")
@@ -113,7 +113,7 @@ checkResults <- function(results, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!all(names(study$models) %in% names(results))) {
+  if (!all(names(study[["models"]]) %in% names(results))) {
     stop(sprintf("The names of the list do not include all of the model names"))
   }
 
@@ -121,13 +121,13 @@ checkResults <- function(results, study = NULL) {
     model <- results[[i]]
     model_name <- names(results)[i]
     stopifnot(inherits(model, "list"))
-    stopifnot(model_name %in% names(study$models))
+    stopifnot(model_name %in% names(study[["models"]]))
     for (j in seq_along(model)) {
       test <- model[[j]]
       test_name <- names(model)[j]
       stopifnot(inherits(test, "data.frame"))
-      stopifnot(test_name %in% names(study$tests))
-      stopifnot(study$featureID %in% colnames(test))
+      stopifnot(test_name %in% names(study[["tests"]]))
+      stopifnot(study[["featureID"]] %in% colnames(test))
     }
   }
 
@@ -139,7 +139,7 @@ checkEnrichments <- function(enrichments, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!all(names(study$models) %in% names(enrichments))) {
+  if (!all(names(study[["models"]]) %in% names(enrichments))) {
     stop(sprintf("The names of the list do not include all of the model names"))
   }
 
@@ -147,17 +147,17 @@ checkEnrichments <- function(enrichments, study = NULL) {
     model <- enrichments[[i]]
     model_name <- names(enrichments)[i]
     stopifnot(inherits(model, "list"))
-    stopifnot(model_name %in% names(study$models))
+    stopifnot(model_name %in% names(study[["models"]]))
     for (j in seq_along(model)) {
       test <- model[[j]]
       test_name <- names(model)[j]
       stopifnot(inherits(test, "list"))
-      stopifnot(test_name %in% names(study$tests))
+      stopifnot(test_name %in% names(study[["tests"]]))
       for (k in seq_along(test)) {
         annotation <- test[[k]]
         annotation_name <- names(test)[k]
         stopifnot(inherits(annotation, "data.frame"))
-        stopifnot(annotation_name %in% names(study$annotations))
+        stopifnot(annotation_name %in% names(study[["annotations"]]))
         stopifnot(c("termID", "description", "nominal", "adjusted")
                   %in% colnames(annotation))
         enrichments[[i]][[j]][[k]] <-
@@ -174,18 +174,18 @@ checkMetaFeatures <- function(metaFeatures, study = NULL) {
 
   if (is.null(study)) return(NULL)
 
-  if (!study$featureID %in% colnames(metaFeatures)) {
+  if (!study[["featureID"]] %in% colnames(metaFeatures)) {
     stop(
       sprintf("The metaFeatures table doesn't contain the featureID column named \"%s\"",
-              study$featureID)
+              study[["featureID"]])
     )
   }
 
-  if (is.null(study$features)) {
+  if (is.null(study[["features"]])) {
     stop("Please add the features table with addFeatures() prior to adding the metaFeatures table")
   }
 
-  if (!all(metaFeatures[[study$featureID]] %in% study$features[[study$featureID]])) {
+  if (!all(metaFeatures[[study[["featureID"]]]] %in% study[["features"]][[study[["featureID"]]]])) {
     stop("The metaFeatures table contains features that are not in the features table")
   }
 

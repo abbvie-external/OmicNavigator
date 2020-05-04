@@ -12,22 +12,22 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
   type <- match.arg(type)
 
   if (type == "rds") {
-    message(sprintf("Exporting study \"%s\" to an RDS file", study$name))
-    filename <- paste0(study$name, ".rds")
+    message(sprintf("Exporting study \"%s\" to an RDS file", study[["name"]]))
+    filename <- paste0(study[["name"]], ".rds")
     if (!is.null(path)) filename <- file.path(path, filename)
     saveRDS(object = study, file = filename)
     message(sprintf("Exported study to %s", filename))
     return(invisible(filename))
   } else if (type == "sqlite") {
-    message(sprintf("Exporting study \"%s\" to an SQLite database", study$name))
-    filename <- paste0(study$name, ".sqlite")
+    message(sprintf("Exporting study \"%s\" to an SQLite database", study[["name"]]))
+    filename <- paste0(study[["name"]], ".sqlite")
     if (!is.null(path)) filename <- file.path(path, filename)
     createDatabase(study, filename)
     message(sprintf("Exported study to %s", filename))
     return(invisible(filename))
   } else if (type == "package") {
-    message(sprintf("Exporting study \"%s\" to an R package", study$name))
-    directoryname <- paste0("OAstudy", study$name)
+    message(sprintf("Exporting study \"%s\" to an R package", study[["name"]]))
+    directoryname <- paste0("OAstudy", study[["name"]])
     if (!is.null(path)) directoryname <- file.path(path, directoryname)
     createPackage(study, directoryname)
     message(sprintf("Exported study to %s", directoryname))
@@ -46,27 +46,27 @@ createDatabase <- function(study, filename) {
 
   message("* Adding samples")
   fields_samples <- c("varchar(50) PRIMARY KEY")
-  names(fields_samples) <- study$sampleID
-  DBI::dbWriteTable(con, "samples", study$samples, field.types = fields_samples)
+  names(fields_samples) <- study[["sampleID"]]
+  DBI::dbWriteTable(con, "samples", study[["samples"]], field.types = fields_samples)
   DBI::dbExecute(con,
                  sprintf("CREATE UNIQUE INDEX samples_index ON samples(%s)",
-                         study$sampleID))
+                         study[["sampleID"]]))
 
   # features -------------------------------------------------------------------
 
   message("* Adding features")
   fields_features <- c("varchar(50) PRIMARY KEY")
-  names(fields_features) <- study$featureID
-  DBI::dbWriteTable(con, "features", study$features, field.types = fields_features)
+  names(fields_features) <- study[["featureID"]]
+  DBI::dbWriteTable(con, "features", study[["features"]], field.types = fields_features)
   DBI::dbExecute(con,
                  sprintf("CREATE UNIQUE INDEX feature_index ON features(%s)",
-                         study$featureID))
+                         study[["featureID"]]))
 
   # models ---------------------------------------------------------------------
 
   message("* Adding models")
-  models <- data.frame(modelID = names(study$models),
-                       description = unlist(study$models),
+  models <- data.frame(modelID = names(study[["models"]]),
+                       description = unlist(study[["models"]]),
                        stringsAsFactors = FALSE)
   DBI::dbWriteTable(con, "models", models,
                     field.types = c("modelID" = "varchar(100) PRIMARY KEY",
@@ -75,36 +75,36 @@ createDatabase <- function(study, filename) {
   # assays ---------------------------------------------------------------------
 
   message("* Adding assays")
-  assays_long <- vector(mode = "list", length = length(study$assays))
-  for (i in seq_along(study$assays)) {
-    assays_long[[i]] <- study$assays[[i]] %>%
+  assays_long <- vector(mode = "list", length = length(study[["assays"]]))
+  for (i in seq_along(study[["assays"]])) {
+    assays_long[[i]] <- study[["assays"]][[i]] %>%
       as.data.frame %>%
       dplyr::mutate(featureID = rownames(.)) %>%
       tidyr::pivot_longer(cols = -featureID,
                           names_to = "sampleID",
                           values_to = "quantification") %>%
-      dplyr::mutate(modelID = names(study$assays)[i]) %>%
+      dplyr::mutate(modelID = names(study[["assays"]])[i]) %>%
       dplyr::select(featureID, sampleID, modelID, quantification)
   }
   assays_final <- dplyr::bind_rows(assays_long)
-  colnames(assays_final)[1:2] <- c(study$featureID, study$sampleID)
+  colnames(assays_final)[1:2] <- c(study[["featureID"]], study[["sampleID"]])
   fields_assays <- c(
-    sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
-    sprintf("varchar(50) REFERENCES samples (%s)", study$sampleID),
+    sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]]),
+    sprintf("varchar(50) REFERENCES samples (%s)", study[["sampleID"]]),
     "varchar(100) REFERENCES models (modelID)"
   )
-  names(fields_assays) <- c(study$featureID, study$sampleID, "modelID")
+  names(fields_assays) <- c(study[["featureID"]], study[["sampleID"]], "modelID")
   DBI::dbWriteTable(con, "assays", assays_final,
                     field.types = fields_assays)
   DBI::dbExecute(con,
                  sprintf("CREATE UNIQUE INDEX assays_index ON assays(%s, %s, modelID)",
-                         study$featureID, study$sampleID))
+                         study[["featureID"]], study[["sampleID"]]))
 
   # tests ------------------------------------------------------------------
 
   message("* Adding tests")
-  tests <- data.frame(testID = names(study$tests),
-                          description = unlist(study$tests),
+  tests <- data.frame(testID = names(study[["tests"]]),
+                          description = unlist(study[["tests"]]),
                           stringsAsFactors = FALSE)
   DBI::dbWriteTable(con, "tests", tests,
                     field.types = c("testID" = "varchar(50) PRIMARY KEY"))
@@ -112,18 +112,18 @@ createDatabase <- function(study, filename) {
   # annotations ----------------------------------------------------------------
 
   message("* Adding annotations")
-  annotations <- data.frame(annotationID = names(study$annotations),
-                            description = vapply(study$annotations, function(x) x[["description"]], character(1)),
-                            featureID = vapply(study$annotations, function(x) x[["featureID"]], character(1)),
+  annotations <- data.frame(annotationID = names(study[["annotations"]]),
+                            description = vapply(study[["annotations"]], function(x) x[["description"]], character(1)),
+                            featureID = vapply(study[["annotations"]], function(x) x[["featureID"]], character(1)),
                             stringsAsFactors = FALSE)
 
   DBI::dbWriteTable(con, "annotations", annotations,
                     field.types = c("annotationID" = "varchar(50) PRIMARY KEY"))
 
   terms_list <- list()
-  for (i in seq_along(study$annotations)) {
-    tmp_annotation <- study$annotations[[i]]
-    tmp_annotationID <- names(study$annotations)[i]
+  for (i in seq_along(study[["annotations"]])) {
+    tmp_annotation <- study[["annotations"]][[i]]
+    tmp_annotationID <- names(study[["annotations"]])[i]
     tmp_annotation_terms <- tmp_annotation[["terms"]]
     for (j in seq_along(tmp_annotation_terms)) {
       tmp_term <- tmp_annotation_terms[[j]]
@@ -144,22 +144,22 @@ createDatabase <- function(study, filename) {
 
   message("* Adding results")
   results_list <- list()
-  for (modelID in names(study$results)) {
-    for (testID in names(study$results[[modelID]])) {
-      tmp <- study$results[[modelID]][[testID]]
-      tmp$modelID <- modelID
-      tmp$testID <- testID
+  for (modelID in names(study[["results"]])) {
+    for (testID in names(study[["results"]][[modelID]])) {
+      tmp <- study[["results"]][[modelID]][[testID]]
+      tmp[["modelID"]] <- modelID
+      tmp[["testID"]] <- testID
       results_list <- c(results_list, list(tmp))
     }
   }
 
   results <- Reduce(function(x, y) merge(x, y, all = TRUE), results_list)
   fields_results <- c(
-    sprintf("varchar(50) REFERENCES features (%s)", study$featureID),
+    sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]]),
     "varchar(50) REFERENCES tests (testID)",
     "varchar(100) REFERENCES models (modelID)"
   )
-  names(fields_results) <- c(study$featureID, "testID", "modelID")
+  names(fields_results) <- c(study[["featureID"]], "testID", "modelID")
   DBI::dbWriteTable(con, "results", results,
                     field.types = fields_results)
 
@@ -167,13 +167,13 @@ createDatabase <- function(study, filename) {
 
   message("* Adding enrichments")
   enrichments_list <- list()
-  for (modelID in names(study$enrichments)) {
-    for (testID in names(study$enrichments[[modelID]])) {
-      for (annotationID in names(study$enrichments[[modelID]][[testID]])) {
-        tmp <- study$enrichments[[modelID]][[testID]][[annotationID]]
-        tmp$modelID <- modelID
-        tmp$testID <- testID
-        tmp$annotationID <- annotationID
+  for (modelID in names(study[["enrichments"]])) {
+    for (testID in names(study[["enrichments"]][[modelID]])) {
+      for (annotationID in names(study[["enrichments"]][[modelID]][[testID]])) {
+        tmp <- study[["enrichments"]][[modelID]][[testID]][[annotationID]]
+        tmp[["modelID"]] <- modelID
+        tmp[["testID"]] <- testID
+        tmp[["annotationID"]] <- annotationID
         enrichments_list <- c(enrichments_list, list(tmp))
       }
     }
@@ -190,13 +190,13 @@ createDatabase <- function(study, filename) {
 
   # metaFeatures ---------------------------------------------------------------
 
-  if (!is.null(study$metaFeatures)) {
+  if (!is.null(study[["metaFeatures"]])) {
     message("* Adding meta-features")
     fields_metaFeatures <- c(
-      sprintf("varchar(50) REFERENCES features (%s)", study$featureID)
+      sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]])
     )
-    names(fields_metaFeatures) <- study$featureID
-    DBI::dbWriteTable(con, "metaFeatures", study$metaFeatures,
+    names(fields_metaFeatures) <- study[["featureID"]]
+    DBI::dbWriteTable(con, "metaFeatures", study[["metaFeatures"]],
                       field.types = fields_metaFeatures)
   }
 
@@ -204,8 +204,8 @@ createDatabase <- function(study, filename) {
 
   message("* Calculating overlaps between annotation terms")
   overlaps_list <- list()
-  for (annotationID in names(study$annotations)) {
-    terms_tmp <- study$annotations[[annotationID]][["terms"]]
+  for (annotationID in names(study[["annotations"]])) {
+    terms_tmp <- study[["annotations"]][[annotationID]][["terms"]]
     terms_enrichments <- dplyr::tbl(con, "enrichments") %>%
       dplyr::filter(annotationID == !! annotationID) %>%
       dplyr::pull(termID) %>%
@@ -213,7 +213,7 @@ createDatabase <- function(study, filename) {
     terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enrichments]
     overlaps_tmp <- calc_pairwise_overlaps(terms_tmp) %>%
       dplyr::filter(overlapSize > 0)
-    overlaps_tmp$annotationID <- annotationID
+    overlaps_tmp[["annotationID"]] <- annotationID
     overlaps_list <- c(overlaps_list, list(overlaps_tmp))
   }
   overlaps <- dplyr::bind_rows(overlaps_list)
@@ -244,10 +244,10 @@ createPackage <- function(study, directoryname) {
   pkgversion <- if (is.null(study[["version"]])) "0.0.0.9000" else study[["version"]]
   description <- data.frame(
     Package = pkgname,
-    Title = sprintf("OmicAnalyzer study %s", study$name),
+    Title = sprintf("OmicAnalyzer study %s", study[["name"]]),
     Version = pkgversion,
     Description = sprintf("The OmicAnalyzer data package for the study \"%s\"",
-                          study$name),
+                          study[["name"]]),
     stringsAsFactors = FALSE
   )
   write.dcf(description, file = description_file)
@@ -255,11 +255,11 @@ createPackage <- function(study, directoryname) {
   # Database
   sqldir <- file.path(directoryname, "inst", "OmicAnalyzer")
   dir.create(sqldir, showWarnings = FALSE, recursive = TRUE)
-  sqlfile <- file.path(sqldir, paste0(study$name, ".sqlite"))
+  sqlfile <- file.path(sqldir, paste0(study[["name"]], ".sqlite"))
   createDatabase(study, sqlfile)
 
   # Plots
-  if (!is.null(study$plots)) {
+  if (!is.null(study[["plots"]])) {
     namespace_file <- file.path(directoryname, "NAMESPACE")
     r_dir <- file.path(directoryname, "R")
     dir.create(r_dir, showWarnings = FALSE)
@@ -267,11 +267,11 @@ createPackage <- function(study, directoryname) {
     dependencies <- character()
     exports <- character()
     code <- character()
-    for (i in seq_along(study$plots)) {
-      plot_name <- names(study$plots)[i]
-      dependencies <- c(dependencies, study$plots[[i]][["packages"]])
+    for (i in seq_along(study[["plots"]])) {
+      plot_name <- names(study[["plots"]])[i]
+      dependencies <- c(dependencies, study[["plots"]][[i]][["packages"]])
       exports <- c(exports, sprintf("export(%s)", plot_name))
-      plot_code <- deparse(study$plots[[i]][["definition"]])
+      plot_code <- deparse(study[["plots"]][[i]][["definition"]])
       plot_code[1] <- paste(plot_name, "<-", plot_code[1])
       code <- c(code, plot_code)
     }
@@ -300,7 +300,7 @@ installStudy <- function(study, library = .libPaths()[1]) {
   tmpPkgDir <- exportStudy(study, type = "package", path = tempdir(check = TRUE))
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
   buildPkg(tmpPkgDir)
-  tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study$name))
+  tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study[["name"]]))
   stopifnot(length(tarball) == 1)
   on.exit(file.remove(tarball), add = TRUE)
   utils::install.packages(tarball, lib = library, repos = NULL, quiet = TRUE)
