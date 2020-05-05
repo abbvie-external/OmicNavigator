@@ -6,7 +6,9 @@ Description: Functions to import omics data, create a study package, deploy the
 Version: 0.2.0
 Author: John Blischak
 Maintainer: John Blischak <john.blischak@abbvie.com>
-License: abbvie
+License: file LICENSE
+License_restricts_use: yes
+Copyright: AbbVie Inc.
 Encoding: UTF-8
 LazyData: true
 Imports:
