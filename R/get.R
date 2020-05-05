@@ -47,13 +47,14 @@ getModels.oaStudy <- function(study, modelID = NULL, ...) {
 
 #' @rdname getModels
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
 
   df_models <- dplyr::tbl(study, "models")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_models <- dplyr::filter(df_models, modelID == !! modelID)
+    df_models <- dplyr::filter(df_models, .data$modelID == !! modelID)
   }
   df_models <- dplyr::collect(df_models)
   if (nrow(df_models) == 0) {
@@ -130,6 +131,7 @@ getTests.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
 
 #' @rdname getTests
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getTests.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...) {
 
@@ -137,13 +139,13 @@ getTests.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...)
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
     df_results <- dplyr::tbl(study, "results") %>%
-      dplyr::filter(modelID == !! modelID)
+      dplyr::filter(.data$modelID == !! modelID)
     df_tests <- df_tests %>%
       dplyr::semi_join(df_results, by = "testID")
   }
   if (!is.null(testID)) {
     stopifnot(is.character(testID), length(testID) == 1)
-    df_tests <- dplyr::filter(df_tests, testID == !! testID)
+    df_tests <- dplyr::filter(df_tests, .data$testID == !! testID)
   }
   df_tests <- dplyr::collect(df_tests)
 
@@ -217,18 +219,20 @@ getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
 }
 
 #' @rdname getResults
+#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...) {
 
   df_results <- dplyr::tbl(study, "results")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_results <- dplyr::filter(df_results, modelID == !! modelID)
+    df_results <- dplyr::filter(df_results, .data$modelID == !! modelID)
   }
   if (!is.null(testID)) {
     stopifnot(is.character(testID), length(testID) == 1)
-    df_results <- dplyr::filter(df_results, testID == !! testID)
+    df_results <- dplyr::filter(df_results, .data$testID == !! testID)
   }
   df_results <- dplyr::collect(df_results) %>%
     as.data.frame()
@@ -307,16 +311,18 @@ getResultsTable.oaStudy <- function(study, modelID, testID, ...) {
 }
 
 #' @rdname getResultsTable
+#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
 
   df_results <- dplyr::tbl(study, "results")
   stopifnot(is.character(modelID), length(modelID) == 1)
-  df_results <- dplyr::filter(df_results, modelID == !! modelID)
+  df_results <- dplyr::filter(df_results, .data$modelID == !! modelID)
 
   stopifnot(is.character(testID), length(testID) == 1)
-  df_results <- dplyr::filter(df_results, testID == !! testID)
+  df_results <- dplyr::filter(df_results, .data$testID == !! testID)
 
   df_results <- dplyr::collect(df_results) %>%
     as.data.frame()
@@ -336,7 +342,7 @@ getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
   stopifnot(length(featureID) == 1)
 
   resultsTable <- df_results %>%
-    dplyr::select(-modelID, -testID) %>%
+    dplyr::select(-.data$modelID, -.data$testID) %>%
     dplyr::left_join(features, by = featureID) %>%
     dplyr::select(!! featureID, !! featureCols, dplyr::everything())
 
@@ -411,22 +417,24 @@ getEnrichments.oaStudy <- function(study, modelID = NULL, testID = NULL, annotat
 }
 
 #' @rdname getEnrichments
+#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
 
   df_enrichments <- dplyr::tbl(study, "enrichments")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+    df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
   }
   if (!is.null(testID)) {
     stopifnot(is.character(testID), length(testID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, testID == !! testID)
+    df_enrichments <- dplyr::filter(df_enrichments, .data$testID == !! testID)
   }
   if (!is.null(annotationID)) {
     stopifnot(is.character(annotationID), length(annotationID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+    df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
   }
   df_enrichments <- dplyr::collect(df_enrichments) %>%
     as.data.frame()
@@ -480,6 +488,7 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 }
 
 #' @rdname getEnrichmentsTable
+#' @importFrom rlang ".data"
 #' @export
 getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "nominal", ...) {
   enrichments <- study[["enrichments"]]
@@ -509,15 +518,15 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "no
     enrichmentsTable[["adjusted"]] <- NULL
     enrichmentsTable <- tidyr::pivot_wider(
       enrichmentsTable,
-      names_from = testID,
-      values_from = nominal
+      names_from = .data$testID,
+      values_from = .data$nominal
     )
   } else {
     enrichmentsTable[["nominal"]] <- NULL
     enrichmentsTable <- tidyr::pivot_wider(
       enrichmentsTable,
-      names_from = testID,
-      values_from = adjusted
+      names_from = .data$testID,
+      values_from = .data$adjusted
     )
   }
 
@@ -527,16 +536,18 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "no
 }
 
 #' @rdname getEnrichmentsTable
+#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, type = "nominal", ...) {
 
   df_enrichments <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+  df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+  df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
 
   df_enrichments <- dplyr::collect(df_enrichments) %>%
     as.data.frame()
@@ -557,15 +568,15 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, t
     enrichmentsTable[["adjusted"]] <- NULL
     enrichmentsTable <- tidyr::pivot_wider(
       enrichmentsTable,
-      names_from = testID,
-      values_from = nominal
+      names_from = .data$testID,
+      values_from = .data$nominal
     )
   } else {
     enrichmentsTable[["nominal"]] <- NULL
     enrichmentsTable <- tidyr::pivot_wider(
       enrichmentsTable,
-      names_from = testID,
-      values_from = adjusted
+      names_from = .data$testID,
+      values_from = .data$adjusted
     )
   }
 
@@ -600,26 +611,28 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
 }
 
 #' @rdname getEnrichmentsNetwork
+#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID, ...) {
 
   terms <- dplyr::tbl(study, "terms") %>%
-    dplyr::filter(annotationID == !! annotationID) %>%
-    dplyr::group_by(termID) %>%
+    dplyr::filter(.data$annotationID == !! annotationID) %>%
+    dplyr::group_by(.data$termID) %>%
     dplyr::tally(name = "geneSetSize")
 
   df_enrichments <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, modelID == !! modelID)
+  df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, annotationID == !! annotationID)
+  df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
 
   nodes_long <- df_enrichments %>%
-    dplyr::select(-modelID, -annotationID) %>%
+    dplyr::select(-.data$modelID, -.data$annotationID) %>%
     dplyr::left_join(terms, by = "termID") %>%
-    dplyr::arrange(testID) %>%
+    dplyr::arrange(.data$testID) %>%
     dplyr::collect()
 
   tests <- unique(nodes_long[["testID"]])
@@ -634,23 +647,24 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   }
 
   nodes <- nodes_long %>%
-    dplyr::group_by(termID, description, geneSetSize) %>%
-    dplyr::summarize(nominal = list(nominal), adjusted = list(adjusted)) %>%
+    dplyr::group_by(.data$termID, .data$description, .data$geneSetSize) %>%
+    dplyr::summarize(nominal = list(.data$nominal), adjusted = list(.data$adjusted)) %>%
     dplyr::ungroup() %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(id, termID, description, geneSetSize, nominal, adjusted) %>%
+    dplyr::select(.data$id, .data$termID, .data$description, .data$geneSetSize,
+                  .data$nominal, .data$adjusted) %>%
     as.data.frame()
 
   links <- dplyr::tbl(study, "overlaps") %>%
-    dplyr::filter(annotationID ==  !! annotationID) %>%
-    dplyr::select(-annotationID) %>%
-    dplyr::arrange(term1, term2) %>%
-    dplyr::rename(source = term1, target = term2) %>%
+    dplyr::filter(.data$annotationID ==  !! annotationID) %>%
+    dplyr::select(-.data$annotationID) %>%
+    dplyr::arrange(.data$term1, .data$term2) %>%
+    dplyr::rename(source = .data$term1, target = .data$term2) %>%
     dplyr::collect() %>%
     dplyr::semi_join(nodes, by = c("source" = "termID")) %>%
     dplyr::semi_join(nodes, by = c("target" = "termID")) %>%
     dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(id, dplyr::everything()) %>%
+    dplyr::select(.data$id, dplyr::everything()) %>%
     as.data.frame()
 
   # Use node IDs with links

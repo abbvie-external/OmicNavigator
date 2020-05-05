@@ -1,6 +1,7 @@
 
 #' List available studies and their metadata
 #'
+#' @importFrom rlang ".data"
 #' @export
 listStudies <- function(libraries = NULL) {
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
@@ -30,9 +31,9 @@ listStudies <- function(libraries = NULL) {
     models <- dplyr::tbl(con, "models")
     tests <- dplyr::tbl(con, "tests")
     results <- dplyr::tbl(con, "results") %>%
-      dplyr::select(modelID, testID) %>%
+      dplyr::select(.data$modelID, .data$testID) %>%
       dplyr::distinct() %>%
-      dplyr::arrange(modelID, testID) %>%
+      dplyr::arrange(.data$modelID, .data$testID) %>%
       dplyr::left_join(models, by = "modelID") %>%
       dplyr::left_join(tests, by = "testID", suffix = c(".model", ".test")) %>%
       dplyr::collect() %>%
@@ -57,9 +58,9 @@ listStudies <- function(libraries = NULL) {
     output[[studyName]][["enrichments"]] <- list()
     annotations <- dplyr::tbl(con, "annotations")
     enrichments <- dplyr::tbl(con, "enrichments") %>%
-      dplyr::select(modelID, annotationID) %>%
+      dplyr::select(.data$modelID, .data$annotationID) %>%
       dplyr::distinct() %>%
-      dplyr::arrange(modelID, annotationID) %>%
+      dplyr::arrange(.data$modelID, .data$annotationID) %>%
       dplyr::left_join(models, by = "modelID") %>%
       dplyr::left_join(annotations, by = "annotationID", suffix = c(".model", ".annotation")) %>%
       dplyr::collect() %>%
@@ -90,14 +91,15 @@ listStudies <- function(libraries = NULL) {
 #'
 #' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 #' @export
 getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
   terms <- dplyr::tbl(con, "terms") %>%
-    dplyr::filter(annotationID == !! annotationID,
-                  termID == !! termID) %>%
+    dplyr::filter(.data$annotationID == !! annotationID,
+                  .data$termID == !! termID) %>%
     dplyr::collect()
 
   if (nrow(terms) == 0) {

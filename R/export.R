@@ -37,6 +37,7 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
 
 #' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
 createDatabase <- function(study, filename) {
 
   tmpdb <- tempfile(fileext = ".sqlite")
@@ -80,11 +81,11 @@ createDatabase <- function(study, filename) {
     assays_long[[i]] <- study[["assays"]][[i]] %>%
       as.data.frame %>%
       dplyr::mutate(featureID = rownames(.)) %>%
-      tidyr::pivot_longer(cols = -featureID,
+      tidyr::pivot_longer(cols = -.data$featureID,
                           names_to = "sampleID",
                           values_to = "quantification") %>%
       dplyr::mutate(modelID = names(study[["assays"]])[i]) %>%
-      dplyr::select(featureID, sampleID, modelID, quantification)
+      dplyr::select(.data$featureID, .data$sampleID, .data$modelID, .data$quantification)
   }
   assays_final <- dplyr::bind_rows(assays_long)
   colnames(assays_final)[1:2] <- c(study[["featureID"]], study[["sampleID"]])
@@ -207,12 +208,12 @@ createDatabase <- function(study, filename) {
   for (annotationID in names(study[["annotations"]])) {
     terms_tmp <- study[["annotations"]][[annotationID]][["terms"]]
     terms_enrichments <- dplyr::tbl(con, "enrichments") %>%
-      dplyr::filter(annotationID == !! annotationID) %>%
-      dplyr::pull(termID) %>%
+      dplyr::filter(.data$annotationID == !! annotationID) %>%
+      dplyr::pull(.data$termID) %>%
       unique()
     terms_tmp <- terms_tmp[names(terms_tmp) %in% terms_enrichments]
     overlaps_tmp <- calc_pairwise_overlaps(terms_tmp) %>%
-      dplyr::filter(overlapSize > 0)
+      dplyr::filter(.data$overlapSize > 0)
     overlaps_tmp[["annotationID"]] <- annotationID
     overlaps_list <- c(overlaps_list, list(overlaps_tmp))
   }
