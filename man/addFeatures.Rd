@@ -7,9 +7,13 @@
 addFeatures(study, features, overwrite = FALSE)
 }
 \arguments{
+\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+
 \item{features}{A table of metadata variables that describe the features in the
 study. The table must contain the unique featureID used for the study. Also,
 the object must inherit from the class data.frame.}
+
+\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add feature metadata

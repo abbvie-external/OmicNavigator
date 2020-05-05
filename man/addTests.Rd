@@ -7,9 +7,13 @@
 addTests(study, tests, overwrite = FALSE)
 }
 \arguments{
+\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+
 \item{tests}{The tests tested by the model(s). A named list.
 The names correspond to the name of each test. The elements
 correspond to the description of each test.}
+
+\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add tests

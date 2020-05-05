@@ -111,3 +111,17 @@ study <- createStudy(name = "ABC",
                      description = "An analysis of ABC")
 
 }
+\seealso{
+\code{\link{addSamples}},
+  \code{\link{addFeatures}},
+  \code{\link{addModels}},
+  \code{\link{addAssays}},
+  \code{\link{addTests}},
+  \code{\link{addAnnotations}},
+  \code{\link{addResults}},
+  \code{\link{addEnrichments}},
+  \code{\link{addMetaFeatures}},
+  \code{\link{addPlots}},
+  \code{\link{exportStudy}},
+  \code{\link{installStudy}}
+}

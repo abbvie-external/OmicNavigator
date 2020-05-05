@@ -7,6 +7,8 @@
 addEnrichments(study, enrichments, overwrite = FALSE)
 }
 \arguments{
+\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+
 \item{enrichments}{The enrichment results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
 Each list element should be a list of the tests tested. The names
@@ -16,6 +18,8 @@ Each of these elements should be a data frame with enrichment results. Each
 table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
 adjusting for multiple testing). Any additional columns are ignored.}
+
+\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add enrichment results

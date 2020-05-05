@@ -20,6 +20,20 @@
 #' @inheritParams addMetaFeatures
 #' @inheritParams addPlots
 #'
+#' @seealso
+#'   \code{\link{addSamples}},
+#'   \code{\link{addFeatures}},
+#'   \code{\link{addModels}},
+#'   \code{\link{addAssays}},
+#'   \code{\link{addTests}},
+#'   \code{\link{addAnnotations}},
+#'   \code{\link{addResults}},
+#'   \code{\link{addEnrichments}},
+#'   \code{\link{addMetaFeatures}},
+#'   \code{\link{addPlots}},
+#'   \code{\link{exportStudy}},
+#'   \code{\link{installStudy}}
+#'
 #' @examples
 #'
 #' study <- createStudy(name = "ABC",
@@ -168,6 +182,7 @@ print.oaStudy <- function(x, ...) {
 #' @param samples A table of metadata variables that describe the samples in the
 #'   study. The table must contain the unique sampleID used for the study. Also,
 #'   the object must inherit from the class data.frame.
+#' @inheritParams shared-add
 #'
 #' @export
 addSamples <- function(study, samples, overwrite = FALSE) {
@@ -188,6 +203,7 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 #' @param features A table of metadata variables that describe the features in the
 #'   study. The table must contain the unique featureID used for the study. Also,
 #'   the object must inherit from the class data.frame.
+#' @inheritParams shared-add
 #'
 #' @export
 addFeatures <- function(study, features, overwrite = FALSE) {
@@ -208,6 +224,7 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 #' @param models The models analyzed in the study. The input is a named
 #'   list. The names correspond to the names of the models. The
 #'   elements correspond to the descriptions of the models.
+#' @inheritParams shared-add
 #'
 #' @export
 addModels <- function(study, models, overwrite = FALSE) {
@@ -229,6 +246,7 @@ addModels <- function(study, models, overwrite = FALSE) {
 #'   of the list correspond to the model names. Each element in the list should
 #'   be a matrix of quantifications for the assays. The column names should be
 #'   the sample IDs and the rows should be the feature IDs.
+#' @inheritParams shared-add
 #'
 #' @export
 addAssays <- function(study, assays, overwrite = FALSE) {
@@ -249,6 +267,7 @@ addAssays <- function(study, assays, overwrite = FALSE) {
 #' @param tests The tests tested by the model(s). A named list.
 #'   The names correspond to the name of each test. The elements
 #'   correspond to the description of each test.
+#' @inheritParams shared-add
 #'
 #' @export
 addTests <- function(study, tests, overwrite = FALSE) {
@@ -278,6 +297,7 @@ addTests <- function(study, tests, overwrite = FALSE) {
 #'   a list of annotation terms. The names of \code{terms} sublist correspond to
 #'   the name of the annotation terms. Each of the annotation terms should be a
 #'   character vector of feature IDs.
+#' @inheritParams shared-add
 #'
 #' @export
 addAnnotations <- function(study, annotations, overwrite = FALSE) {
@@ -300,6 +320,7 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
 #'   Each element in the list should be a list of data frames with inference
 #'   results, one for each test. The featureID column needs to be included
 #'   in each table.
+#' @inheritParams shared-add
 #'
 #' @export
 addResults <- function(study, results, overwrite = FALSE) {
@@ -326,6 +347,7 @@ addResults <- function(study, results, overwrite = FALSE) {
 #'   table must contain the following columns: "termID", "description",
 #'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
 #'   adjusting for multiple testing). Any additional columns are ignored.
+#' @inheritParams shared-add
 #'
 #' @export
 addEnrichments <- function(study, enrichments, overwrite = FALSE) {
@@ -349,6 +371,7 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
 #'   peptide may be associated with multiple proteins. The table must contain
 #'   the unique featureID used for the study. Also, the object must inherit from
 #'   the class data.frame.
+#' @inheritParams shared-add
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
@@ -393,6 +416,7 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
 #'   \code{displayName} to control how the plot will be named in the app.
 #'   Lastly, if the plottting function requires external packages, these can be
 #'   defined in the argument \code{packages}.
+#' @inheritParams shared-add
 #'
 #' @export
 addPlots <- function(study, plots, overwrite = FALSE) {

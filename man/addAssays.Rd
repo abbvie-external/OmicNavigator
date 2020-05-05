@@ -7,10 +7,14 @@
 addAssays(study, assays, overwrite = FALSE)
 }
 \arguments{
+\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+
 \item{assays}{The assays from the study. The input is a named list. The names
 of the list correspond to the model names. Each element in the list should
 be a matrix of quantifications for the assays. The column names should be
 the sample IDs and the rows should be the feature IDs.}
+
+\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add assays

@@ -7,6 +7,8 @@
 addAnnotations(study, annotations, overwrite = FALSE)
 }
 \arguments{
+\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per
 annotation database, e.g. reactome. The names correspond to the name of
@@ -19,6 +21,8 @@ assumed to be the main featureID used for the study), and 3) \code{terms},
 a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
 character vector of feature IDs.}
+
+\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add annotations
