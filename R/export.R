@@ -298,7 +298,8 @@ createPackage <- function(study, directoryname) {
 installStudy <- function(study, library = .libPaths()[1]) {
   stopifnot(inherits(study, "oaStudy"), dir.exists(library))
 
-  tmpPkgDir <- exportStudy(study, type = "package", path = tempdir(check = TRUE))
+  tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
+  tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
   buildPkg(tmpPkgDir)
   tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study[["name"]]))
