@@ -1,12 +1,14 @@
----
-title: "OmicAnalyzer App"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{OmicAnalyzer App}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+<!--
+%\VignetteIndexEntry{OmicAnalyzer app}
+%\VignetteEngine{knitr::knitr}
+%\VignetteEncoding{UTF-8}
+-->
 
+# OmicAnalyzer app
+
+**Date:** `r Sys.Date()`
+
+**Package version:** `r packageVersion("OmicAnalyzer")`
 These functions are intended to support the web application via OpenCPU calls.
 
 ```{r setup, include = FALSE}

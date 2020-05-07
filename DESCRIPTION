@@ -21,7 +21,6 @@ Imports:
 Suggests:
   jsonlite,
   knitr,
-  rmarkdown,
   tinytest
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr

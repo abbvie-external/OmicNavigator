@@ -1,11 +1,14 @@
----
-title: "OmicAnalyzer add() functions"
-output: rmarkdown::html_vignette
-vignette: >
-  %\VignetteIndexEntry{inputData}
-  %\VignetteEngine{knitr::rmarkdown}
-  %\VignetteEncoding{UTF-8}
----
+<!--
+%\VignetteIndexEntry{OmicAnalyzer add() functions}
+%\VignetteEngine{knitr::knitr}
+%\VignetteEncoding{UTF-8}
+-->
+
+# OmicAnalyzer add() functions
+
+**Date:** `r Sys.Date()`
+
+**Package version:** `r packageVersion("OmicAnalyzer")`
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
