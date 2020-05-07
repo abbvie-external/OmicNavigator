@@ -9,6 +9,7 @@
 **Date:** `r Sys.Date()`
 
 **Package version:** `r packageVersion("OmicAnalyzer")`
+
 These functions are intended to support the web application via OpenCPU calls.
 
 ```{r setup, include = FALSE}

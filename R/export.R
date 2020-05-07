@@ -141,7 +141,7 @@ createDatabase <- function(study, filename) {
   DBI::dbWriteTable(con, "terms", terms,
                     field.types = c("annotationID" = "varchar(50) REFERENCES annotations (annotationID)"))
 
-  # results -----------------------------------------------------------------
+  # results --------------------------------------------------------------------
 
   message("* Adding results")
   results_list <- list()
