@@ -30,7 +30,6 @@
     R CMD INSTALL --no-multiarch --with-keep.source OmicAnalyzer
     ```
 
-
 Alternatively, you can install directly from ***REMOVED*** if you save a GitHub Personal
 Access Token (PAT) in the environment variable `GITHUB_PAT`:
 
