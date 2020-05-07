@@ -1,5 +1,8 @@
 utils::globalVariables(".")
 
+#' @importFrom dbplyr as.sql
+NULL
+
 #' Shared parameters for add functions
 #'
 #' @name shared-add
