@@ -6,8 +6,15 @@ checkStudy <- function(study) {
   )
 }
 
-checkSamples <- function(samples, study = NULL) {
-  stopifnot(inherits(samples, "data.frame"))
+checkSamples <- function(samples, study = NULL, ...) {
+  UseMethod("checkSamples")
+}
+
+checkSamples.data.frame <- function(samples, study = NULL, ...) {
+  stopifnot(
+    nrow(samples) > 0,
+    ncol(samples) > 0
+  )
 
   if (is.null(study)) return(NULL)
 
@@ -18,6 +25,35 @@ checkSamples <- function(samples, study = NULL) {
     )
   }
 
+  return(NULL)
+}
+
+checkSamples.list <- function(samples, study = NULL, ...) {
+  stopifnot(
+    length(samples) > 0
+  )
+
+  if (is.null(study)) return(NULL)
+
+  if (!all(names(study[["models"]]) %in% names(samples))) {
+    stop(sprintf("The names of the list do not include all of the model names"))
+  }
+
+  for (i in seq_along(samples)) {
+    stopifnot(inherits(samples[[i]], "data.frame"))
+    if (!study[["sampleID"]] %in% colnames(samples[[i]])) {
+      stop(
+        sprintf("The samples table for model %s doesn't contain the sampleID column named \"%s\"",
+                names(samples)[i], study[["sampleID"]])
+      )
+    }
+  }
+
+  return(NULL)
+}
+
+checkSamples.default <- function(samples, study = NULL, ...) {
+  stop("The input should be a data frame or list of data frames")
 }
 
 checkFeatures <- function(features, study = NULL) {

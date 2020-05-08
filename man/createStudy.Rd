@@ -27,9 +27,9 @@ createStudy(
 
 \item{description}{Description of the study}
 
-\item{samples}{A table of metadata variables that describe the samples in the
-study. The table must contain the unique sampleID used for the study. Also,
-the object must inherit from the class data.frame.}
+\item{samples}{The metadata variables that describe the samples in the study.
+The input object can be a single data frame or a list of data frames (one
+per model). The table must contain the unique sampleID used for the study.}
 
 \item{features}{A table of metadata variables that describe the features in the
 study. The table must contain the unique featureID used for the study. Also,
