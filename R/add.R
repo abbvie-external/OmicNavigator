@@ -89,94 +89,6 @@ createStudy <- function(name,
   return(study)
 }
 
-#' @export
-print.oaStudy <- function(x, ...) {
-
-  cat("== OmicAnalyzer ==\n")
-  cat(sprintf("* Study name: %s\n", x[["name"]]))
-  cat(sprintf("* Feature ID column name: %s\n", x[["featureID"]]))
-  cat(sprintf("* Sample ID column name: %s\n", x[["sampleID"]]))
-
-  if (!is.null(x[["samples"]])) {
-    cat(sprintf("* Samples: %d\n", nrow(x[["samples"]])))
-    cat(sprintf("* Sample metadata variables: %d\n", ncol(x[["samples"]])))
-  }
-
-  if (!is.null(x[["features"]])) {
-    cat(sprintf("* Features: %d\n", nrow(x[["features"]])))
-    cat(sprintf("* Feature metadata variables: %d\n", ncol(x[["features"]])))
-  }
-
-  if (!is.null(x[["metaFeatures"]])) {
-    cat(sprintf("* Meta-feature metadata variables: %d\n", ncol(x[["metaFeatures"]]) - 1))
-  }
-
-  if (!is.null(x[["models"]])) {
-    cat(sprintf("* Models: %d\n", length(x[["models"]])))
-    for (i in seq_along(x[["models"]])) {
-      cat(sprintf("  * \"%s\"\n", names(x[["models"]])[i]))
-    }
-  }
-
-  if (!is.null(x[["assays"]])) {
-    cat(sprintf("* Assays: %d\n", length(x[["assays"]])))
-    for (i in seq_along(x[["assays"]])) {
-      cat(sprintf("  * \"%s\": %d x %d\n", names(x[["assays"]])[i], nrow(x[["assays"]][[i]]),
-          ncol(x[["assays"]][[i]])))
-    }
-  }
-
-  if (!is.null(x[["tests"]])) {
-    cat(sprintf("* Tests: %d\n", length(x[["tests"]])))
-    for (i in seq_along(x[["tests"]])) {
-      cat(sprintf("  * \"%s\"\n", names(x[["tests"]])[i]))
-    }
-  }
-
-  if (!is.null(x[["annotations"]])) {
-    cat(sprintf("* Annotations: %d\n", length(x[["annotations"]])))
-    for (i in seq_along(x[["annotations"]])) {
-      cat(sprintf("  * \"%s\"\n", names(x[["annotations"]])[i]))
-    }
-  }
-
-  if (!is.null(x[["results"]])) {
-    cat("* Results:\n")
-    for (i in seq_along(x[["results"]])) {
-      cat(sprintf("  * \"%s\":\n", names(x[["results"]])[i]))
-      for (j in seq_along(x[["results"]][[i]])) {
-        cat(sprintf("    * \"%s\": %d results\n", names(x[["results"]][[i]])[j],
-                    nrow(x[["results"]][[i]][[j]])))
-      }
-    }
-  }
-
-  if (!is.null(x[["enrichments"]])) {
-    cat("* Enrichments:\n")
-    for (i in seq_along(x[["enrichments"]])) {
-      cat(sprintf("  * \"%s\":\n", names(x[["enrichments"]])[i]))
-      for (j in seq_along(x[["enrichments"]][[i]])) {
-        cat(sprintf("    * \"%s\":\n", names(x[["enrichments"]][[i]])[j]))
-        for (k in seq_along(x[["enrichments"]][[i]][[j]])) {
-          cat(sprintf("      * \"%s\": %d results\n",
-                      names(x[["enrichments"]][[i]][[j]])[k],
-                      nrow(x[["enrichments"]][[i]][[j]][[k]])))
-        }
-      }
-    }
-  }
-
-  if (!is.null(x[["plots"]])) {
-    cat(sprintf("* Custom plots: %d\n", length(x[["plots"]])))
-    for (i in seq_along(x[["plots"]])) {
-      cat(sprintf("  * \"%s\" - \"%s\"\n", names(x[["plots"]])[i],
-                  x[["plots"]][[i]][["displayName"]]))
-    }
-  }
-
-  return(invisible(x))
-}
-
 #' Add sample metadata
 #'
 #' @param samples The metadata variables that describe the samples in the study.
@@ -191,6 +103,7 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 
   if (overwrite || is.null(study[["samples"]])) {
     study[["samples"]] <- samples
+    # class(study[["samples"]]) <- "oaSamples"
   } else {
     stop("Sample metadata already exists. Set overwrite=TRUE to overwrite.")
   }
