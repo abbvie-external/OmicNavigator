@@ -2,10 +2,6 @@
 #'
 #' @param name Name of the study
 #' @param description Description of the study
-#' @param featureID The column name that contains the unique identifiers for the
-#'   features measured in the study
-#' @param sampleID The column name that contains the unique identifiers for the
-#'   samples measured in the study
 #' @param version (Optional) Include a version number to track the updates to
 #'   your study package. If you export the study to a package, the version is
 #'   used as the package version.
@@ -42,49 +38,45 @@
 #' @export
 createStudy <- function(name,
                         description = name,
-                        samples = NULL,
-                        features = NULL,
-                        models = NULL,
-                        assays = NULL,
-                        tests = NULL,
-                        annotations = NULL,
-                        results = NULL,
-                        enrichments = NULL,
-                        metaFeatures = NULL,
-                        plots = NULL,
-                        featureID = "featureID",
-                        sampleID = "sampleID",
+                        samples = list(),
+                        features = list(),
+                        models = list(),
+                        assays = list(),
+                        tests = list(),
+                        annotations = list(),
+                        results = list(),
+                        enrichments = list(),
+                        metaFeatures = list(),
+                        plots = list(),
                         version = NULL)
 {
   stopifnot(is.character(name), is.character(description))
 
   study <- list(name = name,
                 description = description,
-                samples = NULL,
-                features = NULL,
-                models = NULL,
-                assays = NULL,
-                tests = NULL,
-                annotations = NULL,
-                results = NULL,
-                enrichments = NULL,
-                metaFeatures = NULL,
-                plots = NULL,
-                featureID = featureID,
-                sampleID = sampleID,
+                samples = list(),
+                features = list(),
+                models = list(),
+                assays = list(),
+                tests = list(),
+                annotations = list(),
+                results = list(),
+                enrichments = list(),
+                metaFeatures = list(),
+                plots = list(),
                 version = version)
   class(study) <- "oaStudy"
 
-  if (!is.null(samples)) study <- addSamples(study, samples = samples)
-  if (!is.null(features)) study <- addFeatures(study, features = features)
-  if (!is.null(models)) study <- addModels(study, models = models)
-  if (!is.null(assays)) study <- addAssays(study, assays = assays)
-  if (!is.null(tests)) study <- addTests(study, tests = tests)
-  if (!is.null(annotations)) study <- addAnnotations(study, annotations = annotations)
-  if (!is.null(results)) study <- addResults(study, results = results)
-  if (!is.null(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
-  if (!is.null(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
-  if (!is.null(plots)) study <- addPlots(study, plots = plots)
+  if (!isEmpty(samples)) study <- addSamples(study, samples = samples)
+  if (!isEmpty(features)) study <- addFeatures(study, features = features)
+  if (!isEmpty(models)) study <- addModels(study, models = models)
+  if (!isEmpty(assays)) study <- addAssays(study, assays = assays)
+  if (!isEmpty(tests)) study <- addTests(study, tests = tests)
+  if (!isEmpty(annotations)) study <- addAnnotations(study, annotations = annotations)
+  if (!isEmpty(results)) study <- addResults(study, results = results)
+  if (!isEmpty(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
+  if (!isEmpty(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
+  if (!isEmpty(plots)) study <- addPlots(study, plots = plots)
 
   return(study)
 }
@@ -93,41 +85,44 @@ createStudy <- function(name,
 #'
 #' @param samples The metadata variables that describe the samples in the study.
 #'   The input object can be a single data frame or a list of data frames (one
-#'   per model). The table must contain the unique sampleID used for the study.
+#'   per model). The first column is used as the sample ID, so it must contain
+#'   unique values.
 #' @inheritParams shared-add
 #'
 #' @export
 addSamples <- function(study, samples, overwrite = FALSE) {
   checkStudy(study)
-  checkSamples(samples, study)
 
-  if (overwrite || is.null(study[["samples"]])) {
-    study[["samples"]] <- samples
-    # class(study[["samples"]]) <- "oaSamples"
-  } else {
-    stop("Sample metadata already exists. Set overwrite=TRUE to overwrite.")
+  if (inherits(samples, "data.frame")) {
+    samples <- list("default" = samples)
   }
+
+  checkSamples(samples)
+
+  study[["samples"]] <- addToList(study[["samples"]], samples, overwrite = overwrite)
 
   return(study)
 }
 
 #' Add feature metadata
 #'
-#' @param features A table of metadata variables that describe the features in the
-#'   study. The table must contain the unique featureID used for the study. Also,
-#'   the object must inherit from the class data.frame.
+#' @param features The metadata variables that describe the features in the
+#'   study. The input object can be a single data frame or a list of data frames
+#'   (one per model). The first column is used as the feature ID, so it must
+#'   contain unique values.
 #' @inheritParams shared-add
 #'
 #' @export
 addFeatures <- function(study, features, overwrite = FALSE) {
   checkStudy(study)
-  checkFeatures(features, study)
 
-  if (overwrite || is.null(study[["features"]])) {
-    study[["features"]] <- features
-  } else {
-    stop("Feature metadata already exists. Set overwrite=TRUE to overwrite.")
+  if (inherits(features, "data.frame")) {
+    features <- list("default" = features)
   }
+
+  checkFeatures(features)
+
+  study[["features"]] <- addToList(study[["features"]], features, overwrite = overwrite)
 
   return(study)
 }
@@ -144,7 +139,7 @@ addModels <- function(study, models, overwrite = FALSE) {
   checkStudy(study)
   checkModels(models, study)
 
-  if (overwrite || is.null(study[["models"]])) {
+  if (overwrite || isEmpty(study[["models"]])) {
     study[["models"]] <- models
   } else {
     stop("Models metadata already exists. Set overwrite=TRUE to overwrite.")
@@ -166,7 +161,7 @@ addAssays <- function(study, assays, overwrite = FALSE) {
   checkStudy(study)
   checkAssays(assays, study)
 
-  if (overwrite || is.null(study[["assays"]])) {
+  if (overwrite || isEmpty(study[["assays"]])) {
     study[["assays"]] <- assays
   } else {
     stop("assays metadata already exists. Set overwrite=TRUE to overwrite.")
@@ -187,7 +182,7 @@ addTests <- function(study, tests, overwrite = FALSE) {
   checkStudy(study)
   checkTests(tests, study)
 
-  if (overwrite || is.null(study[["tests"]])) {
+  if (overwrite || isEmpty(study[["tests"]])) {
     study[["tests"]] <- tests
   } else {
     stop("The tests already exist. Set overwrite=TRUE to overwrite.")
@@ -217,7 +212,7 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
   checkStudy(study)
   checkAnnotations(annotations, study)
 
-  if (overwrite || is.null(study[["annotations"]])) {
+  if (overwrite || isEmpty(study[["annotations"]])) {
     study[["annotations"]] <- annotations
   } else {
     stop("The annotations already exist. Set overwrite=TRUE to overwrite.")
@@ -240,7 +235,7 @@ addResults <- function(study, results, overwrite = FALSE) {
   checkStudy(study)
   checkResults(results, study)
 
-  if (overwrite || is.null(study[["results"]])) {
+  if (overwrite || isEmpty(study[["results"]])) {
     study[["results"]] <- results
   } else {
     stop("The result results already exist. Set overwrite=TRUE to overwrite.")
@@ -267,7 +262,7 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
   checkStudy(study)
   checkEnrichments(enrichments, study)
 
-  if (overwrite || is.null(study[["enrichments"]])) {
+  if (overwrite || isEmpty(study[["enrichments"]])) {
     study[["enrichments"]] <- enrichments
   } else {
     stop("The enrichment results already exist. Set overwrite=TRUE to overwrite.")
@@ -291,7 +286,7 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
   checkStudy(study)
   checkMetaFeatures(metaFeatures, study)
 
-  if (overwrite || is.null(study[["metaFeatures"]])) {
+  if (overwrite || isEmpty(study[["metaFeatures"]])) {
     study[["metaFeatures"]] <- metaFeatures
   } else {
     stop("Feature metadata already exists. Set overwrite=TRUE to overwrite.")
@@ -336,7 +331,7 @@ addPlots <- function(study, plots, overwrite = FALSE) {
   checkStudy(study)
   checkPlots(plots, study)
 
-  if (overwrite || is.null(study[["plots"]])) {
+  if (overwrite || isEmpty(study[["plots"]])) {
     study[["plots"]] <- plots
   } else {
     stop("The plots already exist. Set overwrite=TRUE to overwrite.")

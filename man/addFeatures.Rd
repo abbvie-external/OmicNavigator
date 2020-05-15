@@ -9,9 +9,10 @@ addFeatures(study, features, overwrite = FALSE)
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
-\item{features}{A table of metadata variables that describe the features in the
-study. The table must contain the unique featureID used for the study. Also,
-the object must inherit from the class data.frame.}
+\item{features}{The metadata variables that describe the features in the
+study. The input object can be a single data frame or a list of data frames
+(one per model). The first column is used as the feature ID, so it must
+contain unique values.}
 
 \item{overwrite}{Overwrite existing value}
 }

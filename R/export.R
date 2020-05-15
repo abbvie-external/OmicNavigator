@@ -7,7 +7,7 @@
 #'
 #' @export
 exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL) {
-  stopifnot(inherits(study, "oaStudy"))
+  checkStudy(study)
 
   type <- match.arg(type)
 
@@ -46,22 +46,18 @@ createDatabase <- function(study, filename) {
   # samples --------------------------------------------------------------------
 
   message("* Adding samples")
-  fields_samples <- c("varchar(50) PRIMARY KEY")
-  names(fields_samples) <- study[["sampleID"]]
-  DBI::dbWriteTable(con, "samples", study[["samples"]], field.types = fields_samples)
-  DBI::dbExecute(con,
-                 sprintf("CREATE UNIQUE INDEX samples_index ON samples(%s)",
-                         study[["sampleID"]]))
+  for (i in seq_along(study[["samples"]])) {
+    tableName <- paste("samples", names(study[["samples"]])[i], sep = "-")
+    DBI::dbWriteTable(con, tableName, study[["samples"]][[i]])
+  }
 
   # features -------------------------------------------------------------------
 
   message("* Adding features")
-  fields_features <- c("varchar(50) PRIMARY KEY")
-  names(fields_features) <- study[["featureID"]]
-  DBI::dbWriteTable(con, "features", study[["features"]], field.types = fields_features)
-  DBI::dbExecute(con,
-                 sprintf("CREATE UNIQUE INDEX feature_index ON features(%s)",
-                         study[["featureID"]]))
+  for (i in seq_along(study[["features"]])) {
+    tableName <- paste("features", names(study[["features"]])[i], sep = "-")
+    DBI::dbWriteTable(con, tableName, study[["features"]][[i]])
+  }
 
   # models ---------------------------------------------------------------------
 

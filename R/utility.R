@@ -1,3 +1,6 @@
+
+## Databases -------------------------------------------------------------------
+
 connectDatabase <- function(study, libraries = NULL) {
 
   pkg <- paste0("OAstudy", study)
@@ -16,4 +19,37 @@ connectDatabase <- function(study, libraries = NULL) {
 
 disconnectDatabase <- function(con) {
   DBI::dbDisconnect(con)
+}
+
+## Lists -----------------------------------------------------------------------
+
+isEmpty <- function(x) {length(x) == 0}
+
+addToList <- function(listOne, listTwo, overwrite = FALSE) {
+  listNew <- listOne
+
+  for (i in seq_along(listTwo)) {
+    elementName <- names(listTwo)[i]
+    if (elementName %in% names(listOne) && !overwrite) {
+      stop(sprintf("Data for \"%s\" already exists.\n", elementName),
+           "Set the argument overwrite to TRUE to replace it.",
+      call. = FALSE)
+    }
+
+    listNew[[elementName]] <- listTwo[[elementName]]
+  }
+
+  return(listNew)
+}
+
+## Data frames -----------------------------------------------------------------
+
+hasUniqueIdColumn <- function(x) {
+  colValues <- x[[1]]
+  colName <- colnames(x)[1]
+  colIsUnique <- length(unique(colValues)) == length(colValues)
+  if (!colIsUnique) {
+    stop(sprintf("The first column, \"%s\", must contain unique values", colName),
+         call. = FALSE)
+  }
 }

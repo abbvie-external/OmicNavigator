@@ -6,71 +6,35 @@ checkStudy <- function(study) {
   )
 }
 
-checkSamples <- function(samples, study = NULL, ...) {
-  UseMethod("checkSamples")
-}
-
-checkSamples.data.frame <- function(samples, study = NULL, ...) {
-  stopifnot(
-    nrow(samples) > 0,
-    ncol(samples) > 0
-  )
-
-  if (is.null(study)) return(NULL)
-
-  if (!study[["sampleID"]] %in% colnames(samples)) {
-    stop(
-      sprintf("The samples table doesn't contain the sampleID column named \"%s\"",
-              study[["sampleID"]])
-    )
-  }
-
-  return(NULL)
-}
-
-checkSamples.list <- function(samples, study = NULL, ...) {
+checkSamples <- function(samples) {
   stopifnot(
     length(samples) > 0
   )
 
-  if (is.null(study)) return(NULL)
-
-  if (!all(names(study[["models"]]) %in% names(samples))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
-  }
-
   for (i in seq_along(samples)) {
-    stopifnot(inherits(samples[[i]], "data.frame"))
-    if (!study[["sampleID"]] %in% colnames(samples[[i]])) {
-      stop(
-        sprintf("The samples table for model %s doesn't contain the sampleID column named \"%s\"",
-                names(samples)[i], study[["sampleID"]])
-      )
-    }
+    stopifnot(
+      inherits(samples[[i]], "data.frame"),
+      nrow(samples[[i]]) > 0,
+      ncol(samples[[i]]) > 0
+    )
+    hasUniqueIdColumn(samples[[i]])
   }
 
   return(NULL)
 }
 
-checkSamples.default <- function(samples, study = NULL, ...) {
-  stop("The input should be a data frame or list of data frames")
-}
+checkFeatures <- function(features) {
+  stopifnot(
+    length(features) > 0
+  )
 
-checkFeatures <- function(features, study = NULL) {
-  stopifnot(inherits(features, "data.frame"))
-
-  if (is.null(study)) return(NULL)
-
-  if (!study[["featureID"]] %in% colnames(features)) {
-    stop(
-      sprintf("The features table doesn't contain the featureID column named \"%s\"",
-              study[["featureID"]])
+  for (i in seq_along(features)) {
+    stopifnot(
+      inherits(features[[i]], "data.frame"),
+      nrow(features[[i]]) > 0,
+      ncol(features[[i]]) > 0
     )
-  }
-
-  key_column <- features[[study[["featureID"]]]]
-  if (length(key_column) != length(unique(key_column))) {
-    stop(sprintf("The key column \"%s\" contains duplicates", study[["featureID"]]))
+    hasUniqueIdColumn(features[[i]])
   }
 
   return(NULL)
@@ -93,8 +57,8 @@ checkAssays <- function(assays, study = NULL) {
 
   for (assay in assays) {
     stopifnot(inherits(assay, "matrix"))
-    stopifnot(all(colnames(assay) %in% study[["samples"]][[study[["sampleID"]]]]))
-    stopifnot(all(rownames(assay) %in% study[["features"]][[study[["featureID"]]]]))
+    stopifnot(all(colnames(assay) %in% study[["samples"]][[1]]))
+    stopifnot(all(rownames(assay) %in% study[["features"]][[1]]))
   }
 
   return(NULL)

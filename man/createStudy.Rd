@@ -7,18 +7,16 @@
 createStudy(
   name,
   description = name,
-  samples = NULL,
-  features = NULL,
-  models = NULL,
-  assays = NULL,
-  tests = NULL,
-  annotations = NULL,
-  results = NULL,
-  enrichments = NULL,
-  metaFeatures = NULL,
-  plots = NULL,
-  featureID = "featureID",
-  sampleID = "sampleID",
+  samples = list(),
+  features = list(),
+  models = list(),
+  assays = list(),
+  tests = list(),
+  annotations = list(),
+  results = list(),
+  enrichments = list(),
+  metaFeatures = list(),
+  plots = list(),
   version = NULL
 )
 }
@@ -29,11 +27,13 @@ createStudy(
 
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object can be a single data frame or a list of data frames (one
-per model). The table must contain the unique sampleID used for the study.}
+per model). The first column is used as the sample ID, so it must contain
+unique values.}
 
-\item{features}{A table of metadata variables that describe the features in the
-study. The table must contain the unique featureID used for the study. Also,
-the object must inherit from the class data.frame.}
+\item{features}{The metadata variables that describe the features in the
+study. The input object can be a single data frame or a list of data frames
+(one per model). The first column is used as the feature ID, so it must
+contain unique values.}
 
 \item{models}{The models analyzed in the study. The input is a named
 list. The names correspond to the names of the models. The
@@ -91,12 +91,6 @@ contains the function definition. You can optionally include
 \code{displayName} to control how the plot will be named in the app.
 Lastly, if the plottting function requires external packages, these can be
 defined in the argument \code{packages}.}
-
-\item{featureID}{The column name that contains the unique identifiers for the
-features measured in the study}
-
-\item{sampleID}{The column name that contains the unique identifiers for the
-samples measured in the study}
 
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is

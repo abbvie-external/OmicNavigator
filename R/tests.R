@@ -1,8 +1,6 @@
 
 testStudy <- function(name,
                       description = name,
-                      featureID = "featureID",
-                      sampleID = "sampleID",
                       version = NULL,
                       seed = 12345L)
 {
@@ -20,8 +18,6 @@ testStudy <- function(name,
                        enrichments = testEnrichments(seed = seed),
                        metaFeatures = testMetaFeatures(seed = seed),
                        plots = testPlots(),
-                       featureID = featureID,
-                       sampleID = sampleID,
                        version = version)
 
   return(study)

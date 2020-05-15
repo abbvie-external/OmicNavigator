@@ -11,7 +11,8 @@ addSamples(study, samples, overwrite = FALSE)
 
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object can be a single data frame or a list of data frames (one
-per model). The table must contain the unique sampleID used for the study.}
+per model). The first column is used as the sample ID, so it must contain
+unique values.}
 
 \item{overwrite}{Overwrite existing value}
 }
