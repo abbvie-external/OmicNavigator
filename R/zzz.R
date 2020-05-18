@@ -10,4 +10,5 @@ NULL
 #' @param study An OmicAnalyzer study created with \code{\link{createStudy}}
 #' @param overwrite Overwrite existing value
 #'
+#' @keywords internal
 NULL

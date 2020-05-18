@@ -11,3 +11,4 @@
 \description{
 Shared parameters for add functions
 }
+\keyword{internal}
