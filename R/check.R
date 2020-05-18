@@ -46,19 +46,15 @@ checkModels <- function(models, study = NULL) {
   return(NULL)
 }
 
-checkAssays <- function(assays, study = NULL) {
+checkAssays <- function(assays) {
   stopifnot(inherits(assays, "list"))
 
-  if (is.null(study)) return(NULL)
-
-  if (!all(names(study[["models"]]) %in% names(assays))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
-  }
-
-  for (assay in assays) {
-    stopifnot(inherits(assay, "matrix"))
-    stopifnot(all(colnames(assay) %in% study[["samples"]][[1]]))
-    stopifnot(all(rownames(assay) %in% study[["features"]][[1]]))
+  for (i in seq_along(assays)) {
+    stopifnot(
+      inherits(assays[[i]], "data.frame"),
+      nrow(assays[[i]]) > 0,
+      ncol(assays[[i]]) > 0
+    )
   }
 
   return(NULL)

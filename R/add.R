@@ -150,22 +150,24 @@ addModels <- function(study, models, overwrite = FALSE) {
 
 #' Add assays
 #'
-#' @param assays The assays from the study. The input is a named list. The names
-#'   of the list correspond to the model names. Each element in the list should
-#'   be a matrix of quantifications for the assays. The column names should be
-#'   the sample IDs and the rows should be the feature IDs.
+#' @param assays The assays from the study. The input object can be a single
+#'   data frame or a list of data frames (one per model).The row names should
+#'   correspond to the feature IDs (\code{\link{addFeatures}}). The column names
+#'   should corresond to the sample IDs (\code{\link{addSamples}}). The data
+#'   frame should only contain numeric values.
 #' @inheritParams shared-add
 #'
 #' @export
 addAssays <- function(study, assays, overwrite = FALSE) {
   checkStudy(study)
-  checkAssays(assays, study)
 
-  if (overwrite || isEmpty(study[["assays"]])) {
-    study[["assays"]] <- assays
-  } else {
-    stop("assays metadata already exists. Set overwrite=TRUE to overwrite.")
+  if (inherits(assays, "data.frame")) {
+    features <- list("default" = assays)
   }
+
+  checkAssays(assays)
+
+  study[["assays"]] <- addToList(study[["assays"]], assays, overwrite = overwrite)
 
   return(study)
 }

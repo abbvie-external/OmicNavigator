@@ -63,6 +63,7 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
                           nrow = rows, ncol = cols)
     rownames(assays[[i]]) <- sprintf("feature_%04d", seq_len(rows))
     colnames(assays[[i]]) <- sprintf("sample_%04d", seq_len(cols))
+    assays[[i]] <- as.data.frame(assays[[i]])
   }
   return(assays)
 }

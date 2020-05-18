@@ -39,10 +39,11 @@ contain unique values.}
 list. The names correspond to the names of the models. The
 elements correspond to the descriptions of the models.}
 
-\item{assays}{The assays from the study. The input is a named list. The names
-of the list correspond to the model names. Each element in the list should
-be a matrix of quantifications for the assays. The column names should be
-the sample IDs and the rows should be the feature IDs.}
+\item{assays}{The assays from the study. The input object can be a single
+data frame or a list of data frames (one per model).The row names should
+correspond to the feature IDs (\code{\link{addFeatures}}). The column names
+should corresond to the sample IDs (\code{\link{addSamples}}). The data
+frame should only contain numeric values.}
 
 \item{tests}{The tests tested by the model(s). A named list.
 The names correspond to the name of each test. The elements

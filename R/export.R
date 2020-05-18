@@ -75,7 +75,6 @@ createDatabase <- function(study, filename) {
   assays_long <- vector(mode = "list", length = length(study[["assays"]]))
   for (i in seq_along(study[["assays"]])) {
     assays_long[[i]] <- study[["assays"]][[i]] %>%
-      as.data.frame %>%
       dplyr::mutate(featureID = rownames(.)) %>%
       tidyr::pivot_longer(cols = -.data$featureID,
                           names_to = "sampleID",
@@ -84,18 +83,7 @@ createDatabase <- function(study, filename) {
       dplyr::select(.data$featureID, .data$sampleID, .data$modelID, .data$quantification)
   }
   assays_final <- dplyr::bind_rows(assays_long)
-  colnames(assays_final)[1:2] <- c(study[["featureID"]], study[["sampleID"]])
-  fields_assays <- c(
-    sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]]),
-    sprintf("varchar(50) REFERENCES samples (%s)", study[["sampleID"]]),
-    "varchar(100) REFERENCES models (modelID)"
-  )
-  names(fields_assays) <- c(study[["featureID"]], study[["sampleID"]], "modelID")
-  DBI::dbWriteTable(con, "assays", assays_final,
-                    field.types = fields_assays)
-  DBI::dbExecute(con,
-                 sprintf("CREATE UNIQUE INDEX assays_index ON assays(%s, %s, modelID)",
-                         study[["featureID"]], study[["sampleID"]]))
+  DBI::dbWriteTable(con, "assays", assays_final)
 
   # tests ------------------------------------------------------------------
 
