@@ -94,33 +94,35 @@ createDatabase <- function(study, filename) {
   # annotations ----------------------------------------------------------------
 
   message("* Adding annotations")
-  annotations <- data.frame(annotationID = names(study[["annotations"]]),
-                            description = vapply(study[["annotations"]], function(x) x[["description"]], character(1)),
-                            featureID = vapply(study[["annotations"]], function(x) x[["featureID"]], character(1)),
-                            stringsAsFactors = FALSE)
-
-  DBI::dbWriteTable(con, "annotations", annotations,
-                    field.types = c("annotationID" = "varchar(50) PRIMARY KEY"))
-
-  terms_list <- list()
+  annotationsTable <- data.frame(modelID = NULL, annotationID = NULL,
+                                 description = NULL, featureID = NULL,
+                                 stringsAsFactors = FALSE)
+  termsTable <- data.frame(modelID = NULL, annotationID = NULL,
+                           termID = NULL, featureID = NULL,
+                           stringsAsFactors = FALSE)
   for (i in seq_along(study[["annotations"]])) {
-    tmp_annotation <- study[["annotations"]][[i]]
-    tmp_annotationID <- names(study[["annotations"]])[i]
-    tmp_annotation_terms <- tmp_annotation[["terms"]]
-    for (j in seq_along(tmp_annotation_terms)) {
-      tmp_term <- tmp_annotation_terms[[j]]
-      tmp_termID <- names(tmp_annotation_terms)[j]
-      tmp <- data.frame(annotationID = tmp_annotationID,
-                        termID = tmp_termID,
-                        featureID = tmp_term,
-                        stringsAsFactors = FALSE)
-      terms_list <- c(terms_list, list(tmp))
+    annotationModelID <- names(study[["annotations"]])[i]
+    for (j in seq_along(study[["annotations"]][[i]])) {
+      annotationID <- names(study[["annotations"]][[i]])[j]
+      tmpTable <- data.frame(modelID = annotationModelID,
+                             annotationID = annotationID,
+                             description = study[["annotations"]][[i]][[j]][["description"]],
+                             featureID = study[["annotations"]][[i]][[j]][["featureID"]],
+                             stringsAsFactors = FALSE)
+      annotationsTable <- rbind(annotationsTable, tmpTable)
+      tmpTerms <- study[["annotations"]][[i]][[j]][["terms"]]
+      for (k in seq_along(tmpTerms)) {
+        tmpTermsTable <- data.frame(modelID = annotationModelID,
+                                    annotationID = annotationID,
+                                    termID = names(tmpTerms)[k],
+                                    featureID = tmpTerms[[k]],
+                                    stringsAsFactors = FALSE)
+        termsTable <- rbind(termsTable, tmpTermsTable)
+      }
     }
   }
-
-  terms <- dplyr::bind_rows(terms_list)
-  DBI::dbWriteTable(con, "terms", terms,
-                    field.types = c("annotationID" = "varchar(50) REFERENCES annotations (annotationID)"))
+  DBI::dbWriteTable(con, "annotations", annotationsTable)
+  DBI::dbWriteTable(con, "terms", termsTable)
 
   # results --------------------------------------------------------------------
 

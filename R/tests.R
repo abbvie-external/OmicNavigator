@@ -98,6 +98,7 @@ testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 1
       featureID = featureID
     )
   }
+  annotations <- list(default = annotations)
   return(annotations)
 }
 
