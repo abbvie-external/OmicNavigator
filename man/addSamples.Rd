@@ -10,9 +10,10 @@ addSamples(study, samples, overwrite = FALSE)
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
 \item{samples}{The metadata variables that describe the samples in the study.
-The input object can be a single data frame or a list of data frames (one
-per model). The first column is used as the sample ID, so it must contain
-unique values.}
+The input object is a named list of data frames (one per model). The first
+column of each data frame is used as the sample ID, so it must contain
+unique values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{overwrite}{Overwrite existing value}
 }

@@ -8,7 +8,10 @@ checkStudy <- function(study) {
 
 checkSamples <- function(samples) {
   stopifnot(
-    length(samples) > 0
+    is.list(samples),
+    !is.data.frame(samples),
+    length(samples) > 0,
+    !is.null(names(samples))
   )
 
   for (i in seq_along(samples)) {
@@ -25,7 +28,10 @@ checkSamples <- function(samples) {
 
 checkFeatures <- function(features) {
   stopifnot(
-    length(features) > 0
+    is.list(features),
+    !is.data.frame(features),
+    length(features) > 0,
+    !is.null(names(features))
   )
 
   for (i in seq_along(features)) {
@@ -47,7 +53,12 @@ checkModels <- function(models, study = NULL) {
 }
 
 checkAssays <- function(assays) {
-  stopifnot(inherits(assays, "list"))
+  stopifnot(
+    is.list(assays),
+    !is.data.frame(assays),
+    length(assays) > 0,
+    !is.null(names(assays))
+  )
 
   for (i in seq_along(assays)) {
     stopifnot(
@@ -62,7 +73,10 @@ checkAssays <- function(assays) {
 
 checkTests <- function(tests, study = NULL) {
   stopifnot(
-    length(tests) > 0
+    is.list(tests),
+    !is.data.frame(tests),
+    length(tests) > 0,
+    !is.null(names(tests))
   )
 
   for (i in seq_along(tests)) {

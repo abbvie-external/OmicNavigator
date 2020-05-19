@@ -30,7 +30,9 @@ testSamples <- function(rows = 10, cols = 5, seed = 12345L) {
   colnames(samples) <- sprintf("sampleVar%02d", seq_len(cols))
   sampleID <- sprintf("sample_%04d", seq_len(rows))
   samples <- cbind(sampleID, samples)
-  return(as.data.frame(samples, stringsAsFactors = FALSE))
+  samples <- as.data.frame(samples, stringsAsFactors = FALSE)
+  samples <- list(default = samples)
+  return(samples)
 }
 
 testFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
@@ -40,7 +42,9 @@ testFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
   colnames(features) <- sprintf("featureVar%02d", seq_len(cols))
   featureID <- sprintf("feature_%04d", seq_len(rows))
   features <- cbind(featureID, features)
-  return(as.data.frame(features, stringsAsFactors = FALSE))
+  features <- as.data.frame(features, stringsAsFactors = FALSE)
+  features <- list(default = features)
+  return(features)
 }
 
 testModels <- function(n = 3) {
@@ -74,7 +78,7 @@ testTests <- function(n = 2) {
     description = sprintf("test %d", seq_len(n)),
     stringsAsFactors = FALSE
   )
-
+  tests <- list(default = tests)
   return(tests)
 }
 

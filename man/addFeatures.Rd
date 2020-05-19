@@ -10,9 +10,10 @@ addFeatures(study, features, overwrite = FALSE)
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
 \item{features}{The metadata variables that describe the features in the
-study. The input object can be a single data frame or a list of data frames
-(one per model). The first column is used as the feature ID, so it must
-contain unique values.}
+study. The input object is a list of data frames (one per model). The first
+column of each data frame is used as the feature ID, so it must contain
+unique values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{overwrite}{Overwrite existing value}
 }

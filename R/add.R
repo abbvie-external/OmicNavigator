@@ -84,19 +84,15 @@ createStudy <- function(name,
 #' Add sample metadata
 #'
 #' @param samples The metadata variables that describe the samples in the study.
-#'   The input object can be a single data frame or a list of data frames (one
-#'   per model). The first column is used as the sample ID, so it must contain
-#'   unique values.
+#'   The input object is a named list of data frames (one per model). The first
+#'   column of each data frame is used as the sample ID, so it must contain
+#'   unique values. To share a data frame across multiple models, use the name
+#'   "default".
 #' @inheritParams shared-add
 #'
 #' @export
 addSamples <- function(study, samples, overwrite = FALSE) {
   checkStudy(study)
-
-  if (inherits(samples, "data.frame")) {
-    samples <- list("default" = samples)
-  }
-
   checkSamples(samples)
 
   study[["samples"]] <- addToList(study[["samples"]], samples, overwrite = overwrite)
@@ -107,19 +103,15 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 #' Add feature metadata
 #'
 #' @param features The metadata variables that describe the features in the
-#'   study. The input object can be a single data frame or a list of data frames
-#'   (one per model). The first column is used as the feature ID, so it must
-#'   contain unique values.
+#'   study. The input object is a list of data frames (one per model). The first
+#'   column of each data frame is used as the feature ID, so it must contain
+#'   unique values. To share a data frame across multiple models, use the name
+#'   "default".
 #' @inheritParams shared-add
 #'
 #' @export
 addFeatures <- function(study, features, overwrite = FALSE) {
   checkStudy(study)
-
-  if (inherits(features, "data.frame")) {
-    features <- list("default" = features)
-  }
-
   checkFeatures(features)
 
   study[["features"]] <- addToList(study[["features"]], features, overwrite = overwrite)
@@ -129,9 +121,9 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 
 #' Add models
 #'
-#' @param models The models analyzed in the study. The input is a named
-#'   list. The names correspond to the names of the models. The
-#'   elements correspond to the descriptions of the models.
+#' @param models The models analyzed in the study. The input is a named list.
+#'   The names correspond to the names of the models. The elements correspond to
+#'   the descriptions of the models.
 #' @inheritParams shared-add
 #'
 #' @export
@@ -146,21 +138,17 @@ addModels <- function(study, models, overwrite = FALSE) {
 
 #' Add assays
 #'
-#' @param assays The assays from the study. The input object can be a single
-#'   data frame or a list of data frames (one per model).The row names should
-#'   correspond to the feature IDs (\code{\link{addFeatures}}). The column names
-#'   should corresond to the sample IDs (\code{\link{addSamples}}). The data
-#'   frame should only contain numeric values.
+#' @param assays The assays from the study. The input object is a list of data
+#'   frames (one per model). The row names should correspond to the feature IDs
+#'   (\code{\link{addFeatures}}). The column names should corresond to the
+#'   sample IDs (\code{\link{addSamples}}). The data frame should only contain
+#'   numeric values. To share a data frame across multiple models, use the name
+#'   "default".
 #' @inheritParams shared-add
 #'
 #' @export
 addAssays <- function(study, assays, overwrite = FALSE) {
   checkStudy(study)
-
-  if (inherits(assays, "data.frame")) {
-    features <- list("default" = assays)
-  }
-
   checkAssays(assays)
 
   study[["assays"]] <- addToList(study[["assays"]], assays, overwrite = overwrite)
@@ -170,20 +158,15 @@ addAssays <- function(study, assays, overwrite = FALSE) {
 
 #' Add tests
 #'
-#' @param tests The tests from the study. The input object can be a single data
-#'   frame or a list of data frames (one per model). The first column should
-#'   contain the unique ID for each test. The second column should contain a
-#'   description of the test.
+#' @param tests The tests from the study. The input object is a list of data
+#'   frames (one per model). The first column should contain the unique ID for
+#'   each test. The second column should contain a description of the test. To
+#'   share a data frame across multiple models, use the name "default".
 #' @inheritParams shared-add
 #'
 #' @export
 addTests <- function(study, tests, overwrite = FALSE) {
   checkStudy(study)
-
-  if (inherits(tests, "data.frame")) {
-    tests <- list("default" = tests)
-  }
-
   checkTests(tests)
 
   study[["tests"]] <- addToList(study[["tests"]], tests, overwrite = overwrite)

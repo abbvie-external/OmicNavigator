@@ -9,11 +9,12 @@ addAssays(study, assays, overwrite = FALSE)
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
-\item{assays}{The assays from the study. The input object can be a single
-data frame or a list of data frames (one per model).The row names should
-correspond to the feature IDs (\code{\link{addFeatures}}). The column names
-should corresond to the sample IDs (\code{\link{addSamples}}). The data
-frame should only contain numeric values.}
+\item{assays}{The assays from the study. The input object is a list of data
+frames (one per model). The row names should correspond to the feature IDs
+(\code{\link{addFeatures}}). The column names should corresond to the
+sample IDs (\code{\link{addSamples}}). The data frame should only contain
+numeric values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{overwrite}{Overwrite existing value}
 }

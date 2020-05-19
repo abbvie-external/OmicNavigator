@@ -9,10 +9,10 @@ addTests(study, tests, overwrite = FALSE)
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
-\item{tests}{The tests from the study. The input object can be a single data
-frame or a list of data frames (one per model). The first column should
-contain the unique ID for each test. The second column should contain a
-description of the test.}
+\item{tests}{The tests from the study. The input object is a list of data
+frames (one per model). The first column should contain the unique ID for
+each test. The second column should contain a description of the test. To
+share a data frame across multiple models, use the name "default".}
 
 \item{overwrite}{Overwrite existing value}
 }
