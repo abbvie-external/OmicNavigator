@@ -137,13 +137,9 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 #' @export
 addModels <- function(study, models, overwrite = FALSE) {
   checkStudy(study)
-  checkModels(models, study)
+  checkModels(models)
 
-  if (overwrite || isEmpty(study[["models"]])) {
-    study[["models"]] <- models
-  } else {
-    stop("Models metadata already exists. Set overwrite=TRUE to overwrite.")
-  }
+  study[["models"]] <- addToList(study[["models"]], models, overwrite = overwrite)
 
   return(study)
 }
