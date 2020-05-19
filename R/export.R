@@ -88,10 +88,8 @@ createDatabase <- function(study, filename) {
   # tests ------------------------------------------------------------------
 
   message("* Adding tests")
-  for (i in seq_along(study[["tests"]])) {
-    tableName <- paste("tests", names(study[["tests"]])[i], sep = "-")
-    DBI::dbWriteTable(con, tableName, study[["tests"]][[i]])
-  }
+  testsTable <- combineListIntoTable(tests, newColumnName = "modelID")
+  DBI::dbWriteTable(con, "tests", testsTable)
 
   # annotations ----------------------------------------------------------------
 

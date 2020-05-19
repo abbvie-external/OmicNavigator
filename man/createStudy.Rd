@@ -50,8 +50,10 @@ numeric values. To share a data frame across multiple models, use the name
 
 \item{tests}{The tests from the study. The input object is a list of data
 frames (one per model). The first column should contain the unique ID for
-each test. The second column should contain a description of the test. To
-share a data frame across multiple models, use the name "default".}
+each test. The second column should contain a description of the test. Any
+additional columns will be removed. The column names will be set to
+"testID" and "desription". To share a data frame across multiple models,
+use the name "default".}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per
