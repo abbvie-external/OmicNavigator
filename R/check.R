@@ -61,7 +61,18 @@ checkAssays <- function(assays) {
 }
 
 checkTests <- function(tests, study = NULL) {
-  stopifnot(inherits(tests, "list"))
+  stopifnot(
+    length(tests) > 0
+  )
+
+  for (i in seq_along(tests)) {
+    stopifnot(
+      inherits(tests[[i]], "data.frame"),
+      nrow(tests[[i]]) > 0,
+      ncol(tests[[i]]) > 0
+    )
+    hasUniqueIdColumn(tests[[i]])
+  }
 
   return(NULL)
 }

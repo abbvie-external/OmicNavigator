@@ -45,9 +45,10 @@ correspond to the feature IDs (\code{\link{addFeatures}}). The column names
 should corresond to the sample IDs (\code{\link{addSamples}}). The data
 frame should only contain numeric values.}
 
-\item{tests}{The tests tested by the model(s). A named list.
-The names correspond to the name of each test. The elements
-correspond to the description of each test.}
+\item{tests}{The tests from the study. The input object can be a single data
+frame or a list of data frames (one per model). The first column should
+contain the unique ID for each test. The second column should contain a
+description of the test.}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per

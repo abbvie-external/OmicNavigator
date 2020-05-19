@@ -88,11 +88,10 @@ createDatabase <- function(study, filename) {
   # tests ------------------------------------------------------------------
 
   message("* Adding tests")
-  tests <- data.frame(testID = names(study[["tests"]]),
-                          description = unlist(study[["tests"]]),
-                          stringsAsFactors = FALSE)
-  DBI::dbWriteTable(con, "tests", tests,
-                    field.types = c("testID" = "varchar(50) PRIMARY KEY"))
+  for (i in seq_along(study[["tests"]])) {
+    tableName <- paste("tests", names(study[["tests"]])[i], sep = "-")
+    DBI::dbWriteTable(con, tableName, study[["tests"]][[i]])
+  }
 
   # annotations ----------------------------------------------------------------
 

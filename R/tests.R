@@ -69,12 +69,12 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
 }
 
 testTests <- function(n = 2) {
-  tests <- list()
-  for (i in seq_len(n)) {
-    name <- sprintf("test_%02d", i)
-    value <- paste("test", i)
-    tests[[name]] <- value
-  }
+  tests <- data.frame(
+    testID = sprintf("test_%02d", seq_len(n)),
+    description = sprintf("test %d", seq_len(n)),
+    stringsAsFactors = FALSE
+  )
+
   return(tests)
 }
 
