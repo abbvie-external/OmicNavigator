@@ -70,8 +70,8 @@ character vector of feature IDs.}
 \item{results}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with inference
-results, one for each test. The featureID column needs to be included
-in each table.}
+results, one for each test. In each data frame, the feature ID must be in
+the first column, and all other columns must be numeric.}
 
 \item{enrichments}{The enrichment results from each model. The input is a
 nested named list. The names of the list correspond to the model names.

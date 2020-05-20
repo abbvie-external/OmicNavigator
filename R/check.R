@@ -124,26 +124,33 @@ checkAnnotations <- function(annotations) {
   return(NULL)
 }
 
-checkResults <- function(results, study = NULL) {
-  stopifnot(inherits(results, "list"))
+checkResults <- function(results) {
+  stopifnot(
+    is.list(results),
+    !is.data.frame(results),
+    length(results) > 0,
+    !is.null(names(results))
+  )
 
-  if (is.null(study)) return(NULL)
-
-  if (!all(names(study[["models"]]) %in% names(results))) {
-    stop(sprintf("The names of the list do not include all of the model names"))
+  if ("defaults" %in% names(results)) {
+    stop("The results cannot be shared using the model ID \"defaults\"")
   }
 
   for (i in seq_along(results)) {
-    model <- results[[i]]
-    model_name <- names(results)[i]
-    stopifnot(inherits(model, "list"))
-    stopifnot(model_name %in% names(study[["models"]]))
-    for (j in seq_along(model)) {
-      test <- model[[j]]
-      test_name <- names(model)[j]
-      stopifnot(inherits(test, "data.frame"))
-      stopifnot(test_name %in% names(study[["tests"]]))
-      stopifnot(study[["featureID"]] %in% colnames(test))
+    stopifnot(
+      is.list(results[[i]]),
+      !is.data.frame(results[[i]]),
+      length(results[[i]]) > 0,
+      !is.null(names(results[[i]]))
+    )
+    for (j in seq_along(results[[i]])) {
+      dataFrame <- results[[i]][[j]]
+      stopifnot(
+        is.data.frame(dataFrame),
+        is.character(dataFrame[, 1]),
+        vapply(dataFrame[, -1], is.numeric, logical(1))
+      )
+      hasUniqueIdColumn(dataFrame)
     }
   }
 

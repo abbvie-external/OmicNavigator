@@ -125,25 +125,24 @@ createDatabase <- function(study, filename) {
   # results --------------------------------------------------------------------
 
   message("* Adding results")
-  results_list <- list()
+  resultsList <- list()
   for (modelID in names(study[["results"]])) {
     for (testID in names(study[["results"]][[modelID]])) {
       tmp <- study[["results"]][[modelID]][[testID]]
       tmp[["modelID"]] <- modelID
       tmp[["testID"]] <- testID
-      results_list <- c(results_list, list(tmp))
+      featureIDcolumnName <- colnames(tmp)[1]
+      pivotCols <- setdiff(colnames(tmp), c(featureIDcolumnName, "modelID", "testID"))
+      tmp <- tidyr::pivot_longer(tmp,
+                                 cols = tidyselect::all_of(pivotCols),
+                                 names_to = "resultsVariable",
+                                 values_to = "resultsValue")
+      resultsList <- c(resultsList, list(tmp))
     }
   }
 
-  results <- Reduce(function(x, y) merge(x, y, all = TRUE), results_list)
-  fields_results <- c(
-    sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]]),
-    "varchar(50) REFERENCES tests (testID)",
-    "varchar(100) REFERENCES models (modelID)"
-  )
-  names(fields_results) <- c(study[["featureID"]], "testID", "modelID")
-  DBI::dbWriteTable(con, "results", results,
-                    field.types = fields_results)
+  resultsTable <- Reduce(function(x, y) merge(x, y, all = TRUE), resultsList)
+  DBI::dbWriteTable(con, "results", resultsTable)
 
   # enrichments ----------------------------------------------------------------
 

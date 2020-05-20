@@ -211,20 +211,16 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
 #' @param results The inference results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
 #'   Each element in the list should be a list of data frames with inference
-#'   results, one for each test. The featureID column needs to be included
-#'   in each table.
+#'   results, one for each test. In each data frame, the feature ID must be in
+#'   the first column, and all other columns must be numeric.
 #' @inheritParams shared-add
 #'
 #' @export
 addResults <- function(study, results, overwrite = FALSE) {
   checkStudy(study)
-  checkResults(results, study)
+  checkResults(results)
 
-  if (overwrite || isEmpty(study[["results"]])) {
-    study[["results"]] <- results
-  } else {
-    stop("The result results already exist. Set overwrite=TRUE to overwrite.")
-  }
+  study[["results"]] <- addToList(study[["results"]], results, overwrite = overwrite)
 
   return(study)
 }
