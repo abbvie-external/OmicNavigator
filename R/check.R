@@ -91,38 +91,33 @@ checkTests <- function(tests, study = NULL) {
   return(NULL)
 }
 
-checkAnnotations <- function(annotations, study = NULL) {
+checkAnnotations <- function(annotations) {
   stopifnot(
-    inherits(annotations, "list"),
-    length(annotations) > 0
+    is.list(annotations),
+    !is.data.frame(annotations),
+    length(annotations) > 0,
+    !is.null(names(annotations))
   )
-
-  if (is.null(study)) return(NULL)
 
   for (i in seq_along(annotations)) {
     annotationID <- names(annotations)[i]
-    if (is.null(annotationID)) {
-      stop("The annotation list needs to be named")
-    }
     if (is.null(annotations[[i]][["description"]])) {
-      annotations[[i]][["description"]] <- sprintf("Annotation terms from %s",
-                                                   annotationID)
+      stop(sprintf("Missing description for annotation \"%s\"", annotationID))
     }
     if (is.null(annotations[[i]][["featureID"]])) {
-      annotations[[i]][["featureID"]] <- study[["featureID"]]
-    }
-    if (!annotations[[i]][["featureID"]] %in% colnames(study[["features"]])) {
-      stop(sprintf("The ID \"%s\" for \"%s\" is not a column in the features table",
-                   annotations[[i]][["featureID"]], annotationID))
+      stop(sprintf("Missing featureID for annotation \"%s\"", annotationID))
     }
     if (is.null(annotations[[i]][["terms"]])) {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
-    universe <- unique(unlist(annotations[[i]][["terms"]]))
-    if (!any(study[["features"]][[annotations[[i]][["featureID"]]]] %in% universe)) {
-      stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
-                   annotationID, annotations[[i]][["featureID"]]),
-           "Do you need specify the features column that was used for this enrichment analysis?")
+    terms <- annotations[[i]][["terms"]]
+    if (!is.list(terms) ||
+        is.data.frame(terms) ||
+        length(terms) <= 0 ||
+        is.null(names(terms)) ||
+        !all(vapply(terms, is.character, logical(1)))) {
+      stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
+                   annotationID))
     }
   }
 

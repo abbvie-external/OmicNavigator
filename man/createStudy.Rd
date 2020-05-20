@@ -62,8 +62,7 @@ each annotation database. Each of these elements should be list of that
 contains more information about each annotation database. Specifically the
 sublist should contain 1) \code{description}, a character vector that
 describes the resource, 2) \code{featureID}, the name of the column in the
-features table that was used for the enrichment analysis (if omitted, it is
-assumed to be the main featureID used for the study), and 3) \code{terms},
+features table that was used for the enrichment analysis, and 3) \code{terms},
 a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
 character vector of feature IDs.}
