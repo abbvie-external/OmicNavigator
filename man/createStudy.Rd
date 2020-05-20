@@ -28,14 +28,14 @@ createStudy(
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object is a named list of data frames (one per model). The first
 column of each data frame is used as the sample ID, so it must contain
-unique values. To share a data frame across multiple models, use the name
-"default".}
+unique values. To share a data frame across multiple models, use the model
+ID "default".}
 
 \item{features}{The metadata variables that describe the features in the
 study. The input object is a list of data frames (one per model). The first
 column of each data frame is used as the feature ID, so it must contain
-unique values. To share a data frame across multiple models, use the name
-"default".}
+unique values. To share a data frame across multiple models, use the model
+ID "default".}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
@@ -45,15 +45,15 @@ the descriptions of the models.}
 frames (one per model). The row names should correspond to the feature IDs
 (\code{\link{addFeatures}}). The column names should corresond to the
 sample IDs (\code{\link{addSamples}}). The data frame should only contain
-numeric values. To share a data frame across multiple models, use the name
-"default".}
+numeric values. To share a data frame across multiple models, use the model
+ID "default".}
 
 \item{tests}{The tests from the study. The input object is a list of data
 frames (one per model). The first column should contain the unique ID for
 each test. The second column should contain a description of the test. Any
 additional columns will be removed. The column names will be set to
 "testID" and "desription". To share a data frame across multiple models,
-use the name "default".}
+use the model ID "default".}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per

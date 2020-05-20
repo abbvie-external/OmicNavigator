@@ -13,8 +13,8 @@ addAssays(study, assays, overwrite = FALSE)
 frames (one per model). The row names should correspond to the feature IDs
 (\code{\link{addFeatures}}). The column names should corresond to the
 sample IDs (\code{\link{addSamples}}). The data frame should only contain
-numeric values. To share a data frame across multiple models, use the name
-"default".}
+numeric values. To share a data frame across multiple models, use the model
+ID "default".}
 
 \item{overwrite}{Overwrite existing value}
 }
