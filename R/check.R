@@ -91,46 +91,38 @@ checkTests <- function(tests, study = NULL) {
   return(NULL)
 }
 
-checkAnnotations <- function(annotations) {
+checkAnnotations <- function(annotations, study = NULL) {
   stopifnot(
-    is.list(annotations),
-    !is.data.frame(annotations),
-    length(annotations) > 0,
-    !is.null(names(annotations))
+    inherits(annotations, "list"),
+    length(annotations) > 0
   )
 
+  if (is.null(study)) return(NULL)
+
   for (i in seq_along(annotations)) {
-    stopifnot(
-      is.list(annotations[[i]]),
-      !is.data.frame(annotations[[i]]),
-      length(annotations[[i]]) > 0,
-      !is.null(names(annotations[[i]]))
-    )
-    modelID <- names(annotations)[i]
-    for (j in seq_along(annotations[[i]])) {
-      annotationID <- names(annotations[[i]])[j]
-      if (is.null(annotations[[i]][[j]][["description"]])) {
-        stop(sprintf("Missing description for annotation \"%s\" for model \"%s\"",
-                     annotationID, modelID))
-      }
-      if (is.null(annotations[[i]][[j]][["featureID"]])) {
-        stop(sprintf("Missing featureID for annotation \"%s\" for model \"%s\"",
-                     annotationID, modelID))
-      }
-      if (is.null(annotations[[i]][[j]][["terms"]])) {
-        stop(sprintf("Missing terms for annotation \"%s\" for model \"%s\"",
-                     annotationID, modelID))
-      }
-      terms <- annotations[[i]][[j]][["terms"]]
-      if (!is.list(terms)) {
-        stop(sprintf("The terms for annotation \"%s\" for model \"%s\" are not in a list",
-                     annotationID, modelID))
-      }
-      termsIsCharacters <- vapply(terms, is.character, FUN.VALUE = logical(1))
-      if (!all(termsIsCharacters)) {
-        stop(sprintf("The terms for annotation \"%s\" for model \"%s\" are not all character vectors",
-                     annotationID, modelID))
-      }
+    annotationID <- names(annotations)[i]
+    if (is.null(annotationID)) {
+      stop("The annotation list needs to be named")
+    }
+    if (is.null(annotations[[i]][["description"]])) {
+      annotations[[i]][["description"]] <- sprintf("Annotation terms from %s",
+                                                   annotationID)
+    }
+    if (is.null(annotations[[i]][["featureID"]])) {
+      annotations[[i]][["featureID"]] <- study[["featureID"]]
+    }
+    if (!annotations[[i]][["featureID"]] %in% colnames(study[["features"]])) {
+      stop(sprintf("The ID \"%s\" for \"%s\" is not a column in the features table",
+                   annotations[[i]][["featureID"]], annotationID))
+    }
+    if (is.null(annotations[[i]][["terms"]])) {
+      stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
+    }
+    universe <- unique(unlist(annotations[[i]][["terms"]]))
+    if (!any(study[["features"]][[annotations[[i]][["featureID"]]]] %in% universe)) {
+      stop(sprintf("None of the terms in \"%s\" contain feature IDs from \"%s\"\n",
+                   annotationID, annotations[[i]][["featureID"]]),
+           "Do you need specify the features column that was used for this enrichment analysis?")
     }
   }
 

@@ -28,14 +28,14 @@ createStudy(
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object is a named list of data frames (one per model). The first
 column of each data frame is used as the sample ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default".}
+unique values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{features}{The metadata variables that describe the features in the
 study. The input object is a list of data frames (one per model). The first
 column of each data frame is used as the feature ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default".}
+unique values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
@@ -45,28 +45,28 @@ the descriptions of the models.}
 frames (one per model). The row names should correspond to the feature IDs
 (\code{\link{addFeatures}}). The column names should corresond to the
 sample IDs (\code{\link{addSamples}}). The data frame should only contain
-numeric values. To share a data frame across multiple models, use the model
-ID "default".}
+numeric values. To share a data frame across multiple models, use the name
+"default".}
 
 \item{tests}{The tests from the study. The input object is a list of data
 frames (one per model). The first column should contain the unique ID for
 each test. The second column should contain a description of the test. Any
 additional columns will be removed. The column names will be set to
 "testID" and "desription". To share a data frame across multiple models,
-use the model ID "default".}
+use the name "default".}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
-input object is a named list of lists (one per model). Each list contains
-one entry per annotation database, e.g. reactome. The names correspond to
-the name of each annotation database. Each of these elements should be list
-of that contains more information about each annotation database.
-Specifically the sublist should contain 1) \code{description}, a character
-vector that describes the resource, 2) \code{featureID}, the name of the
-column in the features table that was used for the enrichment analysis ,
-and 3) \code{terms}, a list of annotation terms. The names of \code{terms}
-sublist correspond to the name of the annotation terms. Each of the
-annotation terms should be a character vector of feature IDs. To share a
-data frame across multiple models, use the model ID "default".}
+input is a nested list. The top-level list contains one entry per
+annotation database, e.g. reactome. The names correspond to the name of
+each annotation database. Each of these elements should be list of that
+contains more information about each annotation database. Specifically the
+sublist should contain 1) \code{description}, a character vector that
+describes the resource, 2) \code{featureID}, the name of the column in the
+features table that was used for the enrichment analysis (if omitted, it is
+assumed to be the main featureID used for the study), and 3) \code{terms},
+a list of annotation terms. The names of \code{terms} sublist correspond to
+the name of the annotation terms. Each of the annotation terms should be a
+character vector of feature IDs.}
 
 \item{results}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
