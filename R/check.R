@@ -170,23 +170,14 @@ checkEnrichments <- function(enrichments) {
 }
 
 checkMetaFeatures <- function(metaFeatures, study = NULL) {
-  stopifnot(inherits(metaFeatures, "data.frame"))
+  checkList(metaFeatures)
 
-  if (is.null(study)) return(NULL)
-
-  if (!study[["featureID"]] %in% colnames(metaFeatures)) {
-    stop(
-      sprintf("The metaFeatures table doesn't contain the featureID column named \"%s\"",
-              study[["featureID"]])
+  for (i in seq_along(metaFeatures)) {
+    stopifnot(
+      inherits(metaFeatures[[i]], "data.frame"),
+      nrow(metaFeatures[[i]]) > 0,
+      ncol(metaFeatures[[i]]) > 0
     )
-  }
-
-  if (is.null(study[["features"]])) {
-    stop("Please add the features table with addFeatures() prior to adding the metaFeatures table")
-  }
-
-  if (!all(metaFeatures[[study[["featureID"]]]] %in% study[["features"]][[study[["featureID"]]]])) {
-    stop("The metaFeatures table contains features that are not in the features table")
   }
 
   return(NULL)

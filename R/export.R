@@ -173,12 +173,10 @@ createDatabase <- function(study, filename) {
 
   if (!is.null(study[["metaFeatures"]])) {
     message("* Adding meta-features")
-    fields_metaFeatures <- c(
-      sprintf("varchar(50) REFERENCES features (%s)", study[["featureID"]])
-    )
-    names(fields_metaFeatures) <- study[["featureID"]]
-    DBI::dbWriteTable(con, "metaFeatures", study[["metaFeatures"]],
-                      field.types = fields_metaFeatures)
+    for (i in seq_along(study[["metaFeatures"]])) {
+      tableName <- paste("features", names(study[["metaFeatures"]])[i], sep = "-")
+      DBI::dbWriteTable(con, tableName, study[["metaFeatures"]][[i]])
+    }
   }
 
   # overlaps -------------------------------------------------------------------

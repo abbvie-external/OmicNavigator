@@ -83,12 +83,12 @@ table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
 adjusting for multiple testing). Any additional columns are ignored.}
 
-\item{metaFeatures}{A table of metadata variables that describe the
-meta-features in the study. This is useful anytime there are metadata
-variables that cannot be mapped 1:1 to your features. For example, a
-peptide may be associated with multiple proteins. The table must contain
-the unique featureID used for the study. Also, the object must inherit from
-the class data.frame.}
+\item{metaFeatures}{The metadata variables that describe the meta-features in
+the study. The input object is a list of data frames (one per model). The
+first column of each data frame is used as the feature ID, so it must
+contain the same IDs as the corresponding features data frame
+(\code{\link{addFeatures}}). To share a data frame across multiple models,
+use the model ID "default".}
 
 \item{plots}{Custom plotting functions. The input is a nested list. Each
 element of the list defines a custom plotting function via a list with

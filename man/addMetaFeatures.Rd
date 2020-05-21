@@ -9,15 +9,17 @@ addMetaFeatures(study, metaFeatures, overwrite = FALSE)
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
-\item{metaFeatures}{A table of metadata variables that describe the
-meta-features in the study. This is useful anytime there are metadata
-variables that cannot be mapped 1:1 to your features. For example, a
-peptide may be associated with multiple proteins. The table must contain
-the unique featureID used for the study. Also, the object must inherit from
-the class data.frame.}
+\item{metaFeatures}{The metadata variables that describe the meta-features in
+the study. The input object is a list of data frames (one per model). The
+first column of each data frame is used as the feature ID, so it must
+contain the same IDs as the corresponding features data frame
+(\code{\link{addFeatures}}). To share a data frame across multiple models,
+use the model ID "default".}
 
 \item{overwrite}{Overwrite existing value}
 }
 \description{
-Add meta-feature metadata
+The meta-features table is useful anytime there are metadata variables that
+cannot be mapped 1:1 to your features. For example, a peptide may be
+associated with multiple proteins.
 }
