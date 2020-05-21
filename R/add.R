@@ -241,13 +241,9 @@ addResults <- function(study, results, overwrite = FALSE) {
 #' @export
 addEnrichments <- function(study, enrichments, overwrite = FALSE) {
   checkStudy(study)
-  checkEnrichments(enrichments, study)
+  checkEnrichments(enrichments)
 
-  if (overwrite || isEmpty(study[["enrichments"]])) {
-    study[["enrichments"]] <- enrichments
-  } else {
-    stop("The enrichment results already exist. Set overwrite=TRUE to overwrite.")
-  }
+  study[["enrichments"]] <- addToList(study[["enrichments"]], enrichments, overwrite = overwrite)
 
   return(study)
 }

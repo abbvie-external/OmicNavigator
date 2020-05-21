@@ -88,7 +88,7 @@ createDatabase <- function(study, filename) {
   # tests ------------------------------------------------------------------
 
   message("* Adding tests")
-  testsTable <- combineListIntoTable(tests, newColumnName = "modelID")
+  testsTable <- combineListIntoTable(study[["tests"]], newColumnName = "modelID")
   DBI::dbWriteTable(con, "tests", testsTable)
 
   # annotations ----------------------------------------------------------------
@@ -147,7 +147,7 @@ createDatabase <- function(study, filename) {
   # enrichments ----------------------------------------------------------------
 
   message("* Adding enrichments")
-  enrichments_list <- list()
+  enrichmentsList <- list()
   for (modelID in names(study[["enrichments"]])) {
     for (testID in names(study[["enrichments"]][[modelID]])) {
       for (annotationID in names(study[["enrichments"]][[modelID]][[testID]])) {
@@ -155,13 +155,13 @@ createDatabase <- function(study, filename) {
         tmp[["modelID"]] <- modelID
         tmp[["testID"]] <- testID
         tmp[["annotationID"]] <- annotationID
-        enrichments_list <- c(enrichments_list, list(tmp))
+        enrichmentsList <- c(enrichmentsList, list(tmp))
       }
     }
   }
 
-  enrichments <- Reduce(function(x, y) merge(x, y, all = TRUE), enrichments_list)
-  DBI::dbWriteTable(con, "enrichments", enrichments,
+  enrichmentsTable <- Reduce(function(x, y) merge(x, y, all = TRUE), enrichmentsList)
+  DBI::dbWriteTable(con, "enrichments", enrichmentsTable,
                     field.types = c(
                       "modelID" = "varchar(100) REFERENCES models (modelID)",
                       "testID" = "varchar(50) REFERENCES tests (testID)",
