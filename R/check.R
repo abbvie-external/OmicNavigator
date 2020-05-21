@@ -6,13 +6,30 @@ checkStudy <- function(study) {
   )
 }
 
+checkList <- function(x) {
+  listName <- deparse(substitute(x))
+
+  if (!is.list(x)) {
+    stop(sprintf("The object \"%s\" must be a list", listName))
+  }
+
+  if (is.data.frame(x)) {
+    stop(sprintf("The object \"%s\" must be a list, not a data frame", listName))
+  }
+
+  if (isEmpty(x)) {
+    stop(sprintf("The list \"%s\" cannot be empty", listName))
+  }
+
+  if (is.null(names(x))) {
+    stop(sprintf("The elements of list \"%s\" must be named", listName))
+  }
+
+  return(NULL)
+}
+
 checkSamples <- function(samples) {
-  stopifnot(
-    is.list(samples),
-    !is.data.frame(samples),
-    length(samples) > 0,
-    !is.null(names(samples))
-  )
+  checkList(samples)
 
   for (i in seq_along(samples)) {
     stopifnot(
@@ -27,12 +44,7 @@ checkSamples <- function(samples) {
 }
 
 checkFeatures <- function(features) {
-  stopifnot(
-    is.list(features),
-    !is.data.frame(features),
-    length(features) > 0,
-    !is.null(names(features))
-  )
+  checkList(features)
 
   for (i in seq_along(features)) {
     stopifnot(
@@ -53,12 +65,7 @@ checkModels <- function(models, study = NULL) {
 }
 
 checkAssays <- function(assays) {
-  stopifnot(
-    is.list(assays),
-    !is.data.frame(assays),
-    length(assays) > 0,
-    !is.null(names(assays))
-  )
+  checkList(assays)
 
   for (i in seq_along(assays)) {
     stopifnot(
@@ -71,13 +78,8 @@ checkAssays <- function(assays) {
   return(NULL)
 }
 
-checkTests <- function(tests, study = NULL) {
-  stopifnot(
-    is.list(tests),
-    !is.data.frame(tests),
-    length(tests) > 0,
-    !is.null(names(tests))
-  )
+checkTests <- function(tests) {
+  checkList(tests)
 
   for (i in seq_along(tests)) {
     stopifnot(
@@ -92,14 +94,10 @@ checkTests <- function(tests, study = NULL) {
 }
 
 checkAnnotations <- function(annotations) {
-  stopifnot(
-    is.list(annotations),
-    !is.data.frame(annotations),
-    length(annotations) > 0,
-    !is.null(names(annotations))
-  )
+  checkList(annotations)
 
   for (i in seq_along(annotations)) {
+    checkList(annotations[[i]])
     annotationID <- names(annotations)[i]
     if (is.null(annotations[[i]][["description"]])) {
       stop(sprintf("Missing description for annotation \"%s\"", annotationID))
@@ -111,11 +109,8 @@ checkAnnotations <- function(annotations) {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
     terms <- annotations[[i]][["terms"]]
-    if (!is.list(terms) ||
-        is.data.frame(terms) ||
-        length(terms) <= 0 ||
-        is.null(names(terms)) ||
-        !all(vapply(terms, is.character, logical(1)))) {
+    checkList(terms)
+    if (!all(vapply(terms, is.character, logical(1)))) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
     }
@@ -125,24 +120,14 @@ checkAnnotations <- function(annotations) {
 }
 
 checkResults <- function(results) {
-  stopifnot(
-    is.list(results),
-    !is.data.frame(results),
-    length(results) > 0,
-    !is.null(names(results))
-  )
+  checkList(results)
 
   if ("defaults" %in% names(results)) {
     stop("The results cannot be shared using the model ID \"defaults\"")
   }
 
   for (i in seq_along(results)) {
-    stopifnot(
-      is.list(results[[i]]),
-      !is.data.frame(results[[i]]),
-      length(results[[i]]) > 0,
-      !is.null(names(results[[i]]))
-    )
+    checkList(results[[i]])
     for (j in seq_along(results[[i]])) {
       dataFrame <- results[[i]][[j]]
       stopifnot(
