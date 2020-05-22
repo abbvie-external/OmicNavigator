@@ -9,13 +9,14 @@ addPlots(study, plots, overwrite = FALSE)
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
-\item{plots}{Custom plotting functions. The input is a nested list. Each
-element of the list defines a custom plotting function via a list with
-multiple options. The only required option is \code{definition}, which
-contains the function definition. You can optionally include
-\code{displayName} to control how the plot will be named in the app.
-Lastly, if the plottting function requires external packages, these can be
-defined in the argument \code{packages}.}
+\item{plots}{Custom plotting functions for the study. The input object is a
+named list of lists (one per model). Each sublist is itself a list that
+defines a custom plotting function via multiple options. The only required
+option is \code{definition}, which contains the function definition. You
+can optionally include \code{displayName} to control how the plot will be
+named in the app. Lastly, if the plottting function requires external
+packages, these can be defined in the argument \code{packages}. To share
+plots across multiple models, use the model ID "default".}
 
 \item{overwrite}{Overwrite existing value}
 }

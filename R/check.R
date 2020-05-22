@@ -183,23 +183,30 @@ checkMetaFeatures <- function(metaFeatures, study = NULL) {
   return(NULL)
 }
 
-checkPlots <- function(plots, study = NULL) {
-  stopifnot(
-    inherits(plots, "list"),
-    length(plots) > 0
-  )
+checkPlots <- function(plots) {
+  checkList(plots)
 
-  # To do: check function signatures
   for (i in seq_along(plots)) {
-    plotID <- names(plots)[i]
-    if (is.null(plotID)) {
-      stop("The plots list needs to be named")
-    }
-    if (!is.function(plots[[i]][["definition"]])) {
-      stop(sprintf("%s is missing its function definition", plotID))
-    }
-    if (is.null(plots[[i]][["displayName"]])) {
-      plots[[i]][["displayName"]] <- plotID
+    checkList(plots[[i]])
+    for (j in seq_along(plots[[i]])) {
+      plotEntry <- plots[[i]][[j]]
+      checkList(plotEntry)
+      plotID <- names(plots[[i]])[j]
+      if (!is.function(plotEntry[["definition"]])) {
+        stop(sprintf("%s is missing its function definition", plotID))
+      }
+      argsObserved <- names(formals(plotEntry[["definition"]]))
+      argsExpected <- c("x", "feature")
+      if (!identical(argsObserved, argsExpected)) {
+        stop(
+          sprintf("%s has an incorrect function signature\n", plotID),
+          sprintf("Expected arguments: %s\n", paste(argsExpected, collapse = ", ")),
+          sprintf("Observed arguments: %s\n", paste(argsObserved, collapse = ", "))
+        )
+      }
+      if (is.null(plotEntry[["displayName"]])) {
+        plots[[i]][[j]][["displayName"]] <- plotID
+      }
     }
   }
 

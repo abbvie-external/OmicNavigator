@@ -179,6 +179,24 @@ createDatabase <- function(study, filename) {
     }
   }
 
+  # Plots ----------------------------------------------------------------------
+
+  if (!is.null(study[["plots"]])) {
+    message("* Adding plots")
+    plotsTable <- matrix(character(), ncol = 2)
+    colnames(plotsTable) <- c("modelID", "plotID")
+    for (i in seq_along(study[["plots"]])) {
+      modelID <- names(study[["plots"]])[i]
+      for (j in seq_along(study[["plots"]][[i]])) {
+        plotID <- names(study[["plots"]][[i]])[j]
+        tmpPlots <- matrix(c(modelID, plotID), ncol = 2)
+        plotsTable <- rbind(plotsTable, tmpPlots)
+      }
+    }
+    plotsTable <- as.data.frame(plotsTable, stringsAsFactors = FALSE)
+    DBI::dbWriteTable(con, "plots", plotsTable)
+  }
+
   # overlaps -------------------------------------------------------------------
 
   message("* Calculating overlaps between annotation terms")
@@ -239,6 +257,11 @@ createPackage <- function(study, directoryname) {
 
   # Plots
   if (!is.null(study[["plots"]])) {
+    # Can't have duplicate plots in different models
+    plotsAll <- lapply(study[["plots"]], function(x) names(x))
+    if (length(plotsAll) != length(unique(plotsAll))) {
+      stop("Cannot have duplicate plots in different studies")
+    }
     namespace_file <- file.path(directoryname, "NAMESPACE")
     r_dir <- file.path(directoryname, "R")
     dir.create(r_dir, showWarnings = FALSE)
@@ -247,12 +270,14 @@ createPackage <- function(study, directoryname) {
     exports <- character()
     code <- character()
     for (i in seq_along(study[["plots"]])) {
-      plot_name <- names(study[["plots"]])[i]
-      dependencies <- c(dependencies, study[["plots"]][[i]][["packages"]])
-      exports <- c(exports, sprintf("export(%s)", plot_name))
-      plot_code <- deparse(study[["plots"]][[i]][["definition"]])
-      plot_code[1] <- paste(plot_name, "<-", plot_code[1])
-      code <- c(code, plot_code)
+      for (j in seq_along(study[["plots"]][[i]])) {
+        plot_name <- names(study[["plots"]][[i]])[j]
+        dependencies <- c(dependencies, study[["plots"]][[i]][[j]][["packages"]])
+        exports <- c(exports, sprintf("export(%s)", plot_name))
+        plot_code <- deparse(study[["plots"]][[i]][[j]][["definition"]])
+        plot_code[1] <- paste(plot_name, "<-", plot_code[1])
+        code <- c(code, plot_code)
+      }
     }
     if ("ggplot2" %in% dependencies) {
       dependencies <- c(dependencies, "rlang")

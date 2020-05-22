@@ -294,25 +294,22 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
 #' Fortunately this latter code will also run fine as you interactively develop
 #' the function.
 #'
-#' @param plots Custom plotting functions. The input is a nested list. Each
-#'   element of the list defines a custom plotting function via a list with
-#'   multiple options. The only required option is \code{definition}, which
-#'   contains the function definition. You can optionally include
-#'   \code{displayName} to control how the plot will be named in the app.
-#'   Lastly, if the plottting function requires external packages, these can be
-#'   defined in the argument \code{packages}.
+#' @param plots Custom plotting functions for the study. The input object is a
+#'   named list of lists (one per model). Each sublist is itself a list that
+#'   defines a custom plotting function via multiple options. The only required
+#'   option is \code{definition}, which contains the function definition. You
+#'   can optionally include \code{displayName} to control how the plot will be
+#'   named in the app. Lastly, if the plottting function requires external
+#'   packages, these can be defined in the argument \code{packages}. To share
+#'   plots across multiple models, use the model ID "default".
 #' @inheritParams shared-add
 #'
 #' @export
 addPlots <- function(study, plots, overwrite = FALSE) {
   checkStudy(study)
-  checkPlots(plots, study)
+  checkPlots(plots)
 
-  if (overwrite || isEmpty(study[["plots"]])) {
-    study[["plots"]] <- plots
-  } else {
-    stop("The plots already exist. Set overwrite=TRUE to overwrite.")
-  }
+  study[["plots"]] <- addToList(study[["plots"]], plots, overwrite = overwrite)
 
   return(study)
 }
