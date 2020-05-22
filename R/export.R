@@ -174,7 +174,7 @@ createDatabase <- function(study, filename) {
   if (!is.null(study[["metaFeatures"]])) {
     message("* Adding meta-features")
     for (i in seq_along(study[["metaFeatures"]])) {
-      tableName <- paste("features", names(study[["metaFeatures"]])[i], sep = "-")
+      tableName <- paste("metaFeatures", names(study[["metaFeatures"]])[i], sep = "-")
       DBI::dbWriteTable(con, tableName, study[["metaFeatures"]][[i]])
     }
   }

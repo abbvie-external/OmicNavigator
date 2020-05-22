@@ -147,7 +147,19 @@ testEnrichments <- function(n_models = 3, n_tests = 2, n_annotations = 3, seed =
   return(enrichments)
 }
 
-testMetaFeatures<- function(seed = 12345L) return(NULL)
+# Assigns 3 metaFeatures to each feature
+testMetaFeatures<- function(rows = 100, cols = 3, seed = 12345L) {
+  set.seed(seed)
+  metaFeatures <- matrix(sample(letters, size = 3 * rows * cols, replace = TRUE),
+                     nrow = 3 * rows, ncol = cols)
+  colnames(metaFeatures) <- sprintf("metaFeatureVar%02d", seq_len(cols))
+  featureID <- rep(sprintf("feature_%04d", seq_len(rows)), times = 3)
+  metaFeatureID <- sprintf("metaFeature_%04d", seq_len(3 * rows))
+  metaFeatures <- cbind(featureID, metaFeatureID, metaFeatures)
+  metaFeatures <- as.data.frame(metaFeatures, stringsAsFactors = FALSE)
+  metaFeatures <- list(default = metaFeatures)
+  return(metaFeatures)
+}
 
 testPlots<- function() {
   plots <- list(

@@ -27,6 +27,9 @@ study <- addResults(study, results = results)
 enrichments <- OmicAnalyzer:::testEnrichments()
 study <- addEnrichments(study, enrichments = enrichments)
 
+metaFeatures <- OmicAnalyzer:::testMetaFeatures()
+study <- addMetaFeatures(study, metaFeatures = metaFeatures)
+
 expect_identical(
   study,
   OmicAnalyzer:::testStudy(name = "test")
