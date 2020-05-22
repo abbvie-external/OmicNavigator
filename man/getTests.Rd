@@ -7,13 +7,13 @@
 \alias{getTests.character}
 \title{Get tests from a study}
 \usage{
-getTests(study, modelID = NULL, testID = NULL, ...)
+getTests(study, modelID = NULL, ...)
 
-\method{getTests}{oaStudy}(study, modelID = NULL, testID = NULL, ...)
+\method{getTests}{oaStudy}(study, modelID = NULL, ...)
 
-\method{getTests}{SQLiteConnection}(study, modelID = NULL, testID = NULL, ...)
+\method{getTests}{SQLiteConnection}(study, modelID = NULL, ...)
 
-\method{getTests}{character}(study, modelID = NULL, testID = NULL, libraries = NULL, ...)
+\method{getTests}{character}(study, modelID = NULL, libraries = NULL, ...)
 }
 \description{
 Get tests from a study
