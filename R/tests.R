@@ -17,7 +17,7 @@ testStudy <- function(name,
                        results = testResults(seed = seed),
                        enrichments = testEnrichments(seed = seed),
                        metaFeatures = testMetaFeatures(seed = seed),
-                       plots = testPlots(),
+                       plots = list(),
                        version = version)
 
   return(study)
@@ -149,4 +149,17 @@ testEnrichments <- function(n_models = 3, n_tests = 2, n_annotations = 3, seed =
 
 testMetaFeatures<- function(seed = 12345L) return(NULL)
 
-testPlots<- function() return(NULL)
+testPlots<- function() {
+  plots <- list(
+    plotBase = list(
+      definition = function(x, feature) plot(1:10)
+    ),
+    plotGg = list(
+      definition = function(x, feature) qplot(1:10, 1:10),
+      displayName = "A ggplot2 plot",
+      packages = c("ggplot2")
+    )
+  )
+  plots <- list(default = plots)
+  return(plots)
+}

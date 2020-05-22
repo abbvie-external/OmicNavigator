@@ -31,3 +31,8 @@ expect_identical(
   study,
   OmicAnalyzer:::testStudy(name = "test")
 )
+
+# Plots include a unique enclosing environment, which is ultimately discarded
+# when written to a package
+plots <- OmicAnalyzer:::testPlots()
+study <- addPlots(study, plots = plots)
