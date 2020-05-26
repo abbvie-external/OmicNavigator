@@ -82,6 +82,88 @@ getModels.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get features from a study
+#'
+#' @export
+getFeatures <- function(study, modelID = NULL, ...) {
+  UseMethod("getFeatures")
+}
+
+#' @rdname getFeatures
+#' @export
+getFeatures.oaStudy <- function(study, modelID = NULL, ...) {
+  features <- study[["features"]]
+
+  if (is.null(features)) {
+    stop(sprintf("No features available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(features)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  featuresModels <- names(features)
+  if (modelID %in% featuresModels) return(features[[modelID]])
+  if ("default" %in% featuresModels) {
+    message(sprintf("Returning \"default\" features for model \"%s\"", modelID))
+    return(features[["default"]])
+  }
+
+  stop(sprintf("No features available for model \"%s\"", modelID))
+}
+
+#' @rdname getFeatures
+#' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
+#' @export
+getFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
+
+  dbTables <- DBI::dbListTables(study)
+  dbFeatures <- grep("^features-", dbTables, value = TRUE)
+  featuresModels <- sub("^features-", "", dbFeatures)
+
+  if (isEmpty(dbFeatures)) {
+    stop(sprintf("No features available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) {
+    features <- lapply(dbFeatures, function(x) DBI::dbReadTable(study, x))
+    names(features) <- featuresModels
+    return(features)
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (modelID %in% featuresModels) {
+    tableName <- paste("features", modelID, sep = "-")
+    features <- DBI::dbReadTable(study, tableName)
+    return(features)
+  }
+  if ("default" %in% featuresModels) {
+    message(sprintf("Returning \"default\" features for model \"%s\"", modelID))
+    tableName <- paste("features", "default", sep = "-")
+    features <- DBI::dbReadTable(study, tableName)
+    return(features)
+  }
+
+  stop(sprintf("No features available for model \"%s\"", modelID))
+}
+
+#' @rdname getFeatures
+#' @export
+getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  features <- getFeatures(con, modelID = modelID, ...)
+
+  return(features)
+}
+
+#' @export
+getFeatures.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
+
 #' Get tests from a study
 #'
 #' @export
