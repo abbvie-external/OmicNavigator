@@ -664,21 +664,10 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #' @importFrom rlang ".data"
 #' @export
 getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "nominal", ...) {
-  enrichments <- study[["enrichments"]]
-
-  if (is.null(enrichments)) {
-    stop(sprintf("No enrichments available for study \"%s\"", study[["name"]]))
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (!modelID %in% names(enrichments)) {
-    stop(sprintf("No enrichments available for model \"%s\"", modelID))
-  }
-  enrichments <- enrichments[[modelID]]
+  enrichments <- getEnrichments(study, modelID = modelID)
 
   enrichmentsTable <- lapply(enrichments, combineListIntoTable, "annotationID")
   enrichmentsTable <- combineListIntoTable(enrichmentsTable, "testID")
-
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
   if (!annotationID %in% enrichmentsTable[["annotationID"]]) {
@@ -715,17 +704,17 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "no
 #' @export
 getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, type = "nominal", ...) {
 
-  df_enrichments <- dplyr::tbl(study, "enrichments")
+  enrichmentsTable <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
+  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
+  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
 
-  df_enrichments <- dplyr::collect(df_enrichments) %>%
+  enrichmentsTable <- dplyr::collect(enrichmentsTable) %>%
     as.data.frame()
 
-  if (nrow(df_enrichments) == 0) {
+  if (nrow(enrichmentsTable) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
@@ -734,7 +723,6 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, t
     )
   }
 
-  enrichmentsTable <- df_enrichments
   enrichmentsTable[["annotationID"]] <- NULL
   enrichmentsTable[["modelID"]] <- NULL
   if (type == "nominal") {
