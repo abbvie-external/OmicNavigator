@@ -347,71 +347,23 @@ getResultsTable <- function(study, modelID, testID, ...) {
 #' @rdname getResultsTable
 #' @export
 getResultsTable.oaStudy <- function(study, modelID, testID, ...) {
-  results <- study[["results"]]
+  results <- getResults(study, modelID, testID, ...)
+  features <- getFeatures(study, modelID, ...)
 
-  if (is.null(results)) {
-    stop(sprintf("No results available for study \"%s\"", study[["name"]]))
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (!modelID %in% names(results)) {
-    stop(sprintf("No results available for model \"%s\"", modelID))
-  }
-  results <- results[[modelID]]
-
-  stopifnot(is.character(testID), length(testID) == 1)
-  if (!testID %in% names(results)) {
-    stop(sprintf("No results available for test \"%s\" for model \"%s\"",
-                 testID, modelID))
-  }
-  results <- results[[testID]]
-
-  features <- study[["features"]] # to do: replace with getFeatures()
-  resultsTable <- merge(results, features, by = study[["featureID"]],
-                        all.x = TRUE, all.y = FALSE)
-  colOrder <- c(study[["featureID"]],
-                setdiff(colnames(features), study[["featureID"]]),
-                setdiff(colnames(results), study[["featureID"]]))
-  resultsTable <- resultsTable[, colOrder]
+  resultsTable <- merge(features, results, by = 1,
+                        all.x = FALSE, all.y = TRUE, sort = FALSE)
 
   return(resultsTable)
 }
 
 #' @rdname getResultsTable
-#' @importFrom dplyr "%>%"
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
 #' @export
 getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
+  results <- getResults(study, modelID, testID, ...)
+  features <- getFeatures(study, modelID, ...)
 
-  df_results <- dplyr::tbl(study, "results")
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  df_results <- dplyr::filter(df_results, .data$modelID == !! modelID)
-
-  stopifnot(is.character(testID), length(testID) == 1)
-  df_results <- dplyr::filter(df_results, .data$testID == !! testID)
-
-  df_results <- dplyr::collect(df_results) %>%
-    as.data.frame()
-
-  if (nrow(df_results) == 0) {
-    stop("Invalid filters.\n",
-         if (is.null(modelID)) "modelID: No filter applied\n"
-         else sprintf("modelID: \"%s\"\n", modelID),
-         if (is.null(testID)) "testID: No filter applied\n"
-         else sprintf("testID: \"%s\"\n", testID)
-    )
-  }
-
-  features <- dplyr::tbl(study, "features") %>% dplyr::collect()
-  featureCols <- colnames(features)
-  featureID <- intersect(featureCols, colnames(df_results))
-  stopifnot(length(featureID) == 1)
-
-  resultsTable <- df_results %>%
-    dplyr::select(-.data$modelID, -.data$testID) %>%
-    dplyr::left_join(features, by = featureID) %>%
-    dplyr::select(!! featureID, !! featureCols, dplyr::everything())
+  resultsTable <- merge(features, results, by = 1,
+                        all.x = FALSE, all.y = TRUE, sort = FALSE)
 
   return(resultsTable)
 }
