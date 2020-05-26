@@ -555,58 +555,64 @@ getEnrichments.oaStudy <- function(study, modelID = NULL, testID = NULL, annotat
     stop(sprintf("No enrichments available for study \"%s\"", study[["name"]]))
   }
 
-  if (!is.null(modelID)) {
-    stopifnot(is.character(modelID), length(modelID) == 1)
-    if (!modelID %in% names(enrichments)) {
-      stop(sprintf("No enrichments available for model \"%s\"", modelID))
-    }
-    enrichments <- enrichments[[modelID]]
+  if (is.null(modelID)) return(enrichments)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  enrichmentsModels <- names(enrichments)
+  if (modelID %in% enrichmentsModels) {
+    enrichmentsPerModel <- enrichments[[modelID]]
+  } else {
+    stop(sprintf("No enrichments available for model \"%s\"", modelID))
   }
 
-  if (!is.null(testID)) {
-    stopifnot(is.character(testID), length(testID) == 1)
-    if (!testID %in% names(enrichments)) {
-      stop(sprintf("No enrichments available for test \"%s\"", testID))
-    }
-    enrichments <- enrichments[[testID]]
+  if (is.null(testID)) return(enrichmentsPerModel)
+
+  stopifnot(is.character(testID), length(testID) == 1)
+  enrichmentsTests <- names(enrichmentsPerModel)
+  if (testID %in% enrichmentsTests) {
+    enrichmentsPerTest <- enrichmentsPerModel[[testID]]
+  } else {
+    stop(sprintf("No enrichments available for test \"%s\" for model \"%s\"",
+                 testID, modelID))
   }
 
-  if (!is.null(annotationID)) {
-    stopifnot(is.character(annotationID), length(annotationID) == 1)
-    if (!annotationID %in% names(enrichments)) {
-      stop(sprintf("No enrichments available for annotation \"%s\" for model \"%s\"",
-                   annotationID, modelID))
-    }
-    enrichments <- enrichments[[annotationID]]
+  if (is.null(annotationID)) return(enrichmentsPerTest)
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  enrichmentsAnnotations <- names(enrichmentsPerTest)
+  if (annotationID %in% enrichmentsAnnotations) {
+    enrichmentsPerAnnotation <- enrichmentsPerTest[[annotationID]]
+  } else {
+    stop(sprintf("No enrichments available for annotation \"%s\" for test \"%s\" for model \"%s\"",
+                 annotationID, testID, modelID))
   }
 
-  return(enrichments)
+  return(enrichmentsPerAnnotation)
 }
 
 #' @rdname getEnrichments
-#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
 #' @importFrom rlang ".data"
 #' @export
 getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
 
-  df_enrichments <- dplyr::tbl(study, "enrichments")
+  enrichmentsTable <- dplyr::tbl(study, "enrichments")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
+    enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
   }
   if (!is.null(testID)) {
     stopifnot(is.character(testID), length(testID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, .data$testID == !! testID)
+    enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$testID == !! testID)
   }
   if (!is.null(annotationID)) {
     stopifnot(is.character(annotationID), length(annotationID) == 1)
-    df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
+    enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
   }
-  df_enrichments <- dplyr::collect(df_enrichments) %>%
-    as.data.frame()
+  enrichmentsTable <- dplyr::collect(enrichmentsTable)
+  enrichmentsTable <- as.data.frame(enrichmentsTable)
 
-  if (nrow(df_enrichments) == 0) {
+  if (nrow(enrichmentsTable) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
@@ -617,7 +623,7 @@ getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL
     )
   }
 
-  enrichments <- splitTableIntoList(df_enrichments, "modelID")
+  enrichments <- splitTableIntoList(enrichmentsTable, "modelID")
   enrichments <- lapply(enrichments, function(x) splitTableIntoList(x, "testID"))
   enrichments <- lapply(enrichments,
                         function(x) lapply(x,
