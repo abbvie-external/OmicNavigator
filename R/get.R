@@ -179,24 +179,28 @@ getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
     stop(sprintf("No results available for study \"%s\"", study[["name"]]))
   }
 
-  if (!is.null(modelID)) {
-    stopifnot(is.character(modelID), length(modelID) == 1)
-    if (!modelID %in% names(results)) {
-      stop(sprintf("No results available for model \"%s\"", modelID))
-    }
-    results <- results[[modelID]]
+  if (is.null(modelID)) return(results)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  resultsModels <- names(results)
+  if (modelID %in% resultsModels) {
+    resultsPerModel <- results[[modelID]]
+  } else {
+    stop(sprintf("No results available for model \"%s\"", modelID))
   }
 
-  if (!is.null(testID)) {
-    stopifnot(is.character(testID), length(testID) == 1)
-    if (!testID %in% names(results)) {
-      stop(sprintf("No results available for test \"%s\" for model \"%s\"",
-                   testID, modelID))
-    }
-    results <- results[[testID]]
+  if (is.null(testID)) return(resultsPerModel)
+
+  stopifnot(is.character(testID), length(testID) == 1)
+  resultsTests <- names(resultsPerModel)
+  if (testID %in% resultsTests) {
+    resultsPerTest <- resultsPerModel[[testID]]
+  } else {
+    stop(sprintf("No results available for test \"%s\" for model \"%s\"",
+                 testID, modelID))
   }
 
-  return(results)
+  return(resultsPerTest)
 }
 
 #' @rdname getResults
@@ -206,19 +210,19 @@ getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
 #' @export
 getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ...) {
 
-  df_results <- dplyr::tbl(study, "results")
+  resultsTable <- dplyr::tbl(study, "results")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
-    df_results <- dplyr::filter(df_results, .data$modelID == !! modelID)
+    resultsTable <- dplyr::filter(resultsTable, .data$modelID == !! modelID)
   }
   if (!is.null(testID)) {
     stopifnot(is.character(testID), length(testID) == 1)
-    df_results <- dplyr::filter(df_results, .data$testID == !! testID)
+    resultsTable <- dplyr::filter(resultsTable, .data$testID == !! testID)
   }
-  df_results <- dplyr::collect(df_results) %>%
+  resultsTable <- dplyr::collect(resultsTable) %>%
     as.data.frame()
 
-  if (nrow(df_results) == 0) {
+  if (nrow(resultsTable) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
@@ -227,7 +231,7 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
     )
   }
 
-  results <- splitTableIntoList(df_results, "modelID")
+  results <- splitTableIntoList(resultsTable, "modelID")
   results <- lapply(results, function(x) splitTableIntoList(x, "testID"))
   if (!is.null(modelID)) results <- results[[1]]
   if (!is.null(testID)) results <- results[[1]]
