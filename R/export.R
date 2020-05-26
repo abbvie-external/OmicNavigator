@@ -74,13 +74,7 @@ createDatabase <- function(study, filename) {
   message("* Adding assays")
   assays_long <- vector(mode = "list", length = length(study[["assays"]]))
   for (i in seq_along(study[["assays"]])) {
-    assays_long[[i]] <- study[["assays"]][[i]] %>%
-      dplyr::mutate(featureID = rownames(.)) %>%
-      tidyr::pivot_longer(cols = -.data$featureID,
-                          names_to = "sampleID",
-                          values_to = "quantification") %>%
-      dplyr::mutate(modelID = names(study[["assays"]])[i]) %>%
-      dplyr::select(.data$featureID, .data$sampleID, .data$modelID, .data$quantification)
+    assays_long[[i]] <- assaysToLong(study[["assays"]][[i]], names(study[["assays"]])[i])
   }
   assays_final <- dplyr::bind_rows(assays_long)
   DBI::dbWriteTable(con, "assays", assays_final)

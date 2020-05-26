@@ -240,6 +240,77 @@ getFeatures.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get assays from a study
+#'
+#' @export
+getAssays <- function(study, modelID = NULL, ...) {
+  UseMethod("getAssays")
+}
+
+#' @rdname getAssays
+#' @export
+getAssays.oaStudy <- function(study, modelID = NULL, ...) {
+  assays <- study[["assays"]]
+
+  if (is.null(assays)) {
+    stop(sprintf("No assays available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(assays)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  assaysModels <- names(assays)
+  if (modelID %in% assaysModels) return(assays[[modelID]])
+  if ("default" %in% assaysModels) {
+    message(sprintf("Returning \"default\" assays for model \"%s\"", modelID))
+    return(assays[["default"]])
+  }
+
+  stop(sprintf("No assays available for model \"%s\"", modelID))
+}
+
+#' @rdname getAssays
+#' @export
+getAssays.SQLiteConnection <- function(study, modelID = NULL, ...) {
+  assaysTable <- dplyr::tbl(study, "assays")
+
+  if (!is.null(modelID)) {
+    stopifnot(is.character(modelID), length(modelID) == 1)
+    assaysTable <- dplyr::filter(assaysTable, .data$modelID == !! modelID)
+  }
+  assaysTable <- dplyr::collect(assaysTable)
+  assaysTable <- as.data.frame(assaysTable)
+
+  if (nrow(assaysTable) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(modelID)) "modelID: No filter applied\n"
+         else sprintf("modelID: \"%s\"\n", modelID),
+    )
+  }
+
+  assays <- splitTableIntoList(assaysTable, "modelID")
+  assays <- lapply(assays, assaysToWide)
+  if (!is.null(modelID)) assays <- assays[[1]]
+
+  return(assays)
+}
+
+#' @rdname getAssays
+#' @export
+getAssays.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  assays <- getAssays(con, modelID = modelID, ...)
+
+  return(assays)
+}
+
+#' @export
+getAssays.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 #' Get tests from a study
 #'
 #' @export
@@ -270,8 +341,6 @@ getTests.oaStudy <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getTests
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
 #' @export
 getTests.SQLiteConnection <- function(study, modelID = NULL, ...) {
 
@@ -362,7 +431,6 @@ getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
 }
 
 #' @rdname getResults
-#' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
 #' @importFrom rlang ".data"
 #' @export
@@ -377,8 +445,8 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
     stopifnot(is.character(testID), length(testID) == 1)
     resultsTable <- dplyr::filter(resultsTable, .data$testID == !! testID)
   }
-  resultsTable <- dplyr::collect(resultsTable) %>%
-    as.data.frame()
+  resultsTable <- dplyr::collect(resultsTable)
+  resultsTable <- as.data.frame(resultsTable)
 
   if (nrow(resultsTable) == 0) {
     stop("Invalid filters.\n",

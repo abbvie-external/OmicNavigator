@@ -53,3 +53,26 @@ hasUniqueIdColumn <- function(x) {
          call. = FALSE)
   }
 }
+
+#' @importFrom dplyr "%>%"
+#' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
+assaysToLong <- function(x, modelID) {
+  x %>%
+    dplyr::mutate(featureID = rownames(.)) %>%
+    tidyr::pivot_longer(cols = -.data$featureID,
+                        names_to = "sampleID",
+                        values_to = "quantification") %>%
+    dplyr::mutate(modelID = !! modelID) %>%
+    dplyr::select(.data$featureID, .data$sampleID, .data$modelID, .data$quantification)
+}
+
+assaysToWide <- function(x) {
+  wide <- tidyr::pivot_wider(x,
+                             names_from = "sampleID",
+                             values_from = "quantification")
+  wide <- as.data.frame(wide)
+  rownames(wide) <- wide[, 1]
+  wide <- wide[, -1]
+  return(wide)
+}
