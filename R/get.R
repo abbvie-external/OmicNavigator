@@ -82,6 +82,85 @@ getModels.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get samples from a study
+#'
+#' @export
+getSamples <- function(study, modelID = NULL, ...) {
+  UseMethod("getSamples")
+}
+
+#' @rdname getSamples
+#' @export
+getSamples.oaStudy <- function(study, modelID = NULL, ...) {
+  samples <- study[["samples"]]
+
+  if (is.null(samples)) {
+    stop(sprintf("No samples available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(samples)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  samplesModels <- names(samples)
+  if (modelID %in% samplesModels) return(samples[[modelID]])
+  if ("default" %in% samplesModels) {
+    message(sprintf("Returning \"default\" samples for model \"%s\"", modelID))
+    return(samples[["default"]])
+  }
+
+  stop(sprintf("No samples available for model \"%s\"", modelID))
+}
+
+#' @rdname getSamples
+#' @export
+getSamples.SQLiteConnection <- function(study, modelID = NULL, ...) {
+
+  dbTables <- DBI::dbListTables(study)
+  dbSamples <- grep("^samples-", dbTables, value = TRUE)
+  samplesModels <- sub("^samples-", "", dbSamples)
+
+  if (isEmpty(dbSamples)) {
+    stop(sprintf("No samples available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) {
+    samples <- lapply(dbSamples, function(x) DBI::dbReadTable(study, x))
+    names(samples) <- samplesModels
+    return(samples)
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (modelID %in% samplesModels) {
+    tableName <- paste("samples", modelID, sep = "-")
+    samples <- DBI::dbReadTable(study, tableName)
+    return(samples)
+  }
+  if ("default" %in% samplesModels) {
+    message(sprintf("Returning \"default\" samples for model \"%s\"", modelID))
+    tableName <- paste("samples", "default", sep = "-")
+    samples <- DBI::dbReadTable(study, tableName)
+    return(samples)
+  }
+
+  stop(sprintf("No samples available for model \"%s\"", modelID))
+}
+
+#' @rdname getSamples
+#' @export
+getSamples.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  samples <- getSamples(con, modelID = modelID, ...)
+
+  return(samples)
+}
+
+#' @export
+getSamples.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 #' Get features from a study
 #'
 #' @export
@@ -112,8 +191,6 @@ getFeatures.oaStudy <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getFeatures
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
 #' @export
 getFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
 
@@ -162,7 +239,6 @@ getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) 
 getFeatures.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
-
 
 #' Get tests from a study
 #'
