@@ -27,13 +27,13 @@ expect_identical(
 )
 
 expect_identical(
-  names(studies),
+  studies[[1]][["name"]],
   testStudyName
 )
 
 expect_identical(
-  names(studies[[testStudyName]]),
-  c("package", "results", "enrichments")
+  names(studies[[1]]),
+  c("name", "package", "results", "enrichments")
 )
 
 # getResultsTable --------------------------------------------------------------

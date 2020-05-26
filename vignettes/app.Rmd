@@ -44,7 +44,7 @@ studies <- listStudies(libraries = tmplib)
 ```
 
 ```{r list-studies-json}
-toJSON(studies, pretty = TRUE)
+toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 ```
 
 ## Results table
@@ -82,7 +82,7 @@ network graph.
 
 ```{r enrichments-network}
 enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
-toJSON(enrichmentsNetwork, pretty = TRUE)
+toJSON(enrichmentsNetwork, auto_unbox = TRUE, pretty = TRUE)
 ```
 
 ## Features in a network node
