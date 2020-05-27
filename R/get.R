@@ -783,22 +783,22 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
     dplyr::group_by(.data$termID) %>%
     dplyr::tally(name = "geneSetSize")
 
-  df_enrichments <- dplyr::tbl(study, "enrichments")
+  enrichmentsTable <- dplyr::tbl(study, "enrichments")
   stopifnot(is.character(modelID), length(modelID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, .data$modelID == !! modelID)
+  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
-  df_enrichments <- dplyr::filter(df_enrichments, .data$annotationID == !! annotationID)
+  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
 
-  nodes_long <- df_enrichments %>%
+  nodesLong <- enrichmentsTable %>%
     dplyr::select(-.data$modelID, -.data$annotationID) %>%
     dplyr::left_join(terms, by = "termID") %>%
     dplyr::arrange(.data$testID) %>%
     dplyr::collect()
 
-  tests <- unique(nodes_long[["testID"]])
+  tests <- unique(nodesLong[["testID"]])
 
-  if (nrow(nodes_long) == 0) {
+  if (nrow(nodesLong) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
@@ -807,7 +807,7 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
     )
   }
 
-  nodes <- nodes_long %>%
+  nodes <- nodesLong %>%
     dplyr::group_by(.data$termID, .data$description, .data$geneSetSize) %>%
     dplyr::summarize(nominal = list(.data$nominal), adjusted = list(.data$adjusted)) %>%
     dplyr::ungroup() %>%
@@ -856,7 +856,6 @@ getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
 
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
-
 
 # Wrapper around base::split()
 splitTableIntoList <- function(dataFrame, columnName) {
