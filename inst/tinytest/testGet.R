@@ -7,6 +7,7 @@ library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
+testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
@@ -251,6 +252,27 @@ expect_error(
 expect_error(
   getEnrichments(testStudyName, annotationID = testAnnotationName, testID = testTestName),
   "Must specify a model in order to specify an annotation"
+)
+# getPlots ---------------------------------------------------------------------
+
+expect_identical(
+  getPlots(testStudyObj),
+  testStudyObj[["plots"]]
+)
+
+expect_identical(
+  getPlots(testStudyObj, modelID = testModelName),
+  testStudyObj[["plots"]][["default"]]
+)
+
+expect_identical(
+  getPlots(testStudyName)[["plotID"]],
+  names(testStudyObj[["plots"]][["default"]])
+)
+
+expect_identical(
+  getPlots(testStudyName, modelID = testModelName)[["plotID"]],
+  names(testStudyObj[["plots"]][["default"]])
 )
 
 # Teardown ---------------------------------------------------------------------

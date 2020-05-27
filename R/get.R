@@ -800,6 +800,80 @@ getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+
+#' Get plots from a study
+#'
+#' @export
+getPlots <- function(study, modelID = NULL, ...) {
+  UseMethod("getPlots")
+}
+
+#' @rdname getPlots
+#' @export
+getPlots.oaStudy <- function(study, modelID = NULL, ...) {
+  plots <- study[["plots"]]
+
+  if (is.null(plots)) {
+    stop(sprintf("No plots available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(plots)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  plotsModels <- names(plots)
+  if (modelID %in% plotsModels) return(plots[[modelID]])
+  if ("default" %in% plotsModels) {
+    message(sprintf("Returning \"default\" plots for model \"%s\"", modelID))
+    return(plots[["default"]])
+  }
+
+  stop(sprintf("No plots available for model \"%s\"", modelID))
+}
+
+#' @rdname getPlots
+#' @export
+getPlots.SQLiteConnection <- function(study, modelID = NULL, ...) {
+
+  dbTables <- DBI::dbListTables(study)
+  dbPlots <- "plots"
+
+  if (!dbPlots %in% dbTables) {
+    stop("No plots available for this study")
+  }
+
+  plots <- DBI::dbReadTable(study, dbPlots)
+
+  if (is.null(modelID)) return(plots)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  plotsModels <- plots[, "modelID"]
+  if (modelID %in% plotsModels) {
+    return(plots[plots[, "modelID"] == modelID, ])
+  }
+  if ("default" %in% plotsModels) {
+    message(sprintf("Returning \"default\" plots for model \"%s\"", modelID))
+    return(plots[plots[, "modelID"] == "default", ])
+  }
+
+  stop(sprintf("No plots available for model \"%s\"", modelID))
+}
+
+#' @rdname getPlots
+#' @export
+getPlots.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  plots <- getPlots(con, modelID = modelID, ...)
+
+  return(plots)
+}
+
+#' @export
+getPlots.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 # Wrapper around base::split()
 splitTableIntoList <- function(dataFrame, columnName) {
 
