@@ -8,7 +8,7 @@ library(tinytest)
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestName <- names(testStudyObj[["tests"]])[1]
+testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 
 tmplib <- tempfile()
@@ -45,9 +45,11 @@ expect_identical(
   "data.frame"
 )
 
-expect_true(all(colnames(testStudyObj[["features"]]) %in% colnames(resultsTable)))
+features <- getFeatures(testStudyObj, testModelName)
+expect_true(all(colnames(features) %in% colnames(resultsTable)))
 
-expect_true(all(colnames(testStudyObj[["results"]]) %in% colnames(resultsTable)))
+results <- getResults(testStudyObj, testModelName, testTestName)
+expect_true(all(colnames(results) %in% colnames(resultsTable)))
 
 # getEnrichmentsTable ----------------------------------------------------------
 
@@ -58,7 +60,7 @@ expect_identical(
   "data.frame"
 )
 
-expect_true(all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable)))
+expect_true(all(getTests(testStudyName, testModelName)[, "testID"] %in% colnames(enrichmentsTable)))
 
 # getEnrichmentsNetwork --------------------------------------------------------
 
@@ -76,7 +78,7 @@ expect_identical(
 
 expect_identical(
   enrichmentsNetwork[["tests"]],
-  names(getTests(testStudyName, testModelName))
+  getTests(testStudyName, testModelName)[, "testID"]
 )
 
 # Teardown ---------------------------------------------------------------------

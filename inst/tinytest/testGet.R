@@ -8,7 +8,7 @@ library(tinytest)
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestName <- names(testStudyObj[["tests"]])[1]
+testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 
 tmplib <- tempfile()
@@ -65,28 +65,8 @@ expect_identical(
 )
 
 expect_identical(
-  getTests(testStudyObj, testID = testTestName),
-  testStudyObj[["tests"]][testTestName]
-)
-
-expect_error(
-  getTests(testStudyObj, testID = "non-existent-test"),
-  "non-existent-test"
-)
-
-expect_identical(
   getTests(testStudyObj, modelID = testModelName),
-  testStudyObj[["tests"]][names(testStudyObj[["enrichments"]][[testModelName]])]
-)
-
-expect_error(
-  getTests(testStudyObj, modelID = "non-existent-model"),
-  "non-existent-model"
-)
-
-expect_error(
-  getTests(testStudyObj, modelID = "not null", testID = "not null"),
-  "Can only filter by modelID or testID, not both"
+  testStudyObj[["tests"]][["default"]]
 )
 
 expect_identical(
@@ -95,28 +75,8 @@ expect_identical(
 )
 
 expect_identical(
-  getTests(testStudyName, testID = testTestName),
-  testStudyObj[["tests"]][testTestName]
-)
-
-expect_error(
-  getTests(testStudyName, testID = "non-existent-test"),
-  "non-existent-test"
-)
-
-expect_identical(
   getTests(testStudyName, modelID = testModelName),
-  testStudyObj[["tests"]][names(testStudyObj[["enrichments"]][[testModelName]])]
-)
-
-expect_error(
-  getTests(testStudyName, modelID = "non-existent-model"),
-  "non-existent-model"
-)
-
-expect_error(
-  getTests(testStudyName, modelID = "not null", testID = "not null"),
-  "Can only filter by modelID or testID, not both"
+  testStudyObj[["tests"]][["default"]]
 )
 
 # getResults -------------------------------------------------------------------

@@ -460,6 +460,7 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
   resultsTable <- tidyr::pivot_wider(resultsTable,
                                      names_from = "resultsVariable",
                                      values_from = "resultsValue")
+  resultsTable <- as.data.frame(resultsTable)
 
   results <- splitTableIntoList(resultsTable, "modelID")
   results <- lapply(results, function(x) splitTableIntoList(x, "testID"))
