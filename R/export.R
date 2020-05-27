@@ -143,12 +143,12 @@ createDatabase <- function(study, filename) {
   message("* Adding enrichments")
   enrichmentsList <- list()
   for (modelID in names(study[["enrichments"]])) {
-    for (testID in names(study[["enrichments"]][[modelID]])) {
-      for (annotationID in names(study[["enrichments"]][[modelID]][[testID]])) {
-        tmp <- study[["enrichments"]][[modelID]][[testID]][[annotationID]]
+    for (annotationID in names(study[["enrichments"]][[modelID]])) {
+      for (testID in names(study[["enrichments"]][[modelID]][[annotationID]])) {
+        tmp <- study[["enrichments"]][[modelID]][[annotationID]][[testID]]
         tmp[["modelID"]] <- modelID
-        tmp[["testID"]] <- testID
         tmp[["annotationID"]] <- annotationID
+        tmp[["testID"]] <- testID
         enrichmentsList <- c(enrichmentsList, list(tmp))
       }
     }
@@ -158,8 +158,8 @@ createDatabase <- function(study, filename) {
   DBI::dbWriteTable(con, "enrichments", enrichmentsTable,
                     field.types = c(
                       "modelID" = "varchar(100) REFERENCES models (modelID)",
-                      "testID" = "varchar(50) REFERENCES tests (testID)",
                       "annotationID" = "varchar(50) REFERENCES annotations (annotationID)",
+                      "testID" = "varchar(50) REFERENCES tests (testID)",
                       "termID" = "varchar(50) REFERENCES terms (termID)"
                     ))
 

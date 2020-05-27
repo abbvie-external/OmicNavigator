@@ -536,12 +536,15 @@ getResultsTable.default <- function(study, modelID, testID, ...) {
 #' Get enrichments from a study
 #'
 #' @export
-getEnrichments <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
+  if (is.null(modelID) && !is.null(annotationID)) {
+    stop("Must specify a model in order to specify an annotation")
+  }
   if (is.null(modelID) && !is.null(testID)) {
     stop("Must specify a model in order to specify a test")
   }
-  if (is.null(testID) && !is.null(annotationID)) {
-    stop("Must specify a test in order to specify an annotation")
+  if (is.null(annotationID) && !is.null(testID)) {
+    stop("Must specify an annotation in order to specify a test")
   }
 
   UseMethod("getEnrichments")
@@ -549,7 +552,7 @@ getEnrichments <- function(study, modelID = NULL, testID = NULL, annotationID = 
 
 #' @rdname getEnrichments
 #' @export
-getEnrichments.oaStudy <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+getEnrichments.oaStudy <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
   enrichments <- study[["enrichments"]]
 
   if (is.null(enrichments)) {
@@ -566,50 +569,51 @@ getEnrichments.oaStudy <- function(study, modelID = NULL, testID = NULL, annotat
     stop(sprintf("No enrichments available for model \"%s\"", modelID))
   }
 
-  if (is.null(testID)) return(enrichmentsPerModel)
-
-  stopifnot(is.character(testID), length(testID) == 1)
-  enrichmentsTests <- names(enrichmentsPerModel)
-  if (testID %in% enrichmentsTests) {
-    enrichmentsPerTest <- enrichmentsPerModel[[testID]]
-  } else {
-    stop(sprintf("No enrichments available for test \"%s\" for model \"%s\"",
-                 testID, modelID))
-  }
-
-  if (is.null(annotationID)) return(enrichmentsPerTest)
+  if (is.null(annotationID)) return(enrichmentsPerModel)
 
   stopifnot(is.character(annotationID), length(annotationID) == 1)
-  enrichmentsAnnotations <- names(enrichmentsPerTest)
+  enrichmentsAnnotations <- names(enrichmentsPerModel)
   if (annotationID %in% enrichmentsAnnotations) {
-    enrichmentsPerAnnotation <- enrichmentsPerTest[[annotationID]]
+    enrichmentsPerAnnotation <- enrichmentsPerModel[[annotationID]]
   } else {
-    stop(sprintf("No enrichments available for annotation \"%s\" for test \"%s\" for model \"%s\"",
-                 annotationID, testID, modelID))
+    stop(sprintf("No enrichments available for annotation \"%s\" for model \"%s\"",
+                 annotationID, modelID))
   }
 
-  return(enrichmentsPerAnnotation)
+  if (is.null(testID)) return(enrichmentsPerAnnotation)
+
+  stopifnot(is.character(testID), length(testID) == 1)
+  enrichmentsTests <- names(enrichmentsPerAnnotation)
+  if (testID %in% enrichmentsTests) {
+    enrichmentsPerTest <- enrichmentsPerAnnotation[[testID]]
+  } else {
+    stop(sprintf("No enrichments available for test \"%s\" for annotation \"%s\" for model \"%s\"",
+                 testID, annotationID, modelID))
+  }
+
+  return(enrichmentsPerTest)
 }
 
 #' @rdname getEnrichments
 #' @importFrom rlang "!!"
 #' @importFrom rlang ".data"
 #' @export
-getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+getEnrichments.SQLiteConnection <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
 
   enrichmentsTable <- dplyr::tbl(study, "enrichments")
   if (!is.null(modelID)) {
     stopifnot(is.character(modelID), length(modelID) == 1)
     enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
   }
-  if (!is.null(testID)) {
-    stopifnot(is.character(testID), length(testID) == 1)
-    enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$testID == !! testID)
-  }
   if (!is.null(annotationID)) {
     stopifnot(is.character(annotationID), length(annotationID) == 1)
     enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
   }
+  if (!is.null(testID)) {
+    stopifnot(is.character(testID), length(testID) == 1)
+    enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$testID == !! testID)
+  }
+
   enrichmentsTable <- dplyr::collect(enrichmentsTable)
   enrichmentsTable <- as.data.frame(enrichmentsTable)
 
@@ -617,38 +621,38 @@ getEnrichments.SQLiteConnection <- function(study, modelID = NULL, testID = NULL
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
          else sprintf("modelID: \"%s\"\n", modelID),
-         if (is.null(testID)) "testID: No filter applied\n"
-         else sprintf("testID: \"%s\"\n", testID),
          if (is.null(annotationID)) "annotationID: No filter applied\n"
-         else sprintf("annotationID: \"%s\"\n", annotationID)
+         else sprintf("annotationID: \"%s\"\n", annotationID),
+         if (is.null(testID)) "testID: No filter applied\n"
+         else sprintf("testID: \"%s\"\n", testID)
     )
   }
 
   enrichments <- splitTableIntoList(enrichmentsTable, "modelID")
-  enrichments <- lapply(enrichments, function(x) splitTableIntoList(x, "testID"))
+  enrichments <- lapply(enrichments, function(x) splitTableIntoList(x, "annotationID"))
   enrichments <- lapply(enrichments,
                         function(x) lapply(x,
-                                           function(y) splitTableIntoList(y, "annotationID")))
+                                           function(y) splitTableIntoList(y, "testID")))
   if (!is.null(modelID)) enrichments <- enrichments[[1]]
-  if (!is.null(testID)) enrichments <- enrichments[[1]]
   if (!is.null(annotationID)) enrichments <- enrichments[[1]]
+  if (!is.null(testID)) enrichments <- enrichments[[1]]
 
   return(enrichments)
 }
 
 #' @rdname getEnrichments
 #' @export
-getEnrichments.character <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, libraries = NULL, ...) {
+getEnrichments.character <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
-  enrichments <- getEnrichments(con, modelID = modelID, testID = testID, annotationID = annotationID, ...)
+  enrichments <- getEnrichments(con, modelID = modelID, annotationID = annotationID, testID = testID, ...)
 
   return(enrichments)
 }
 
 #' @export
-getEnrichments.default <- function(study, modelID = NULL, testID = NULL, annotationID = NULL, ...) {
+getEnrichments.default <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
@@ -665,37 +669,13 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #' @importFrom rlang ".data"
 #' @export
 getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "nominal", ...) {
-  enrichments <- getEnrichments(study, modelID = modelID)
+  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
 
-  enrichmentsTable <- lapply(enrichments, combineListIntoTable, "annotationID")
   enrichmentsTable <- combineListIntoTable(enrichmentsTable, "testID")
 
-  stopifnot(is.character(annotationID), length(annotationID) == 1)
-  if (!annotationID %in% enrichmentsTable[["annotationID"]]) {
-    stop(sprintf("No enrichments available for annotation \"%s\" for model \"%s\"",
-                 annotationID, modelID))
-  }
-  enrichmentsTable <- enrichmentsTable[enrichmentsTable[["annotationID"]] == annotationID, ]
-  enrichmentsTable[["annotationID"]] <- NULL
-  if (type == "nominal") {
-    enrichmentsTable[["adjusted"]] <- NULL
-    enrichmentsTable <- tidyr::pivot_wider(
-      enrichmentsTable,
-      names_from = .data$testID,
-      values_from = .data$nominal
-    )
-  } else {
-    enrichmentsTable[["nominal"]] <- NULL
-    enrichmentsTable <- tidyr::pivot_wider(
-      enrichmentsTable,
-      names_from = .data$testID,
-      values_from = .data$adjusted
-    )
-  }
+  enrichmentsTableWide <- enrichmentsToWide(enrichmentsTable, type = type)
 
-  enrichmentsTable <- as.data.frame(enrichmentsTable)
-
-  return(enrichmentsTable)
+  return(enrichmentsTableWide)
 }
 
 #' @rdname getEnrichmentsTable
@@ -705,46 +685,13 @@ getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "no
 #' @export
 getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, type = "nominal", ...) {
 
-  enrichmentsTable <- dplyr::tbl(study, "enrichments")
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
+  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
 
-  stopifnot(is.character(annotationID), length(annotationID) == 1)
-  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
+  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
-  enrichmentsTable <- dplyr::collect(enrichmentsTable) %>%
-    as.data.frame()
+  enrichmentsTableWide <- enrichmentsToWide(enrichmentsTable, type = type)
 
-  if (nrow(enrichmentsTable) == 0) {
-    stop("Invalid filters.\n",
-         if (is.null(modelID)) "modelID: No filter applied\n"
-         else sprintf("modelID: \"%s\"\n", modelID),
-         if (is.null(annotationID)) "annotationID: No filter applied\n"
-         else sprintf("annotationID: \"%s\"\n", annotationID)
-    )
-  }
-
-  enrichmentsTable[["annotationID"]] <- NULL
-  enrichmentsTable[["modelID"]] <- NULL
-  if (type == "nominal") {
-    enrichmentsTable[["adjusted"]] <- NULL
-    enrichmentsTable <- tidyr::pivot_wider(
-      enrichmentsTable,
-      names_from = .data$testID,
-      values_from = .data$nominal
-    )
-  } else {
-    enrichmentsTable[["nominal"]] <- NULL
-    enrichmentsTable <- tidyr::pivot_wider(
-      enrichmentsTable,
-      names_from = .data$testID,
-      values_from = .data$adjusted
-    )
-  }
-
-  enrichmentsTable <- as.data.frame(enrichmentsTable)
-
-  return(enrichmentsTable)
+  return(enrichmentsTableWide)
 }
 
 #' @rdname getEnrichmentsTable
@@ -782,20 +729,15 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   terms <- dplyr::tbl(study, "terms") %>%
     dplyr::filter(.data$annotationID == !! annotationID) %>%
     dplyr::group_by(.data$termID) %>%
-    dplyr::tally(name = "geneSetSize")
+    dplyr::tally(name = "geneSetSize") %>%
+    dplyr::collect()
 
-  enrichmentsTable <- dplyr::tbl(study, "enrichments")
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$modelID == !! modelID)
-
-  stopifnot(is.character(annotationID), length(annotationID) == 1)
-  enrichmentsTable <- dplyr::filter(enrichmentsTable, .data$annotationID == !! annotationID)
+  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
+  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
   nodesLong <- enrichmentsTable %>%
-    dplyr::select(-.data$modelID, -.data$annotationID) %>%
     dplyr::left_join(terms, by = "termID") %>%
-    dplyr::arrange(.data$testID) %>%
-    dplyr::collect()
+    dplyr::arrange(.data$testID)
 
   tests <- unique(nodesLong[["testID"]])
 

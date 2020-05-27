@@ -153,15 +153,15 @@ checkEnrichments <- function(enrichments) {
     model <- enrichments[[i]]
     checkList(model)
     for (j in seq_along(model)) {
-      test <- model[[j]]
-      checkList(test)
-      for (k in seq_along(test)) {
-        annotation <- test[[k]]
-        stopifnot(inherits(annotation, "data.frame"))
+      annotation <- model[[j]]
+      checkList(annotation)
+      for (k in seq_along(annotation)) {
+        test <- annotation[[k]]
+        stopifnot(inherits(test, "data.frame"))
         stopifnot(c("termID", "description", "nominal", "adjusted")
-                  %in% colnames(annotation))
+                  %in% colnames(test))
         enrichments[[i]][[j]][[k]] <-
-          annotation[, c("termID", "description", "nominal", "adjusted")]
+          test[, c("termID", "description", "nominal", "adjusted")]
       }
     }
   }

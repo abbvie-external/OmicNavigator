@@ -141,7 +141,7 @@ expect_error(
   "Must specify a model in order to specify a test"
 )
 
-# getEnrichments -------------------------------------------------------------------
+# getEnrichments ---------------------------------------------------------------
 
 expect_identical(
   getEnrichments(testStudyObj),
@@ -159,12 +159,27 @@ expect_error(
 )
 
 expect_identical(
-  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName),
-  testStudyObj[["enrichments"]][[testModelName]][[testTestName]]
+  getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName),
+  testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
 expect_error(
-  getEnrichments(testStudyObj, modelID = testModelName, testID = "non-existent-test"),
+  getEnrichments(testStudyObj, modelID = testModelName, annotationID = "non-existent-annotation"),
+  "non-existent-annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyObj, annotationID = testAnnotationName),
+  "Must specify a model in order to specify an annotation"
+)
+
+expect_identical(
+  getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
+  testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
+)
+
+expect_error(
+  getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
@@ -173,24 +188,14 @@ expect_error(
   "Must specify a model in order to specify a test"
 )
 
-expect_identical(
-  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName, annotationID = testAnnotationName),
-  testStudyObj[["enrichments"]][[testModelName]][[testTestName]][[testAnnotationName]]
+expect_error(
+  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName),
+  "Must specify an annotation in order to specify a test"
 )
 
 expect_error(
-  getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName, annotationID = "non-existent-annotation"),
-  "non-existent-annotation"
-)
-
-expect_error(
-  getEnrichments(testStudyObj, annotationID = testAnnotationName),
-  "Must specify a test in order to specify an annotation"
-)
-
-expect_error(
-  getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName),
-  "Must specify a test in order to specify an annotation"
+  getEnrichments(testStudyObj, annotationID = testAnnotationName, testID = testTestName),
+  "Must specify a model in order to specify an annotation"
 )
 
 expect_identical(
@@ -209,12 +214,27 @@ expect_error(
 )
 
 expect_identical(
-  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName),
-  testStudyObj[["enrichments"]][[testModelName]][[testTestName]]
+  getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName),
+  testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
 expect_error(
-  getEnrichments(testStudyName, modelID = testModelName, testID = "non-existent-test"),
+  getEnrichments(testStudyName, modelID = testModelName, annotationID = "non-existent-annotation"),
+  "non-existent-annotation"
+)
+
+expect_error(
+  getEnrichments(testStudyName, annotationID = testAnnotationName),
+  "Must specify a model in order to specify an annotation"
+)
+
+expect_identical(
+  getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
+  testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
+)
+
+expect_error(
+  getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
@@ -223,24 +243,14 @@ expect_error(
   "Must specify a model in order to specify a test"
 )
 
-expect_identical(
-  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName, annotationID = testAnnotationName),
-  testStudyObj[["enrichments"]][[testModelName]][[testTestName]][[testAnnotationName]]
+expect_error(
+  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName),
+  "Must specify an annotation in order to specify a test"
 )
 
 expect_error(
-  getEnrichments(testStudyName, modelID = testModelName, testID = testTestName, annotationID = "non-existent-annotation"),
-  "non-existent-annotation"
-)
-
-expect_error(
-  getEnrichments(testStudyName, annotationID = testAnnotationName),
-  "Must specify a test in order to specify an annotation"
-)
-
-expect_error(
-  getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName),
-  "Must specify a test in order to specify an annotation"
+  getEnrichments(testStudyName, annotationID = testAnnotationName, testID = testTestName),
+  "Must specify a model in order to specify an annotation"
 )
 
 # Teardown ---------------------------------------------------------------------

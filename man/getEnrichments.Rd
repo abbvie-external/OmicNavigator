@@ -7,17 +7,17 @@
 \alias{getEnrichments.character}
 \title{Get enrichments from a study}
 \usage{
-getEnrichments(study, modelID = NULL, testID = NULL, annotationID = NULL, ...)
+getEnrichments(study, modelID = NULL, annotationID = NULL, testID = NULL, ...)
 
-\method{getEnrichments}{oaStudy}(study, modelID = NULL, testID = NULL, annotationID = NULL, ...)
+\method{getEnrichments}{oaStudy}(study, modelID = NULL, annotationID = NULL, testID = NULL, ...)
 
-\method{getEnrichments}{SQLiteConnection}(study, modelID = NULL, testID = NULL, annotationID = NULL, ...)
+\method{getEnrichments}{SQLiteConnection}(study, modelID = NULL, annotationID = NULL, testID = NULL, ...)
 
 \method{getEnrichments}{character}(
   study,
   modelID = NULL,
-  testID = NULL,
   annotationID = NULL,
+  testID = NULL,
   libraries = NULL,
   ...
 )

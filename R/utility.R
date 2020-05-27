@@ -76,3 +76,25 @@ assaysToWide <- function(x) {
   wide <- wide[, -1]
   return(wide)
 }
+
+enrichmentsToWide <- function(x, type) {
+  output <- x
+  if (type == "nominal") {
+    output[["adjusted"]] <- NULL
+    output <- tidyr::pivot_wider(
+      output,
+      names_from = .data$testID,
+      values_from = .data$nominal
+    )
+  } else {
+    output[["nominal"]] <- NULL
+    output <- tidyr::pivot_wider(
+      output,
+      names_from = .data$testID,
+      values_from = .data$adjusted
+    )
+  }
+
+  output <- as.data.frame(output)
+  return(output)
+}

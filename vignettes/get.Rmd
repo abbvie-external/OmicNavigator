@@ -68,7 +68,7 @@ toJSON(result[1:2, ], pretty = TRUE)
 ## Enrichments
 
 ```{r enrichments}
-enrichment <- getEnrichments("ABC", "model_01", "test_01", "annotation_01")
+enrichment <- getEnrichments("ABC", "model_01", "annotation_01", "test_01")
 head(enrichment)
 toJSON(enrichment[1:2, ], pretty = TRUE)
 ```

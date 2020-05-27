@@ -229,10 +229,11 @@ addResults <- function(study, results, overwrite = FALSE) {
 #'
 #' @param enrichments The enrichment results from each model. The input is a
 #'   nested named list. The names of the list correspond to the model names.
-#'   Each list element should be a list of the tests tested. The names
-#'   correspond to the test names. Each list element should be another list of
-#'   annotation databases. The names correspond to the annotation databases.
-#'   Each of these elements should be a data frame with enrichment results. Each
+#'   Each list element should be a list of the annotation databases tested
+#'   (\code{\link{addAnnotations}}). The names of the list correspond to the
+#'   annotation databases. Each list element should be another list of tests
+#'   (\code{\link{addTests}}). The names correspond to the tests performed. Each
+#'   of these elements should be a data frame with enrichment results. Each
 #'   table must contain the following columns: "termID", "description",
 #'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
 #'   adjusting for multiple testing). Any additional columns are ignored.
