@@ -2,53 +2,33 @@
 #'
 #'
 #' @export
-plotStudy <- function(study, model, featureName, plotName) {
-  stopifnot(inherits(study, "oaStudy"), is.character(model),
-            is.character(featureName))
+plotStudy <- function(study, modelID, feature, plotName) {
+  stopifnot(inherits(study, "oaStudy"), is.character(modelID),
+            is.character(feature), is.character(plotName))
 
-  if (is.null(study[["models"]])) {
-    stop("No models are avaliable. Use addModels() to register them.")
-  }
+  plots <- getPlots(study, modelID = modelID)
+  assays <- getAssays(study, modelID = modelID)
+  samples <- getSamples(study, modelID = modelID)
+  features <- getFeatures(study, modelID = modelID)
 
-  if (!model %in% names(study[["models"]])) {
-    stop(sprintf("The model \"%s\" is not available. Use addModels() to register it.",
-                 model))
-  }
-
-  if (is.null(study[["features"]])) {
-    stop("No features are avaliable. Use addFeatures() to register them.")
-  }
-
-  if (!featureName %in% study[["features"]][[study[["featureID"]]]]) {
+  if (!feature %in% features[, 1]) {
     stop(sprintf("The feature \"%s\" is not present in the features table",
-                 featureName))
+                 feature))
   }
 
-  if (is.null(study[["plots"]])) {
-    stop("No custom plots are avaliable. Use addPlots() to register them.")
-  }
-
-  plots_available <- names(study[["plots"]])
-  if(!plotName %in% plots_available) {
+  plotsAvailable <- names(plots)
+  if(!plotName %in% plotsAvailable) {
     stop(sprintf("The plot \"%s\" is not available.\n", plotName),
          "Plots available:\n",
-         sprintf("* \"%s\"\n", plots_available))
+         sprintf("* \"%s\"\n", plotsAvailable))
   }
 
-  if (is.null(study[["samples"]])) {
-    stop("No samples are available. Use addAssays() to register them.")
-  }
-
-  if (is.null(study[["assays"]])) {
-    stop("No assays are available. Use addAssays() to register them.")
-  }
-
-  p <- study[["plots"]][[plotName]]
+  p <- plots[[plotName]]
   f <- p[["definition"]]
-  assay_feature <- t(study[["assays"]][[model]][featureName, , drop = FALSE])
-  colnames(assay_feature) <- "feature"
-  x <- merge(study[["samples"]], assay_feature,
-             by.x = study[["sampleID"]], by.y = "row.names")
+  assayFeature <- t(assays[feature, , drop = FALSE])
+  colnames(assayFeature) <- "feature"
+  x <- merge(samples, assayFeature,
+             by.x = 1, by.y = "row.names")
 
   # Setup for the plot and ensure everything is properly reset after the
   # function returns.
@@ -65,7 +45,7 @@ plotStudy <- function(study, model, featureName, plotName) {
     }
   }
 
-  returned <- f(x = x, featureName = featureName)
+  returned <- f(x = x, feature = feature)
   if (inherits(returned, "ggplot")) print(returned)
 
   return(invisible(study))

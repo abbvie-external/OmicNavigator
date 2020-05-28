@@ -164,10 +164,13 @@ testMetaFeatures<- function(rows = 100, cols = 3, seed = 12345L) {
 testPlots<- function() {
   plots <- list(
     plotBase = list(
-      definition = function(x, feature) plot(1:10)
+      definition = function(x, feature) graphics::plot(x[, "feature"],
+                                                       main = feature)
     ),
     plotGg = list(
-      definition = function(x, feature) qplot(1:10, 1:10),
+      definition = function(x, feature) ggplot2::qplot(seq_len(nrow(x)),
+                                                       x[, "feature"],
+                                                       main = feature),
       displayName = "A ggplot2 plot",
       packages = c("ggplot2")
     )

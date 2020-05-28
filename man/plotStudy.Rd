@@ -4,7 +4,7 @@
 \alias{plotStudy}
 \title{Plot a feature using a custom plotting function}
 \usage{
-plotStudy(study, model, featureName, plotName)
+plotStudy(study, modelID, feature, plotName)
 }
 \description{
 Plot a feature using a custom plotting function
