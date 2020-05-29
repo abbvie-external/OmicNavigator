@@ -18,6 +18,8 @@ libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
 
+emptyStudy <- createStudy(name = "empty")
+
 # installedStudies -------------------------------------------------------------
 
 installedStudies <- getInstalledStudies(libraries = tmplib)
@@ -58,6 +60,11 @@ expect_error(
   "non-existent-model"
 )
 
+expect_error(
+  getModels(emptyStudy),
+  "No models available"
+)
+
 # getTests ---------------------------------------------------------------------
 
 expect_identical(
@@ -78,6 +85,11 @@ expect_identical(
 expect_identical(
   getTests(testStudyName, modelID = testModelName),
   testStudyObj[["tests"]][["default"]]
+)
+
+expect_error(
+  getTests(emptyStudy),
+  "No tests available"
 )
 
 # getResults -------------------------------------------------------------------
@@ -110,6 +122,11 @@ expect_error(
 expect_error(
   getResults(testStudyObj, testID = testTestName),
   "Must specify a model in order to specify a test"
+)
+
+expect_error(
+  getResults(emptyStudy),
+  "No results available"
 )
 
 expect_identical(
@@ -199,6 +216,11 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
+expect_error(
+  getEnrichments(emptyStudy),
+  "No enrichments available"
+)
+
 expect_identical(
   getEnrichments(testStudyName),
   testStudyObj[["enrichments"]]
@@ -263,6 +285,11 @@ expect_identical(
 expect_identical(
   getPlots(testStudyObj, modelID = testModelName),
   testStudyObj[["plots"]][["default"]]
+)
+
+expect_error(
+  getPlots(emptyStudy),
+  "No plots available"
 )
 
 expect_identical(

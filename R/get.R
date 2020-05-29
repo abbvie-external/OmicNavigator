@@ -30,7 +30,8 @@ getModels <- function(study, modelID = NULL, ...) {
 #' @export
 getModels.oaStudy <- function(study, modelID = NULL, ...) {
   models <- study[["models"]]
-  if (is.null(models)) {
+
+  if (isEmpty(models)) {
     stop(sprintf("No models available for study \"%s\"", study[["name"]]))
   }
 
@@ -94,7 +95,7 @@ getSamples <- function(study, modelID = NULL, ...) {
 getSamples.oaStudy <- function(study, modelID = NULL, ...) {
   samples <- study[["samples"]]
 
-  if (is.null(samples)) {
+  if (isEmpty(samples)) {
     stop(sprintf("No samples available for study \"%s\"", study[["name"]]))
   }
 
@@ -173,7 +174,7 @@ getFeatures <- function(study, modelID = NULL, ...) {
 getFeatures.oaStudy <- function(study, modelID = NULL, ...) {
   features <- study[["features"]]
 
-  if (is.null(features)) {
+  if (isEmpty(features)) {
     stop(sprintf("No features available for study \"%s\"", study[["name"]]))
   }
 
@@ -252,7 +253,7 @@ getAssays <- function(study, modelID = NULL, ...) {
 getAssays.oaStudy <- function(study, modelID = NULL, ...) {
   assays <- study[["assays"]]
 
-  if (is.null(assays)) {
+  if (isEmpty(assays)) {
     stop(sprintf("No assays available for study \"%s\"", study[["name"]]))
   }
 
@@ -323,7 +324,7 @@ getTests <- function(study, modelID = NULL, ...) {
 getTests.oaStudy <- function(study, modelID = NULL, ...) {
   tests <- study[["tests"]]
 
-  if (is.null(tests)) {
+  if (isEmpty(tests)) {
     stop(sprintf("No tests available for study \"%s\"", study[["name"]]))
   }
 
@@ -402,7 +403,7 @@ getResults <- function(study, modelID = NULL, testID = NULL, ...) {
 getResults.oaStudy <- function(study, modelID = NULL, testID = NULL, ...) {
   results <- study[["results"]]
 
-  if (is.null(results)) {
+  if (isEmpty(results)) {
     stop(sprintf("No results available for study \"%s\"", study[["name"]]))
   }
 
@@ -555,7 +556,7 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
 getEnrichments.oaStudy <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
   enrichments <- study[["enrichments"]]
 
-  if (is.null(enrichments)) {
+  if (isEmpty(enrichments)) {
     stop(sprintf("No enrichments available for study \"%s\"", study[["name"]]))
   }
 
@@ -813,7 +814,7 @@ getPlots <- function(study, modelID = NULL, ...) {
 getPlots.oaStudy <- function(study, modelID = NULL, ...) {
   plots <- study[["plots"]]
 
-  if (is.null(plots)) {
+  if (isEmpty(plots)) {
     stop(sprintf("No plots available for study \"%s\"", study[["name"]]))
   }
 
