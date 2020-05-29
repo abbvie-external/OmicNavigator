@@ -165,7 +165,7 @@ createDatabase <- function(study, filename) {
 
   # metaFeatures ---------------------------------------------------------------
 
-  if (!is.null(study[["metaFeatures"]])) {
+  if (!isEmpty(study[["metaFeatures"]])) {
     message("* Adding meta-features")
     for (i in seq_along(study[["metaFeatures"]])) {
       tableName <- paste("metaFeatures", names(study[["metaFeatures"]])[i], sep = "-")
@@ -175,7 +175,7 @@ createDatabase <- function(study, filename) {
 
   # Plots ----------------------------------------------------------------------
 
-  if (!is.null(study[["plots"]])) {
+  if (!isEmpty(study[["plots"]])) {
     message("* Adding plots")
     plotsTable <- matrix(character(), ncol = 2)
     colnames(plotsTable) <- c("modelID", "plotID")
@@ -251,7 +251,7 @@ createPackage <- function(study, directoryname) {
   createDatabase(study, sqlfile)
 
   # Plots
-  if (!is.null(study[["plots"]])) {
+  if (!isEmpty(study[["plots"]])) {
     # Can't have duplicate plots in different models
     plotsAll <- lapply(study[["plots"]], function(x) names(x))
     if (length(plotsAll) != length(unique(plotsAll))) {
