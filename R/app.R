@@ -38,6 +38,7 @@ listStudies <- function(libraries = NULL) {
       dplyr::arrange(.data$modelID, .data$testID) %>%
       dplyr::left_join(models, by = "modelID") %>%
       dplyr::left_join(tests, by = "testID", suffix = c(".model", ".test")) %>%
+      dplyr::rename(modelID = .data$modelID.model) %>%
       dplyr::collect() %>%
       as.data.frame(stringsAsFactors = FALSE)
 

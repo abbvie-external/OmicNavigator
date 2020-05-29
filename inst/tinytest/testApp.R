@@ -41,6 +41,26 @@ expect_identical(
   as.character(utils::packageVersion("OmicAnalyzer"))
 )
 
+expect_identical(
+  names(studies[[1]][["results"]]),
+  names(getModels(testStudyObj))
+)
+
+expect_identical(
+  names(studies[[1]][["results"]][[testModelName]][["tests"]]),
+  getTests(testStudyObj, modelID = testModelName)[, "testID"]
+)
+
+expect_identical(
+  names(studies[[1]][["enrichments"]]),
+  names(getModels(testStudyObj))
+)
+
+expect_identical(
+  names(studies[[1]][["enrichments"]][[testModelName]][["annotations"]]),
+  names(getEnrichments(testStudyObj, modelID = testModelName))
+)
+
 # getResultsTable --------------------------------------------------------------
 
 resultsTable <- getResultsTable(testStudyName, testModelName, testTestName)
