@@ -36,6 +36,11 @@ expect_identical(
   c("name", "package", "results", "enrichments")
 )
 
+expect_identical(
+  studies[[1]][["package"]][["OmicAnalyzerVersion"]],
+  as.character(utils::packageVersion("OmicAnalyzer"))
+)
+
 # getResultsTable --------------------------------------------------------------
 
 resultsTable <- getResultsTable(testStudyName, testModelName, testTestName)

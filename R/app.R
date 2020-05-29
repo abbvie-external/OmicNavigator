@@ -22,7 +22,8 @@ listStudies <- function(libraries = NULL) {
     output[[i]][["package"]] <- list(
       description = pkgDescription[["Description"]],
       version = pkgDescription[["Version"]],
-      buildInfo = pkgDescription[["Built"]]
+      buildInfo = pkgDescription[["Built"]],
+      OmicAnalyzerVersion = pkgDescription[["OmicAnalyzerVersion"]]
     )
 
     con <- connectDatabase(studyName, libraries = libraries)

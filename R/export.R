@@ -239,6 +239,7 @@ createPackage <- function(study, directoryname) {
     Version = pkgversion,
     Description = sprintf("The OmicAnalyzer data package for the study \"%s\"",
                           study[["name"]]),
+    OmicAnalyzerVersion = utils::packageVersion("OmicAnalyzer"),
     stringsAsFactors = FALSE
   )
   write.dcf(description, file = description_file)
