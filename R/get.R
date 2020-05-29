@@ -843,17 +843,27 @@ getPlots.SQLiteConnection <- function(study, modelID = NULL, ...) {
   }
 
   plots <- DBI::dbReadTable(study, dbPlots)
+  plots <- splitTableIntoList(plots, "modelID")
+  plots <- lapply(plots, splitTableIntoList, "plotID")
+  plots <- lapply(plots, function(x) lapply(x, as.list))
+  plots <- lapply(plots, function(x) lapply(x, function(x) {
+    x[["packages"]] <- strsplit(x[["packages"]], split = ";")[[1]]
+    if (length(x[["packages"]]) == 0) {
+      x[["packages"]] <- NULL
+    }
+    x
+  }))
 
   if (is.null(modelID)) return(plots)
 
   stopifnot(is.character(modelID), length(modelID) == 1)
-  plotsModels <- plots[, "modelID"]
+  plotsModels <- names(plots)
   if (modelID %in% plotsModels) {
-    return(plots[plots[, "modelID"] == modelID, ])
+    return(plots[["modelID"]])
   }
   if ("default" %in% plotsModels) {
     message(sprintf("Returning \"default\" plots for model \"%s\"", modelID))
-    return(plots[plots[, "modelID"] == "default", ])
+    return(plots[["default"]])
   }
 
   stop(sprintf("No plots available for model \"%s\"", modelID))

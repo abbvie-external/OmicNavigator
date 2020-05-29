@@ -293,13 +293,13 @@ expect_error(
 )
 
 expect_identical(
-  getPlots(testStudyName)[["plotID"]],
-  names(testStudyObj[["plots"]][["default"]])
+  getPlots(testStudyName),
+  testStudyObj[["plots"]]
 )
 
 expect_identical(
-  getPlots(testStudyName, modelID = testModelName)[["plotID"]],
-  names(testStudyObj[["plots"]][["default"]])
+  getPlots(testStudyName, modelID = testModelName),
+  testStudyObj[["plots"]][["default"]]
 )
 
 # Teardown ---------------------------------------------------------------------

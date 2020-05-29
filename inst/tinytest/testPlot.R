@@ -1,24 +1,50 @@
 library(OmicAnalyzer)
 library(tinytest)
 
-study <- OmicAnalyzer:::testStudy("testPlot")
+testStudyName <- "ABC"
+testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
 plots <- OmicAnalyzer:::testPlots()
-study <- addPlots(study, plots = plots)
+testStudyObj <- addPlots(testStudyObj, plots)
+testModelName <- names(testStudyObj[["models"]])[1]
+
+tmplib <- tempfile()
+dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
+suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
 
 expect_silent(
-  plotStudy(study, modelID = "model_01", feature = "feature_0001", plotName = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_silent(
-  plotStudy(study, modelID = "model_01", feature = "feature_0001", plotName = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
-  plotStudy(study, modelID = "model_01", feature = "feature_0001", plotName = "non-existent"),
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
 expect_error(
-  plotStudy(study, modelID = "model_01", feature = "non-existent", plotName = "plotBase"),
+  plotStudy(testStudyObj, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
+  "non-existent"
+)
+
+expect_silent(
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
+)
+
+expect_silent(
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
+)
+
+expect_error(
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
+  "non-existent"
+)
+
+expect_error(
+  plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )

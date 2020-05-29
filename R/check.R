@@ -192,10 +192,11 @@ checkPlots <- function(plots) {
       plotEntry <- plots[[i]][[j]]
       checkList(plotEntry)
       plotID <- names(plots[[i]])[j]
-      if (!is.function(plotEntry[["definition"]])) {
-        stop(sprintf("%s is missing its function definition", plotID))
+      plotFunction <- getPlotFunction(plotID)
+      if (!is.function(plotFunction)) {
+        stop(sprintf("Unable to find function \"%s\"", plotID))
       }
-      argsObserved <- names(formals(plotEntry[["definition"]]))
+      argsObserved <- names(formals(plotFunction))
       argsExpected <- c("x", "feature")
       if (!identical(argsObserved, argsExpected)) {
         stop(
@@ -205,7 +206,7 @@ checkPlots <- function(plots) {
         )
       }
       if (is.null(plotEntry[["displayName"]])) {
-        plots[[i]][[j]][["displayName"]] <- plotID
+        stop(sprintf("Must define displayName for plot \"%s\"", plotID))
       }
     }
   }

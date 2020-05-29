@@ -177,13 +177,16 @@ createDatabase <- function(study, filename) {
 
   if (!isEmpty(study[["plots"]])) {
     message("* Adding plots")
-    plotsTable <- matrix(character(), ncol = 2)
-    colnames(plotsTable) <- c("modelID", "plotID")
+    plotsTable <- matrix(character(), ncol = 4)
+    colnames(plotsTable) <- c("modelID", "plotID", "displayName", "packages")
     for (i in seq_along(study[["plots"]])) {
       modelID <- names(study[["plots"]])[i]
       for (j in seq_along(study[["plots"]][[i]])) {
         plotID <- names(study[["plots"]][[i]])[j]
-        tmpPlots <- matrix(c(modelID, plotID), ncol = 2)
+        displayName <- study[["plots"]][[i]][[j]][["displayName"]]
+        packages <- paste(study[["plots"]][[i]][[j]][["packages"]],
+                          collapse = ";")
+        tmpPlots <- matrix(c(modelID, plotID, displayName, packages), ncol = 4)
         plotsTable <- rbind(plotsTable, tmpPlots)
       }
     }
@@ -266,11 +269,12 @@ createPackage <- function(study, directoryname) {
     code <- character()
     for (i in seq_along(study[["plots"]])) {
       for (j in seq_along(study[["plots"]][[i]])) {
-        plot_name <- names(study[["plots"]][[i]])[j]
+        plotID <- names(study[["plots"]][[i]])[j]
         dependencies <- c(dependencies, study[["plots"]][[i]][[j]][["packages"]])
-        exports <- c(exports, sprintf("export(%s)", plot_name))
-        plot_code <- deparse(study[["plots"]][[i]][[j]][["definition"]])
-        plot_code[1] <- paste(plot_name, "<-", plot_code[1])
+        exports <- c(exports, sprintf("export(%s)", plotID))
+        plotFunction <- getPlotFunction(plotID)
+        plot_code <- deparse(plotFunction)
+        plot_code[1] <- paste(plotID, "<-", plot_code[1])
         code <- c(code, plot_code)
       }
     }

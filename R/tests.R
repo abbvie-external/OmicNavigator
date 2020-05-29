@@ -148,7 +148,7 @@ testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, seed =
 }
 
 # Assigns 3 metaFeatures to each feature
-testMetaFeatures<- function(rows = 100, cols = 3, seed = 12345L) {
+testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
   set.seed(seed)
   metaFeatures <- matrix(sample(letters, size = 3 * rows * cols, replace = TRUE),
                      nrow = 3 * rows, ncol = cols)
@@ -161,17 +161,21 @@ testMetaFeatures<- function(rows = 100, cols = 3, seed = 12345L) {
   return(metaFeatures)
 }
 
-testPlots<- function() {
+testPlots <- function() {
+  plotBase <- function(x, feature) {
+    graphics::plot(x[, "feature"], main = feature)
+  }
+  assign("plotBase", plotBase, envir = parent.frame())
+  plotGg <- function(x, feature) {
+    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = feature)
+  }
+  assign("plotGg", plotGg, envir = parent.frame())
   plots <- list(
     plotBase = list(
-      definition = function(x, feature) graphics::plot(x[, "feature"],
-                                                       main = feature)
+      displayName = "Custom plot"
     ),
     plotGg = list(
-      definition = function(x, feature) ggplot2::qplot(seq_len(nrow(x)),
-                                                       x[, "feature"],
-                                                       main = feature),
-      displayName = "A ggplot2 plot",
+      displayName = "Custom ggplot2 plot",
       packages = c("ggplot2")
     )
   )

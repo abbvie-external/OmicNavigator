@@ -92,13 +92,12 @@ contain the same IDs as the corresponding features data frame
 use the model ID "default".}
 
 \item{plots}{Custom plotting functions for the study. The input object is a
-named list of lists (one per model). Each sublist is itself a list that
-defines a custom plotting function via multiple options. The only required
-option is \code{definition}, which contains the function definition. You
-can optionally include \code{displayName} to control how the plot will be
-named in the app. Lastly, if the plottting function requires external
-packages, these can be defined in the argument \code{packages}. To share
-plots across multiple models, use the model ID "default".}
+named list of lists (one per model). The names of the sublists should
+correspond to functions defined in the current R session. Each sublist must
+define a \code{displayName} to control how the plot will be named in the
+app. Optionally, if the plottting function requires external packages,
+these can be defined in the element \code{packages}. To share plots across
+multiple models, use the model ID "default".}
 
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
