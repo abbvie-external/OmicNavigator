@@ -128,7 +128,7 @@ createDatabase <- function(study, filename) {
       featureIDcolumnName <- colnames(tmp)[1]
       pivotCols <- setdiff(colnames(tmp), c(featureIDcolumnName, "modelID", "testID"))
       tmp <- tidyr::pivot_longer(tmp,
-                                 cols = tidyselect::all_of(pivotCols),
+                                 cols = dplyr::all_of(pivotCols),
                                  names_to = "resultsVariable",
                                  values_to = "resultsValue")
       resultsList <- c(resultsList, list(tmp))

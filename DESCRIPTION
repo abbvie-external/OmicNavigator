@@ -16,7 +16,7 @@ Depends:
 Imports:
   DBI,
   dbplyr,
-  dplyr,
+  dplyr (>= 1.0.0),
   graphics,
   rlang,
   RSQLite (>= 2.1.1),
