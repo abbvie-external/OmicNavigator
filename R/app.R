@@ -84,6 +84,17 @@ listStudies <- function(libraries = NULL) {
       output[[i]][["enrichments"]][[modelName]][["annotations"]] <- modelAnnotationsList
     }
 
+    # Plots available
+    output[[i]][["plots"]] <- list()
+    plotsModels <- unique(c(resultsModels, enrichmentsModels))
+    for (j in seq_along(plotsModels)) {
+      modelName <- plotsModels[j]
+      output[[i]][["plots"]][[modelName]] <- tryCatch(
+        getPlots(con, modelID = modelName),
+        error = function(e) list()
+      )
+    }
+
     disconnectDatabase(con)
   }
 
