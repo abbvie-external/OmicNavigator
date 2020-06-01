@@ -27,7 +27,9 @@ library(OmicAnalyzer)
 tmplib <- tempfile()
 dir.create(tmplib)
 .libPaths(c(tmplib, .libPaths()))
-OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "ABC"))
+abc <- OmicAnalyzer:::testStudy(name = "ABC")
+abc <- addPlots(abc, OmicAnalyzer:::testPlots())
+OmicAnalyzer::installStudy(abc)
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 ```
 
@@ -102,4 +104,17 @@ terms.
 ```{r getLinkFeatures}
 linkFeatures <- getLinkFeatures("ABC", "annotation_01", "term_01", "term_03")
 toJSON(linkFeatures, pretty = TRUE)
+```
+
+## Custom plots
+
+Display the custom plots provided by the user with `plotStudy()`. Provided a
+study, model, feature, and plot, `plotStudy()` generates the custom plot.
+
+```{r plotStudy-plotBase, eval=TRUE}
+plotStudy("ABC", "model_01", "feature_0001", "plotBase")
+```
+
+```{r plotStudy-plotGg, eval=TRUE}
+plotStudy("ABC", "model_01", "feature_0001", "plotGg")
 ```
