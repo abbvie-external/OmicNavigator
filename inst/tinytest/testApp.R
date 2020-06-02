@@ -7,6 +7,7 @@ library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
@@ -33,7 +34,7 @@ expect_identical(
 
 expect_identical(
   names(studies[[1]]),
-  c("name", "package", "results", "enrichments")
+  c("name", "package", "results", "enrichments", "plots")
 )
 
 expect_identical(
@@ -59,6 +60,16 @@ expect_identical(
 expect_identical(
   names(studies[[1]][["enrichments"]][[testModelName]][["annotations"]]),
   names(getEnrichments(testStudyObj, modelID = testModelName))
+)
+
+expect_identical(
+  names(studies[[1]][["plots"]]),
+  names(getModels(testStudyObj))
+)
+
+expect_identical(
+  names(studies[[1]][["plots"]][[testModelName]]),
+  names(getPlots(testStudyObj, modelID = testModelName))
 )
 
 # getResultsTable --------------------------------------------------------------

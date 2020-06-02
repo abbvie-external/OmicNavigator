@@ -89,10 +89,14 @@ listStudies <- function(libraries = NULL) {
     plotsModels <- unique(c(resultsModels, enrichmentsModels))
     for (j in seq_along(plotsModels)) {
       modelName <- plotsModels[j]
-      output[[i]][["plots"]][[modelName]] <- tryCatch(
+      plots <- tryCatch(
         getPlots(con, modelID = modelName),
         error = function(e) list()
       )
+      if (!isEmpty(plots)) {
+        plots <- lapply(plots, function(x) x[["displayName"]])
+      }
+      output[[i]][["plots"]][[modelName]] <- plots
     }
 
     disconnectDatabase(con)

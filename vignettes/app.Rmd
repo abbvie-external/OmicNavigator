@@ -14,7 +14,8 @@ These functions are intended to support the web application via OpenCPU calls.
 
 ```{r setup, include = FALSE}
 knitr::opts_chunk$set(
-  comment = ""
+  comment = "",
+  message = FALSE
 )
 ```
 
