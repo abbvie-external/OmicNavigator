@@ -43,32 +43,35 @@ expect_identical(
 )
 
 expect_identical(
-  names(studies[[1]][["results"]]),
+  vapply(studies[[1]][["results"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
 expect_identical(
-  names(studies[[1]][["results"]][[testModelName]][["tests"]]),
+  vapply(studies[[1]][["results"]][[1]][["tests"]],
+         function(x) x[["testID"]], character(1)),
   getTests(testStudyObj, modelID = testModelName)[, "testID"]
 )
 
 expect_identical(
-  names(studies[[1]][["enrichments"]]),
+  vapply(studies[[1]][["enrichments"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
 expect_identical(
-  names(studies[[1]][["enrichments"]][[testModelName]][["annotations"]]),
+  vapply(studies[[1]][["enrichments"]][[1]][["annotations"]],
+         function(x) x[["annotationID"]], character(1)),
   names(getEnrichments(testStudyObj, modelID = testModelName))
 )
 
 expect_identical(
-  names(studies[[1]][["plots"]]),
+  vapply(studies[[1]][["plots"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
 expect_identical(
-  names(studies[[1]][["plots"]][[testModelName]]),
+  vapply(studies[[1]][["plots"]][[1]][["plots"]],
+         function(x) x[["plotID"]], character(1)),
   names(getPlots(testStudyObj, modelID = testModelName))
 )
 
