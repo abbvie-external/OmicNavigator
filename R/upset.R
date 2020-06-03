@@ -299,3 +299,106 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
   print(rv)
   invisible();
 }
+
+#' getEnrichmentsUpset
+#'
+#' @export
+getEnrichmentsUpset <- function(
+  study,
+  modelID,
+  annotationID,
+  sigValue,
+  operator,
+  type,
+  ...
+)
+{
+  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID)
+  enrichmentsTableAdjusted <- getEnrichmentsTable(study, modelID, annotationID,
+                                                  type = "adjusted")
+
+  # Convert to nested lists
+  Enrichment.Results <- vector("list", 1)
+  names(Enrichment.Results) <- modelID
+  Enrichment.Results[[1]] <- vector("list", 1)
+  names(Enrichment.Results[[1]]) <- annotationID
+  Enrichment.Results[[1]][[1]] <- enrichmentsTable
+  Enrichment.Results.Adjusted <- vector("list", 1)
+  names(Enrichment.Results.Adjusted) <- modelID
+  Enrichment.Results.Adjusted[[1]] <- vector("list", 1)
+  names(Enrichment.Results.Adjusted[[1]]) <- annotationID
+  Enrichment.Results.Adjusted[[1]][[1]] <- enrichmentsTableAdjusted
+
+  enrichmentsUpset <- EnrichmentUpsetPlot(
+    Enrichment.Results = Enrichment.Results,
+    Enrichment.Results.Adjusted = Enrichment.Results.Adjusted,
+    testCategory = modelID,
+    annotation = annotationID,
+    sigValue = sigValue,
+    operator = operator,
+    pValType = type
+  )
+
+  return(enrichmentsUpset)
+}
+
+#' Creates a static Upset plot
+#'
+#' @param testCategory The test category
+#' @param sigValue The significance values
+#' @param annotation The annotation
+#' @param operator The operators
+#' @param pValType nominal or adjusted
+#' Note: The sigValue and operator parameter vectors must be the same length.
+#'
+#' @return An SVG
+#' @examples
+#'  EnrichmentUpsetPlot("No Pretreatment Timecourse Differential Phosphorylation", annotation="GOSLIM",c(.05))
+#'
+#' Notes:
+#'   * "<" is actually "<=" and ">" is actually ">="
+#' Changes made:
+#'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
+#'   * Passed `na.rm = TRUE` to sum() to handle missing values
+#'
+#' @noRd
+EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal") {
+
+  if (length(sigValue) != length(operator)) {
+    stop("The arguments sigValue and operator must be the same length")
+  }
+
+  if(pValType=="nominal"){
+    Identifier <- Enrichment.Results[[testCategory]][[annotation]][,1]
+    data <- Enrichment.Results[[testCategory]][[annotation]][,names(Enrichment.Results[[testCategory]][[annotation]])]
+    colsUsed <- names(Enrichment.Results[[testCategory]][[annotation]])
+  }else{
+    Identifier <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,1]
+    data <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,names(Enrichment.Results.Adjusted[[testCategory]][[annotation]])]
+    colsUsed <- names(Enrichment.Results.Adjusted[[testCategory]][[annotation]])
+  }
+
+  for(i in 1:ncol(data)){
+    temp = data.frame(data[,1])
+    temp$newCol = 1
+    for(j in 1:length(operator)){
+      sigCol = data[,i]
+      if(operator[j]=="<"){sigCol <- as.numeric(sigCol <= sigValue[j])}
+      else if(operator[j]==">"){sigCol <- as.numeric(sigCol >= sigValue[j])}
+      temp = cbind(temp, sigCol)
+      temp[,2] = as.integer(temp[,2] & temp[,3])
+      temp = temp[,-3]
+    }
+    if(sum(temp[,2], na.rm = TRUE) == 0){colsUsed <- colsUsed[colsUsed != colnames(data)[i]]}
+    data[,i] = temp[,2]
+  }
+  if(length(colsUsed) <= 1){return(NULL)}
+
+  data <- cbind(Identifier, data)
+
+  #Create the upset plot.
+  rv <- UpSetR::upset(data, sets = colsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+
+  print(rv)
+  invisible();
+}

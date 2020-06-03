@@ -170,6 +170,44 @@ resultsUpset <- getResultsUpset(
   column = "p_val"
 )
 
+# getEnrichmentsUpset --------------------------------------------------------------
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  sigValue = .03,
+  operator = "<",
+  type = "nominal"
+)
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = "annotation_02",
+  sigValue = .02,
+  operator = "<",
+  type = "nominal"
+)
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  sigValue = .05,
+  operator = "<",
+  type = "adjusted"
+)
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = "annotation_02",
+  sigValue = .05,
+  operator = "<",
+  type = "adjusted"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
