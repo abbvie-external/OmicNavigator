@@ -25,6 +25,7 @@ Imports:
   rlang,
   RSQLite (>= 2.1.1),
   tidyr,
+  UpSetR,
   utils
 Suggests:
   ggplot2,

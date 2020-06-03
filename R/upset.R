@@ -208,3 +208,94 @@ getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adj
   return (rv)
 }
 
+#' getResultsUpset
+#'
+#' @export
+getResultsUpset <- function(
+  study,
+  modelID,
+  sigValue,
+  operator,
+  column,
+  ...
+)
+{
+  results <- getResults(study)
+
+  resultsUpset <- InferenceUpsetPlot(
+    Inference.Results = results,
+    testCategory = modelID,
+    sigValue = sigValue,
+    operator = operator,
+    column = column
+  )
+
+  return(resultsUpset)
+}
+
+#' Creates a static Upset plot
+#'
+#' @param testCategory The test category
+#' @param sigValue The significance levels for each column.
+#' @param operator The operators for each column.
+#' @param column The columns to be thresheld.
+#' Note: The sigValue, operator, and column parameter vectors must be the same length.
+#'
+#' @return An SVG
+#' @examples
+#'  InferenceUpsetPlot(testCategory = "No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05), operator = c("<"), column = c("adj_P_Val"))
+#'
+#' Notes:
+#'   * "<" is actually "<=" and ">" is actually ">="
+#' Changes made:
+#'   * Added Inference.Results as first argument
+#'   * Changed `id` to be set to the name of the first column
+#'
+#' @noRd
+InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operator=c("<"), column= c("adj_P_Val")) {
+
+  if (length(sigValue) != length(operator) || length(column) != length(operator)) {
+    stop("The arguments sigValue, column, and operator must be the same length")
+  }
+
+  #Create list of variables from parameter strings
+  tests <- names(Inference.Results[[testCategory]])
+  testsUsed <- tests
+  # if("id_mult" %in% colnames(Inference.Results[[testCategory]][[tests[1]]])){id <- "id_mult"}
+  # else{id <- "id"}
+  id <- colnames(Inference.Results[[testCategory]][[tests[1]]])[1]
+
+  #Create the master data frame
+  data <- data.frame(matrix(ncol=length(tests)+1, nrow=length(Inference.Results[[testCategory]][[tests[1]]][[id]])))
+  colnames(data) <- c("Identifier",tests)
+  data[,1] = as.character(Inference.Results[[testCategory]][[tests[1]]][[id]])
+  data = data[order(data[,1]),]
+
+  for(i in 1:length(tests)){
+    mat <- Inference.Results[[testCategory]][[tests[i]]][[id]]
+    for(k in 1:length(operator)){
+      sigCol <- as.numeric(Inference.Results[[testCategory]][[tests[i]]][[column[k]]])
+      if(operator[k] == "<"){sigCol <- as.numeric(sigCol <= sigValue[k])}
+      else if(operator[k] == ">"){sigCol <- as.numeric(sigCol >= sigValue[k])}
+      else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) <= sigValue[k])}
+      else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) >= sigValue[k])}
+      if(sum(sigCol)==0){testsUsed <- testsUsed[testsUsed != tests[i]]}
+      mat <- cbind.data.frame(mat, sigCol)
+      if(k > 1){
+        mat[,2] = as.integer(mat[,2] & mat[,3])
+        mat = mat[,-3]
+      }
+    }
+    #This function assumes that all the tests have the same id_mults; therefore, we can order them so they are in the same order and match up when lined up.
+    #Each file must contain the same exact id_mults for this to work.
+    mat <- mat[order(mat[,1]),]
+    data[,i+1] <- as.numeric(mat[,2])
+  }
+  if(length(testsUsed) <= 1){return (NULL)}
+
+  #Create the upset plot.
+  rv <- UpSetR::upset(data,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+  #rv <- upset(data,point.size=1.1, line.size=0.4,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+  print(rv)
+  invisible();
+}

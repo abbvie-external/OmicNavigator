@@ -152,6 +152,24 @@ expect_true(
   inherits(enrichmentsIntersection, "data.frame")
 )
 
+# getResultsUpset --------------------------------------------------------------
+
+resultsUpset <- getResultsUpset(
+  study = testStudyObj,
+  modelID = testModelName,
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
+resultsUpset <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
