@@ -672,7 +672,7 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 getEnrichmentsTable.oaStudy <- function(study, modelID, annotationID, type = "nominal", ...) {
   enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
 
-  enrichmentsTable <- combineListIntoTable(enrichmentsTable, "testID")
+  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
   enrichmentsTableWide <- enrichmentsToWide(enrichmentsTable, type = type)
 

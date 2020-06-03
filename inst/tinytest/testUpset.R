@@ -89,6 +89,69 @@ expect_true(
   inherits(resultsIntersection, "data.frame")
 )
 
+# getEnrichmentsIntersection -------------------------------------------------------
+
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  mustTests = testTestsAll,
+  notTests = c(),
+  sigValue = .03,
+  operator = "<",
+  type = "nominal"
+)
+
+for (i in seq_along(testTestsAll)) {
+  expect_true(
+    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.03)
+  )
+}
+
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  mustTests = testTestsAll,
+  notTests = c(),
+  sigValue = c(.03, .02),
+  operator = c("<", ">"),
+  type = "nominal"
+)
+
+for (i in seq_along(testTestsAll)) {
+  expect_true(
+    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.03)
+  )
+  expect_true(
+    all(enrichmentsIntersection[[testTestsAll[i]]] >= 0.02)
+  )
+}
+
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  mustTests = testTestsAll,
+  notTests = c(),
+  sigValue = c(.05, .02),
+  operator = c("<", ">"),
+  type = "adjusted"
+)
+
+for (i in seq_along(testTestsAll)) {
+  expect_true(
+    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.05)
+  )
+  expect_true(
+    all(enrichmentsIntersection[[testTestsAll[i]]] >= 0.02)
+  )
+}
+
+expect_true(
+  inherits(enrichmentsIntersection, "data.frame")
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
