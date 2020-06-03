@@ -4,8 +4,12 @@ Title: The OmicAnalyzer R backend
 Description: Functions to import omics data, create a study package, deploy the
   dashboard, and query the study data from the dashboard.
 Version: 0.3.0.9000
-Author: John Blischak
-Maintainer: John Blischak <john.blischak@abbvie.com>
+Authors@R: c(
+  person("John", "Blischak", role = c("aut", "cre"),
+         email = "john.blischak@abbvie.com"),
+  person("Justin", "Moore", role = c("ctb"),
+         comment = "UpSet-related functions")
+  )
 License: file LICENSE
 License_restricts_use: yes
 Copyright: AbbVie Inc.
