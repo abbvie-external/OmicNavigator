@@ -1,3 +1,7 @@
+# Test custom plots
+
+# Setup ------------------------------------------------------------------------
+
 library(OmicAnalyzer)
 library(tinytest)
 
@@ -12,6 +16,8 @@ dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
+
+# plotStudy --------------------------------------------------------------------
 
 expect_silent(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
@@ -48,3 +54,10 @@ expect_error(
   plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
+
+# Teardown ---------------------------------------------------------------------
+
+pkgName <- paste0("OAstudy", testStudyName)
+unloadNamespace(pkgName)
+unlink(tmplib, recursive = TRUE, force = TRUE)
+.libPaths(libOrig)
