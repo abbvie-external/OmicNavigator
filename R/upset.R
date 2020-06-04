@@ -49,6 +49,7 @@ getResultsIntersection <- function(
 #'
 #' Notes:
 #'   * "<" is actually "<=" and ">" is actually ">="
+#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getInferenceIntersection.R
 #' Changes made:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
@@ -162,6 +163,7 @@ getEnrichmentsIntersection <- function(
 #'
 #' Notes:
 #'   * "<" is actually "<=" and ">" is actually ">="
+#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getEnrichmentIntersection.R
 #' Changes made:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'
@@ -242,6 +244,7 @@ getResultsUpset <- function(
 #'
 #' Notes:
 #'   * "<" is actually "<=" and ">" is actually ">="
+#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/InferenceUpsetPlot.R
 #' Changes made:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
@@ -347,6 +350,7 @@ getEnrichmentsUpset <- function(
 #'
 #' Notes:
 #'   * "<" is actually "<=" and ">" is actually ">="
+#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/EnrichmentUpsetPlot.R
 #' Changes made:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'   * Passed `na.rm = TRUE` to sum() to handle missing values

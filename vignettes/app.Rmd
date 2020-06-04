@@ -10,6 +10,18 @@
 
 **Package version:** `r packageVersion("OmicAnalyzer")`
 
+* [List studies](#list-studies)
+* [Results table](#results-table)
+* [Enrichments table](#enrichments-table)
+* [Enrichments network](#enrichments-network)
+* [Features in a network node](#features-in-a-network-node)
+* [Features in a network link](#features-in-a-network-link)
+* [Custom plots](#custom-plots)
+* [Results intersection](#results-intersection)
+* [Enrichments intersection](#enrichments-intersection)
+* [Results UpSet plot](#results-upset-plot)
+* [Enrichments UpSet plot](#enrichments-upset-plot)
+
 These functions are intended to support the web application via OpenCPU calls.
 
 ```{r setup, include = FALSE}
@@ -36,7 +48,8 @@ OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 
 ## List studies
 
-List all the available studies along with their models, tests, and annotations.
+List all the available studies along with their models, tests, annotations, and
+plots.
 
 ```{r list-studies, eval=FALSE}
 studies <- listStudies()
@@ -118,4 +131,61 @@ plotStudy("ABC", "model_01", "feature_0001", "plotBase")
 
 ```{r plotStudy-plotGg, eval=TRUE}
 plotStudy("ABC", "model_01", "feature_0001", "plotGg")
+```
+
+## Results intersection
+
+```{r getResultsIntersection}
+resultsIntersection <- getResultsIntersection(
+  study = "ABC",
+  modelID = "model_01",
+  anchor = "test_01",
+  mustTests = c("test_01", "test_02"),
+  notTests = c(),
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+toJSON(resultsIntersection[1:2, ], pretty = TRUE)
+```
+
+## Enrichments intersection
+
+```{r getEnrichmentsIntersection}
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = "ABC",
+  modelID = "model_01",
+  annotationID = "annotation_01",
+  mustTests = c("test_01", "test_02"),
+  notTests = c(),
+  sigValue = .5,
+  operator = "<",
+  type = "nominal"
+)
+toJSON(enrichmentsIntersection[1:2, ], pretty = TRUE)
+```
+
+## Results UpSet plot
+
+```{r getResultsUpset}
+resultsUpset <- getResultsUpset(
+  study = "ABC",
+  modelID = "model_01",
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+```
+
+## Enrichments UpSet plot
+
+```{r getEnrichmentsUpset}
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = "ABC",
+  modelID = "model_01",
+  annotationID = "annotation_02",
+  sigValue = .02,
+  operator = "<",
+  type = "nominal"
+)
 ```
