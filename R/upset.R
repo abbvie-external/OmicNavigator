@@ -119,21 +119,16 @@ getEnrichmentsIntersection <- function(
   ...
 )
 {
-  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID)
-  enrichmentsTableAdjusted <- getEnrichmentsTable(study, modelID, annotationID,
-                                                  type = "adjusted")
-
-  # Convert to nested lists
-  Enrichment.Results <- vector("list", 1)
-  names(Enrichment.Results) <- modelID
-  Enrichment.Results[[1]] <- vector("list", 1)
-  names(Enrichment.Results[[1]]) <- annotationID
-  Enrichment.Results[[1]][[1]] <- enrichmentsTable
-  Enrichment.Results.Adjusted <- vector("list", 1)
-  names(Enrichment.Results.Adjusted) <- modelID
-  Enrichment.Results.Adjusted[[1]] <- vector("list", 1)
-  names(Enrichment.Results.Adjusted[[1]]) <- annotationID
-  Enrichment.Results.Adjusted[[1]][[1]] <- enrichmentsTableAdjusted
+  if (type == "nominal") {
+    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results.Adjusted <- NULL
+  } else if (type == "adjusted") {
+    Enrichment.Results <- NULL
+    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type)
+  } else {
+    stop(sprintf("Argument `type` must be \"nominal\" or \"adjusted\", not \"%s\"",
+                 type))
+  }
 
   intersection <- getEnrichmentIntersection(
     Enrichment.Results = Enrichment.Results,
@@ -313,21 +308,16 @@ getEnrichmentsUpset <- function(
   ...
 )
 {
-  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID)
-  enrichmentsTableAdjusted <- getEnrichmentsTable(study, modelID, annotationID,
-                                                  type = "adjusted")
-
-  # Convert to nested lists
-  Enrichment.Results <- vector("list", 1)
-  names(Enrichment.Results) <- modelID
-  Enrichment.Results[[1]] <- vector("list", 1)
-  names(Enrichment.Results[[1]]) <- annotationID
-  Enrichment.Results[[1]][[1]] <- enrichmentsTable
-  Enrichment.Results.Adjusted <- vector("list", 1)
-  names(Enrichment.Results.Adjusted) <- modelID
-  Enrichment.Results.Adjusted[[1]] <- vector("list", 1)
-  names(Enrichment.Results.Adjusted[[1]]) <- annotationID
-  Enrichment.Results.Adjusted[[1]][[1]] <- enrichmentsTableAdjusted
+  if (type == "nominal") {
+    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results.Adjusted <- NULL
+  } else if (type == "adjusted") {
+    Enrichment.Results <- NULL
+    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type)
+  } else {
+    stop(sprintf("Argument `type` must be \"nominal\" or \"adjusted\", not \"%s\"",
+                 type))
+  }
 
   enrichmentsUpset <- EnrichmentUpsetPlot(
     Enrichment.Results = Enrichment.Results,
@@ -401,4 +391,15 @@ EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted,
 
   print(rv)
   invisible();
+}
+
+# Format enrichment table as if it was in PhosphoProt Enrichment.Results objects
+formatEnrichmentResults <- function(study, modelID, annotationID, type) {
+  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID, type)
+  Enrichment.Results <- vector("list", 1)
+  names(Enrichment.Results) <- modelID
+  Enrichment.Results[[1]] <- vector("list", 1)
+  names(Enrichment.Results[[1]]) <- annotationID
+  Enrichment.Results[[1]][[1]] <- enrichmentsTable
+  return(Enrichment.Results)
 }

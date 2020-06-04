@@ -152,6 +152,20 @@ expect_true(
   inherits(enrichmentsIntersection, "data.frame")
 )
 
+expect_error(
+  enrichmentsIntersection <- getEnrichmentsIntersection(
+    study = testStudyName,
+    modelID = testModelName,
+    annotationID = testAnnotationName,
+    mustTests = testTestsAll,
+    notTests = c(),
+    sigValue = c(.05, .02),
+    operator = c("<", ">"),
+    type = "wrong"
+  ),
+  "wrong"
+)
+
 # getResultsUpset --------------------------------------------------------------
 
 resultsUpset <- getResultsUpset(
@@ -206,6 +220,18 @@ enrichmentsUpset <- getEnrichmentsUpset(
   sigValue = .05,
   operator = "<",
   type = "adjusted"
+)
+
+expect_error(
+  enrichmentsUpset <- getEnrichmentsUpset(
+    study = testStudyName,
+    modelID = testModelName,
+    annotationID = "annotation_02",
+    sigValue = .05,
+    operator = "<",
+    type = "wrong"
+  ),
+  "wrong"
 )
 
 # Teardown ---------------------------------------------------------------------
