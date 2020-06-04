@@ -26,6 +26,21 @@ listStudies <- function(libraries = NULL) {
       OmicAnalyzerVersion = pkgDescription[["OmicAnalyzerVersion"]]
     )
 
+    if (as.package_version(pkgDescription[["OmicAnalyzerVersion"]]) <
+        as.package_version(minVersionCompatible)) {
+      warning(
+        "OmicAnalyzer version incompatibility\n",
+        sprintf("Study \"%s\" was created with version %s\n", studyName,
+                pkgDescription[["OmicAnalyzerVersion"]]),
+        sprintf("OmicAnalyzer version %s is currently installed\n",
+                utils::packageVersion("OmicAnalyzer")),
+        sprintf("It requires study packages to be created with a minimum OmicAnalyzer version of %s\n",
+                minVersionCompatible),
+        sprintf("Reinstall the study to avoid any potential issues\n"),
+        immediate. = TRUE
+      )
+    }
+
     con <- connectDatabase(studyName, libraries = libraries)
 
     # Results available
