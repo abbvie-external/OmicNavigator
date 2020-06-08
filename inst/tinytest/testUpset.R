@@ -32,9 +32,8 @@ resultsIntersection <- getResultsIntersection(
   column = "p_val"
 )
 
-# Note: operator = "<" is internally converted to `<=`
 expect_true(
-  all(resultsIntersection[["p_val"]] <= 0.5)
+  all(resultsIntersection[["p_val"]] < 0.5)
 )
 
 resultsIntersection <- getResultsIntersection(
@@ -48,9 +47,8 @@ resultsIntersection <- getResultsIntersection(
   column = "beta"
 )
 
-# Note: operator = ">" is internally converted to `>=`
 expect_true(
-  all(resultsIntersection[["beta"]] >= 1.2)
+  all(resultsIntersection[["beta"]] > 1.2)
 )
 
 resultsIntersection <- getResultsIntersection(
@@ -64,14 +62,12 @@ resultsIntersection <- getResultsIntersection(
   column = c("p_val", "beta")
 )
 
-# Note: operator = "<" is internally converted to `<=`
 expect_true(
-  all(resultsIntersection[["p_val"]] <= 0.5)
+  all(resultsIntersection[["p_val"]] < 0.5)
 )
 
-# Note: operator = ">" is internally converted to `>=`
 expect_true(
-  all(resultsIntersection[["beta"]] >= 1.2)
+  all(resultsIntersection[["beta"]] > 1.2)
 )
 
 resultsIntersection <- getResultsIntersection(
@@ -104,7 +100,7 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
 
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.03)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.03)
   )
 }
 
@@ -121,10 +117,10 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
 
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.03)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.03)
   )
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] >= 0.02)
+    all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
   )
 }
 
@@ -141,10 +137,10 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
 
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] <= 0.05)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] >= 0.02)
+    all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
   )
 }
 

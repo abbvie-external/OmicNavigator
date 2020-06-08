@@ -48,12 +48,11 @@ getResultsIntersection <- function(
 #'  getInferenceIntersection(testCategory = "No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05,.01), notTests=c(), anchor = "IKE", mustTests = c("FIN56"), operator = c("<",">"), column = c("adj_P_Val","adj_P_Val"))
 #'
 #' Notes:
-#'   * "<" is actually "<=" and ">" is actually ">="
 #'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getInferenceIntersection.R
 #' Changes made:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
-#'
+#'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #' @noRd
 getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mustTests, notTests, sigValue, operator=c("<"), column=c("adj_P_Val")) {
 
@@ -82,10 +81,10 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
     fTemp[,2] = as.numeric(fTemp[,2])
     for(k in 1:length(operator)){
       sigCol = c(temp[,column[k]])
-      if(operator[k] == "<"){sigCol <- as.numeric(sigCol <= sigValue[k])}
-      else if(operator[k] == ">"){sigCol <- as.numeric(sigCol >= sigValue[k])}
-      else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) >= sigValue[k])}
-      else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) <= sigValue[k])}
+      if(operator[k] == "<"){sigCol <- as.numeric(sigCol < sigValue[k])}
+      else if(operator[k] == ">"){sigCol <- as.numeric(sigCol > sigValue[k])}
+      else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) > sigValue[k])}
+      else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) < sigValue[k])}
       fTemp[,2] = as.integer(fTemp[,2] & sigCol)
     }
     fTemp = fTemp[fTemp[,2] == 1,]
@@ -162,10 +161,10 @@ getEnrichmentsIntersection <- function(
 #'  getEnrichmentIntersection("No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05),notTests=c(),annotation="GOSLIM",mustTests = c("IKE","FIN56"))
 #'
 #' Notes:
-#'   * "<" is actually "<=" and ">" is actually ">="
 #'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getEnrichmentIntersection.R
 #' Changes made:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
+#'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'
 #' @noRd
 getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, mustTests, notTests, sigValue, annotation, operator=c("<"), pValType="nominal") {
@@ -190,8 +189,8 @@ getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adj
     filteredColumn = data[,c(1,i)]
     for(k in 1:length(operator)){
       if(tests[i] %in% mustTests || tests[i] %in% notTests){
-        if(operator[k] == "<"){filteredColumn <- filteredColumn[filteredColumn[[tests[i]]]<=sigValue[k],]}
-        else if(operator[k] == ">"){filteredColumn <- filteredColumn[filteredColumn[[tests[i]]]>=sigValue[k],]}
+        if(operator[k] == "<"){filteredColumn <- filteredColumn[filteredColumn[[tests[i]]] < sigValue[k],]}
+        else if(operator[k] == ">"){filteredColumn <- filteredColumn[filteredColumn[[tests[i]]] > sigValue[k],]}
       }
     }
     if(tests[i] %in% mustTests){rv = rv[rv[,1] %in% filteredColumn[,1],]}
@@ -243,11 +242,11 @@ getResultsUpset <- function(
 #'  InferenceUpsetPlot(testCategory = "No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05), operator = c("<"), column = c("adj_P_Val"))
 #'
 #' Notes:
-#'   * "<" is actually "<=" and ">" is actually ">="
 #'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/InferenceUpsetPlot.R
 #' Changes made:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
+#'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'
 #' @noRd
 InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operator=c("<"), column= c("adj_P_Val")) {
@@ -273,10 +272,10 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
     mat <- Inference.Results[[testCategory]][[tests[i]]][[id]]
     for(k in 1:length(operator)){
       sigCol <- as.numeric(Inference.Results[[testCategory]][[tests[i]]][[column[k]]])
-      if(operator[k] == "<"){sigCol <- as.numeric(sigCol <= sigValue[k])}
-      else if(operator[k] == ">"){sigCol <- as.numeric(sigCol >= sigValue[k])}
-      else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) <= sigValue[k])}
-      else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) >= sigValue[k])}
+      if(operator[k] == "<"){sigCol <- as.numeric(sigCol < sigValue[k])}
+      else if(operator[k] == ">"){sigCol <- as.numeric(sigCol > sigValue[k])}
+      else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) < sigValue[k])}
+      else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) > sigValue[k])}
       if(sum(sigCol)==0){testsUsed <- testsUsed[testsUsed != tests[i]]}
       mat <- cbind.data.frame(mat, sigCol)
       if(k > 1){
@@ -349,11 +348,11 @@ getEnrichmentsUpset <- function(
 #'  EnrichmentUpsetPlot("No Pretreatment Timecourse Differential Phosphorylation", annotation="GOSLIM",c(.05))
 #'
 #' Notes:
-#'   * "<" is actually "<=" and ">" is actually ">="
 #'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/EnrichmentUpsetPlot.R
 #' Changes made:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'   * Passed `na.rm = TRUE` to sum() to handle missing values
+#'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'
 #' @noRd
 EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal") {
@@ -377,8 +376,8 @@ EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted,
     temp$newCol = 1
     for(j in 1:length(operator)){
       sigCol = data[,i]
-      if(operator[j]=="<"){sigCol <- as.numeric(sigCol <= sigValue[j])}
-      else if(operator[j]==">"){sigCol <- as.numeric(sigCol >= sigValue[j])}
+      if(operator[j]=="<"){sigCol <- as.numeric(sigCol < sigValue[j])}
+      else if(operator[j]==">"){sigCol <- as.numeric(sigCol > sigValue[j])}
       temp = cbind(temp, sigCol)
       temp[,2] = as.integer(temp[,2] & temp[,3])
       temp = temp[,-3]
