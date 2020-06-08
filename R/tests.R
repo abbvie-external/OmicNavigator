@@ -18,6 +18,7 @@ testStudy <- function(name,
                        enrichments = testEnrichments(seed = seed),
                        metaFeatures = testMetaFeatures(seed = seed),
                        plots = list(),
+                       barcodes = testBarcodes(),
                        version = version)
 
   return(study)
@@ -181,4 +182,16 @@ testPlots <- function() {
   )
   plots <- list(default = plots)
   return(plots)
+}
+
+testBarcodes <- function(n = 3) {
+  barcodes <- list(
+    default = list(
+      statistic = "beta",
+      labelStat = "Beta coefficient",
+      labelLow = "Small effect size",
+      labelHigh = "Large effect size"
+    )
+  )
+  return(barcodes)
 }

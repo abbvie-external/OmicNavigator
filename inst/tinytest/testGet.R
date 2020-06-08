@@ -302,6 +302,30 @@ expect_identical(
   testStudyObj[["plots"]][["default"]]
 )
 
+# getBarcodes ---------------------------------------------------------------------
+
+expect_identical(
+  getBarcodes(testStudyObj),
+  testStudyObj[["barcodes"]]
+)
+
+expect_identical(
+  getBarcodes(testStudyObj, modelID = testModelName),
+  testStudyObj[["barcodes"]][["default"]]
+)
+
+expect_error(
+  getBarcodes(emptyStudy),
+  "No barcodes available"
+)
+
+expect_identical(
+  getBarcodes(testStudyName, modelID = testModelName),
+  list(statistic = "beta", logFoldChange = NA_character_, absolute = 1L,
+       labelStat = "Beta coefficient", labelLow = "Small effect size",
+       labelHigh = "Large effect size")
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

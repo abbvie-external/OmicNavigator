@@ -48,6 +48,7 @@ createStudy <- function(name,
                         enrichments = list(),
                         metaFeatures = list(),
                         plots = list(),
+                        barcodes = list(),
                         version = NULL)
 {
   stopifnot(is.character(name), is.character(description))
@@ -64,6 +65,7 @@ createStudy <- function(name,
                 enrichments = list(),
                 metaFeatures = list(),
                 plots = list(),
+                barcodes = list(),
                 version = version)
   class(study) <- "oaStudy"
 
@@ -77,6 +79,7 @@ createStudy <- function(name,
   if (!isEmpty(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
   if (!isEmpty(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
   if (!isEmpty(plots)) study <- addPlots(study, plots = plots)
+  if (!isEmpty(barcodes)) study <- addBarcodes(study, barcodes = barcodes)
 
   return(study)
 }
@@ -310,6 +313,38 @@ addPlots <- function(study, plots, overwrite = FALSE) {
   checkPlots(plots)
 
   study[["plots"]] <- addToList(study[["plots"]], plots, overwrite = overwrite)
+
+  return(study)
+}
+
+#' Add barcode plot metadata
+#'
+#' The app can display a barcode plot of the enrichment results for a given
+#' annotation term. The metadata in `barcodes` instructs the app how to create
+#' and label the barcode plot.
+#'
+#' @param barcodes The metadata variables that describe the barcode plot.
+#'   The input object is a list of lists (one per model). Each sublist must
+#'   contain the element \code{statistic}, which is the column name in the
+#'   results table to use to construct the barcode plot. Each sublist may
+#'   additionally contain any of the following optional elements:
+#'   1) \code{absolute} - Should the statistic be converted to its absolute
+#'   value (default is \code{TRUE}).
+#'   2) \code{logFoldChange} - The column name in the results table that contains
+#'   the log fold change values.
+#'   3) \code{labelStat} - The x-axis label to describe the statistic.
+#'   4) \code{labelLow} - The left-side label to describe low values of the statistic.
+#'   5) \code{labelHigh} - The right-side label to describe high values of the statistic.
+#'   To share metadata across multiple models, use the model ID "default".
+#' @inheritParams shared-add
+#'
+#'
+#' @export
+addBarcodes <- function(study, barcodes, overwrite = FALSE) {
+  checkStudy(study)
+  checkBarcodes(barcodes)
+
+  study[["barcodes"]] <- addToList(study[["barcodes"]], barcodes, overwrite = overwrite)
 
   return(study)
 }

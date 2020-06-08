@@ -194,6 +194,47 @@ createDatabase <- function(study, filename) {
     DBI::dbWriteTable(con, "plots", plotsTable)
   }
 
+  # Barcodes -------------------------------------------------------------------
+
+  if (!isEmpty(study[["barcodes"]])) {
+    message("* Adding barcodes")
+    barcodesTable <- data.frame(
+      modelID = character(),
+      statistic = character(),
+      logFoldChange = character(),
+      absolute = logical(),
+      labelStat = character(),
+      labelLow = character(),
+      labelHigh = character(),
+      stringsAsFactors = FALSE
+    )
+    for (i in seq_along(study[["barcodes"]])) {
+      modelID <- names(study[["barcodes"]])[i]
+      statistic <- study[["barcodes"]][[i]][["statistic"]]
+      logFoldChange <- study[["barcodes"]][[i]][["logFoldChange"]]
+      absolute <- study[["barcodes"]][[i]][["absolute"]]
+      labelStat <- study[["barcodes"]][[i]][["labelStat"]]
+      labelLow <- study[["barcodes"]][[i]][["labelLow"]]
+      labelHigh <- study[["barcodes"]][[i]][["labelHigh"]]
+
+      if (is.null(logFoldChange)) logFoldChange <- NA
+      if (is.null(absolute)) absolute <- TRUE
+      if (is.null(labelStat)) labelStat <- statistic
+      if (is.null(labelLow)) labelLow <- "Low"
+      if (is.null(labelHigh)) labelHigh <- "High"
+
+      tmpBarcodes <- data.frame(modelID, statistic, logFoldChange, absolute,
+                                labelStat, labelLow, labelHigh,
+                                stringsAsFactors = FALSE)
+      barcodesTable <- rbind(barcodesTable, tmpBarcodes)
+    }
+    DBI::dbWriteTable(con, "barcodes", barcodesTable,
+                      field.types = c(
+                        "logFoldChange" = "varchar(50)",
+                        "absolute" = "LOGICAL"
+                      ))
+  }
+
   # overlaps -------------------------------------------------------------------
 
   message("* Calculating overlaps between annotation terms")

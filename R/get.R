@@ -801,7 +801,6 @@ getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
-
 #' Get plots from a study
 #'
 #' @export
@@ -882,6 +881,81 @@ getPlots.character <- function(study, modelID = NULL, libraries = NULL, ...) {
 
 #' @export
 getPlots.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
+#' Get barcodes from a study
+#'
+#' @export
+getBarcodes <- function(study, modelID = NULL, ...) {
+  UseMethod("getBarcodes")
+}
+
+#' @rdname getBarcodes
+#' @export
+getBarcodes.oaStudy <- function(study, modelID = NULL, ...) {
+  barcodes <- study[["barcodes"]]
+
+  if (isEmpty(barcodes)) {
+    stop(sprintf("No barcodes available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(barcodes)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  barcodesModels <- names(barcodes)
+  if (modelID %in% barcodesModels) return(barcodes[[modelID]])
+  if ("default" %in% barcodesModels) {
+    message(sprintf("Returning \"default\" barcodes for model \"%s\"", modelID))
+    return(barcodes[["default"]])
+  }
+
+  stop(sprintf("No barcodes available for model \"%s\"", modelID))
+}
+
+#' @rdname getBarcodes
+#' @export
+getBarcodes.SQLiteConnection <- function(study, modelID = NULL, ...) {
+
+  dbTables <- DBI::dbListTables(study)
+  dbBarcodes <- "barcodes"
+
+  if (!dbBarcodes %in% dbTables) {
+    stop("No barcodes available for this study")
+  }
+
+  barcodes <- DBI::dbReadTable(study, dbBarcodes)
+  barcodes <- splitTableIntoList(barcodes, "modelID")
+  barcodes <- lapply(barcodes, as.list)
+
+  if (is.null(modelID)) return(barcodes)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  barcodesModels <- names(barcodes)
+  if (modelID %in% barcodesModels) {
+    return(barcodes[["modelID"]])
+  }
+  if ("default" %in% barcodesModels) {
+    message(sprintf("Returning \"default\" barcodes for model \"%s\"", modelID))
+    return(barcodes[["default"]])
+  }
+
+  stop(sprintf("No barcodes available for model \"%s\"", modelID))
+}
+
+#' @rdname getBarcodes
+#' @export
+getBarcodes.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  barcodes <- getBarcodes(con, modelID = modelID, ...)
+
+  return(barcodes)
+}
+
+#' @export
+getBarcodes.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 

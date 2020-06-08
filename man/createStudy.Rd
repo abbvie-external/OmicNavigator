@@ -17,6 +17,7 @@ createStudy(
   enrichments = list(),
   metaFeatures = list(),
   plots = list(),
+  barcodes = list(),
   version = NULL
 )
 }

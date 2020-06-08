@@ -50,3 +50,7 @@ expect_error(
 expect_error(
   addPlots(study, plots = NULL)
 )
+
+expect_error(
+  addBarcodes(study, barcodes = NULL)
+)
