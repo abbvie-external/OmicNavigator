@@ -192,10 +192,10 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   # Adapted from: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getBarcodeData.R
 
-  results <- getResults(study, modelID = modelID, testID = testID)
+  resultsTable <- getResultsTable(study, modelID = modelID, testID = testID)
   barcodes <- getBarcodes(study, modelID = modelID)
 
-  if (!barcodes[["statistic"]] %in% colnames(results)) {
+  if (!barcodes[["statistic"]] %in% colnames(resultsTable)) {
     stop(sprintf("The statistic \"%s\" is not available in the results table"),
          barcodes[["statistic"]])
   }
@@ -207,26 +207,31 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   }
   termFeatures <- annotations[["terms"]][[termID]]
 
-  termFeaturesTable <- data.frame(
-    featureID = termFeatures,
-    stringsAsFactors = FALSE
-  )
+  if (!annotations[["featureID"]] %in% colnames(resultsTable)) {
+    stop(sprintf("The featureID \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\""),
+         annotations[["featureID"]], annotationID, modelID)
+  }
 
-  barcodeDataTable <- merge(termFeaturesTable, results, by = 1)
-  statisticCol <- which(colnames(barcodeDataTable) == barcodes[["statistic"]])
+  termFeaturesTable <- data.frame(termFeatures, stringsAsFactors = FALSE)
+  colnames(termFeaturesTable) <- annotations[["featureID"]]
+
+  barcodeDataTable <- merge(termFeaturesTable, resultsTable,
+                            by = annotations[["featureID"]])
   if (is.na(barcodes[["logFoldChange"]]) ||
       is.null(barcodes[["logFoldChange"]])) {
-    barcodeDataTable <- barcodeDataTable[, c(1, statisticCol)]
+    barcodeDataTable <- barcodeDataTable[, c(annotations[["featureID"]],
+                                             barcodes[["statistic"]])]
     barcodeDataTable[, "logFoldChange"] <- 0
   } else {
-    if (!barcodes[["logFoldChange"]] %in% colnames(results)) {
+    if (!barcodes[["logFoldChange"]] %in% colnames(resultsTable)) {
       stop(sprintf("The column \"%s\" is not available in the results table"),
            barcodes[["logFoldChange"]])
     }
-    logFoldChangeCol <- which(colnames(barcodeDataTable) == barcodes[["logFoldChange"]])
-    barcodeDataTable <- barcodeDataTable[, c(1, statisticCol, logFoldChangeCol)]
+    barcodeDataTable <- barcodeDataTable[, c(annotations[["featureID"]],
+                                             barcodes[["statistic"]],
+                                             barcodes[["logFoldChange"]])]
   }
-  colnames(barcodeDataTable)[2:3] <- c("statistic", "logFoldChange")
+  colnames(barcodeDataTable) <- c("featureID", "statistic", "logFoldChange")
 
   if (barcodes[["absolute"]]) {
     barcodeDataTable[, 2] <- abs(barcodeDataTable[, 2])

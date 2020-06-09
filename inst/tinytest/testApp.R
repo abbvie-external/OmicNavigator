@@ -137,8 +137,8 @@ expect_identical(
 )
 
 expect_identical(
-  colnames(barcodeData[["data"]])[2:3],
-  c("statistic", "logFoldChange")
+  colnames(barcodeData[["data"]]),
+  c("featureID", "statistic", "logFoldChange")
 )
 
 expect_equal(
