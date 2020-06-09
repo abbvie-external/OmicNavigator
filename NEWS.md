@@ -9,6 +9,8 @@ the functions `getResultsIntersection()`, `getEnrichmentsIntersection()`,
     * `getBarcodes()`
     * `getBarcodeData()`
 
+* `getAnnotations()`
+
 # 0.4.0
 
 * `getResultsIntersection()`

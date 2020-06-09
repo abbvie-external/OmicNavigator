@@ -387,6 +387,93 @@ getTests.default <- function(study, modelID = NULL, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get annotations from a study
+#'
+#' @export
+getAnnotations <- function(study, annotationID = NULL, ...) {
+  UseMethod("getAnnotations")
+}
+
+#' @rdname getAnnotations
+#' @export
+getAnnotations.oaStudy <- function(study, annotationID = NULL, ...) {
+  annotations <- study[["annotations"]]
+
+  if (isEmpty(annotations)) {
+    stop(sprintf("No annotations available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(annotationID)) return(annotations)
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  annotationsAvailable <- names(annotations)
+  if (annotationID %in% annotationsAvailable) {
+    annotationsEntry <- annotations[[annotationID]]
+  } else {
+    stop(sprintf("The annotation \"%s\" is not available ", annotationID))
+  }
+
+  return(annotationsEntry)
+}
+
+#' @rdname getAnnotations
+#' @importFrom rlang "!!"
+#' @importFrom rlang ".data"
+#' @export
+getAnnotations.SQLiteConnection <- function(study, annotationID = NULL, ...) {
+
+  annotationsTable <- dplyr::tbl(study, "annotations")
+  if (!is.null(annotationID)) {
+    stopifnot(is.character(annotationID), length(annotationID) == 1)
+    annotationsTable <- dplyr::filter(annotationsTable, .data$annotationID == !! annotationID)
+  }
+
+  annotationsTable <- dplyr::collect(annotationsTable)
+  annotationsTable <- as.data.frame(annotationsTable)
+
+  if (nrow(annotationsTable) == 0) {
+    stop("Invalid filters.\n",
+         if (is.null(annotationID)) "annotationID: No filter applied\n"
+         else sprintf("annotationID: \"%s\"\n", annotationID),
+    )
+  }
+
+  annotations <- splitTableIntoList(annotationsTable, "annotationID")
+  annotations <- lapply(annotations, as.list)
+
+  terms <- dplyr::tbl(study, "terms")
+  for (i in seq_along(annotations)) {
+    tmpAnnotationID <- names(annotations)[i]
+    annotationTerms <- dplyr::filter(terms, .data$annotationID == !! tmpAnnotationID)
+    annotationTerms <- dplyr::collect(annotationTerms)
+    annotationTerms[["annotationID"]] <- NULL
+    annotationTermsList <- splitTableIntoList(annotationTerms, "termID")
+    annotationTermsList <- lapply(annotationTermsList, unlist, use.names = FALSE)
+    annotations[[i]][["terms"]] <- annotationTermsList
+    annotations[[i]] <- annotations[[i]][c("terms", "description", "featureID")]
+  }
+
+  if (!is.null(annotationID)) annotations <- annotations[[1]]
+
+  return(annotations)
+}
+
+#' @rdname getAnnotations
+#' @export
+getAnnotations.character <- function(study, annotationID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  annotations <- getAnnotations(con, annotationID = annotationID, ...)
+
+  return(annotations)
+}
+
+#' @export
+getAnnotations.default <- function(study, annotationID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 #' Get results from a study
 #'
 #' @export

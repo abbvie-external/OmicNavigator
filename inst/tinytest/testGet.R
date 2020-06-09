@@ -92,6 +92,33 @@ expect_error(
   "No tests available"
 )
 
+# getAnnotations ---------------------------------------------------------------
+
+expect_identical(
+  getAnnotations(testStudyObj),
+  testStudyObj[["annotations"]]
+)
+
+expect_identical(
+  getAnnotations(testStudyObj, annotationID = testAnnotationName),
+  testStudyObj[["annotations"]][[testAnnotationName]]
+)
+
+expect_identical(
+  getAnnotations(testStudyName),
+  testStudyObj[["annotations"]]
+)
+
+expect_identical(
+  getAnnotations(testStudyName, annotationID = testAnnotationName),
+  testStudyObj[["annotations"]][[testAnnotationName]]
+)
+
+expect_error(
+  getAnnotations(emptyStudy),
+  "No annotations available"
+)
+
 # getResults -------------------------------------------------------------------
 
 expect_identical(

@@ -57,6 +57,13 @@ toJSON(models, pretty = TRUE)
 toJSON(tests, pretty = TRUE)
 ```
 
+## Annotations
+
+```{r annotations}
+(annotations <- getAnnotations("ABC", "annotation_01"))
+toJSON(annotations, pretty = TRUE)
+```
+
 ## Results
 
 ```{r results}
