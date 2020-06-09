@@ -185,3 +185,41 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 
   return(linkFeatures)
 }
+
+#' Get data for barcode and violin plots
+#'
+#' @export
+getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
+  # Adapted from: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getBarcodeData.R
+
+  results <- getResults(study, modelID = modelID, testID = testID)
+  barcodes <- getBarcodes(study, modelID = modelID)
+  termFeatures <- getNodeFeatures(study, annotationID, termID)
+
+  if (!barcodes[["statistic"]] %in% colnames(results)) {
+    stop(sprintf("The statistic \"%s\" is not available in the results table"),
+         barcodes[["statistic"]])
+  }
+
+  termFeaturesTable <- data.frame(
+    featureID = termFeatures,
+    stringsAsFactors = FALSE
+  )
+
+  barcodeDataTable <- merge(termFeaturesTable, results, by = 1)
+  statisticCol <- which(colnames(barcodeDataTable) == barcodes[["statistic"]])
+  barcodeDataTable <- barcodeDataTable[, c(1, statisticCol)]
+
+  if (barcodes[["absolute"]]) {
+    barcodeDataTable[, 2] <- abs(barcodeDataTable[, 2])
+  }
+
+  newList <- list(
+    data = barcodeDataTable,
+    highest = ceiling(max(abs(barcodeDataTable[, 2]))),
+    labelStat = barcodes[["labelStat"]],
+    labelLow = barcodes[["labelLow"]],
+    labelHigh = barcodes[["labelHigh"]]
+  )
+  return (newList)
+}

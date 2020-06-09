@@ -7,6 +7,7 @@ the functions `getResultsIntersection()`, `getEnrichmentsIntersection()`,
 * Support customization of barcode plots:
     * `addBarcodes()`
     * `getBarcodes()`
+    * `getBarcodeData()`
 
 # 0.4.0
 

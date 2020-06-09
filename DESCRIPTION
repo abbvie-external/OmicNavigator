@@ -8,7 +8,9 @@ Authors@R: c(
   person("John", "Blischak", role = c("aut", "cre"),
          email = "john.blischak@abbvie.com"),
   person("Justin", "Moore", role = c("ctb"),
-         comment = "UpSet-related functions")
+         comment = "UpSet-related functions"),
+  person("Joe", "Dalen", role = c("ctb"),
+         comment = "Barcode")
   )
 License: file LICENSE
 License_restricts_use: yes

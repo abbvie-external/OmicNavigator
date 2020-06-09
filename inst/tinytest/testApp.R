@@ -11,6 +11,7 @@ testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
+testTermName <- names(testStudyObj[["annotations"]][[testAnnotationName]][["terms"]])[1]
 
 tmplib <- tempfile()
 dir.create(tmplib)
@@ -118,6 +119,26 @@ expect_identical(
 expect_identical(
   enrichmentsNetwork[["tests"]],
   getTests(testStudyName, testModelName)[, "testID"]
+)
+
+# getBarcodeData ---------------------------------------------------------------
+
+barcodeData <- getBarcodeData(
+  testStudyName,
+  testModelName,
+  testTestName,
+  testAnnotationName,
+  testTermName
+)
+
+expect_identical(
+  names(barcodeData),
+  c("data", "highest", "labelStat", "labelLow", "labelHigh")
+)
+
+expect_equal(
+  barcodeData[["highest"]],
+  ceiling(max(abs(barcodeData[["data"]][, 2])))
 )
 
 # Teardown ---------------------------------------------------------------------
