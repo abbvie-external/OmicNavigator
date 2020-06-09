@@ -136,6 +136,11 @@ expect_identical(
   c("data", "highest", "labelStat", "labelLow", "labelHigh")
 )
 
+expect_identical(
+  colnames(barcodeData[["data"]])[2:3],
+  c("statistic", "logFoldChange")
+)
+
 expect_equal(
   barcodeData[["highest"]],
   ceiling(max(abs(barcodeData[["data"]][, 2])))

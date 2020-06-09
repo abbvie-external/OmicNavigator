@@ -208,7 +208,19 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
 
   barcodeDataTable <- merge(termFeaturesTable, results, by = 1)
   statisticCol <- which(colnames(barcodeDataTable) == barcodes[["statistic"]])
-  barcodeDataTable <- barcodeDataTable[, c(1, statisticCol)]
+  if (is.na(barcodes[["logFoldChange"]]) ||
+      is.null(barcodes[["logFoldChange"]])) {
+    barcodeDataTable <- barcodeDataTable[, c(1, statisticCol)]
+    barcodeDataTable[, "logFoldChange"] <- 0
+  } else {
+    if (!barcodes[["logFoldChange"]] %in% colnames(results)) {
+      stop(sprintf("The column \"%s\" is not available in the results table"),
+           barcodes[["logFoldChange"]])
+    }
+    logFoldChangeCol <- which(colnames(barcodeDataTable) == barcodes[["logFoldChange"]])
+    barcodeDataTable <- barcodeDataTable[, c(1, statisticCol, logFoldChangeCol)]
+  }
+  colnames(barcodeDataTable)[2:3] <- c("statistic", "logFoldChange")
 
   if (barcodes[["absolute"]]) {
     barcodeDataTable[, 2] <- abs(barcodeDataTable[, 2])
