@@ -194,12 +194,18 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
 
   results <- getResults(study, modelID = modelID, testID = testID)
   barcodes <- getBarcodes(study, modelID = modelID)
-  termFeatures <- getNodeFeatures(study, annotationID, termID)
 
   if (!barcodes[["statistic"]] %in% colnames(results)) {
     stop(sprintf("The statistic \"%s\" is not available in the results table"),
          barcodes[["statistic"]])
   }
+
+  annotations <- getAnnotations(study, annotationID = annotationID)
+  if (!termID %in% names(annotations[["terms"]])) {
+    stop(sprintf("The term \"%s\" is not available for the annotation \"%s\""),
+         termID, annotationID)
+  }
+  termFeatures <- annotations[["terms"]][[termID]]
 
   termFeaturesTable <- data.frame(
     featureID = termFeatures,

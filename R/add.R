@@ -15,6 +15,7 @@
 #' @inheritParams addEnrichments
 #' @inheritParams addMetaFeatures
 #' @inheritParams addPlots
+#' @inheritParams addBarcodes
 #'
 #' @seealso
 #'   \code{\link{addSamples}},
@@ -27,6 +28,7 @@
 #'   \code{\link{addEnrichments}},
 #'   \code{\link{addMetaFeatures}},
 #'   \code{\link{addPlots}},
+#'   \code{\link{addBarcodes}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'

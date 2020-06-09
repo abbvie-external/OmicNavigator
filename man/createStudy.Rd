@@ -100,6 +100,20 @@ app. Optionally, if the plottting function requires external packages,
 these can be defined in the element \code{packages}. To share plots across
 multiple models, use the model ID "default".}
 
+\item{barcodes}{The metadata variables that describe the barcode plot.
+The input object is a list of lists (one per model). Each sublist must
+contain the element \code{statistic}, which is the column name in the
+results table to use to construct the barcode plot. Each sublist may
+additionally contain any of the following optional elements:
+1) \code{absolute} - Should the statistic be converted to its absolute
+value (default is \code{TRUE}).
+2) \code{logFoldChange} - The column name in the results table that contains
+the log fold change values.
+3) \code{labelStat} - The x-axis label to describe the statistic.
+4) \code{labelLow} - The left-side label to describe low values of the statistic.
+5) \code{labelHigh} - The right-side label to describe high values of the statistic.
+To share metadata across multiple models, use the model ID "default".}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -124,6 +138,7 @@ study <- createStudy(name = "ABC",
   \code{\link{addEnrichments}},
   \code{\link{addMetaFeatures}},
   \code{\link{addPlots}},
+  \code{\link{addBarcodes}},
   \code{\link{exportStudy}},
   \code{\link{installStudy}}
 }
