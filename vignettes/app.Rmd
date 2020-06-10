@@ -69,6 +69,10 @@ toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 For a given study, model, and test, return a table that contains the feature
 metadata and the inference results.
 
+The column names are chosen by the user. The first column is the unique
+featureID used in the study. It should be passed to
+[`plotStudy()`](#custom-plots) to create any custom plots.
+
 ```{r results-table}
 resultsTable <- getResultsTable("ABC", "model_01", "test_01")
 toJSON(resultsTable[1:2, ], pretty = TRUE)
@@ -91,6 +95,10 @@ testing.
 enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01", type = "adjusted")
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
 ```
+
+The first two columns are always `termID` and `description`. The remaining
+columns are the names of the tests defined by the user. The column `termID` is
+used to create the [barcode plot](#barcode).
 
 ## Enrichments network
 
@@ -125,6 +133,10 @@ toJSON(linkFeatures, pretty = TRUE)
 
 Display the custom plots provided by the user with `plotStudy()`. Provided a
 study, model, feature, and plot, `plotStudy()` generates the custom plot.
+
+The featureID is obtained from the first column returned by
+[`getResultsTable()`](#results-table). The remaining arguments are obtained from
+the output from [`listStudies()`](#list-studies).
 
 ```{r plotStudy-plotBase, eval=TRUE}
 plotStudy("ABC", "model_01", "feature_0001", "plotBase")
@@ -192,6 +204,13 @@ enrichmentsUpset <- getEnrichmentsUpset(
 ```
 
 ## Barcode
+
+Given a study, model, test, annotation, and term, `getBarcodeData()` returns
+the data required to create the barcode and violin plots.
+
+The `termID` is obtained from [`getEnrichmentsTable()`](#enrichments-table). The
+remaining arguments are obtained from the output from
+[`listStudies()`](#list-studies).
 
 ```{r getBarcodeData}
 barcodeData <- getBarcodeData(
