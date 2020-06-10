@@ -1,4 +1,4 @@
-# 0.4.0.9000
+# 0.5.0
 
 * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI. Affects
 the functions `getResultsIntersection()`, `getEnrichmentsIntersection()`,
