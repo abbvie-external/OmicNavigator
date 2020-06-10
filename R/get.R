@@ -908,7 +908,9 @@ getPlots.oaStudy <- function(study, modelID = NULL, ...) {
 
   stopifnot(is.character(modelID), length(modelID) == 1)
   plotsModels <- names(plots)
-  if (modelID %in% plotsModels) return(plots[[modelID]])
+  if (modelID %in% plotsModels) {
+    return(plots[[modelID]])
+  }
   if ("default" %in% plotsModels) {
     message(sprintf("Returning \"default\" plots for model \"%s\"", modelID))
     return(plots[["default"]])
@@ -945,7 +947,7 @@ getPlots.SQLiteConnection <- function(study, modelID = NULL, ...) {
   stopifnot(is.character(modelID), length(modelID) == 1)
   plotsModels <- names(plots)
   if (modelID %in% plotsModels) {
-    return(plots[["modelID"]])
+    return(plots[[modelID]])
   }
   if ("default" %in% plotsModels) {
     message(sprintf("Returning \"default\" plots for model \"%s\"", modelID))

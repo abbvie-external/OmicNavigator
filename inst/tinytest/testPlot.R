@@ -24,7 +24,23 @@ expect_silent(
 )
 
 expect_silent(
+  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
+)
+
+expect_error(
+  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
+)
+
+expect_error(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
+)
+
+expect_error(
+  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
+)
+
+expect_silent(
+  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
@@ -42,7 +58,23 @@ expect_silent(
 )
 
 expect_silent(
+  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
+)
+
+expect_error(
+  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
+)
+
+expect_error(
   plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
+)
+
+expect_error(
+  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
+)
+
+expect_silent(
+  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(

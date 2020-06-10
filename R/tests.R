@@ -172,15 +172,18 @@ testPlots <- function() {
   }
   assign("plotGg", plotGg, envir = parent.frame())
   plots <- list(
-    plotBase = list(
-      displayName = "Custom plot"
+    default = list(
+      plotBase = list(
+        displayName = "Custom plot"
+      )
     ),
-    plotGg = list(
-      displayName = "Custom ggplot2 plot",
-      packages = c("ggplot2")
+    model_03 = list(
+      plotGg = list(
+        displayName = "Custom ggplot2 plot",
+        packages = c("ggplot2")
+      )
     )
   )
-  plots <- list(default = plots)
   return(plots)
 }
 

@@ -150,7 +150,7 @@ plotStudy(
 ```{r plotStudy-plotGg}
 plotStudy(
   study = "ABC",
-  modelID = "model_01",
+  modelID = "model_03",
   featureID = "feature_0001",
   plotID = "plotGg"
 )

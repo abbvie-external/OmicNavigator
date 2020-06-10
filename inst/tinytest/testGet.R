@@ -314,6 +314,11 @@ expect_identical(
   testStudyObj[["plots"]][["default"]]
 )
 
+expect_identical(
+  getPlots(testStudyObj, modelID = "model_03"),
+  testStudyObj[["plots"]][["model_03"]]
+)
+
 expect_error(
   getPlots(emptyStudy),
   "No plots available"
@@ -327,6 +332,11 @@ expect_identical(
 expect_identical(
   getPlots(testStudyName, modelID = testModelName),
   testStudyObj[["plots"]][["default"]]
+)
+
+expect_identical(
+  getPlots(testStudyName, modelID = "model_03"),
+  testStudyObj[["plots"]][["model_03"]]
 )
 
 # getBarcodes ---------------------------------------------------------------------

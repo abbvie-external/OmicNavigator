@@ -1,3 +1,8 @@
+# 0.5.1
+
+* Fix bug in `getPlots()` so that it returns model-specific custom plots from
+the database of installed study package
+
 # 0.5.0
 
 * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI. Affects
