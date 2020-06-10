@@ -11,6 +11,11 @@ the functions `getResultsIntersection()`, `getEnrichmentsIntersection()`,
 
 * `getAnnotations()`
 
+* Changed the input argument of `plotStudy()` from `feature` to `featureID`
+
+* Changed the argument name of custom plotting functions from `feature` to
+`featureID`
+
 # 0.4.0
 
 * `getResultsIntersection()`

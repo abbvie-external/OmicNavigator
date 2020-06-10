@@ -197,7 +197,7 @@ checkPlots <- function(plots) {
         stop(sprintf("Unable to find function \"%s\"", plotID))
       }
       argsObserved <- names(formals(plotFunction))
-      argsExpected <- c("x", "feature")
+      argsExpected <- c("x", "featureID")
       if (!identical(argsObserved, argsExpected)) {
         stop(
           sprintf("%s has an incorrect function signature\n", plotID),

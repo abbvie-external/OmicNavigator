@@ -163,12 +163,12 @@ testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
 }
 
 testPlots <- function() {
-  plotBase <- function(x, feature) {
-    graphics::plot(x[, "feature"], main = feature)
+  plotBase <- function(x, featureID) {
+    graphics::plot(x[, "feature"], main = featureID)
   }
   assign("plotBase", plotBase, envir = parent.frame())
-  plotGg <- function(x, feature) {
-    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = feature)
+  plotGg <- function(x, featureID) {
+    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = featureID)
   }
   assign("plotGg", plotGg, envir = parent.frame())
   plots <- list(

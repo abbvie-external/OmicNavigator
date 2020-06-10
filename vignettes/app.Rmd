@@ -138,12 +138,22 @@ The featureID is obtained from the first column returned by
 [`getResultsTable()`](#results-table). The remaining arguments are obtained from
 the output from [`listStudies()`](#list-studies).
 
-```{r plotStudy-plotBase, eval=TRUE}
-plotStudy("ABC", "model_01", "feature_0001", "plotBase")
+```{r plotStudy-plotBase}
+plotStudy(
+  study = "ABC",
+  modelID = "model_01",
+  featureID = "feature_0001",
+  plotID = "plotBase"
+)
 ```
 
-```{r plotStudy-plotGg, eval=TRUE}
-plotStudy("ABC", "model_01", "feature_0001", "plotGg")
+```{r plotStudy-plotGg}
+plotStudy(
+  study = "ABC",
+  modelID = "model_01",
+  featureID = "feature_0001",
+  plotID = "plotGg"
+)
 ```
 
 ## Results intersection

@@ -1,23 +1,23 @@
 #' Plot a feature using a custom plotting function
 #'
 #' @export
-plotStudy <- function(study, modelID, feature, plotID, ...) {
+plotStudy <- function(study, modelID, featureID, plotID, ...) {
   UseMethod("plotStudy")
 }
 
 #' @rdname plotStudy
 #' @export
-plotStudy.oaStudy <- function(study, modelID, feature, plotID, ...) {
-  stopifnot(is.character(modelID), is.character(feature), is.character(plotID))
+plotStudy.oaStudy <- function(study, modelID, featureID, plotID, ...) {
+  stopifnot(is.character(modelID), is.character(featureID), is.character(plotID))
 
   plots <- getPlots(study, modelID = modelID)
   assays <- getAssays(study, modelID = modelID)
   samples <- getSamples(study, modelID = modelID)
   features <- getFeatures(study, modelID = modelID)
 
-  if (!feature %in% features[, 1]) {
-    stop(sprintf("The feature \"%s\" is not present in the features table",
-                 feature))
+  if (!featureID %in% features[, 1]) {
+    stop(sprintf("The featureID \"%s\" is not present in the features table",
+                 featureID))
   }
 
   plotsAvailable <- names(plots)
@@ -30,7 +30,7 @@ plotStudy.oaStudy <- function(study, modelID, feature, plotID, ...) {
   p <- plots[[plotID]]
   f <- getPlotFunction(plotID)
 
-  assayFeature <- t(assays[feature, , drop = FALSE])
+  assayFeature <- t(assays[featureID, , drop = FALSE])
   colnames(assayFeature) <- "feature"
   x <- merge(samples, assayFeature,
              by.x = 1, by.y = "row.names")
@@ -50,7 +50,7 @@ plotStudy.oaStudy <- function(study, modelID, feature, plotID, ...) {
     }
   }
 
-  returned <- f(x = x, feature = feature)
+  returned <- f(x = x, featureID = featureID)
   if (inherits(returned, "ggplot")) print(returned)
 
   return(invisible(study))
@@ -58,17 +58,17 @@ plotStudy.oaStudy <- function(study, modelID, feature, plotID, ...) {
 
 #' @rdname plotStudy
 #' @export
-plotStudy.character <- function(study, modelID, feature, plotID, ...) {
-  stopifnot(is.character(modelID), is.character(feature), is.character(plotID))
+plotStudy.character <- function(study, modelID, featureID, plotID, ...) {
+  stopifnot(is.character(modelID), is.character(featureID), is.character(plotID))
 
   plots <- getPlots(study, modelID = modelID)
   assays <- getAssays(study, modelID = modelID)
   samples <- getSamples(study, modelID = modelID)
   features <- getFeatures(study, modelID = modelID)
 
-  if (!feature %in% features[, 1]) {
-    stop(sprintf("The feature \"%s\" is not present in the features table",
-                 feature))
+  if (!featureID %in% features[, 1]) {
+    stop(sprintf("The featureID \"%s\" is not present in the features table",
+                 featureID))
   }
 
   plotsAvailable <- names(plots)
@@ -81,7 +81,7 @@ plotStudy.character <- function(study, modelID, feature, plotID, ...) {
   p <- plots[[plotID]]
   f <- getPlotFunction(plotID, study = study)
 
-  assayFeature <- t(assays[feature, , drop = FALSE])
+  assayFeature <- t(assays[featureID, , drop = FALSE])
   colnames(assayFeature) <- "feature"
   x <- merge(samples, assayFeature,
              by.x = 1, by.y = "row.names")
@@ -101,14 +101,14 @@ plotStudy.character <- function(study, modelID, feature, plotID, ...) {
     }
   }
 
-  returned <- f(x = x, feature = feature)
+  returned <- f(x = x, featureID = featureID)
   if (inherits(returned, "ggplot")) print(returned)
 
   return(invisible(study))
 }
 
 #' @export
-plotStudy.default <- function(study, modelID, feature, plotID, ...) {
+plotStudy.default <- function(study, modelID, featureID, plotID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
