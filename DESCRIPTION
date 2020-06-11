@@ -33,6 +33,7 @@ Suggests:
   ggplot2,
   jsonlite,
   knitr,
+  opencpu,
   tinytest
 RoxygenNote: 7.1.0
 VignetteBuilder: knitr
