@@ -1,5 +1,7 @@
 # 0.5.1.9000
 
+* New function `startApp()` to start the app running on local machine
+
 * Fix bug in `getResultsIntersection()` so that it returns the feature metadata
 columns that are included in `getResultsTable()`
 
