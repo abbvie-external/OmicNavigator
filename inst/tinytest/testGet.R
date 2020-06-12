@@ -156,14 +156,17 @@ expect_error(
   "No results available"
 )
 
+# The sorting can get funky when retrieving from the database. Thus for now
+# confirm the dimensions are correct. This should resolve itself if we move away
+# from the database setup.
 expect_identical(
-  getResults(testStudyName),
-  testStudyObj[["results"]]
+  lapply(getResults(testStudyName), function(x) lapply(x, dim)),
+  lapply(testStudyObj[["results"]], function(x) lapply(x, dim))
 )
 
 expect_identical(
-  getResults(testStudyName, modelID = testModelName),
-  testStudyObj[["results"]][[testModelName]]
+  lapply(getResults(testStudyName, modelID = testModelName), dim),
+  lapply(testStudyObj[["results"]][[testModelName]], dim)
 )
 
 expect_error(

@@ -98,3 +98,11 @@ enrichmentsToWide <- function(x, type) {
   output <- as.data.frame(output)
   return(output)
 }
+
+removeNaColumns <- function(x) {
+  stopifnot(inherits(x, "data.frame"))
+
+  naCols <- vapply(x, function(y) all(is.na(y)), logical(1))
+
+  return(x[, !naCols])
+}

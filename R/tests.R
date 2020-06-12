@@ -113,9 +113,12 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
       results[[i]][[j]] <- data.frame(
         featureID = sprintf("feature_%04d", seq_len(n_features)),
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
+        beta_x = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
         stringsAsFactors = FALSE
       )
+      # Give beta_x a test-specific name
+      colnames(results[[i]][[j]])[3] <- paste0("beta_", j)
     }
   }
   return(results)

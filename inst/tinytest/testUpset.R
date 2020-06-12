@@ -70,6 +70,27 @@ expect_true(
   all(resultsIntersection[["beta"]] > 1.2)
 )
 
+# Confirm it works when there is only one test per model
+testStudyObjSingle <- testStudyObj
+testStudyObjSingle[["results"]][["model_03"]] <-
+  testStudyObjSingle[["results"]][["model_03"]][1]
+
+resultsIntersection <- getResultsIntersection(
+  study = testStudyObjSingle,
+  modelID = "model_03",
+  anchor = testTestName,
+  mustTests = testTestName,
+  notTests = c(),
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
+expect_identical(
+  unique(resultsIntersection[, "Set_Membership"]),
+  testTestName
+)
+
 resultsIntersection <- getResultsIntersection(
   study = testStudyName,
   modelID = testModelName,

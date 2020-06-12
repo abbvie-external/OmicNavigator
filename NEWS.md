@@ -3,6 +3,9 @@
 * Fix bug in `getResultsIntersection()` so that it returns the feature metadata
 columns that are included in `getResultsTable()`
 
+* Fix bug in `getResults()` that returned columns of `NA` for columns specific
+to other tests (only affected study packages, not oaStudy objects)
+
 # 0.5.1
 
 * Fix bug in `getPlots()` so that it returns model-specific custom plots from

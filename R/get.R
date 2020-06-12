@@ -552,6 +552,7 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
 
   results <- splitTableIntoList(resultsTable, "modelID")
   results <- lapply(results, function(x) splitTableIntoList(x, "testID"))
+  results <- lapply(results, function(x) lapply(x, removeNaColumns))
   if (!is.null(modelID)) results <- results[[1]]
   if (!is.null(testID)) results <- results[[1]]
 
