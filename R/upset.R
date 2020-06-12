@@ -26,6 +26,9 @@ getResultsIntersection <- function(
     column = column
   )
 
+  features <- getFeatures(study, modelID = modelID)
+  intersection <- merge(features, intersection, by = 1)
+
   return(intersection)
 }
 
@@ -53,6 +56,7 @@ getResultsIntersection <- function(
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
+#'   * Reordered `anchor` test to start of tests using `union()`
 #' @noRd
 getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mustTests, notTests, sigValue, operator=c("<"), column=c("adj_P_Val")) {
 
@@ -67,8 +71,7 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
   #in the study, then it will concatenate the study to the set membership column.
   rv$Set_Membership <- anchor
   tests <- names(Inference.Results[[testCategory]])
-  tests <- tests[tests != anchor]
-  tests <- c(anchor, tests)
+  tests <- union(anchor, tests)
 
   #Calculate Intersection
   for(i in 1:length(tests)){

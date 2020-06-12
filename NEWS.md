@@ -1,5 +1,7 @@
 # 0.5.1.9000
 
+* Fix bug in `getResultsIntersection()` so that it returns the feature metadata
+columns that are included in `getResultsTable()`
 
 # 0.5.1
 

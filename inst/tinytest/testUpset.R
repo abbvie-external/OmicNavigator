@@ -85,6 +85,19 @@ expect_true(
   inherits(resultsIntersection, "data.frame")
 )
 
+resultsTable <- getResultsTable(
+  study = testStudyName,
+  modelID = testModelName,
+  testID = testTestName
+)
+
+# getResultsIntersection() should add the column Set_Membership, and return all
+# existing columns
+expect_identical(
+  setdiff(colnames(resultsIntersection), "Set_Membership"),
+  colnames(resultsTable)
+)
+
 # getEnrichmentsIntersection -------------------------------------------------------
 
 enrichmentsIntersection <- getEnrichmentsIntersection(
