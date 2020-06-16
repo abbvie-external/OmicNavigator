@@ -77,6 +77,11 @@ expect_error(
   "non-existent"
 )
 
+# Remove plotting functions from current environment. This ensures that the
+# calls to plotStudy() below obtain the plotting functions from the package
+# namespace.
+rm(list = plotsAll)
+
 expect_silent(
   plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )

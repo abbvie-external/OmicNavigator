@@ -42,9 +42,12 @@ tmplib <- tempfile()
 dir.create(tmplib)
 .libPaths(c(tmplib, .libPaths()))
 abc <- OmicAnalyzer:::testStudy(name = "ABC")
-abc <- addPlots(abc, OmicAnalyzer:::testPlots())
+plots <- OmicAnalyzer:::testPlots()
+abc <- addPlots(abc, plots)
+plotsAll <- unlist(lapply(plots, names), use.names = FALSE)
 OmicAnalyzer::installStudy(abc)
 OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
+rm(plots, list = plotsAll)
 ```
 
 ## List studies

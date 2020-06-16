@@ -16,7 +16,11 @@ plotStudy <- function(study, modelID, featureID, plotID, ...) {
          sprintf("* \"%s\"\n", plotsAvailable))
   }
   p <- plots[[plotID]]
-  f <- getPlotFunction(plotID)
+  if (inherits(study, "oaStudy")) {
+    f <- getPlotFunction(plotID)
+  } else {
+    f <- getPlotFunction(plotID, study = study)
+  }
 
   plottingData <- getPlottingData(study, modelID, featureID)
 
