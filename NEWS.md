@@ -1,4 +1,4 @@
-# 0.6.0.9000
+# 0.7.0
 
 * New function `getPlottingData()` to return the data required by the first
 argument of the custom plotting functions.
