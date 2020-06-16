@@ -42,6 +42,7 @@ expect_identical(
 # plotStudy --------------------------------------------------------------------
 
 pkgsAttachedPre <- search()
+parSettingsPre <- graphics::par(no.readonly = TRUE)
 
 expect_silent(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
@@ -117,10 +118,15 @@ expect_error(
 )
 
 pkgsAttachedPost <- search()
-
 expect_identical(
   pkgsAttachedPost,
   pkgsAttachedPre
+)
+
+parSettingsPost <- graphics::par(no.readonly = TRUE)
+expect_identical(
+  parSettingsPost,
+  parSettingsPre
 )
 
 # getPlottingData --------------------------------------------------------------

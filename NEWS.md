@@ -12,6 +12,9 @@ package
 * Fix bug when querying model-specific barcode metadata. Affected both
 `getBarcodes()` and `getBarcodeData()` (reported by Paul Nordlund)
 
+* Remove warning from `graphics::par()` by only having `plotStudy()` reset the
+graphing parameters if they are changed by the custom plotting function
+
 # 0.6.0
 
 * New function `startApp()` to start the app running on local machine

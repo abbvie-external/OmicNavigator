@@ -26,8 +26,8 @@ plotStudy <- function(study, modelID, featureID, plotID, ...) {
 
   # Setup for the plot and ensure everything is properly reset after the
   # function returns.
-  original_par_settings <- graphics::par(no.readonly = TRUE)
-  on.exit(graphics::par(original_par_settings), add = TRUE)
+  originalParSettings <- graphics::par(no.readonly = TRUE)
+  on.exit(resetPar(originalParSettings), add = TRUE)
   for (pkg in p[["packages"]]) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
       stop(sprintf("Package \"%s\" is not installed", pkg))
@@ -55,6 +55,15 @@ getPlotFunction <- function(plotID, study = NULL) {
 
   stopifnot(length(f) == 1)
   return(f)
+}
+
+# Only reset par() if the settings have changed
+resetPar <- function(originalParSettings) {
+  currentParSettings <- graphics::par(no.readonly = TRUE)
+  if (!identical(currentParSettings, originalParSettings)) {
+    graphics::par(originalParSettings)
+  }
+  return(NULL)
 }
 
 #' Get plotting data

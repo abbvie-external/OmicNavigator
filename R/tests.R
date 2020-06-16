@@ -167,6 +167,7 @@ testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
 
 testPlots <- function() {
   plotBase <- function(x, featureID) {
+    graphics::par(cex.main = 2)
     graphics::plot(x[, "feature"], main = featureID)
   }
   assign("plotBase", plotBase, envir = parent.frame())
