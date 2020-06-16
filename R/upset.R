@@ -26,6 +26,8 @@ getResultsIntersection <- function(
     column = column
   )
 
+  colnamesOrder <- union(c("featureID", "Set_Membership"), colnames(intersection))
+  intersection <- intersection[, colnamesOrder]
   features <- getFeatures(study, modelID = modelID)
   intersection <- merge(features, intersection, by = 1)
 

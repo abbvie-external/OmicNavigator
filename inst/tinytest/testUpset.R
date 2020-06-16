@@ -112,11 +112,15 @@ resultsTable <- getResultsTable(
   testID = testTestName
 )
 
-# getResultsIntersection() should add the column Set_Membership, and return all
-# existing columns
+# getResultsIntersection() should add the column Set_Membership between the
+# feature metadata variable columns and the results columns
 expect_identical(
-  setdiff(colnames(resultsIntersection), "Set_Membership"),
-  colnames(resultsTable)
+  colnames(resultsIntersection),
+  c(
+    colnames(getFeatures(testStudyName, modelID = testModelName)),
+    "Set_Membership",
+    setdiff(colnames(getResults(testStudyName, modelID = testModelName, testID = testTestName)), "featureID")
+  )
 )
 
 # getEnrichmentsIntersection -------------------------------------------------------

@@ -3,6 +3,9 @@
 * New function `getPlottingData()` to return the data required by the first
 argument of the custom plotting functions.
 
+* `getResultsIntersection()` positions the column `Set_Membership` between the
+feature metadata variable columns and the results columns
+
 # 0.6.0
 
 * New function `startApp()` to start the app running on local machine
