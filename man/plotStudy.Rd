@@ -2,15 +2,9 @@
 % Please edit documentation in R/plots.R
 \name{plotStudy}
 \alias{plotStudy}
-\alias{plotStudy.oaStudy}
-\alias{plotStudy.character}
 \title{Plot a feature using a custom plotting function}
 \usage{
 plotStudy(study, modelID, featureID, plotID, ...)
-
-\method{plotStudy}{oaStudy}(study, modelID, featureID, plotID, ...)
-
-\method{plotStudy}{character}(study, modelID, featureID, plotID, ...)
 }
 \description{
 Plot a feature using a custom plotting function

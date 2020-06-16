@@ -19,6 +19,8 @@ suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
 
 # plotStudy --------------------------------------------------------------------
 
+pkgsAttachedPre <- search()
+
 expect_silent(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
@@ -85,6 +87,13 @@ expect_error(
 expect_error(
   plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
+)
+
+pkgsAttachedPost <- search()
+
+expect_identical(
+  pkgsAttachedPost,
+  pkgsAttachedPre
 )
 
 # getPlottingData --------------------------------------------------------------
