@@ -16,6 +16,28 @@ dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
+testPkgName <- paste0("OAstudy", testStudyName)
+
+# Test plots in exported package -----------------------------------------------
+
+pkgDependencies <- utils::packageDescription(
+  testPkgName,
+  lib.loc = tmplib,
+  fields = "Imports"
+)
+
+expect_identical(
+  pkgDependencies,
+  "ggplot2, graphics, rlang"
+)
+
+pkgExports <- sort(getNamespaceExports(testPkgName))
+plotsAll <- sort(unlist(lapply(plots, names), use.names = FALSE))
+
+expect_identical(
+  pkgExports,
+  plotsAll
+)
 
 # plotStudy --------------------------------------------------------------------
 

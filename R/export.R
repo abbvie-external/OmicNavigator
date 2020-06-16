@@ -311,7 +311,21 @@ createPackage <- function(study, directoryname) {
     for (i in seq_along(study[["plots"]])) {
       for (j in seq_along(study[["plots"]][[i]])) {
         plotID <- names(study[["plots"]][[i]])[j]
-        dependencies <- c(dependencies, study[["plots"]][[i]][[j]][["packages"]])
+        plotDependencies <- study[["plots"]][[i]][[j]][["packages"]]
+        # Base plotting functions like plot, boxplot, barplot, etc. rely on the
+        # graphics package. It's a recommended package that is automatically
+        # loaded when R starts, so a user is unlikely to think it add it. The
+        # logic below adds graphics only if needed:
+        #
+        # * If the user manually adds graphics, then no need to add it again
+        # * If ggplot2 is a dependency, it doesn't need graphics because it uses
+        #   grid
+        # * If lattice is a dependency, it doesn't need graphics because lattice
+        #   imports graphics
+        if (!any(c("graphics", "ggplot2", "lattice") %in% plotDependencies)) {
+          plotDependencies <- c(plotDependencies, "graphics")
+        }
+        dependencies <- c(dependencies, plotDependencies)
         exports <- c(exports, sprintf("export(%s)", plotID))
         plotFunction <- getPlotFunction(plotID)
         plot_code <- deparse(plotFunction)

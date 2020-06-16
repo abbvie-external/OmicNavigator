@@ -6,6 +6,9 @@ argument of the custom plotting functions.
 * `getResultsIntersection()` positions the column `Set_Membership` between the
 feature metadata variable columns and the results columns
 
+* Study packages that includes plots using base graphics now import the graphics
+package
+
 # 0.6.0
 
 * New function `startApp()` to start the app running on local machine
