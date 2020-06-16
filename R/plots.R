@@ -123,3 +123,23 @@ getPlotFunction <- function(plotID, study = NULL) {
   stopifnot(length(f) == 1)
   return(f)
 }
+
+#' Get plotting data
+#'
+#' @export
+getPlottingData <- function(study, modelID, featureID) {
+  assays <- getAssays(study, modelID = modelID)
+  if (!featureID %in% rownames(assays)) {
+    stop(sprintf("The feature \"%s\" is not available for model \"%s\"",
+                 featureID, modelID))
+  }
+
+  assaysFeature <- t(assays[featureID, , drop = FALSE])
+  colnames(assaysFeature) <- "feature"
+
+  samples <- getSamples(study, modelID = modelID)
+
+  plottingData <- merge(samples, assaysFeature,
+                        by.x = 1, by.y = "row.names")
+  return(plottingData)
+}

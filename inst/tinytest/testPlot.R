@@ -87,6 +87,54 @@ expect_error(
   "non-existent"
 )
 
+# getPlottingData --------------------------------------------------------------
+
+plottingData <- getPlottingData(
+  testStudyObj,
+  modelID = testModelName,
+  feature = "feature_0001"
+)
+
+samples <- getSamples(testStudyObj, modelID = testModelName)
+assays <- getAssays(testStudyObj, modelID = testModelName)
+
+expect_true(
+  inherits(plottingData, "data.frame")
+)
+
+expect_identical(
+  colnames(plottingData),
+  c(colnames(samples), "feature")
+)
+
+expect_identical(
+  plottingData[["feature"]],
+  as.numeric(assays["feature_0001", ])
+)
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  feature = "feature_0001"
+)
+
+samples <- getSamples(testStudyName, modelID = testModelName)
+assays <- getAssays(testStudyName, modelID = testModelName)
+
+expect_true(
+  inherits(plottingData, "data.frame")
+)
+
+expect_identical(
+  colnames(plottingData),
+  c(colnames(samples), "feature")
+)
+
+expect_identical(
+  plottingData[["feature"]],
+  as.numeric(assays["feature_0001", ])
+)
+
 # Teardown ---------------------------------------------------------------------
 
 pkgName <- paste0("OAstudy", testStudyName)
