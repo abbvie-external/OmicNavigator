@@ -197,6 +197,12 @@ testBarcodes <- function(n = 3) {
       labelStat = "Beta coefficient",
       labelLow = "Small effect size",
       labelHigh = "Large effect size"
+    ),
+    model_03 = list(
+      statistic = "beta",
+      labelStat = "Effect size",
+      labelLow = "Low effect size",
+      labelHigh = "High effect size"
     )
   )
   return(barcodes)

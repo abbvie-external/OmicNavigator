@@ -1023,7 +1023,7 @@ getBarcodes.SQLiteConnection <- function(study, modelID = NULL, ...) {
   stopifnot(is.character(modelID), length(modelID) == 1)
   barcodesModels <- names(barcodes)
   if (modelID %in% barcodesModels) {
-    return(barcodes[["modelID"]])
+    return(barcodes[[modelID]])
   }
   if ("default" %in% barcodesModels) {
     message(sprintf("Returning \"default\" barcodes for model \"%s\"", modelID))

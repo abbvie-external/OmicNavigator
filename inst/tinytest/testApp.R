@@ -146,6 +146,20 @@ expect_equal(
   ceiling(max(abs(barcodeData[["data"]][, 2])))
 )
 
+barcodeData <- getBarcodeData(
+  testStudyName,
+  "model_03",
+  testTestName,
+  testAnnotationName,
+  testTermName
+)
+
+expect_identical(
+  barcodeData[["labelStat"]],
+  "Effect size",
+  info = "Confirm model-specific barcode data returned"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

@@ -366,6 +366,12 @@ expect_identical(
        labelHigh = "Large effect size")
 )
 
+expect_identical(
+  getBarcodes(testStudyObj, modelID = "model_03"),
+  testStudyObj[["barcodes"]][["model_03"]],
+  info = "Confirm model-specific barcode data returned"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
