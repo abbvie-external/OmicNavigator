@@ -552,7 +552,7 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
 
   results <- splitTableIntoList(resultsTable, "modelID")
   results <- lapply(results, function(x) splitTableIntoList(x, "testID"))
-  results <- lapply(results, function(x) lapply(x, removeNaColumns))
+  results <- dfrapply(results, removeNaColumns)
   if (!is.null(modelID)) results <- results[[1]]
   if (!is.null(testID)) results <- results[[1]]
 
@@ -719,9 +719,7 @@ getEnrichments.SQLiteConnection <- function(study, modelID = NULL, annotationID 
 
   enrichments <- splitTableIntoList(enrichmentsTable, "modelID")
   enrichments <- lapply(enrichments, function(x) splitTableIntoList(x, "annotationID"))
-  enrichments <- lapply(enrichments,
-                        function(x) lapply(x,
-                                           function(y) splitTableIntoList(y, "testID")))
+  enrichments <- dfrapply(enrichments, splitTableIntoList, columnName = "testID")
   if (!is.null(modelID)) enrichments <- enrichments[[1]]
   if (!is.null(annotationID)) enrichments <- enrichments[[1]]
   if (!is.null(testID)) enrichments <- enrichments[[1]]

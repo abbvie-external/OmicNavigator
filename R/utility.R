@@ -42,6 +42,17 @@ addToList <- function(listOne, listTwo, overwrite = FALSE) {
   return(listNew)
 }
 
+# Recursively apply function to all data frames in a nested list
+dfrapply <- function(object, f, ...) {
+  if (inherits(object, "data.frame")) {
+    return(f(object, ...))
+  }
+  if (inherits(object, "list")) {
+    return(lapply(object, function(x) dfrapply(x, f, ...)))
+  }
+  stop("List element must be either a data frame or another list")
+}
+
 ## Data frames -----------------------------------------------------------------
 
 hasUniqueIdColumn <- function(x) {
