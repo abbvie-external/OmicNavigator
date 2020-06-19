@@ -207,39 +207,46 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   }
   termFeatures <- annotations[["terms"]][[termID]]
 
-  if (!annotations[["featureID"]] %in% colnames(resultsTable)) {
+  annotationFeatureID <- annotations[["featureID"]]
+  studyFeatureID <- colnames(resultsTable)[1]
+
+  if (!annotationFeatureID %in% colnames(resultsTable)) {
     stop(sprintf("The featureID \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\""),
-         annotations[["featureID"]], annotationID, modelID)
+         annotationFeatureID, annotationID, modelID)
   }
 
   termFeaturesTable <- data.frame(termFeatures, stringsAsFactors = FALSE)
-  colnames(termFeaturesTable) <- annotations[["featureID"]]
+  colnames(termFeaturesTable) <- annotationFeatureID
 
-  barcodeDataTable <- merge(termFeaturesTable, resultsTable,
-                            by = annotations[["featureID"]])
+  barcodeDataTableAll <- merge(termFeaturesTable, resultsTable,
+                               by = annotations[["featureID"]])
+
+  barcodeDataTable <- data.frame(
+    barcodeDataTableAll[[studyFeatureID]],
+    barcodeDataTableAll[[annotationFeatureID]],
+    barcodeDataTableAll[[barcodes[["statistic"]]]],
+    stringsAsFactors = FALSE
+  )
+  colnames(barcodeDataTable) <- c("featureID", "featureDisplay", "statistic")
+
   if (is.na(barcodes[["logFoldChange"]]) ||
       is.null(barcodes[["logFoldChange"]])) {
-    barcodeDataTable <- barcodeDataTable[, c(annotations[["featureID"]],
-                                             barcodes[["statistic"]])]
     barcodeDataTable[, "logFoldChange"] <- 0
   } else {
     if (!barcodes[["logFoldChange"]] %in% colnames(resultsTable)) {
       stop(sprintf("The column \"%s\" is not available in the results table"),
            barcodes[["logFoldChange"]])
     }
-    barcodeDataTable <- barcodeDataTable[, c(annotations[["featureID"]],
-                                             barcodes[["statistic"]],
-                                             barcodes[["logFoldChange"]])]
+    barcodeDataTable[, "logFoldChange"] <- barcodeDataTableAll[[barcodes[["logFoldChange"]]]]
   }
-  colnames(barcodeDataTable) <- c("featureID", "statistic", "logFoldChange")
 
   if (barcodes[["absolute"]]) {
-    barcodeDataTable[, 2] <- abs(barcodeDataTable[, 2])
+    barcodeDataTable[, "statistic"] <- abs(barcodeDataTable[, "statistic"])
   }
 
   newList <- list(
     data = barcodeDataTable,
-    highest = ceiling(max(abs(barcodeDataTable[, 2]))),
+    highest = ceiling(max(abs(barcodeDataTable[, "statistic"]))),
     labelStat = barcodes[["labelStat"]],
     labelLow = barcodes[["labelLow"]],
     labelHigh = barcodes[["labelHigh"]]

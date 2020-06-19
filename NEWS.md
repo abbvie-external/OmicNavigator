@@ -1,5 +1,11 @@
 # 0.7.0.9000
 
+* `getBarcodeData()` now returns both the study featureID (in the column
+`featureID`) and the featureID used by the annotation database (in the column
+`featureDisplay`). The former is needed to pass to `plotStudy()` to generate any
+custom plots. The latter is needed to display when hovering over the barcode
+plot (reported by Paul Nordlund).
+
 * Fix bug in `plotStudy()` related to detaching package namespaces. When a
 custom plot specified more than one package dependency, the last package listed
 would always be detached from the search path (even if it shouldn't have been

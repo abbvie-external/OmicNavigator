@@ -138,12 +138,12 @@ expect_identical(
 
 expect_identical(
   colnames(barcodeData[["data"]]),
-  c("featureID", "statistic", "logFoldChange")
+  c("featureID", "featureDisplay", "statistic", "logFoldChange")
 )
 
 expect_equal(
   barcodeData[["highest"]],
-  ceiling(max(abs(barcodeData[["data"]][, 2])))
+  ceiling(max(abs(barcodeData[["data"]][, "statistic"])))
 )
 
 barcodeData <- getBarcodeData(
