@@ -28,7 +28,7 @@ pkgDependencies <- utils::packageDescription(
 
 expect_identical(
   pkgDependencies,
-  "ggplot2, graphics, rlang"
+  "ggplot2, graphics, rlang, stats"
 )
 
 pkgExports <- sort(getNamespaceExports(testPkgName))

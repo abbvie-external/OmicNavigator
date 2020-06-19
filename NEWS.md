@@ -1,5 +1,12 @@
 # 0.7.0.9000
 
+* Fix bug in `plotStudy()` related to detaching package namespaces. When a
+custom plot specified more than one package dependency, the last package listed
+would always be detached from the search path (even if it shouldn't have been
+since it was already attached). Furthermore, the other packages would never be
+detached (even if they should have been since they were not attached
+beforehand). The bug was caused by calling `detach()` with `on.exit()`, which
+used the latest value of the variable.
 
 # 0.7.0
 

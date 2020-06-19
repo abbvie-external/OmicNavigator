@@ -172,7 +172,9 @@ testPlots <- function() {
   }
   assign("plotBase", plotBase, envir = parent.frame())
   plotGg <- function(x, featureID) {
-    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = featureID)
+    featureMedian <- stats::median(x[, "feature"])
+    plotTitle <- sprintf("%s, median: %0.2f", featureID, featureMedian)
+    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = plotTitle)
   }
   assign("plotGg", plotGg, envir = parent.frame())
   plots <- list(
@@ -184,7 +186,7 @@ testPlots <- function() {
     model_03 = list(
       plotGg = list(
         displayName = "Custom ggplot2 plot",
-        packages = c("ggplot2")
+        packages = c("ggplot2", "stats")
       )
     )
   )

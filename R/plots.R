@@ -28,14 +28,17 @@ plotStudy <- function(study, modelID, featureID, plotID, ...) {
   # function returns.
   originalParSettings <- graphics::par(no.readonly = TRUE)
   on.exit(resetPar(originalParSettings), add = TRUE)
+  pkgNamespacesToDetach <- character()
+  on.exit(resetSearch(pkgNamespacesToDetach), add = TRUE)
   for (pkg in p[["packages"]]) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
       stop(sprintf("Package \"%s\" is not installed", pkg))
     }
-    pkg_namespace <- sprintf("package:%s", pkg)
-    if (!pkg_namespace %in% search()) {
+    pkgNamespace <- sprintf("package:%s", pkg)
+    if (!pkgNamespace %in% search()) {
+      message(sprintf("Temporarily attaching namespace \"%s\" to the search path", pkgNamespace))
       suppressPackageStartupMessages(library(pkg, character.only = TRUE))
-      on.exit(detach(pkg_namespace, character.only = TRUE), add = TRUE)
+      pkgNamespacesToDetach <- c(pkgNamespacesToDetach, pkgNamespace)
     }
   }
 
@@ -64,6 +67,17 @@ resetPar <- function(originalParSettings) {
     graphics::par(originalParSettings)
   }
   return(NULL)
+}
+
+# Detach packages from search path
+resetSearch <- function(pkgNamespaces) {
+  searchPath <- search()
+  pkgNamespaces <- unique(pkgNamespaces)
+  for (namespace in pkgNamespaces) {
+    if (namespace %in% searchPath) {
+      detach(namespace, character.only = TRUE)
+    }
+  }
 }
 
 #' Get plotting data
