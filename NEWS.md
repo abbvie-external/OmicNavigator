@@ -1,5 +1,7 @@
 # 0.8.0.9000
 
+* New function `getUpsetCols()` to get the columns common across all tests of a
+model, and thus are available for filtering with UpSet.
 
 # 0.8.0
 

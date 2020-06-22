@@ -268,6 +268,18 @@ expect_error(
   "wrong"
 )
 
+# getUpsetCols -----------------------------------------------------------------
+
+upsetCols <- getUpsetCols(
+  study = testStudyName,
+  modelID = testModelName
+)
+
+expect_identical(
+  upsetCols,
+  c("beta", "p_val")
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

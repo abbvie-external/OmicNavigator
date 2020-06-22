@@ -21,6 +21,7 @@
 * [Enrichments intersection](#enrichments-intersection)
 * [Results UpSet plot](#results-upset-plot)
 * [Enrichments UpSet plot](#enrichments-upset-plot)
+* [UpSet columns](#upset-columns)
 * [Barcode](#barcode)
 
 These functions are intended to support the web application via OpenCPU calls.
@@ -214,6 +215,16 @@ enrichmentsUpset <- getEnrichmentsUpset(
   operator = "<",
   type = "nominal"
 )
+```
+
+## UpSet columns
+
+```{r getUpsetCols}
+upsetCols <- getUpsetCols(
+  study = "ABC",
+  modelID = "model_01"
+)
+toJSON(upsetCols, pretty = TRUE)
 ```
 
 ## Barcode

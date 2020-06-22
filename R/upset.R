@@ -411,3 +411,23 @@ formatEnrichmentResults <- function(study, modelID, annotationID, type) {
   Enrichment.Results[[1]][[1]] <- enrichmentsTable
   return(Enrichment.Results)
 }
+
+#' getUpsetCols
+#'
+#' Determine the common columns across all tests of a model that are available
+#' for filtering with UpSet.
+#'
+#' @return character vector
+#'
+#' @export
+getUpsetCols <- function(
+  study,
+  modelID,
+  ...
+)
+{
+  results <- getResults(study, modelID = modelID)
+  colsAll <- lapply(results, function(x) colnames(x[, -1]))
+  colsCommon <- Reduce(intersect, colsAll)
+  return(colsCommon)
+}
