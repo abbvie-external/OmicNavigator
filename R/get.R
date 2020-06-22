@@ -121,7 +121,7 @@ getSamples.SQLiteConnection <- function(study, modelID = NULL, ...) {
   samplesModels <- sub("^samples-", "", dbSamples)
 
   if (isEmpty(dbSamples)) {
-    stop(sprintf("No samples available for study \"%s\"", study[["name"]]))
+    stop("No samples available for this study")
   }
 
   if (is.null(modelID)) {
@@ -200,7 +200,7 @@ getFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
   featuresModels <- sub("^features-", "", dbFeatures)
 
   if (isEmpty(dbFeatures)) {
-    stop(sprintf("No features available for study \"%s\"", study[["name"]]))
+    stop("No features available for this study")
   }
 
   if (is.null(modelID)) {
