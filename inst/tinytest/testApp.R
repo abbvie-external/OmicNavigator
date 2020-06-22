@@ -91,6 +91,16 @@ expect_true(all(colnames(features) %in% colnames(resultsTable)))
 results <- getResults(testStudyObj, testModelName, testTestName)
 expect_true(all(colnames(results) %in% colnames(resultsTable)))
 
+expect_error(
+  getResultsTable(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical(
+  resultsTable,
+  getResultsTable(testStudyObj, testModelName, testTestName)
+)
+
 # getEnrichmentsTable ----------------------------------------------------------
 
 enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)
@@ -101,6 +111,16 @@ expect_identical(
 )
 
 expect_true(all(getTests(testStudyName, testModelName)[, "testID"] %in% colnames(enrichmentsTable)))
+
+expect_error(
+  getEnrichmentsTable(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical(
+  enrichmentsTable,
+  getEnrichmentsTable(testStudyObj, testModelName, testAnnotationName)
+)
 
 # getEnrichmentsNetwork --------------------------------------------------------
 
@@ -119,6 +139,16 @@ expect_identical(
 expect_identical(
   enrichmentsNetwork[["tests"]],
   getTests(testStudyName, testModelName)[, "testID"]
+)
+
+expect_error(
+  getEnrichmentsNetwork(testStudyObj),
+  "The Enrichment Network is only available for study packages or databases"
+)
+
+expect_error(
+  getEnrichmentsNetwork(1),
+  "No method for object of class \"numeric\""
 )
 
 # getBarcodeData ---------------------------------------------------------------

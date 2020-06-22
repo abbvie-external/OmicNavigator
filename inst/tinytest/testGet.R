@@ -28,6 +28,153 @@ expect_identical(
   testStudyName
 )
 
+# getSamples -------------------------------------------------------------------
+
+expect_identical(
+  getSamples(testStudyObj),
+  testStudyObj[["samples"]]
+)
+
+expect_message(
+  getSamples(testStudyObj, model = "non-existent-model"),
+  "Returning \"default\" samples for model \"non-existent-model\""
+)
+
+expect_identical(
+  getSamples(testStudyObj, model = testModelName),
+  testStudyObj[["samples"]][["default"]]
+)
+
+
+expect_identical(
+  getSamples(testStudyObj, model = "non-existent-model"),
+  testStudyObj[["samples"]][["default"]]
+)
+
+expect_identical(
+  getSamples(testStudyName),
+  testStudyObj[["samples"]]
+)
+
+expect_identical(
+  getSamples(testStudyName, model = testModelName),
+  testStudyObj[["samples"]][["default"]]
+)
+
+expect_message(
+  getSamples(testStudyObj, model = "non-existent-model"),
+  "Returning \"default\" samples for model \"non-existent-model\""
+)
+
+expect_identical(
+  getSamples(testStudyName, model = "non-existent-model"),
+  testStudyObj[["samples"]][["default"]]
+)
+
+expect_error(
+  getSamples(emptyStudy),
+  "No samples available"
+)
+
+expect_error(
+  getSamples(1),
+  "No method for object of class \"numeric\""
+)
+
+# getFeatures -------------------------------------------------------------------
+
+expect_identical(
+  getFeatures(testStudyObj),
+  testStudyObj[["features"]]
+)
+
+expect_identical(
+  getFeatures(testStudyObj, model = testModelName),
+  testStudyObj[["features"]][["default"]]
+)
+
+expect_message(
+  getFeatures(testStudyObj, model = "non-existent-model"),
+  "Returning \"default\" features for model \"non-existent-model\""
+)
+
+expect_identical(
+  getFeatures(testStudyObj, model = "non-existent-model"),
+  testStudyObj[["features"]][["default"]]
+)
+
+expect_identical(
+  getFeatures(testStudyName),
+  testStudyObj[["features"]]
+)
+
+expect_identical(
+  getFeatures(testStudyName, model = testModelName),
+  testStudyObj[["features"]][["default"]]
+)
+
+expect_message(
+  getFeatures(testStudyName, model = "non-existent-model"),
+  "Returning \"default\" features for model \"non-existent-model\""
+)
+
+expect_identical(
+  getFeatures(testStudyName, model = "non-existent-model"),
+  testStudyObj[["features"]][["default"]]
+)
+
+expect_error(
+  getFeatures(emptyStudy),
+  "No features available"
+)
+
+expect_error(
+  getFeatures(1),
+  "No method for object of class \"numeric\""
+)
+
+# getAssays -------------------------------------------------------------------
+
+expect_identical(
+  getAssays(testStudyObj),
+  testStudyObj[["assays"]]
+)
+
+expect_identical(
+  getAssays(testStudyObj, model = testModelName),
+  testStudyObj[["assays"]][[testModelName]]
+)
+
+expect_error(
+  getAssays(testStudyObj, model = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_identical(
+  getAssays(testStudyName),
+  testStudyObj[["assays"]]
+)
+
+expect_identical(
+  getAssays(testStudyName, model = testModelName),
+  testStudyObj[["assays"]][[testModelName]]
+)
+
+expect_error(
+  getAssays(testStudyName, model = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_error(
+  getAssays(emptyStudy),
+  "No assays available"
+)
+
+expect_error(
+  getAssays(1),
+  "No method for object of class \"numeric\""
+)
+
 # getModels --------------------------------------------------------------------
 
 expect_identical(
@@ -65,6 +212,11 @@ expect_error(
   "No models available"
 )
 
+expect_error(
+  getModels(1),
+  "No method for object of class \"numeric\""
+)
+
 # getTests ---------------------------------------------------------------------
 
 expect_identical(
@@ -92,6 +244,11 @@ expect_error(
   "No tests available"
 )
 
+expect_error(
+  getTests(1),
+  "No method for object of class \"numeric\""
+)
+
 # getAnnotations ---------------------------------------------------------------
 
 expect_identical(
@@ -117,6 +274,11 @@ expect_identical(
 expect_error(
   getAnnotations(emptyStudy),
   "No annotations available"
+)
+
+expect_error(
+  getAnnotations(1),
+  "No method for object of class \"numeric\""
 )
 
 # getResults -------------------------------------------------------------------
@@ -154,6 +316,11 @@ expect_error(
 expect_error(
   getResults(emptyStudy),
   "No results available"
+)
+
+expect_error(
+  getResults(1),
+  "No method for object of class \"numeric\""
 )
 
 # The sorting can get funky when retrieving from the database. Thus for now
@@ -251,6 +418,11 @@ expect_error(
   "No enrichments available"
 )
 
+expect_error(
+  getEnrichments(1),
+  "No method for object of class \"numeric\""
+)
+
 expect_identical(
   getEnrichments(testStudyName),
   testStudyObj[["enrichments"]]
@@ -327,6 +499,11 @@ expect_error(
   "No plots available"
 )
 
+expect_error(
+  getPlots(1),
+  "No method for object of class \"numeric\""
+)
+
 expect_identical(
   getPlots(testStudyName),
   testStudyObj[["plots"]]
@@ -357,6 +534,11 @@ expect_identical(
 expect_error(
   getBarcodes(emptyStudy),
   "No barcodes available"
+)
+
+expect_error(
+  getBarcodes(1),
+  "No method for object of class \"numeric\""
 )
 
 expect_identical(

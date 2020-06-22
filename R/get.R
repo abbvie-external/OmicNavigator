@@ -285,7 +285,7 @@ getAssays.SQLiteConnection <- function(study, modelID = NULL, ...) {
   if (nrow(assaysTable) == 0) {
     stop("Invalid filters.\n",
          if (is.null(modelID)) "modelID: No filter applied\n"
-         else sprintf("modelID: \"%s\"\n", modelID),
+         else sprintf("modelID: \"%s\"\n", modelID)
     )
   }
 
