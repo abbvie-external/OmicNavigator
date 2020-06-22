@@ -13,7 +13,9 @@ getResultsIntersection <- function(
   ...
 )
 {
-  results <- getResults(study)
+  results <- getResults(study, modelID = modelID)
+  results <- list(results)
+  names(results) <- modelID
 
   intersection <- getInferenceIntersection(
     Inference.Results = results,
@@ -221,7 +223,9 @@ getResultsUpset <- function(
   ...
 )
 {
-  results <- getResults(study)
+  results <- getResults(study, modelID = modelID)
+  results <- list(results)
+  names(results) <- modelID
 
   resultsUpset <- InferenceUpsetPlot(
     Inference.Results = results,
