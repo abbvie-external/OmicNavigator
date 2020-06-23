@@ -162,6 +162,11 @@ plotStudy(
 
 ## Results intersection
 
+For a given study and model, filter the inference results table by the values of
+specific columns in any test of that model. Use
+[`getUpsetCols()`](#upset-columns) to obtain the common columns across all tests
+of the model.
+
 ```{r getResultsIntersection}
 resultsIntersection <- getResultsIntersection(
   study = "ABC",
@@ -177,6 +182,9 @@ toJSON(resultsIntersection[1:2, ], pretty = TRUE)
 ```
 
 ## Enrichments intersection
+
+For a given study and model, filter the enrichments table (or network) by the
+results of the enrichment tests.
 
 ```{r getEnrichmentsIntersection}
 enrichmentsIntersection <- getEnrichmentsIntersection(
@@ -219,12 +227,16 @@ enrichmentsUpset <- getEnrichmentsUpset(
 
 ## UpSet columns
 
+Given a study and model, `getUpsetCols()` returns the columns common across all
+the available tests, and thus are available for filtering with
+[`getResultsIntersection()`](#results-intersection).
+
 ```{r getUpsetCols}
 upsetCols <- getUpsetCols(
   study = "ABC",
   modelID = "model_01"
 )
-toJSON(upsetCols, pretty = TRUE)
+toJSON(upsetCols, auto_unbox = TRUE, pretty = TRUE)
 ```
 
 ## Barcode
