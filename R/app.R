@@ -207,35 +207,53 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   }
   termFeatures <- annotations[["terms"]][[termID]]
 
-  annotationFeatureID <- annotations[["featureID"]]
-  studyFeatureID <- colnames(resultsTable)[1]
+  # `featureID` - The unique feature variable used in the inference results table
+  # `featureEnrichment` - The feature variable used to perform the enrichment
+  #                       analysis with the given annotation database
+  # `featureDisplay` - The feature variable to use to label the barcode plot
+  #                    on hover
+  featureID <- colnames(resultsTable)[1]
+  featureEnrichment <- annotations[["featureID"]]
+  if (is.na(barcodes[["featureDisplay"]]) ||
+      is.null(barcodes[["featureDisplay"]])) {
+    featureDisplay <- featureEnrichment
+  } else {
+    featureDisplay <- barcodes[["featureDisplay"]]
+  }
 
-  if (!annotationFeatureID %in% colnames(resultsTable)) {
-    stop(sprintf("The featureID \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\""),
-         annotationFeatureID, annotationID, modelID)
+  if (!featureEnrichment %in% colnames(resultsTable)) {
+    stop(sprintf("The feature variable \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\""),
+         featureEnrichment, annotationID, modelID)
+  }
+
+  if (!featureDisplay %in% colnames(resultsTable)) {
+    stop(sprintf("The feature variable \"%s\" for display in the barcode plot is not available in the results for the model \"%s\""),
+         featureDisplay, modelID)
   }
 
   termFeaturesTable <- data.frame(termFeatures, stringsAsFactors = FALSE)
-  colnames(termFeaturesTable) <- annotationFeatureID
+  colnames(termFeaturesTable) <- featureEnrichment
 
   barcodeDataTableAll <- merge(termFeaturesTable, resultsTable,
                                by = annotations[["featureID"]])
 
   barcodeDataTable <- data.frame(
-    barcodeDataTableAll[[studyFeatureID]],
-    barcodeDataTableAll[[annotationFeatureID]],
+    barcodeDataTableAll[[featureID]],
+    barcodeDataTableAll[[featureEnrichment]],
+    barcodeDataTableAll[[featureDisplay]],
     barcodeDataTableAll[[barcodes[["statistic"]]]],
     stringsAsFactors = FALSE
   )
-  colnames(barcodeDataTable) <- c("featureID", "featureDisplay", "statistic")
+  colnames(barcodeDataTable) <- c("featureID", "featureEnrichment",
+                                  "featureDisplay", "statistic")
 
   if (is.na(barcodes[["logFoldChange"]]) ||
       is.null(barcodes[["logFoldChange"]])) {
     barcodeDataTable[, "logFoldChange"] <- 0
   } else {
     if (!barcodes[["logFoldChange"]] %in% colnames(resultsTable)) {
-      stop(sprintf("The column \"%s\" is not available in the results table"),
-           barcodes[["logFoldChange"]])
+      stop(sprintf("The column \"%s\" is not available in the results table",
+           barcodes[["logFoldChange"]]))
     }
     barcodeDataTable[, "logFoldChange"] <- barcodeDataTableAll[[barcodes[["logFoldChange"]]]]
   }

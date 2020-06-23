@@ -6,6 +6,22 @@ model, and thus are available for filtering with UpSet.
 * `getBarcodeData()` now returns `data` in decreasing order of the `statistic`
 column (requested by Paul Nordlund)
 
+* `addBarcodes()` now has an additional optional field `featureDisplay`. This
+can be set to any column of the features table, and that feature metadata
+variable will be used to label the barcode plot (requested by Paul Nordlund). If
+`featureDisplay` is not set, it will be automatically set to the feature
+metadata variable used in the enrichment analysis. `getBarcodeData()` now
+returns three feature-related columns:
+    * `featureID` - The unique feature variable used in the inference results
+    table
+    * `featureEnrichment` - The feature variable used to perform the enrichment
+    analysis with the given annotation database
+    * `featureDisplay` - The feature variable to use to label the barcode plot
+    on hover
+
+   Note that these will all be identical in the simple case where the study
+   `featureID` is used for the enrichment analysis.
+
 # 0.8.0
 
 * `getBarcodeData()` now returns both the study featureID (in the column

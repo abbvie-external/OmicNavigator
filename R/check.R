@@ -221,11 +221,6 @@ checkBarcodes <- function(barcodes) {
     barcode <- barcodes[[i]]
     checkList(barcode)
     statistic <- barcode[["statistic"]]
-    logFoldChange <- barcode[["logFoldChange"]]
-    absolute <- barcode[["absolute"]]
-    labelStat <- barcode[["labelStat"]]
-    labelLow <- barcode[["labelLow"]]
-    labelHigh <- barcode[["labelHigh"]]
     stopifnot(
       is.character(statistic),
       length(statistic) == 1

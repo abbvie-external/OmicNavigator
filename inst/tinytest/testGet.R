@@ -545,7 +545,7 @@ expect_identical(
   getBarcodes(testStudyName, modelID = testModelName),
   list(statistic = "beta", logFoldChange = NA_character_, absolute = 1L,
        labelStat = "Beta coefficient", labelLow = "Small effect size",
-       labelHigh = "Large effect size")
+       labelHigh = "Large effect size", featureDisplay = NA_character_)
 )
 
 expect_identical(

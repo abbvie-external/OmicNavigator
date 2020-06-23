@@ -206,6 +206,7 @@ createDatabase <- function(study, filename) {
       labelStat = character(),
       labelLow = character(),
       labelHigh = character(),
+      featureDisplay = character(),
       stringsAsFactors = FALSE
     )
     for (i in seq_along(study[["barcodes"]])) {
@@ -216,22 +217,25 @@ createDatabase <- function(study, filename) {
       labelStat <- study[["barcodes"]][[i]][["labelStat"]]
       labelLow <- study[["barcodes"]][[i]][["labelLow"]]
       labelHigh <- study[["barcodes"]][[i]][["labelHigh"]]
+      featureDisplay <- study[["barcodes"]][[i]][["featureDisplay"]]
 
-      if (is.null(logFoldChange)) logFoldChange <- NA
+      if (is.null(logFoldChange)) logFoldChange <- NA_character_
       if (is.null(absolute)) absolute <- TRUE
       if (is.null(labelStat)) labelStat <- statistic
       if (is.null(labelLow)) labelLow <- "Low"
       if (is.null(labelHigh)) labelHigh <- "High"
+      if (is.null(featureDisplay)) featureDisplay <- NA_character_
 
       tmpBarcodes <- data.frame(modelID, statistic, logFoldChange, absolute,
-                                labelStat, labelLow, labelHigh,
+                                labelStat, labelLow, labelHigh, featureDisplay,
                                 stringsAsFactors = FALSE)
       barcodesTable <- rbind(barcodesTable, tmpBarcodes)
     }
     DBI::dbWriteTable(con, "barcodes", barcodesTable,
                       field.types = c(
                         "logFoldChange" = "varchar(50)",
-                        "absolute" = "LOGICAL"
+                        "absolute" = "LOGICAL",
+                        "featureDisplay" = "varchar(50)"
                       ))
   }
 
