@@ -236,6 +236,9 @@ The `termID` is obtained from [`getEnrichmentsTable()`](#enrichments-table). The
 remaining arguments are obtained from the output from
 [`listStudies()`](#list-studies).
 
+The elements of the `data` array are sorted by the value of `statistic` (highest
+to lowest).
+
 ```{r getBarcodeData}
 barcodeData <- getBarcodeData(
   study = "ABC",

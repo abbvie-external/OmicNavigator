@@ -3,6 +3,9 @@
 * New function `getUpsetCols()` to get the columns common across all tests of a
 model, and thus are available for filtering with UpSet.
 
+* `getBarcodeData()` now returns `data` in decreasing order of the `statistic`
+column (requested by Paul Nordlund)
+
 # 0.8.0
 
 * `getBarcodeData()` now returns both the study featureID (in the column

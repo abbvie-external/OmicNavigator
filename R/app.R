@@ -244,6 +244,10 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
     barcodeDataTable[, "statistic"] <- abs(barcodeDataTable[, "statistic"])
   }
 
+  # Sort the barcode results by "statistic"
+  rowsOrdered <- order(barcodeDataTable[, "statistic"], decreasing = TRUE)
+  barcodeDataTable <- barcodeDataTable[rowsOrdered, ]
+
   newList <- list(
     data = barcodeDataTable,
     highest = ceiling(max(abs(barcodeDataTable[, "statistic"]))),

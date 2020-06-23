@@ -171,6 +171,12 @@ expect_identical(
   c("featureID", "featureDisplay", "statistic", "logFoldChange")
 )
 
+expect_identical(
+  barcodeData[["data"]][["statistic"]],
+  sort(barcodeData[["data"]][["statistic"]], decreasing = TRUE),
+  info = "Barcode results should be ordered by statistic column"
+)
+
 expect_equal(
   barcodeData[["highest"]],
   ceiling(max(abs(barcodeData[["data"]][, "statistic"])))
