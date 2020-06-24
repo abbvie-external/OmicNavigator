@@ -3,7 +3,7 @@ Type: Package
 Title: The OmicAnalyzer R backend
 Description: Functions to import omics data, create a study package, deploy the
   dashboard, and query the study data from the dashboard.
-Version: 0.8.0.9000
+Version: 0.9.0
 Authors@R: c(
   person("John", "Blischak", role = c("aut", "cre"),
          email = "john.blischak@abbvie.com"),

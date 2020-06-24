@@ -1,4 +1,9 @@
-# 0.8.0.9000
+# 0.9.0
+
+* The release tarball includes [version 0.1.0 of the web app][app-v0.1.0]. Run
+`startApp()` to run it locally.
+
+[app-v0.1.0]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.0
 
 * New function `getUpsetCols()` to get the columns common across all tests of a
 model, and thus are available for filtering with UpSet.
