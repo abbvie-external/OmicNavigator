@@ -5,19 +5,15 @@ The R backend for the OmicAnalyzer app deployed at
 
 ## Installation
 
-1. Download from ***REMOVED***:
+1. Download the tarball from the [releases page][releases] on ***REMOVED***. It will
+look like `OmicAnalyzer_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
 
-    ```
-    # HTTPS
-    git clone https://***REMOVED***/***REMOVED***/OmicAnalyzer.git
-    # SSH
-    git clone  git@***REMOVED***:***REMOVED***/OmicAnalyzer.git
-    ```
+[releases]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases
 
 1. Install dependencies:
 
     ```
-    Rscript -e 'remotes::install_deps("OmicAnalyzer")'
+    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")'
     ```
     
     The above step requires the remotes package. Install it if needed:
@@ -30,13 +26,5 @@ The R backend for the OmicAnalyzer app deployed at
 1. Install OmicAnalyzer:
 
     ```
-    R CMD INSTALL --no-multiarch --with-keep.source OmicAnalyzer
+    R CMD INSTALL --no-multiarch --with-keep.source OmicAnalyzer_x.x.x.tar.gz
     ```
-
-Alternatively, you can install directly from ***REMOVED*** if you save a GitHub Personal
-Access Token (PAT) in the environment variable `GITHUB_PAT`:
-
-```
-remotes::install_github(repo = "***REMOVED***/OmicAnalyzer",
-                        host = "***REMOVED***/api/v3")
-```
