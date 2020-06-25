@@ -8,7 +8,7 @@ The R backend for the OmicAnalyzer app deployed at
 1. Download the tarball from the [releases page][releases] on ***REMOVED***. It will
 look like `OmicAnalyzer_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
 
-[releases]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases
+    [releases]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases
 
 1. Install dependencies:
 
