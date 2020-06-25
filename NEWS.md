@@ -1,3 +1,9 @@
+# 0.9.1
+
+* The release tarball includes [version 0.1.1 of the web app][app-v0.1.1]
+
+[app-v0.1.1]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.1
+
 # 0.9.0
 
 * The release tarball includes [version 0.1.0 of the web app][app-v0.1.0]. Run
