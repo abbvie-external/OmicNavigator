@@ -3,3 +3,4 @@
 ^.*\.rds$
 ^.*\.sqlite$
 ^rlibs$
+^CONTRIBUTING\.md$
