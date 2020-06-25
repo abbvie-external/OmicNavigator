@@ -13,7 +13,7 @@ look like `OmicAnalyzer_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
 1. Install dependencies:
 
     ```
-    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")'
+    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz", dependencies = TRUE)'
     ```
     
     The above step requires the remotes package. Install it if needed:
