@@ -119,7 +119,7 @@ expect_identical(
   c(
     colnames(getFeatures(testStudyName, modelID = testModelName)),
     "Set_Membership",
-    setdiff(colnames(getResults(testStudyName, modelID = testModelName, testID = testTestName)), "featureID")
+    colnames(getResults(testStudyName, modelID = testModelName, testID = testTestName))[-1]
   )
 )
 

@@ -1,3 +1,11 @@
+# 0.9.2
+
+* Fix bug in `getResultsIntersection()` introduced in commit [ff1ac89][] and
+released in version [0.7.0][pkg-v0.7.0]
+
+[ff1ac89]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/commit/ff1ac89226b245072effbc5e8a7074c005360a4f
+[pkg-v0.7.0]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases/tag/v0.7.0
+
 # 0.9.1
 
 * The release tarball includes [version 0.1.1 of the web app][app-v0.1.1]

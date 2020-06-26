@@ -42,7 +42,7 @@ testFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
                     nrow = rows, ncol = cols)
   colnames(features) <- sprintf("featureVar%02d", seq_len(cols))
   featureID <- sprintf("feature_%04d", seq_len(rows))
-  features <- cbind(featureID, features)
+  features <- cbind(customID = featureID, features)
   features <- as.data.frame(features, stringsAsFactors = FALSE)
   features <- list(default = features)
   return(features)
@@ -83,7 +83,7 @@ testTests <- function(n = 2) {
   return(tests)
 }
 
-testAnnotations <- function(n = 3, terms = 10, featureID = "featureID", seed = 12345L) {
+testAnnotations <- function(n = 3, terms = 10, featureID = "customID", seed = 12345L) {
   set.seed(12345)
   annotations <- vector(mode = "list", length = n)
   names(annotations) <- sprintf("annotation_%02d", seq_len(n))
@@ -111,7 +111,7 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
     names(results[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
     for (j in seq_len(n_tests)) {
       results[[i]][[j]] <- data.frame(
-        featureID = sprintf("feature_%04d", seq_len(n_features)),
+        customID = sprintf("feature_%04d", seq_len(n_features)),
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         beta_x = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
@@ -159,7 +159,7 @@ testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
   colnames(metaFeatures) <- sprintf("metaFeatureVar%02d", seq_len(cols))
   featureID <- rep(sprintf("feature_%04d", seq_len(rows)), times = 3)
   metaFeatureID <- sprintf("metaFeature_%04d", seq_len(3 * rows))
-  metaFeatures <- cbind(featureID, metaFeatureID, metaFeatures)
+  metaFeatures <- cbind(customID = featureID, metaFeatureID, metaFeatures)
   metaFeatures <- as.data.frame(metaFeatures, stringsAsFactors = FALSE)
   metaFeatures <- list(default = metaFeatures)
   return(metaFeatures)

@@ -28,12 +28,13 @@ getResultsIntersection <- function(
     column = column
   )
 
-  colnamesOrder <- union(c("featureID", "Set_Membership"), colnames(intersection))
-  intersection <- intersection[, colnamesOrder]
   features <- getFeatures(study, modelID = modelID)
-  intersection <- merge(features, intersection, by = 1)
+  intersectionTable <- merge(features, intersection, by = 1)
+  columnsOrder <- union(c(colnames(features), "Set_Membership"),
+                        colnames(intersection))
+  intersectionTable <- intersectionTable[, columnsOrder]
 
-  return(intersection)
+  return(intersectionTable)
 }
 
 #' Find the Intersection of a list of tests.
