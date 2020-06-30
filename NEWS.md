@@ -1,3 +1,9 @@
+# 0.9.3
+
+* The release tarball includes [version 0.1.3 of the web app][app-v0.1.3]
+
+[app-v0.1.3]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.3
+
 # 0.9.2
 
 * Fix bug in `getResultsIntersection()` introduced in commit [ff1ac89][] and
