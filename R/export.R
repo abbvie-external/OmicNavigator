@@ -355,6 +355,10 @@ createPackage <- function(study, directoryname) {
 
 #' Install a study as an R package
 #'
+#' @param study An OmicAnalyzer study to install (class \code{oaStudy})
+#' @param library Directory to install package. Defaults to first directory
+#'   returned by \code{\link{.libPaths}}.
+#'
 #' @export
 installStudy <- function(study, library = .libPaths()[1]) {
   stopifnot(inherits(study, "oaStudy"), dir.exists(library))

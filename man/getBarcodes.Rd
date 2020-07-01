@@ -16,8 +16,9 @@ getBarcodes(study, modelID = NULL, ...)
 \method{getBarcodes}{character}(study, modelID = NULL, libraries = NULL, ...)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
-or the name of an installed study package.}
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
+a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
+of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 

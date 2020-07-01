@@ -773,6 +773,7 @@ getEnrichments.default <- function(study, modelID = NULL, annotationID = NULL, t
 #' Get enrichments table from a study
 #'
 #' @inheritParams shared-get
+#' @inheritParams shared-upset
 #'
 #' @export
 getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", ...) {

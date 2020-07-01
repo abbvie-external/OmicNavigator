@@ -17,12 +17,23 @@ getEnrichmentsIntersection(
 )
 }
 \arguments{
-\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
-or the name of an installed study package.}
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
+a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
+of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
 \item{annotationID}{Filter by annotation}
+
+\item{mustTests}{The tests whose significant values must be included. (The intersection)}
+
+\item{notTests}{The tests whose significant values will be removed. (The difference)}
+
+\item{sigValue}{The significance levels for each column.}
+
+\item{operator}{The operators for each column.}
+
+\item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
 
 \item{...}{Currently unused but required for potential future arguments. See
 the section

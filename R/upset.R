@@ -1,5 +1,6 @@
 #' getResultsIntersection
 #'
+#' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
 #' @export
@@ -116,6 +117,7 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
 
 #' getEnrichmentsIntersection
 #'
+#' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
 #' @export
@@ -218,6 +220,7 @@ getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adj
 
 #' getResultsUpset
 #'
+#' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
 #' @export
@@ -315,6 +318,7 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
 
 #' getEnrichmentsUpset
 #'
+#' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
 #' @export

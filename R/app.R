@@ -183,6 +183,7 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 
 #' Get the shared features in a network link
 #'
+#' @param termID1,termID2 Linked terms to find overlapping features
 #' @inheritParams shared-get
 #'
 #' @export
