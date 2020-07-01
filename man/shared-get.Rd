@@ -18,6 +18,13 @@ or the name of an installed study package.}
 \item{featureID}{Filter by featureID}
 
 \item{plotID}{Filter by plotID}
+
+\item{...}{Currently unused but required for potential future arguments. See
+the section
+\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
+functions and methods} in
+\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
+Extensions}.}
 }
 \description{
 Shared parameters for get functions
