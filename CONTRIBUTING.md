@@ -74,3 +74,44 @@ The unit tests are in `inst/tinytest/`. They use the testing framework
 but not required for pull requests.
 
 [tinytest]: https://cran.r-project.org/package=tinytest
+
+After you make your changes, you can run all the tests by running the following
+in the R console:
+
+```
+tinytest::test_all()
+```
+
+For quicker feedback, you can run one specific test file. For example, if you
+are making changes to the functions in `R/get.R`, you can run the corresponding
+tests in `inst/tinytest/testGet.R` with:
+
+```
+tinytest::run_test_file("inst/tinytest/testGet.R")
+```
+
+If you'd like to write additional tests (highly encouraged!), try to follow the
+style of the surrounding code. In general, the tests are structued like below:
+
+```
+observed <- functionName(
+  arg1,
+  arg2
+)
+
+expect_identical(
+  observed,
+  expected
+)
+```
+
+Some additional testing tips:
+
+* If re-installing the package is taking up too much time, you can quickly load
+the latest versions of all the package functions into the R console by running
+`devtools::load_all(".")` (or Ctrl-Shift-L in RStudio).
+
+* If the messages returned by OmicAnalyzer functions are obscuring the test
+output too much, you can wrap the tinytest function call with
+`suppressMessages()`. This will suppress the messages from the OmicAnalyzer
+functions but still display the test results.
