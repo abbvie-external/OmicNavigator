@@ -1,5 +1,7 @@
 #' Plot a feature using a custom plotting function
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 plotStudy <- function(study, modelID, featureID, plotID, ...) {
   stopifnot(
@@ -81,6 +83,8 @@ resetSearch <- function(pkgNamespaces) {
 }
 
 #' Get plotting data
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getPlottingData <- function(study, modelID, featureID) {

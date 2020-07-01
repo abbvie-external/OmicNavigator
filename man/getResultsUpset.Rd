@@ -6,6 +6,12 @@
 \usage{
 getResultsUpset(study, modelID, sigValue, operator, column, ...)
 }
+\arguments{
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
+or the name of an installed study package.}
+
+\item{modelID}{Filter by modelID}
+}
 \description{
 getResultsUpset
 }

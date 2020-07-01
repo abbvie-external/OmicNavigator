@@ -1,5 +1,6 @@
 # 0.9.3.9000
 
+* More documentation of function arguments
 
 # 0.9.3
 

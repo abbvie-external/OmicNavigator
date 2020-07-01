@@ -21,6 +21,8 @@ getInstalledStudies <- function(libraries = NULL) {
 
 #' Get models from a study
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 getModels <- function(study, modelID = NULL, ...) {
   UseMethod("getModels")
@@ -68,6 +70,7 @@ getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getModels
+#' @inheritParams listStudies
 #' @export
 getModels.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -84,6 +87,8 @@ getModels.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get samples from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getSamples <- function(study, modelID = NULL, ...) {
@@ -147,6 +152,7 @@ getSamples.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getSamples
+#' @inheritParams listStudies
 #' @export
 getSamples.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -163,6 +169,8 @@ getSamples.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get features from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getFeatures <- function(study, modelID = NULL, ...) {
@@ -226,6 +234,7 @@ getFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getFeatures
+#' @inheritParams listStudies
 #' @export
 getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -242,6 +251,8 @@ getFeatures.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get assays from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getAssays <- function(study, modelID = NULL, ...) {
@@ -297,6 +308,7 @@ getAssays.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getAssays
+#' @inheritParams listStudies
 #' @export
 getAssays.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -313,6 +325,8 @@ getAssays.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get tests from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getTests <- function(study, modelID = NULL, ...) {
@@ -372,6 +386,7 @@ getTests.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getTests
+#' @inheritParams listStudies
 #' @export
 getTests.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -388,6 +403,8 @@ getTests.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get annotations from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getAnnotations <- function(study, annotationID = NULL, ...) {
@@ -459,6 +476,7 @@ getAnnotations.SQLiteConnection <- function(study, annotationID = NULL, ...) {
 }
 
 #' @rdname getAnnotations
+#' @inheritParams listStudies
 #' @export
 getAnnotations.character <- function(study, annotationID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -475,6 +493,8 @@ getAnnotations.default <- function(study, annotationID = NULL, ...) {
 }
 
 #' Get results from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getResults <- function(study, modelID = NULL, testID = NULL, ...) {
@@ -560,6 +580,7 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
 }
 
 #' @rdname getResults
+#' @inheritParams listStudies
 #' @export
 getResults.character <- function(study, modelID = NULL, testID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -576,6 +597,8 @@ getResults.default <- function(study, modelID = NULL, testID = NULL, ...) {
 }
 
 #' Get results table from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getResultsTable <- function(study, modelID, testID, ...) {
@@ -607,6 +630,7 @@ getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
 }
 
 #' @rdname getResultsTable
+#' @inheritParams listStudies
 #' @export
 getResultsTable.character <- function(study, modelID, testID, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -623,6 +647,8 @@ getResultsTable.default <- function(study, modelID, testID, ...) {
 }
 
 #' Get enrichments from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, ...) {
@@ -728,6 +754,7 @@ getEnrichments.SQLiteConnection <- function(study, modelID = NULL, annotationID 
 }
 
 #' @rdname getEnrichments
+#' @inheritParams listStudies
 #' @export
 getEnrichments.character <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -744,6 +771,8 @@ getEnrichments.default <- function(study, modelID = NULL, annotationID = NULL, t
 }
 
 #' Get enrichments table from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", ...) {
@@ -782,6 +811,7 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, t
 }
 
 #' @rdname getEnrichmentsTable
+#' @inheritParams listStudies
 #' @export
 getEnrichmentsTable.character <- function(study, modelID, annotationID, type = "nominal", libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -800,6 +830,8 @@ getEnrichmentsTable.default <- function(study, modelID, annotationID, type = "no
 }
 
 #' Get enrichments network from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
@@ -868,6 +900,7 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
 }
 
 #' @rdname getEnrichmentsNetwork
+#' @inheritParams listStudies
 #' @export
 getEnrichmentsNetwork.character <- function(study, modelID, annotationID, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -888,6 +921,8 @@ getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
 }
 
 #' Get plots from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getPlots <- function(study, modelID = NULL, ...) {
@@ -957,6 +992,7 @@ getPlots.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getPlots
+#' @inheritParams listStudies
 #' @export
 getPlots.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)
@@ -973,6 +1009,8 @@ getPlots.default <- function(study, modelID = NULL, ...) {
 }
 
 #' Get barcodes from a study
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getBarcodes <- function(study, modelID = NULL, ...) {
@@ -1032,6 +1070,7 @@ getBarcodes.SQLiteConnection <- function(study, modelID = NULL, ...) {
 }
 
 #' @rdname getBarcodes
+#' @inheritParams listStudies
 #' @export
 getBarcodes.character <- function(study, modelID = NULL, libraries = NULL, ...) {
   con <- connectDatabase(study, libraries = libraries)

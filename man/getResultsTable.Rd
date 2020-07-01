@@ -15,6 +15,19 @@ getResultsTable(study, modelID, testID, ...)
 
 \method{getResultsTable}{character}(study, modelID, testID, libraries = NULL, ...)
 }
+\arguments{
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
+or the name of an installed study package.}
+
+\item{modelID}{Filter by modelID}
+
+\item{testID}{Filter by testID}
+
+\item{libraries}{The directories to search for installed study packages. If
+left as \code{NULL} (the default), then
+\code{\link[utils]{installed.packages}} will use the result of
+\code{\link{.libPaths}}.}
+}
 \description{
 Get results table from a study
 }

@@ -1,6 +1,11 @@
 
 #' List available studies and their metadata
 #'
+#' @param libraries The directories to search for installed study packages. If
+#'   left as \code{NULL} (the default), then
+#'   \code{\link[utils]{installed.packages}} will use the result of
+#'   \code{\link{.libPaths}}.
+#'
 #' @importFrom rlang ".data"
 #' @export
 listStudies <- function(libraries = NULL) {
@@ -148,6 +153,9 @@ listStudies <- function(libraries = NULL) {
 
 #' Get the features in a network node
 #'
+#' @inheritParams shared-get
+#' @inheritParams listStudies
+#'
 #' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
 #' @importFrom rlang ".data"
@@ -175,6 +183,8 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 
 #' Get the shared features in a network link
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 
@@ -187,6 +197,8 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 }
 
 #' Get data for barcode and violin plots
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getBarcodeData <- function(study, modelID, testID, annotationID, termID) {

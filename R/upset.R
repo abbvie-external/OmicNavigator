@@ -1,5 +1,7 @@
 #' getResultsIntersection
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 getResultsIntersection <- function(
   study,
@@ -114,6 +116,8 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
 
 #' getEnrichmentsIntersection
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 getEnrichmentsIntersection <- function(
   study,
@@ -214,6 +218,8 @@ getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adj
 
 #' getResultsUpset
 #'
+#' @inheritParams shared-get
+#'
 #' @export
 getResultsUpset <- function(
   study,
@@ -308,6 +314,8 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
 }
 
 #' getEnrichmentsUpset
+#'
+#' @inheritParams shared-get
 #'
 #' @export
 getEnrichmentsUpset <- function(
@@ -421,6 +429,8 @@ formatEnrichmentResults <- function(study, modelID, annotationID, type) {
 #'
 #' Determine the common columns across all tests of a model that are available
 #' for filtering with UpSet.
+#'
+#' @inheritParams shared-get
 #'
 #' @return character vector
 #'

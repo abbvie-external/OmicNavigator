@@ -6,6 +6,14 @@
 \usage{
 getPlottingData(study, modelID, featureID)
 }
+\arguments{
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
+or the name of an installed study package.}
+
+\item{modelID}{Filter by modelID}
+
+\item{featureID}{Filter by featureID}
+}
 \description{
 Get plotting data
 }

@@ -6,6 +6,12 @@
 \usage{
 getLinkFeatures(study, annotationID, termID1, termID2)
 }
+\arguments{
+\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy}
+or the name of an installed study package.}
+
+\item{annotationID}{Filter by annotation}
+}
 \description{
 Get the shared features in a network link
 }
