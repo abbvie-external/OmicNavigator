@@ -196,6 +196,43 @@ expect_identical(
   info = "Confirm model-specific barcode data returned"
 )
 
+# getNodeFeatures --------------------------------------------------------------
+
+annotation <- getAnnotations(testStudyName, testAnnotationName)
+
+expect_identical(
+  getNodeFeatures(testStudyName, testAnnotationName, testTermName),
+  sort(annotation[["terms"]][[testTermName]])
+)
+
+expect_error(
+  getNodeFeatures(testStudyObj),
+  "\"study\" must be the name of an installed study package"
+)
+
+expect_error(
+  getNodeFeatures(testStudyName, testAnnotationName, "non-existent-term"),
+  "non-existent-term"
+)
+
+expect_error(
+  getNodeFeatures(testStudyName, "non-existent-annotation", testTermName),
+  "non-existent-annotation"
+)
+
+# getLinkFeatures --------------------------------------------------------------
+
+expect_identical(
+  getLinkFeatures(testStudyName, testAnnotationName, testTermName, "term_03"),
+  sort(intersect(annotation[["terms"]][[testTermName]],
+                 annotation[["terms"]][["term_03"]]))
+)
+
+expect_error(
+  getLinkFeatures(testStudyObj),
+  "\"study\" must be the name of an installed study package"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
