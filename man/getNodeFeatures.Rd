@@ -7,9 +7,8 @@
 getNodeFeatures(study, annotationID, termID, libraries = NULL)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+\item{study}{An OmicAnalyzer study. Only accepts name of installed study
+package.}
 
 \item{annotationID}{Filter by annotation}
 
@@ -22,4 +21,7 @@ left as \code{NULL} (the default), then
 }
 \description{
 Get the features in a network node
+}
+\seealso{
+\code{\link{getLinkFeatures}}
 }

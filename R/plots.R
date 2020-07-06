@@ -3,7 +3,7 @@
 #' @inheritParams shared-get
 #'
 #' @export
-plotStudy <- function(study, modelID, featureID, plotID, ...) {
+plotStudy <- function(study, modelID, featureID, plotID) {
   stopifnot(
     is.character(modelID),
     is.character(featureID),

@@ -153,14 +153,22 @@ listStudies <- function(libraries = NULL) {
 
 #' Get the features in a network node
 #'
+#' @param study An OmicAnalyzer study. Only accepts name of installed study
+#'   package.
 #' @inheritParams shared-get
 #' @inheritParams listStudies
+#'
+#' @seealso \code{\link{getLinkFeatures}}
 #'
 #' @importFrom dplyr "%>%"
 #' @importFrom rlang "!!"
 #' @importFrom rlang ".data"
 #' @export
 getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
+  if (inherits(study, "oaStudy") || inherits(study, "SQLiteConnection")) {
+    stop("\"study\" must be the name of an installed study package")
+  }
+
   con <- connectDatabase(study, libraries = libraries)
   on.exit(disconnectDatabase(con))
 
@@ -184,7 +192,10 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' Get the shared features in a network link
 #'
 #' @param termID1,termID2 Linked terms to find overlapping features
+#' @inheritParams getNodeFeatures
 #' @inheritParams shared-get
+#'
+#' @seealso \code{\link{getNodeFeatures}}
 #'
 #' @export
 getLinkFeatures <- function(study, annotationID, termID1, termID2) {

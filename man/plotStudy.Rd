@@ -4,7 +4,7 @@
 \alias{plotStudy}
 \title{Plot a feature using a custom plotting function}
 \usage{
-plotStudy(study, modelID, featureID, plotID, ...)
+plotStudy(study, modelID, featureID, plotID)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
@@ -16,13 +16,6 @@ of an installed study package.}
 \item{featureID}{Filter by featureID}
 
 \item{plotID}{Filter by plotID}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 }
 \description{
 Plot a feature using a custom plotting function

@@ -91,7 +91,7 @@ tinytest::run_test_file("inst/tinytest/testGet.R")
 ```
 
 If you'd like to write additional tests (highly encouraged!), try to follow the
-style of the surrounding code. In general, the tests are structued like below:
+style of the surrounding code. In general, the tests are structured like below:
 
 ```
 observed <- functionName(
