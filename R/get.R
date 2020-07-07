@@ -921,6 +921,88 @@ getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
   stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
+#' Get metaFeatures from a study
+#'
+#' @inheritParams shared-get
+#'
+#' @export
+getMetaFeatures <- function(study, modelID = NULL, ...) {
+  UseMethod("getMetaFeatures")
+}
+
+#' @rdname getMetaFeatures
+#' @export
+getMetaFeatures.oaStudy <- function(study, modelID = NULL, ...) {
+  metaFeatures <- study[["metaFeatures"]]
+
+  if (isEmpty(metaFeatures)) {
+    stop(sprintf("No metaFeatures available for study \"%s\"", study[["name"]]))
+  }
+
+  if (is.null(modelID)) return(metaFeatures)
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  metaFeaturesModels <- names(metaFeatures)
+  if (modelID %in% metaFeaturesModels) return(metaFeatures[[modelID]])
+  if ("default" %in% metaFeaturesModels) {
+    message(sprintf("Returning \"default\" metaFeatures for model \"%s\"", modelID))
+    return(metaFeatures[["default"]])
+  }
+
+  stop(sprintf("No metaFeatures available for model \"%s\"", modelID))
+}
+
+#' @rdname getMetaFeatures
+#' @export
+getMetaFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
+
+  dbTables <- DBI::dbListTables(study)
+  dbMetaFeatures <- grep("^metaFeatures-", dbTables, value = TRUE)
+  metaFeaturesModels <- sub("^metaFeatures-", "", dbMetaFeatures)
+
+  if (isEmpty(dbMetaFeatures)) {
+    stop("No metaFeatures available for this study")
+  }
+
+  if (is.null(modelID)) {
+    metaFeatures <- lapply(dbMetaFeatures, function(x) DBI::dbReadTable(study, x))
+    names(metaFeatures) <- metaFeaturesModels
+    return(metaFeatures)
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (modelID %in% metaFeaturesModels) {
+    tableName <- paste("metaFeatures", modelID, sep = "-")
+    metaFeatures <- DBI::dbReadTable(study, tableName)
+    return(metaFeatures)
+  }
+  if ("default" %in% metaFeaturesModels) {
+    message(sprintf("Returning \"default\" metaFeatures for model \"%s\"", modelID))
+    tableName <- paste("metaFeatures", "default", sep = "-")
+    metaFeatures <- DBI::dbReadTable(study, tableName)
+    return(metaFeatures)
+  }
+
+  stop(sprintf("No metaFeatures available for model \"%s\"", modelID))
+}
+
+#' @rdname getMetaFeatures
+#' @inheritParams listStudies
+#' @export
+getMetaFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
+  con <- connectDatabase(study, libraries = libraries)
+  on.exit(disconnectDatabase(con))
+
+  metaFeatures <- getMetaFeatures(con, modelID = modelID, ...)
+
+  return(metaFeatures)
+}
+
+#' @export
+getMetaFeatures.default <- function(study, modelID = NULL, ...) {
+  stop(sprintf("No method for object of class \"%s\"", class(study)))
+}
+
 #' Get plots from a study
 #'
 #' @inheritParams shared-get

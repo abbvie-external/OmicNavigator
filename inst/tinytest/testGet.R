@@ -477,6 +477,59 @@ expect_error(
   getEnrichments(testStudyName, annotationID = testAnnotationName, testID = testTestName),
   "Must specify a model in order to specify an annotation"
 )
+
+# getMetaFeatures -------------------------------------------------------------------
+
+expect_identical(
+  getMetaFeatures(testStudyObj),
+  testStudyObj[["metaFeatures"]]
+)
+
+expect_identical(
+  getMetaFeatures(testStudyObj, model = testModelName),
+  testStudyObj[["metaFeatures"]][["default"]]
+)
+
+expect_message(
+  getMetaFeatures(testStudyObj, model = "non-existent-model"),
+  "Returning \"default\" metaFeatures for model \"non-existent-model\""
+)
+
+expect_identical(
+  getMetaFeatures(testStudyObj, model = "non-existent-model"),
+  testStudyObj[["metaFeatures"]][["default"]]
+)
+
+expect_identical(
+  getMetaFeatures(testStudyName),
+  testStudyObj[["metaFeatures"]]
+)
+
+expect_identical(
+  getMetaFeatures(testStudyName, model = testModelName),
+  testStudyObj[["metaFeatures"]][["default"]]
+)
+
+expect_message(
+  getMetaFeatures(testStudyName, model = "non-existent-model"),
+  "Returning \"default\" metaFeatures for model \"non-existent-model\""
+)
+
+expect_identical(
+  getMetaFeatures(testStudyName, model = "non-existent-model"),
+  testStudyObj[["metaFeatures"]][["default"]]
+)
+
+expect_error(
+  getMetaFeatures(emptyStudy),
+  "No metaFeatures available"
+)
+
+expect_error(
+  getMetaFeatures(1),
+  "No method for object of class \"numeric\""
+)
+
 # getPlots ---------------------------------------------------------------------
 
 expect_identical(

@@ -1,6 +1,7 @@
 # 0.9.3.9000
 
 * More documentation of function arguments
+* New function `getMetaFeatures()`
 
 # 0.9.3
 
