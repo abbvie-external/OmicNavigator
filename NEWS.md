@@ -2,6 +2,7 @@
 
 * More documentation of function arguments
 * New function `getMetaFeatures()`
+* New function `getMetaFeaturesTable()`
 
 # 0.9.3
 

@@ -151,6 +151,33 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
+# getMetaFeaturesTable ---------------------------------------------------------
+
+metaFeaturesTable <- getMetaFeaturesTable(
+  testStudyName,
+  testModelName,
+  "feature_0042"
+)
+
+expect_identical(
+  class(metaFeaturesTable),
+  "data.frame"
+)
+
+expect_identical(
+  dim(metaFeaturesTable),
+  c(3L, 4L)
+)
+
+expect_warning(
+  getMetaFeaturesTable(
+    testStudyName,
+    testModelName,
+    "non-existent"
+  ),
+  "No metaFeatures found for featureID \"non-existent\""
+)
+
 # getBarcodeData ---------------------------------------------------------------
 
 barcodeData <- getBarcodeData(

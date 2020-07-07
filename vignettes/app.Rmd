@@ -22,6 +22,7 @@
 * [Results UpSet plot](#results-upset-plot)
 * [Enrichments UpSet plot](#enrichments-upset-plot)
 * [UpSet columns](#upset-columns)
+* [metaFeatures table](#metafeatures-table)
 * [Barcode](#barcode)
 
 These functions are intended to support the web application via OpenCPU calls.
@@ -237,6 +238,16 @@ upsetCols <- getUpsetCols(
   modelID = "model_01"
 )
 toJSON(upsetCols, auto_unbox = TRUE, pretty = TRUE)
+```
+
+## metaFeatures table
+
+For a given study, model, and featureID, return a table that contains the metaFeatures
+associated with that featureID.
+
+```{r metaFeatures-table}
+metaFeaturesTable <- getMetaFeaturesTable("ABC", "model_01", "feature_0001")
+toJSON(metaFeaturesTable[1:2, ], pretty = TRUE)
 ```
 
 ## Barcode

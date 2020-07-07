@@ -208,6 +208,24 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
   return(linkFeatures)
 }
 
+#' Get metaFeatures for a given feature
+#'
+#' @inheritParams shared-get
+#'
+#' @export
+getMetaFeaturesTable <- function(study, modelID, featureID) {
+  metaFeatures <- getMetaFeatures(study, modelID = modelID)
+
+  metaFeaturesTable <- metaFeatures[metaFeatures[, 1] == featureID, ]
+  metaFeaturesTable <- metaFeaturesTable[, -1]
+
+  if (nrow(metaFeaturesTable) == 0) {
+    warning(sprintf("No metaFeatures found for featureID \"%s\"", featureID))
+  }
+
+  return(metaFeaturesTable)
+}
+
 #' Get data for barcode and violin plots
 #'
 #' @inheritParams shared-get
