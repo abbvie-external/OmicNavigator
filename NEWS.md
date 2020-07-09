@@ -1,4 +1,4 @@
-# 0.9.3.9000
+# 0.10.0
 
 * More documentation of function arguments
 * New function `getMetaFeatures()`
