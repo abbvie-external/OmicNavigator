@@ -4,12 +4,12 @@
 \alias{exportStudy}
 \title{Export a study}
 \usage{
-exportStudy(study, type = c("rds", "sqlite", "package"), path = NULL)
+exportStudy(study, type = c("rds", "text", "package"), path = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study}
 
-\item{type}{Export to a RDS file ("rds"), SQLite database ("sqlite"), or an
+\item{type}{Export to a RDS file ("rds"), text files ("text"), or an
 R package ("package")}
 
 \item{path}{Optional file path to save the object}

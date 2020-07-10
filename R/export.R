@@ -1,12 +1,12 @@
 #' Export a study
 #'
 #' @param study An OmicAnalyzer study
-#' @param type Export to a RDS file ("rds"), SQLite database ("sqlite"), or an
+#' @param type Export to a RDS file ("rds"), text files ("text"), or an
 #'   R package ("package")
 #' @param path Optional file path to save the object
 #'
 #' @export
-exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL) {
+exportStudy <- function(study, type = c("rds", "text", "package"), path = NULL) {
   checkStudy(study)
 
   type <- match.arg(type)
@@ -18,13 +18,13 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
     saveRDS(object = study, file = filename)
     message(sprintf("Exported study to %s", filename))
     return(invisible(filename))
-  } else if (type == "sqlite") {
-    message(sprintf("Exporting study \"%s\" to an SQLite database", study[["name"]]))
-    filename <- paste0(study[["name"]], ".sqlite")
-    if (!is.null(path)) filename <- file.path(path, filename)
-    createDatabase(study, filename)
-    message(sprintf("Exported study to %s", filename))
-    return(invisible(filename))
+  } else if (type == "text") {
+    message(sprintf("Exporting study \"%s\" to directory of text files", study[["name"]]))
+    directoryname <- paste0(study[["name"]])
+    if (!is.null(path)) directoryname <- file.path(path, directoryname)
+    createTextFiles(study, directoryname)
+    message(sprintf("Exported study to %s", directoryname))
+    return(invisible(directoryname))
   } else if (type == "package") {
     message(sprintf("Exporting study \"%s\" to an R package", study[["name"]]))
     directoryname <- paste0("OAstudy", study[["name"]])
@@ -32,6 +32,119 @@ exportStudy <- function(study, type = c("rds", "sqlite", "package"), path = NULL
     createPackage(study, directoryname)
     message(sprintf("Exported study to %s", directoryname))
     return(invisible(directoryname))
+  }
+}
+
+# To do: abstract/generalize this as much as possible
+createTextFiles <- function(study, directoryname) {
+
+  dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
+  exportSamples(study[["samples"]], directoryname)
+  exportFeatures(study[["features"]], directoryname)
+  exportModels(study[["models"]], directoryname)
+  exportAssays(study[["assays"]], directoryname)
+  exportTests(study[["tests"]], directoryname)
+  exportAnnotations(study[["annotations"]], directoryname)
+  exportResults(study[["results"]], directoryname)
+  exportEnrichments(study[["enrichments"]], directoryname)
+  exportMetaFeatures(study[["metaFeatures"]], directoryname)
+}
+
+exportSamples <- function(x, path = ".") {
+  directory <- file.path(path, "samples")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    fileName <- file.path(subDirectory, "samples.txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+  }
+}
+
+exportFeatures <- function(x, path = ".") {
+  directory <- file.path(path, "features")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    fileName <- file.path(subDirectory, "features.txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+  }
+}
+
+exportModels <- function(x, path = ".") {
+  fileName <- file.path(path, "models.json")
+  jsonlite::write_json(x, fileName, auto_unbox = TRUE, pretty = TRUE)
+}
+
+exportAssays <- function(x, path = ".") {
+  directory <- file.path(path, "assays")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    fileName <- file.path(subDirectory, "assays.txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t", row.names = TRUE)
+  }
+}
+
+exportTests <- function(x, path = ".") {
+  directory <- file.path(path, "tests")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    fileName <- file.path(subDirectory, "tests.txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+  }
+}
+
+exportAnnotations <- function(x, path = ".") {
+  return(NULL)
+}
+
+exportResults <- function(x, path = ".") {
+  directory <- file.path(path, "results")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    for (j in seq_along(x[[i]])) {
+      subSubDirectory <- file.path(subDirectory, names(x[[i]])[j])
+      dir.create(subSubDirectory, showWarnings = FALSE, recursive = TRUE)
+      fileName <- file.path(subSubDirectory, "results.txt")
+      data.table::fwrite(x[[i]][[j]], file = fileName, sep = "\t")
+    }
+  }
+}
+
+exportEnrichments <- function(x, path = ".") {
+  directory <- file.path(path, "enrichments")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    for (j in seq_along(x[[i]])) {
+      subSubDirectory <- file.path(subDirectory, names(x[[i]])[j])
+      dir.create(subSubDirectory, showWarnings = FALSE, recursive = TRUE)
+      for (k in seq_along(x[[i]][[j]])) {
+        subSubSubDirectory <- file.path(subSubDirectory, names(x[[i]][[j]])[k])
+        dir.create(subSubSubDirectory, showWarnings = FALSE, recursive = TRUE)
+        fileName <- file.path(subSubSubDirectory, "enrichments.txt")
+        data.table::fwrite(x[[i]][[j]][[k]], file = fileName, sep = "\t")
+      }
+    }
+  }
+}
+
+exportMetaFeatures <- function(x, path = ".") {
+  directory <- file.path(path, "metaFeatures")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    subDirectory <- file.path(directory, names(x)[i])
+    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
+    fileName <- file.path(subDirectory, "metaFeatures.txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
 
