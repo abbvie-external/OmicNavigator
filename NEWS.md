@@ -1,3 +1,7 @@
+* If `startApp()` is unable to run because the package was installed without the
+bundled web app, provide the URL for the releases page to download the tarball.
+Also offer to open the page in the browser.
+
 # 0.10.0
 
 * More documentation of function arguments
