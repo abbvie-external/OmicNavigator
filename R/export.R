@@ -54,9 +54,8 @@ exportSamples <- function(x, path = ".") {
   directory <- file.path(path, "samples")
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    fileName <- file.path(subDirectory, "samples.txt")
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
@@ -65,9 +64,8 @@ exportFeatures <- function(x, path = ".") {
   directory <- file.path(path, "features")
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    fileName <- file.path(subDirectory, "features.txt")
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
@@ -81,9 +79,8 @@ exportAssays <- function(x, path = ".") {
   directory <- file.path(path, "assays")
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    fileName <- file.path(subDirectory, "assays.txt")
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t", row.names = TRUE)
   }
 }
@@ -92,9 +89,8 @@ exportTests <- function(x, path = ".") {
   directory <- file.path(path, "tests")
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    fileName <- file.path(subDirectory, "tests.txt")
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
@@ -110,9 +106,8 @@ exportResults <- function(x, path = ".") {
     subDirectory <- file.path(directory, names(x)[i])
     dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
     for (j in seq_along(x[[i]])) {
-      subSubDirectory <- file.path(subDirectory, names(x[[i]])[j])
-      dir.create(subSubDirectory, showWarnings = FALSE, recursive = TRUE)
-      fileName <- file.path(subSubDirectory, "results.txt")
+      fileName <- file.path(subDirectory, names(x[[i]])[j])
+      fileName <- paste0(fileName, ".txt")
       data.table::fwrite(x[[i]][[j]], file = fileName, sep = "\t")
     }
   }
@@ -128,9 +123,8 @@ exportEnrichments <- function(x, path = ".") {
       subSubDirectory <- file.path(subDirectory, names(x[[i]])[j])
       dir.create(subSubDirectory, showWarnings = FALSE, recursive = TRUE)
       for (k in seq_along(x[[i]][[j]])) {
-        subSubSubDirectory <- file.path(subSubDirectory, names(x[[i]][[j]])[k])
-        dir.create(subSubSubDirectory, showWarnings = FALSE, recursive = TRUE)
-        fileName <- file.path(subSubSubDirectory, "enrichments.txt")
+        fileName <- file.path(subSubDirectory, names(x[[i]][[j]])[k])
+        fileName <- paste0(fileName, ".txt")
         data.table::fwrite(x[[i]][[j]][[k]], file = fileName, sep = "\t")
       }
     }
@@ -141,9 +135,8 @@ exportMetaFeatures <- function(x, path = ".") {
   directory <- file.path(path, "metaFeatures")
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    fileName <- file.path(subDirectory, "metaFeatures.txt")
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
