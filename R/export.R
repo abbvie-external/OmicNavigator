@@ -36,7 +36,7 @@ exportStudy <- function(study, type = c("rds", "text", "package"), path = NULL) 
 }
 
 # To do: abstract/generalize this as much as possible
-createTextFiles <- function(study, directoryname) {
+createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
 
   dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
   exportSamples(study[["samples"]], directoryname)
@@ -49,6 +49,10 @@ createTextFiles <- function(study, directoryname) {
   exportEnrichments(study[["enrichments"]], directoryname)
   exportMetaFeatures(study[["metaFeatures"]], directoryname)
   exportBarcodes(study[["barcodes"]], directoryname)
+  if (calcOverlaps && is.null(study[["overlaps"]])) {
+    study <- addOverlaps(study)
+    exportOverlaps(study[["overlaps"]], directoryname)
+  }
 }
 
 exportSamples <- function(x, path = ".") {
@@ -155,6 +159,16 @@ exportBarcodes <- function(x, path = ".") {
     fileName <- file.path(directory, names(x)[i])
     fileName <- paste0(fileName, ".txt")
     jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
+  }
+}
+
+exportOverlaps <- function(x, path = ".") {
+  directory <- file.path(path, "overlaps")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
+    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
   }
 }
 
@@ -415,11 +429,10 @@ createPackage <- function(study, directoryname) {
   )
   write.dcf(description, file = description_file)
 
-  # Database
-  sqldir <- file.path(directoryname, "inst", "OmicAnalyzer")
-  dir.create(sqldir, showWarnings = FALSE, recursive = TRUE)
-  sqlfile <- file.path(sqldir, paste0(study[["name"]], ".sqlite"))
-  createDatabase(study, sqlfile)
+  # Data
+  datadir <- file.path(directoryname, "inst", "OmicAnalyzer")
+  dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
+  createTextFiles(study, datadir, calcOverlaps = TRUE)
 
   # Plots
   if (!isEmpty(study[["plots"]])) {

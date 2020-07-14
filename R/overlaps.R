@@ -66,3 +66,24 @@ calc_pairwise_overlaps <- function(sets) {
                        stringsAsFactors = FALSE)
   return(result)
 }
+
+addOverlaps <- function(study) {
+  checkStudy(study)
+
+  if (is.null(study[["annotations"]]))
+    stop("Cannot calculate overlaps without annotations")
+
+  annotationsAvailable <- names(study[["annotations"]])
+  overlapsList <- vector(mode = "list", length = length(annotationsAvailable))
+  names(overlapsList) <- annotationsAvailable
+  for (annotationID in annotationsAvailable) {
+    terms <- study[["annotations"]][[annotationID]][["terms"]]
+    # to do: filter to only include terms included in at least one enrichment
+    overlaps <- calc_pairwise_overlaps(terms)
+    overlaps <- overlaps[overlaps[["overlapSize"]] > 0, ]
+    overlapsList[[annotationID]] <- overlaps
+  }
+  study[["overlaps"]] <- addToList(study[["overlaps"]], overlapsList)
+
+  return(study)
+}
