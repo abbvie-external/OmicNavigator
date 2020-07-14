@@ -48,6 +48,7 @@ createTextFiles <- function(study, directoryname) {
   exportResults(study[["results"]], directoryname)
   exportEnrichments(study[["enrichments"]], directoryname)
   exportMetaFeatures(study[["metaFeatures"]], directoryname)
+  exportBarcodes(study[["barcodes"]], directoryname)
 }
 
 exportSamples <- function(x, path = ".") {
@@ -144,6 +145,16 @@ exportMetaFeatures <- function(x, path = ".") {
     fileName <- file.path(directory, names(x)[i])
     fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+  }
+}
+
+exportBarcodes <- function(x, path = ".") {
+  directory <- file.path(path, "barcodes")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".txt")
+    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
   }
 }
 
