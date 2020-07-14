@@ -96,7 +96,13 @@ exportTests <- function(x, path = ".") {
 }
 
 exportAnnotations <- function(x, path = ".") {
-  return(NULL)
+  directory <- file.path(path, "annotations")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".json")
+    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
+  }
 }
 
 exportResults <- function(x, path = ".") {
