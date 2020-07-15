@@ -51,8 +51,8 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportBarcodes(study[["barcodes"]], directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
     study <- addOverlaps(study)
-    exportOverlaps(study[["overlaps"]], directoryname)
   }
+  exportOverlaps(study[["overlaps"]], directoryname)
 }
 
 exportSamples <- function(x, path = ".") {
