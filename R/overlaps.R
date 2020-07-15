@@ -78,7 +78,17 @@ addOverlaps <- function(study) {
   names(overlapsList) <- annotationsAvailable
   for (annotationID in annotationsAvailable) {
     terms <- study[["annotations"]][[annotationID]][["terms"]]
-    # to do: filter to only include terms included in at least one enrichment
+    # filter to only include terms included in at least one enrichment
+    if (!is.null(study[["enrichments"]])) {
+      termsEnriched <- character()
+      for (i in seq_along(study[["enrichments"]])) {
+        termsTmp <- lapply(study[["enrichments"]][[i]][[annotationID]],
+                           function(x) x[["termID"]])
+        termsEnriched <- c(termsEnriched, unlist(termsTmp, use.names = FALSE))
+      }
+      termsEnriched <- unique(termsEnriched)
+      terms <- terms[names(terms) %in% termsEnriched]
+    }
     overlaps <- calc_pairwise_overlaps(terms)
     overlaps <- overlaps[overlaps[["overlapSize"]] > 0, ]
     overlapsList[[annotationID]] <- overlaps
