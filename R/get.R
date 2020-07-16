@@ -184,7 +184,6 @@ getSamples.character <- function(study, modelID = NULL, libraries = NULL, ...) {
 
   stopifnot(is.character(modelID), length(modelID) == 1)
   if (modelID %in% samplesModels) {
-    tableName <- paste("samples", modelID, sep = "-")
     samples <- data.table::fread(file = samplesFiles[modelID], data.table = FALSE)
     return(samples)
   }
@@ -300,7 +299,6 @@ getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) 
 
   stopifnot(is.character(modelID), length(modelID) == 1)
   if (modelID %in% featuresModels) {
-    tableName <- paste("features", modelID, sep = "-")
     features <- data.table::fread(file = featuresFiles[modelID], data.table = FALSE)
     return(features)
   }
@@ -408,7 +406,6 @@ getAssays.character <- function(study, modelID = NULL, libraries = NULL, ...) {
 
   stopifnot(is.character(modelID), length(modelID) == 1)
   if (modelID %in% assaysModels) {
-    tableName <- paste("assays", modelID, sep = "-")
     assays <- data.table::fread(file = assaysFiles[modelID], data.table = FALSE)
     return(assays)
   }
@@ -491,12 +488,45 @@ getTests.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getTests.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
 
-  tests <- getTests(con, modelID = modelID, ...)
+  oaDirectory <- system.file("OmicAnalyzer/",
+                             package = paste0("OAstudy", study),
+                             lib.loc = libraries)
+  if (oaDirectory == "") {
+    stop(sprintf("The study \"%s\" is not installed\n", study),
+         "Did you run installStudy()?\n")
+  }
 
-  return(tests)
+  testsDirectory <- file.path(oaDirectory, "tests")
+  testsFiles <- list.files(testsDirectory, full.names = TRUE)
+
+  if (isEmpty(testsFiles)) {
+    stop("No tests available for this study")
+  }
+
+  testsModels <- basename(testsFiles)
+  testsModels <- sub("\\.txt$", "", testsModels)
+  names(testsFiles) <- testsModels
+
+  if (is.null(modelID)) {
+    tests <- lapply(testsFiles,
+                    function(x) data.table::fread(file = x, data.table = FALSE))
+    names(tests) <- testsModels
+    return(tests)
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (modelID %in% testsModels) {
+    tests <- data.table::fread(file = testsFiles[modelID], data.table = FALSE)
+    return(tests)
+  }
+  if ("default" %in% testsModels) {
+    message(sprintf("Returning \"default\" tests for model \"%s\"", modelID))
+    tests <- data.table::fread(file = testsFiles["default"], data.table = FALSE)
+    return(tests)
+  }
+
+  stop(sprintf("No tests available for model \"%s\"", modelID))
 }
 
 #' @export
@@ -581,12 +611,40 @@ getAnnotations.SQLiteConnection <- function(study, annotationID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getAnnotations.character <- function(study, annotationID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
 
-  annotations <- getAnnotations(con, annotationID = annotationID, ...)
+  oaDirectory <- system.file("OmicAnalyzer/",
+                             package = paste0("OAstudy", study),
+                             lib.loc = libraries)
+  if (oaDirectory == "") {
+    stop(sprintf("The study \"%s\" is not installed\n", study),
+         "Did you run installStudy()?\n")
+  }
 
-  return(annotations)
+  annotationsDirectory <- file.path(oaDirectory, "annotations")
+  annotationsFiles <- list.files(annotationsDirectory, full.names = TRUE)
+
+  if (isEmpty(annotationsFiles)) {
+    stop("No annotations available for this study")
+  }
+
+  annotationsNames <- basename(annotationsFiles)
+  annotationsNames <- sub("\\.json$", "", annotationsNames)
+  names(annotationsFiles) <- annotationsNames
+
+  if (is.null(annotationID)) {
+    annotations <- lapply(annotationsFiles,
+                          function(x) jsonlite::read_json(x))
+    names(annotations) <- annotationsNames
+    return(annotations)
+  }
+
+  stopifnot(is.character(annotationID), length(annotationID) == 1)
+  if (annotationID %in% annotationsNames) {
+    annotations <- jsonlite::read_json(annotationsFiles[annotationID])
+    return(annotations)
+  }
+
+  stop(sprintf("The annotationID \"%s\" is not available for this study", annotationID))
 }
 
 #' @export
@@ -1092,12 +1150,45 @@ getMetaFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getMetaFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
 
-  metaFeatures <- getMetaFeatures(con, modelID = modelID, ...)
+  oaDirectory <- system.file("OmicAnalyzer/",
+                             package = paste0("OAstudy", study),
+                             lib.loc = libraries)
+  if (oaDirectory == "") {
+    stop(sprintf("The study \"%s\" is not installed\n", study),
+         "Did you run installStudy()?\n")
+  }
 
-  return(metaFeatures)
+  metaFeaturesDirectory <- file.path(oaDirectory, "metaFeatures")
+  metaFeaturesFiles <- list.files(metaFeaturesDirectory, full.names = TRUE)
+
+  if (isEmpty(metaFeaturesFiles)) {
+    stop("No metaFeatures available for this study")
+  }
+
+  metaFeaturesModels <- basename(metaFeaturesFiles)
+  metaFeaturesModels <- sub("\\.txt$", "", metaFeaturesModels)
+  names(metaFeaturesFiles) <- metaFeaturesModels
+
+  if (is.null(modelID)) {
+    metaFeatures <- lapply(metaFeaturesFiles,
+                           function(x) data.table::fread(file = x, data.table = FALSE))
+    names(metaFeatures) <- metaFeaturesModels
+    return(metaFeatures)
+  }
+
+  stopifnot(is.character(modelID), length(modelID) == 1)
+  if (modelID %in% metaFeaturesModels) {
+    metaFeatures <- data.table::fread(file = metaFeaturesFiles[modelID], data.table = FALSE)
+    return(metaFeatures)
+  }
+  if ("default" %in% metaFeaturesModels) {
+    message(sprintf("Returning \"default\" metaFeatures for model \"%s\"", modelID))
+    metaFeatures <- data.table::fread(file = metaFeaturesFiles["default"], data.table = FALSE)
+    return(metaFeatures)
+  }
+
+  stop(sprintf("No metaFeatures available for model \"%s\"", modelID))
 }
 
 #' @export
