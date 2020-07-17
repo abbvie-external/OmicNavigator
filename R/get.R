@@ -155,45 +155,13 @@ getSamples.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getSamples.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  samplesDirectory <- file.path(oaDirectory, "samples")
-  samplesFiles <- list.files(samplesDirectory, full.names = TRUE)
-
-  if (isEmpty(samplesFiles)) {
-    stop("No samples available for this study")
-  }
-
-  samplesModels <- basename(samplesFiles)
-  samplesModels <- sub("\\.txt$", "", samplesModels)
-  names(samplesFiles) <- samplesModels
-
-  if (is.null(modelID)) {
-    samples <- lapply(samplesFiles,
-                      function(x) data.table::fread(file = x, data.table = FALSE))
-    names(samples) <- samplesModels
-    return(samples)
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (modelID %in% samplesModels) {
-    samples <- data.table::fread(file = samplesFiles[modelID], data.table = FALSE)
-    return(samples)
-  }
-  if ("default" %in% samplesModels) {
-    message(sprintf("Returning \"default\" samples for model \"%s\"", modelID))
-    samples <- data.table::fread(file = samplesFiles["default"], data.table = FALSE)
-    return(samples)
-  }
-
-  stop(sprintf("No samples available for model \"%s\"", modelID))
+  getElements(
+    study,
+    elements = "samples",
+    filters = list(modelID = modelID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -270,45 +238,13 @@ getFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  featuresDirectory <- file.path(oaDirectory, "features")
-  featuresFiles <- list.files(featuresDirectory, full.names = TRUE)
-
-  if (isEmpty(featuresFiles)) {
-    stop("No features available for this study")
-  }
-
-  featuresModels <- basename(featuresFiles)
-  featuresModels <- sub("\\.txt$", "", featuresModels)
-  names(featuresFiles) <- featuresModels
-
-  if (is.null(modelID)) {
-    features <- lapply(featuresFiles,
-                       function(x) data.table::fread(file = x, data.table = FALSE))
-    names(features) <- featuresModels
-    return(features)
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (modelID %in% featuresModels) {
-    features <- data.table::fread(file = featuresFiles[modelID], data.table = FALSE)
-    return(features)
-  }
-  if ("default" %in% featuresModels) {
-    message(sprintf("Returning \"default\" features for model \"%s\"", modelID))
-    features <- data.table::fread(file = featuresFiles["default"], data.table = FALSE)
-    return(features)
-  }
-
-  stop(sprintf("No features available for model \"%s\"", modelID))
+  getElements(
+    study,
+    elements = "features",
+    filters = list(modelID = modelID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -377,45 +313,13 @@ getAssays.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getAssays.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  assaysDirectory <- file.path(oaDirectory, "assays")
-  assaysFiles <- list.files(assaysDirectory, full.names = TRUE)
-
-  if (isEmpty(assaysFiles)) {
-    stop("No assays available for this study")
-  }
-
-  assaysModels <- basename(assaysFiles)
-  assaysModels <- sub("\\.txt$", "", assaysModels)
-  names(assaysFiles) <- assaysModels
-
-  if (is.null(modelID)) {
-    assays <- lapply(assaysFiles,
-                     function(x) data.table::fread(file = x, data.table = FALSE))
-    names(assays) <- assaysModels
-    return(assays)
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (modelID %in% assaysModels) {
-    assays <- data.table::fread(file = assaysFiles[modelID], data.table = FALSE)
-    return(assays)
-  }
-  if ("default" %in% assaysModels) {
-    message(sprintf("Returning \"default\" assays for model \"%s\"", modelID))
-    assays <- data.table::fread(file = assaysFiles["default"], data.table = FALSE)
-    return(assays)
-  }
-
-  stop(sprintf("No assays available for model \"%s\"", modelID))
+  getElements(
+    study,
+    elements = "assays",
+    filters = list(modelID = modelID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -488,45 +392,13 @@ getTests.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getTests.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  testsDirectory <- file.path(oaDirectory, "tests")
-  testsFiles <- list.files(testsDirectory, full.names = TRUE)
-
-  if (isEmpty(testsFiles)) {
-    stop("No tests available for this study")
-  }
-
-  testsModels <- basename(testsFiles)
-  testsModels <- sub("\\.txt$", "", testsModels)
-  names(testsFiles) <- testsModels
-
-  if (is.null(modelID)) {
-    tests <- lapply(testsFiles,
-                    function(x) data.table::fread(file = x, data.table = FALSE))
-    names(tests) <- testsModels
-    return(tests)
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (modelID %in% testsModels) {
-    tests <- data.table::fread(file = testsFiles[modelID], data.table = FALSE)
-    return(tests)
-  }
-  if ("default" %in% testsModels) {
-    message(sprintf("Returning \"default\" tests for model \"%s\"", modelID))
-    tests <- data.table::fread(file = testsFiles["default"], data.table = FALSE)
-    return(tests)
-  }
-
-  stop(sprintf("No tests available for model \"%s\"", modelID))
+  getElements(
+    study,
+    elements = "tests",
+    filters = list(modelID = modelID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
