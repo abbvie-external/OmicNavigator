@@ -743,12 +743,13 @@ getResults.SQLiteConnection <- function(study, modelID = NULL, testID = NULL, ..
 #' @inheritParams listStudies
 #' @export
 getResults.character <- function(study, modelID = NULL, testID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
-
-  results <- getResults(con, modelID = modelID, testID = testID, ...)
-
-  return(results)
+  getElements(
+    study,
+    elements = "results",
+    filters = list(modelID = modelID, testID = testID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -917,12 +918,13 @@ getEnrichments.SQLiteConnection <- function(study, modelID = NULL, annotationID 
 #' @inheritParams listStudies
 #' @export
 getEnrichments.character <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
-
-  enrichments <- getEnrichments(con, modelID = modelID, annotationID = annotationID, testID = testID, ...)
-
-  return(enrichments)
+  getElements(
+    study,
+    elements = "enrichments",
+    filters = list(modelID = modelID, annotationID = annotationID, testID = testID),
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -1394,4 +1396,65 @@ combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
   newTable <- newTable[, c(newColumnIndex, seq_len(newColumnIndex - 1))]
 
   return(newTable)
+}
+
+getElements <- function(study, elements, filters = list(), default = NULL, libraries = NULL, ...) {
+
+  oaDirectory <- system.file("OmicAnalyzer/",
+                             package = paste0("OAstudy", study),
+                             lib.loc = libraries)
+  if (oaDirectory == "") {
+    stop(sprintf("The study \"%s\" is not installed\n", study),
+         "Did you run installStudy()?\n")
+  }
+
+  elementsDirectory <- file.path(oaDirectory, elements)
+  if (!dir.exists(elementsDirectory)) {
+    stop(sprintf("Study \"%s\" does not have an elements named \"%s\"",
+                 study, elements), call. = FALSE)
+  }
+  elementsFiles <- getFiles(elementsDirectory)
+
+  if (isEmpty(elementsFiles)) {
+    stop("No results available for this study")
+  }
+
+  filters <- Filter(function(x) !is.null(x), filters)
+
+  for (i in seq_along(filters)) {
+    filterName <- names(filters)[i]
+    filterValue <- filters[[i]]
+    namesCurrent <- names(elementsFiles)
+    if (filterValue %in% namesCurrent) {
+      elementsFiles <- elementsFiles[[filterValue]]
+    } else if (!is.null(default) && default %in% namesCurrent) {
+      message(sprintf("Returning \"%s\" %s for %s \"%s\"",
+                      default, elements, filterName, filterValue))
+      elementsFiles <- elementsFiles[[default]]
+    } else {
+      stop(sprintf("No %s available for %s \"%s\"",
+                   elements, filterName, filterValue))
+    }
+  }
+
+  if (is.list(elementsFiles)) {
+    object <- rapply(elementsFiles, function(x)
+      data.table::fread(file = x, data.table = FALSE),
+      how = "replace")
+  } else {
+    object <- data.table::fread(file = elementsFiles, data.table = FALSE)
+  }
+
+  return(object)
+}
+
+getFiles <- function(path) {
+  if (dir.exists(path)) {
+    contents <- list.files(path, full.names = TRUE)
+    contentsNames <- basename(contents)
+    contentsNames <- tools::file_path_sans_ext(contentsNames)
+    setNames(lapply(contents, getFiles), contentsNames)
+  } else {
+    path
+  }
 }
