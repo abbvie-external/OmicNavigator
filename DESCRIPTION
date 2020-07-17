@@ -28,7 +28,9 @@ Imports:
   jsonlite,
   rlang,
   RSQLite (>= 2.1.1),
+  stats,
   tidyr,
+  tools,
   UpSetR,
   utils
 Suggests:

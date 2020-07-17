@@ -1453,7 +1453,7 @@ getFiles <- function(path) {
     contents <- list.files(path, full.names = TRUE)
     contentsNames <- basename(contents)
     contentsNames <- tools::file_path_sans_ext(contentsNames)
-    setNames(lapply(contents, getFiles), contentsNames)
+    stats::setNames(lapply(contents, getFiles), contentsNames)
   } else {
     path
   }
