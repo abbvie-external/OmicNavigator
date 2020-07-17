@@ -159,6 +159,7 @@ getSamples.character <- function(study, modelID = NULL, libraries = NULL, ...) {
     study,
     elements = "samples",
     filters = list(modelID = modelID),
+    default = "default",
     libraries = libraries,
     ...
   )
@@ -242,6 +243,7 @@ getFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) 
     study,
     elements = "features",
     filters = list(modelID = modelID),
+    default = "default",
     libraries = libraries,
     ...
   )
@@ -317,6 +319,7 @@ getAssays.character <- function(study, modelID = NULL, libraries = NULL, ...) {
     study,
     elements = "assays",
     filters = list(modelID = modelID),
+    default = "default",
     libraries = libraries,
     ...
   )
@@ -396,6 +399,7 @@ getTests.character <- function(study, modelID = NULL, libraries = NULL, ...) {
     study,
     elements = "tests",
     filters = list(modelID = modelID),
+    default = "default",
     libraries = libraries,
     ...
   )
@@ -666,12 +670,13 @@ getResultsTable.SQLiteConnection <- function(study, modelID , testID, ...) {
 #' @inheritParams listStudies
 #' @export
 getResultsTable.character <- function(study, modelID, testID, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
+  results <- getResults(study, modelID, testID, ...)
+  features <- getFeatures(study, modelID, ...)
 
-  results <- getResultsTable(con, modelID = modelID, testID = testID, ...)
+  resultsTable <- merge(features, results, by = 1,
+                        all.x = FALSE, all.y = TRUE, sort = FALSE)
 
-  return(results)
+  return(resultsTable)
 }
 
 #' @export
@@ -849,14 +854,13 @@ getEnrichmentsTable.SQLiteConnection <- function(study, modelID, annotationID, t
 #' @inheritParams listStudies
 #' @export
 getEnrichmentsTable.character <- function(study, modelID, annotationID, type = "nominal", libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
+  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
 
-  enrichments <- getEnrichmentsTable(con, modelID = modelID,
-                                     annotationID = annotationID, type = type,
-                                     ...)
+  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
-  return(enrichments)
+  enrichmentsTableWide <- enrichmentsToWide(enrichmentsTable, type = type)
+
+  return(enrichmentsTableWide)
 }
 
 #' @export
@@ -1024,45 +1028,14 @@ getMetaFeatures.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getMetaFeatures.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  metaFeaturesDirectory <- file.path(oaDirectory, "metaFeatures")
-  metaFeaturesFiles <- list.files(metaFeaturesDirectory, full.names = TRUE)
-
-  if (isEmpty(metaFeaturesFiles)) {
-    stop("No metaFeatures available for this study")
-  }
-
-  metaFeaturesModels <- basename(metaFeaturesFiles)
-  metaFeaturesModels <- sub("\\.txt$", "", metaFeaturesModels)
-  names(metaFeaturesFiles) <- metaFeaturesModels
-
-  if (is.null(modelID)) {
-    metaFeatures <- lapply(metaFeaturesFiles,
-                           function(x) data.table::fread(file = x, data.table = FALSE))
-    names(metaFeatures) <- metaFeaturesModels
-    return(metaFeatures)
-  }
-
-  stopifnot(is.character(modelID), length(modelID) == 1)
-  if (modelID %in% metaFeaturesModels) {
-    metaFeatures <- data.table::fread(file = metaFeaturesFiles[modelID], data.table = FALSE)
-    return(metaFeatures)
-  }
-  if ("default" %in% metaFeaturesModels) {
-    message(sprintf("Returning \"default\" metaFeatures for model \"%s\"", modelID))
-    metaFeatures <- data.table::fread(file = metaFeaturesFiles["default"], data.table = FALSE)
-    return(metaFeatures)
-  }
-
-  stop(sprintf("No metaFeatures available for model \"%s\"", modelID))
+  getElements(
+    study,
+    elements = "metaFeatures",
+    filters = list(modelID = modelID),
+    default = "default",
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
