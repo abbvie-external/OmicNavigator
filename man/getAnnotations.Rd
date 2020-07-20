@@ -2,32 +2,15 @@
 % Please edit documentation in R/get.R
 \name{getAnnotations}
 \alias{getAnnotations}
-\alias{getAnnotations.oaStudy}
-\alias{getAnnotations.SQLiteConnection}
-\alias{getAnnotations.character}
 \title{Get annotations from a study}
 \usage{
-getAnnotations(study, annotationID = NULL, ...)
-
-\method{getAnnotations}{oaStudy}(study, annotationID = NULL, ...)
-
-\method{getAnnotations}{SQLiteConnection}(study, annotationID = NULL, ...)
-
-\method{getAnnotations}{character}(study, annotationID = NULL, libraries = NULL, ...)
+getAnnotations(study, annotationID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{annotationID}{Filter by annotation}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

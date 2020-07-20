@@ -2,32 +2,15 @@
 % Please edit documentation in R/get.R
 \name{getSamples}
 \alias{getSamples}
-\alias{getSamples.oaStudy}
-\alias{getSamples.SQLiteConnection}
-\alias{getSamples.character}
 \title{Get samples from a study}
 \usage{
-getSamples(study, modelID = NULL, ...)
-
-\method{getSamples}{oaStudy}(study, modelID = NULL, ...)
-
-\method{getSamples}{SQLiteConnection}(study, modelID = NULL, ...)
-
-\method{getSamples}{character}(study, modelID = NULL, libraries = NULL, ...)
+getSamples(study, modelID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

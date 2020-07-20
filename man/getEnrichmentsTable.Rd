@@ -2,43 +2,25 @@
 % Please edit documentation in R/get.R
 \name{getEnrichmentsTable}
 \alias{getEnrichmentsTable}
-\alias{getEnrichmentsTable.oaStudy}
-\alias{getEnrichmentsTable.SQLiteConnection}
-\alias{getEnrichmentsTable.character}
 \title{Get enrichments table from a study}
 \usage{
-getEnrichmentsTable(study, modelID, annotationID, type = "nominal", ...)
-
-\method{getEnrichmentsTable}{oaStudy}(study, modelID, annotationID, type = "nominal", ...)
-
-\method{getEnrichmentsTable}{SQLiteConnection}(study, modelID, annotationID, type = "nominal", ...)
-
-\method{getEnrichmentsTable}{character}(
+getEnrichmentsTable(
   study,
   modelID,
   annotationID,
   type = "nominal",
-  libraries = NULL,
-  ...
+  libraries = NULL
 )
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
 \item{annotationID}{Filter by annotation}
 
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

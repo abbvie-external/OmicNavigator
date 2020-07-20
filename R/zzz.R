@@ -23,8 +23,7 @@ NULL
 #' @name shared-get
 #'
 #' @param study An OmicAnalyzer study. Either an object of class \code{oaStudy},
-#'   a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-#'   of an installed study package.
+#'   or the name of an installed study package.
 #' @param modelID Filter by modelID
 #' @param testID Filter by testID
 #' @param annotationID Filter by annotation

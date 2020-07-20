@@ -2,34 +2,17 @@
 % Please edit documentation in R/get.R
 \name{getResults}
 \alias{getResults}
-\alias{getResults.oaStudy}
-\alias{getResults.SQLiteConnection}
-\alias{getResults.character}
 \title{Get results from a study}
 \usage{
-getResults(study, modelID = NULL, testID = NULL, ...)
-
-\method{getResults}{oaStudy}(study, modelID = NULL, testID = NULL, ...)
-
-\method{getResults}{SQLiteConnection}(study, modelID = NULL, testID = NULL, ...)
-
-\method{getResults}{character}(study, modelID = NULL, testID = NULL, libraries = NULL, ...)
+getResults(study, modelID = NULL, testID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
 \item{testID}{Filter by testID}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

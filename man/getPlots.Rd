@@ -2,32 +2,15 @@
 % Please edit documentation in R/get.R
 \name{getPlots}
 \alias{getPlots}
-\alias{getPlots.oaStudy}
-\alias{getPlots.SQLiteConnection}
-\alias{getPlots.character}
 \title{Get plots from a study}
 \usage{
-getPlots(study, modelID = NULL, ...)
-
-\method{getPlots}{oaStudy}(study, modelID = NULL, ...)
-
-\method{getPlots}{SQLiteConnection}(study, modelID = NULL, ...)
-
-\method{getPlots}{character}(study, modelID = NULL, libraries = NULL, ...)
+getPlots(study, modelID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

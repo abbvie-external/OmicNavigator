@@ -2,32 +2,15 @@
 % Please edit documentation in R/get.R
 \name{getBarcodes}
 \alias{getBarcodes}
-\alias{getBarcodes.oaStudy}
-\alias{getBarcodes.SQLiteConnection}
-\alias{getBarcodes.character}
 \title{Get barcodes from a study}
 \usage{
-getBarcodes(study, modelID = NULL, ...)
-
-\method{getBarcodes}{oaStudy}(study, modelID = NULL, ...)
-
-\method{getBarcodes}{SQLiteConnection}(study, modelID = NULL, ...)
-
-\method{getBarcodes}{character}(study, modelID = NULL, libraries = NULL, ...)
+getBarcodes(study, modelID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
-a \code{\link[RSQLite]{SQLiteConnection-class}} to a study database, or the name
-of an installed study package.}
+or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then
