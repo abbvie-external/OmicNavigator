@@ -1,5 +1,13 @@
 
-## Databases -------------------------------------------------------------------
+## I/O -------------------------------------------------------------------------
+
+readTable <- function(x, ...) {
+  data.table::fread(file = x, data.table = FALSE, ...)
+}
+
+readJson <- function(x, ...) {
+  jsonlite::read_json(x, simplifyVector = TRUE, ...)
+}
 
 connectDatabase <- function(study, libraries = NULL) {
 

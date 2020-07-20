@@ -487,40 +487,14 @@ getAnnotations.SQLiteConnection <- function(study, annotationID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getAnnotations.character <- function(study, annotationID = NULL, libraries = NULL, ...) {
-
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-
-  annotationsDirectory <- file.path(oaDirectory, "annotations")
-  annotationsFiles <- list.files(annotationsDirectory, full.names = TRUE)
-
-  if (isEmpty(annotationsFiles)) {
-    stop("No annotations available for this study")
-  }
-
-  annotationsNames <- basename(annotationsFiles)
-  annotationsNames <- sub("\\.json$", "", annotationsNames)
-  names(annotationsFiles) <- annotationsNames
-
-  if (is.null(annotationID)) {
-    annotations <- lapply(annotationsFiles,
-                          function(x) jsonlite::read_json(x))
-    names(annotations) <- annotationsNames
-    return(annotations)
-  }
-
-  stopifnot(is.character(annotationID), length(annotationID) == 1)
-  if (annotationID %in% annotationsNames) {
-    annotations <- jsonlite::read_json(annotationsFiles[annotationID])
-    return(annotations)
-  }
-
-  stop(sprintf("The annotationID \"%s\" is not available for this study", annotationID))
+  getElements(
+    study,
+    elements = "annotations",
+    filters = list(annotationID = annotationID),
+    fileType = "json",
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -1196,12 +1170,14 @@ getBarcodes.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getBarcodes.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
-
-  barcodes <- getBarcodes(con, modelID = modelID, ...)
-
-  return(barcodes)
+  getElements(
+    study,
+    elements = "barcodes",
+    filters = list(modelID = modelID),
+    fileType = "json",
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
@@ -1243,8 +1219,14 @@ combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
   return(newTable)
 }
 
-getElements <- function(study, elements, filters = list(), default = NULL, libraries = NULL, ...) {
-
+getElements <- function(study,
+                        elements,
+                        filters = list(),
+                        default = NULL,
+                        fileType = c("txt", "json"),
+                        libraries = NULL,
+                        ...)
+{
   oaDirectory <- system.file("OmicAnalyzer/",
                              package = paste0("OAstudy", study),
                              lib.loc = libraries)
@@ -1258,7 +1240,8 @@ getElements <- function(study, elements, filters = list(), default = NULL, libra
     stop(sprintf("Study \"%s\" does not have an elements named \"%s\"",
                  study, elements), call. = FALSE)
   }
-  elementsFiles <- getFiles(elementsDirectory)
+  fileType <- match.arg(fileType, c("txt", "json"))
+  elementsFiles <- getFiles(elementsDirectory, fileType = fileType)
 
   if (isEmpty(elementsFiles)) {
     stop("No results available for this study")
@@ -1282,22 +1265,22 @@ getElements <- function(study, elements, filters = list(), default = NULL, libra
     }
   }
 
+  readFunction <- if (fileType == "txt") readTable else readJson
   if (is.list(elementsFiles)) {
-    object <- rapply(elementsFiles, function(x)
-      data.table::fread(file = x, data.table = FALSE),
-      how = "replace")
+    object <- rapply(elementsFiles, readFunction, how = "replace")
   } else {
-    object <- data.table::fread(file = elementsFiles, data.table = FALSE)
+    object <- readFunction(elementsFiles)
   }
 
   return(object)
 }
 
-getFiles <- function(path) {
+getFiles <- function(path, fileType = "txt") {
   if (dir.exists(path)) {
     contents <- list.files(path, full.names = TRUE)
     contentsNames <- basename(contents)
-    contentsNames <- tools::file_path_sans_ext(contentsNames)
+    extensionRegEx <- sprintf("\\.%s$", fileType)
+    contentsNames <- sub(extensionRegEx, "", contentsNames)
     stats::setNames(lapply(contents, getFiles), contentsNames)
   } else {
     path
