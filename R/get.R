@@ -73,12 +73,32 @@ getModels.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getModels.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
+  oaDirectory <- system.file("OmicAnalyzer/",
+                             package = paste0("OAstudy", study),
+                             lib.loc = libraries)
+  if (oaDirectory == "") {
+    stop(sprintf("The study \"%s\" is not installed\n", study),
+         "Did you run installStudy()?\n")
+  }
+  elementsFile <- file.path(oaDirectory, "models.json")
+  if (!file.exists(elementsFile)) {
+    stop(sprintf("No models for study \"%s\"", study))
+  }
+  models <- readJson(elementsFile)
 
-  models <- getModels(con, modelID = modelID, ...)
+  if(is.null(modelID)) return(models)
 
-  return(models)
+  if (!is.character(modelID) || length(modelID) != 1) {
+    stop("modelID must be a length one character vector")
+  }
+
+  modelsAvailable <- names(models)
+  if (!modelID %in% modelsAvailable) {
+    stop(sprintf("The modelID \"%s\" is not available for study \"%s\"",
+                 modelID, study))
+  }
+
+  return(models[modelID])
 }
 
 #' @export
