@@ -48,6 +48,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportResults(study[["results"]], directoryname)
   exportEnrichments(study[["enrichments"]], directoryname)
   exportMetaFeatures(study[["metaFeatures"]], directoryname)
+  exportPlots(study[["plots"]], directoryname)
   exportBarcodes(study[["barcodes"]], directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
     study <- addOverlaps(study)
@@ -149,6 +150,16 @@ exportMetaFeatures <- function(x, path = ".") {
     fileName <- file.path(directory, names(x)[i])
     fileName <- paste0(fileName, ".txt")
     data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+  }
+}
+
+exportPlots <- function(x, path = ".") {
+  directory <- file.path(path, "plots")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".json")
+    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
   }
 }
 

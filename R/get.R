@@ -1112,12 +1112,15 @@ getPlots.SQLiteConnection <- function(study, modelID = NULL, ...) {
 #' @inheritParams listStudies
 #' @export
 getPlots.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
-
-  plots <- getPlots(con, modelID = modelID, ...)
-
-  return(plots)
+  getElements(
+    study,
+    elements = "plots",
+    filters = list(modelID = modelID),
+    default = "default",
+    fileType = "json",
+    libraries = libraries,
+    ...
+  )
 }
 
 #' @export
