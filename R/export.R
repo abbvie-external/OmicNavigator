@@ -77,8 +77,13 @@ exportFeatures <- function(x, path = ".") {
 }
 
 exportModels <- function(x, path = ".") {
-  fileName <- file.path(path, "models.json")
-  jsonlite::write_json(x, fileName, auto_unbox = TRUE, pretty = TRUE)
+  directory <- file.path(path, "models")
+  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  for (i in seq_along(x)) {
+    fileName <- file.path(directory, names(x)[i])
+    fileName <- paste0(fileName, ".json")
+    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
+  }
 }
 
 exportAssays <- function(x, path = ".") {

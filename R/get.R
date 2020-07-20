@@ -22,67 +22,17 @@ getInstalledStudies <- function(libraries = NULL) {
 #' Get models from a study
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @export
-getModels <- function(study, modelID = NULL, ...) {
-  UseMethod("getModels")
-}
-
-#' @rdname getModels
-#' @export
-getModels.oaStudy <- function(study, modelID = NULL, ...) {
-  models <- study[["models"]]
-
-  if (isEmpty(models)) {
-    stop(sprintf("No models available for study \"%s\"", study[["name"]]))
-  }
-
-  if (!is.null(modelID)) {
-    stopifnot(is.character(modelID), length(modelID) == 1)
-    if (!modelID %in% names(models)) {
-      stop(sprintf("Study \"%s\" has no model \"%s\"", study[["name"]], modelID))
-    }
-    models <- models[modelID]
-  }
-
-  return(models)
-}
-
-#' @rdname getModels
-#' @inheritParams listStudies
-#' @export
-getModels.character <- function(study, modelID = NULL, libraries = NULL, ...) {
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
-  if (oaDirectory == "") {
-    stop(sprintf("The study \"%s\" is not installed\n", study),
-         "Did you run installStudy()?\n")
-  }
-  elementsFile <- file.path(oaDirectory, "models.json")
-  if (!file.exists(elementsFile)) {
-    stop(sprintf("No models for study \"%s\"", study))
-  }
-  models <- readJson(elementsFile)
-
-  if(is.null(modelID)) return(models)
-
-  if (!is.character(modelID) || length(modelID) != 1) {
-    stop("modelID must be a length one character vector")
-  }
-
-  modelsAvailable <- names(models)
-  if (!modelID %in% modelsAvailable) {
-    stop(sprintf("The modelID \"%s\" is not available for study \"%s\"",
-                 modelID, study))
-  }
-
-  return(models[modelID])
-}
-
-#' @export
-getModels.default <- function(study, modelID = NULL, ...) {
-  stop(sprintf("No method for object of class \"%s\"", class(study)))
+getModels <- function(study, modelID = NULL, libraries = NULL) {
+  getElements(
+    study,
+    elements = "models",
+    filters = list(modelID = modelID),
+    fileType = "json",
+    libraries = libraries
+  )
 }
 
 #' Get samples from a study
@@ -438,7 +388,7 @@ getElements <- function(
     is.character(elements),
     length(elements) == 1,
     is.list(filters),
-    if (length(filters) > 0) !is.null(names(filters))
+    if (length(filters) > 0) !is.null(names(filters)) else TRUE
   )
   UseMethod("getElements")
 }
