@@ -1194,6 +1194,7 @@ getBarcodes.character <- function(study, modelID = NULL, libraries = NULL, ...) 
     study,
     elements = "barcodes",
     filters = list(modelID = modelID),
+    default = "default",
     fileType = "json",
     libraries = libraries,
     ...
