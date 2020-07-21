@@ -1,8 +1,13 @@
 
 ## I/O -------------------------------------------------------------------------
 
-readTable <- function(x, ...) {
-  data.table::fread(file = x, data.table = FALSE, ...)
+readTable <- function(x, hasRowNames = FALSE, ...) {
+  d <- data.table::fread(file = x, data.table = FALSE, ...)
+  if (hasRowNames) {
+    row.names(d) <- d[[1]]
+    d[[1]] <- NULL
+  }
+  d
 }
 
 readJson <- function(x, ...) {

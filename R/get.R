@@ -79,7 +79,8 @@ getAssays <- function(study, modelID = NULL, libraries = NULL) {
     elements = "assays",
     filters = list(modelID = modelID),
     default = "default",
-    libraries = libraries
+    libraries = libraries,
+    hasRowNames = TRUE
   )
 }
 
@@ -374,6 +375,7 @@ combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
   return(newTable)
 }
 
+# ... Arguments passed to either data.table::fread() or jsonlite::read_json()
 getElements <- function(
   study,
   elements,
@@ -496,9 +498,9 @@ getElements.character <- function(
 
   readFunction <- if (fileType == "txt") readTable else readJson
   if (is.list(elementsFiles)) {
-    object <- rapply(elementsFiles, readFunction, how = "replace")
+    object <- rapply(elementsFiles, readFunction, how = "replace", ...)
   } else {
-    object <- readFunction(elementsFiles)
+    object <- readFunction(elementsFiles, ...)
   }
 
   return(object)
