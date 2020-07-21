@@ -238,14 +238,14 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   barcodes <- getBarcodes(study, modelID = modelID)
 
   if (!barcodes[["statistic"]] %in% colnames(resultsTable)) {
-    stop(sprintf("The statistic \"%s\" is not available in the results table"),
-         barcodes[["statistic"]])
+    stop(sprintf("The statistic \"%s\" is not available in the results table",
+         barcodes[["statistic"]]))
   }
 
   annotations <- getAnnotations(study, annotationID = annotationID)
   if (!termID %in% names(annotations[["terms"]])) {
-    stop(sprintf("The term \"%s\" is not available for the annotation \"%s\""),
-         termID, annotationID)
+    stop(sprintf("The term \"%s\" is not available for the annotation \"%s\"",
+         termID, annotationID))
   }
   termFeatures <- annotations[["terms"]][[termID]]
 
@@ -264,13 +264,13 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   }
 
   if (!featureEnrichment %in% colnames(resultsTable)) {
-    stop(sprintf("The feature variable \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\""),
-         featureEnrichment, annotationID, modelID)
+    stop(sprintf("The feature variable \"%s\" used by annotation \"%s\" is not available in the results for the model \"%s\"",
+         featureEnrichment, annotationID, modelID))
   }
 
   if (!featureDisplay %in% colnames(resultsTable)) {
-    stop(sprintf("The feature variable \"%s\" for display in the barcode plot is not available in the results for the model \"%s\""),
-         featureDisplay, modelID)
+    stop(sprintf("The feature variable \"%s\" for display in the barcode plot is not available in the results for the model \"%s\"",
+         featureDisplay, modelID))
   }
 
   termFeaturesTable <- data.frame(termFeatures, stringsAsFactors = FALSE)
