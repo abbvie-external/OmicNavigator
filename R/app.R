@@ -46,7 +46,15 @@ listStudies <- function(libraries = NULL) {
       )
     }
 
-    con <- connectDatabase(studyName, libraries = libraries)
+    attempt <- try(
+      con <- connectDatabase(studyName, libraries = libraries),
+      silent = TRUE
+    )
+    if (inherits(attempt, "try-error")) {
+      warning(sprintf("Unable to import package %s", pkgName),
+              immediate. = TRUE)
+      next
+    }
 
     # Results available
     output[[i]][["results"]] <- list()
