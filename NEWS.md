@@ -1,4 +1,8 @@
-# 0.10.0.9000
+# 0.11.0
+
+* The release tarball includes [version 0.1.4 of the web app][app-v0.1.4]
+
+[app-v0.1.4]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.4
 
 * If `startApp()` is unable to run because the package was installed without the
 bundled web app, provide the URL for the releases page to download the tarball.
