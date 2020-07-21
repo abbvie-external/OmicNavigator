@@ -37,6 +37,7 @@ Suggests:
   knitr,
   markdown,
   opencpu,
-  tinytest
+  tinytest,
+  ttdo
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr

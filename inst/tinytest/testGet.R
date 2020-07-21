@@ -2,8 +2,10 @@
 
 # Setup ------------------------------------------------------------------------
 
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicAnalyzer)
-library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
@@ -23,51 +25,51 @@ emptyStudy <- createStudy(name = "empty")
 # installedStudies -------------------------------------------------------------
 
 installedStudies <- getInstalledStudies(libraries = tmplib)
-expect_identical(
+expect_identical_xl(
   installedStudies,
   testStudyName
 )
 
 # getSamples -------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getSamples(testStudyObj),
   testStudyObj[["samples"]]
 )
 
 expect_message(
-  getSamples(testStudyObj, model = "non-existent-model"),
-  "Returning \"default\" samples for model \"non-existent-model\""
+  getSamples(testStudyObj, modelID = "non-existent-model"),
+  "Returning \"default\" samples for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getSamples(testStudyObj, model = testModelName),
+expect_identical_xl(
+  getSamples(testStudyObj, modelID = testModelName),
   testStudyObj[["samples"]][["default"]]
 )
 
 
-expect_identical(
-  getSamples(testStudyObj, model = "non-existent-model"),
+expect_identical_xl(
+  getSamples(testStudyObj, modelID = "non-existent-model"),
   testStudyObj[["samples"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getSamples(testStudyName),
   testStudyObj[["samples"]]
 )
 
-expect_identical(
-  getSamples(testStudyName, model = testModelName),
+expect_identical_xl(
+  getSamples(testStudyName, modelID = testModelName),
   testStudyObj[["samples"]][["default"]]
 )
 
 expect_message(
-  getSamples(testStudyObj, model = "non-existent-model"),
-  "Returning \"default\" samples for model \"non-existent-model\""
+  getSamples(testStudyObj, modelID = "non-existent-model"),
+  "Returning \"default\" samples for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getSamples(testStudyName, model = "non-existent-model"),
+expect_identical_xl(
+  getSamples(testStudyName, modelID = "non-existent-model"),
   testStudyObj[["samples"]][["default"]]
 )
 
@@ -83,43 +85,43 @@ expect_error(
 
 # getFeatures -------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getFeatures(testStudyObj),
   testStudyObj[["features"]]
 )
 
-expect_identical(
-  getFeatures(testStudyObj, model = testModelName),
+expect_identical_xl(
+  getFeatures(testStudyObj, modelID = testModelName),
   testStudyObj[["features"]][["default"]]
 )
 
 expect_message(
-  getFeatures(testStudyObj, model = "non-existent-model"),
-  "Returning \"default\" features for model \"non-existent-model\""
+  getFeatures(testStudyObj, modelID = "non-existent-model"),
+  "Returning \"default\" features for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getFeatures(testStudyObj, model = "non-existent-model"),
+expect_identical_xl(
+  getFeatures(testStudyObj, modelID = "non-existent-model"),
   testStudyObj[["features"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getFeatures(testStudyName),
   testStudyObj[["features"]]
 )
 
-expect_identical(
-  getFeatures(testStudyName, model = testModelName),
+expect_identical_xl(
+  getFeatures(testStudyName, modelID = testModelName),
   testStudyObj[["features"]][["default"]]
 )
 
 expect_message(
-  getFeatures(testStudyName, model = "non-existent-model"),
-  "Returning \"default\" features for model \"non-existent-model\""
+  getFeatures(testStudyName, modelID = "non-existent-model"),
+  "Returning \"default\" features for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getFeatures(testStudyName, model = "non-existent-model"),
+expect_identical_xl(
+  getFeatures(testStudyName, modelID = "non-existent-model"),
   testStudyObj[["features"]][["default"]]
 )
 
@@ -135,33 +137,33 @@ expect_error(
 
 # getAssays -------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getAssays(testStudyObj),
   testStudyObj[["assays"]]
 )
 
-expect_identical(
-  getAssays(testStudyObj, model = testModelName),
+expect_identical_xl(
+  getAssays(testStudyObj, modelID = testModelName),
   testStudyObj[["assays"]][[testModelName]]
 )
 
 expect_error(
-  getAssays(testStudyObj, model = "non-existent-model"),
+  getAssays(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getAssays(testStudyName),
   testStudyObj[["assays"]]
 )
 
-expect_identical(
-  getAssays(testStudyName, model = testModelName),
+expect_identical_xl(
+  getAssays(testStudyName, modelID = testModelName),
   testStudyObj[["assays"]][[testModelName]]
 )
 
 expect_error(
-  getAssays(testStudyName, model = "non-existent-model"),
+  getAssays(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
@@ -177,33 +179,33 @@ expect_error(
 
 # getModels --------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getModels(testStudyObj),
   testStudyObj[["models"]]
 )
 
-expect_identical(
-  getModels(testStudyObj, model = testModelName),
+expect_identical_xl(
+  getModels(testStudyObj, modelID = testModelName),
   testStudyObj[["models"]][testModelName]
 )
 
 expect_error(
-  getModels(testStudyObj, model = "non-existent-model"),
+  getModels(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getModels(testStudyName),
   testStudyObj[["models"]]
 )
 
-expect_identical(
-  getModels(testStudyName, model = testModelName),
+expect_identical_xl(
+  getModels(testStudyName, modelID = testModelName),
   testStudyObj[["models"]][testModelName]
 )
 
 expect_error(
-  getModels(testStudyName, model = "non-existent-model"),
+  getModels(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
@@ -219,22 +221,22 @@ expect_error(
 
 # getTests ---------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getTests(testStudyObj),
   testStudyObj[["tests"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getTests(testStudyObj, modelID = testModelName),
   testStudyObj[["tests"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getTests(testStudyName),
   testStudyObj[["tests"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getTests(testStudyName, modelID = testModelName),
   testStudyObj[["tests"]][["default"]]
 )
@@ -251,22 +253,22 @@ expect_error(
 
 # getAnnotations ---------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getAnnotations(testStudyObj),
   testStudyObj[["annotations"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getAnnotations(testStudyObj, annotationID = testAnnotationName),
   testStudyObj[["annotations"]][[testAnnotationName]]
 )
 
-expect_identical(
+expect_identical_xl(
   getAnnotations(testStudyName),
   testStudyObj[["annotations"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getAnnotations(testStudyName, annotationID = testAnnotationName),
   testStudyObj[["annotations"]][[testAnnotationName]]
 )
@@ -283,12 +285,12 @@ expect_error(
 
 # getResults -------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getResults(testStudyObj),
   testStudyObj[["results"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getResults(testStudyObj, modelID = testModelName),
   testStudyObj[["results"]][[testModelName]]
 )
@@ -298,7 +300,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getResults(testStudyObj, modelID = testModelName, testID = testTestName),
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
@@ -326,12 +328,12 @@ expect_error(
 # The sorting can get funky when retrieving from the database. Thus for now
 # confirm the dimensions are correct. This should resolve itself if we move away
 # from the database setup.
-expect_identical(
+expect_identical_xl(
   lapply(getResults(testStudyName), function(x) lapply(x, dim)),
   lapply(testStudyObj[["results"]], function(x) lapply(x, dim))
 )
 
-expect_identical(
+expect_identical_xl(
   lapply(getResults(testStudyName, modelID = testModelName), dim),
   lapply(testStudyObj[["results"]][[testModelName]], dim)
 )
@@ -341,7 +343,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getResults(testStudyName, modelID = testModelName, testID = testTestName),
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
@@ -358,12 +360,12 @@ expect_error(
 
 # getEnrichments ---------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyObj),
   testStudyObj[["enrichments"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyObj, modelID = testModelName),
   testStudyObj[["enrichments"]][[testModelName]]
 )
@@ -373,7 +375,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
@@ -388,7 +390,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
@@ -423,12 +425,12 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyName),
   testStudyObj[["enrichments"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyName, modelID = testModelName),
   testStudyObj[["enrichments"]][[testModelName]]
 )
@@ -438,7 +440,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
@@ -453,7 +455,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-expect_identical(
+expect_identical_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
@@ -480,43 +482,43 @@ expect_error(
 
 # getMetaFeatures -------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getMetaFeatures(testStudyObj),
   testStudyObj[["metaFeatures"]]
 )
 
-expect_identical(
-  getMetaFeatures(testStudyObj, model = testModelName),
+expect_identical_xl(
+  getMetaFeatures(testStudyObj, modelID = testModelName),
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
 expect_message(
-  getMetaFeatures(testStudyObj, model = "non-existent-model"),
-  "Returning \"default\" metaFeatures for model \"non-existent-model\""
+  getMetaFeatures(testStudyObj, modelID = "non-existent-model"),
+  "Returning \"default\" metaFeatures for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getMetaFeatures(testStudyObj, model = "non-existent-model"),
+expect_identical_xl(
+  getMetaFeatures(testStudyObj, modelID = "non-existent-model"),
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getMetaFeatures(testStudyName),
   testStudyObj[["metaFeatures"]]
 )
 
-expect_identical(
-  getMetaFeatures(testStudyName, model = testModelName),
+expect_identical_xl(
+  getMetaFeatures(testStudyName, modelID = testModelName),
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
 expect_message(
-  getMetaFeatures(testStudyName, model = "non-existent-model"),
-  "Returning \"default\" metaFeatures for model \"non-existent-model\""
+  getMetaFeatures(testStudyName, modelID = "non-existent-model"),
+  "Returning \"default\" metaFeatures for modelID \"non-existent-model\""
 )
 
-expect_identical(
-  getMetaFeatures(testStudyName, model = "non-existent-model"),
+expect_identical_xl(
+  getMetaFeatures(testStudyName, modelID = "non-existent-model"),
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
@@ -532,17 +534,17 @@ expect_error(
 
 # getPlots ---------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyObj),
   testStudyObj[["plots"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyObj, modelID = testModelName),
   testStudyObj[["plots"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyObj, modelID = "model_03"),
   testStudyObj[["plots"]][["model_03"]]
 )
@@ -557,29 +559,29 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyName),
   testStudyObj[["plots"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyName, modelID = testModelName),
   testStudyObj[["plots"]][["default"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getPlots(testStudyName, modelID = "model_03"),
   testStudyObj[["plots"]][["model_03"]]
 )
 
 # getBarcodes ---------------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getBarcodes(testStudyObj),
   testStudyObj[["barcodes"]]
 )
 
-expect_identical(
+expect_identical_xl(
   getBarcodes(testStudyObj, modelID = testModelName),
   testStudyObj[["barcodes"]][["default"]]
 )
@@ -594,14 +596,14 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-expect_identical(
+expect_identical_xl(
   getBarcodes(testStudyName, modelID = testModelName),
   list(statistic = "beta", logFoldChange = NA_character_, absolute = 1L,
        labelStat = "Beta coefficient", labelLow = "Small effect size",
        labelHigh = "Large effect size", featureDisplay = NA_character_)
 )
 
-expect_identical(
+expect_identical_xl(
   getBarcodes(testStudyObj, modelID = "model_03"),
   testStudyObj[["barcodes"]][["model_03"]],
   info = "Confirm model-specific barcode data returned"
