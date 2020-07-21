@@ -112,9 +112,9 @@ the log fold change values.
 3) \code{labelStat} - The x-axis label to describe the statistic.
 4) \code{labelLow} - The left-side label to describe low values of the statistic.
 5) \code{labelHigh} - The right-side label to describe high values of the statistic.
-To share metadata across multiple models, use the model ID "default".
 6) \code{featureDisplay} - The feature variable to use to label the barcode plot
-on hover.}
+on hover.
+To share metadata across multiple models, use the model ID "default".}
 
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is

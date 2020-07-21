@@ -586,6 +586,12 @@ expect_identical_xl(
   testStudyObj[["barcodes"]][["default"]]
 )
 
+expect_identical_xl(
+  getBarcodes(testStudyObj, modelID = "model_03"),
+  testStudyObj[["barcodes"]][["model_03"]],
+  info = "Confirm model-specific barcode data returned"
+)
+
 expect_error(
   getBarcodes(emptyStudy),
   "No barcodes available"
@@ -598,13 +604,16 @@ expect_error(
 
 expect_identical_xl(
   getBarcodes(testStudyName, modelID = testModelName),
-  list(statistic = "beta", logFoldChange = NA_character_, absolute = 1L,
-       labelStat = "Beta coefficient", labelLow = "Small effect size",
-       labelHigh = "Large effect size", featureDisplay = NA_character_)
+  list(
+    statistic = "beta",
+    labelStat = "Beta coefficient",
+    labelLow = "Small effect size",
+    labelHigh = "Large effect size"
+  )
 )
 
 expect_identical_xl(
-  getBarcodes(testStudyObj, modelID = "model_03"),
+  getBarcodes(testStudyName, modelID = "model_03"),
   testStudyObj[["barcodes"]][["model_03"]],
   info = "Confirm model-specific barcode data returned"
 )

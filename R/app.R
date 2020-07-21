@@ -237,6 +237,26 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   resultsTable <- getResultsTable(study, modelID = modelID, testID = testID)
   barcodes <- getBarcodes(study, modelID = modelID)
 
+  # Default barcode settings. See ?addBarcodes
+  if (is.null(barcodes[["logFoldChange"]])) {
+    barcodes[["logFoldChange"]] <- NA_character_
+  }
+  if (is.null(barcodes[["absolute"]])) {
+    barcodes[["absolute"]] <- TRUE
+  }
+  if (is.null(barcodes[["labelStat"]])) {
+    barcodes[["labelStat"]] <- barcodes[["statistic"]]
+  }
+  if (is.null(barcodes[["labelLow"]])) {
+    barcodes[["labelLow"]] <- "Low"
+  }
+  if (is.null(barcodes[["labelHigh"]])) {
+    barcodes[["labelHigh"]] <- "High"
+  }
+  if (is.null(barcodes[["featureDisplay"]])) {
+    barcodes[["featureDisplay"]] <- NA_character_
+  }
+
   if (!barcodes[["statistic"]] %in% colnames(resultsTable)) {
     stop(sprintf("The statistic \"%s\" is not available in the results table",
          barcodes[["statistic"]]))
