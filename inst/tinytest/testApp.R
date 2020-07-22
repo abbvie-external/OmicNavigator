@@ -124,7 +124,11 @@ expect_identical(
 
 # getEnrichmentsNetwork --------------------------------------------------------
 
-enrichmentsNetwork <- getEnrichmentsNetwork(testStudyName, testModelName, testAnnotationName)
+enrichmentsNetwork <- getEnrichmentsNetwork(
+  testStudyName,
+  testModelName,
+  testAnnotationName
+)
 
 expect_identical(
   class(enrichmentsNetwork),
@@ -143,12 +147,12 @@ expect_identical(
 
 expect_error(
   getEnrichmentsNetwork(testStudyObj),
-  "The Enrichment Network is only available for study packages or databases"
+  "The Enrichment Network is only available for study packages"
 )
 
 expect_error(
   getEnrichmentsNetwork(1),
-  "No method for object of class \"numeric\""
+  "missing"
 )
 
 # getMetaFeaturesTable ---------------------------------------------------------

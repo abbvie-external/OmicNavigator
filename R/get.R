@@ -116,6 +116,21 @@ getAnnotations <- function(study, annotationID = NULL, libraries = NULL) {
   )
 }
 
+#' Get overlaps from a study
+#'
+#' @inheritParams shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getOverlaps <- function(study, annotationID = NULL, libraries = NULL) {
+  getElements(
+    study,
+    elements = "overlaps",
+    filters = list(annotationID = annotationID),
+    libraries = libraries
+  )
+}
+
 #' Get results from a study
 #'
 #' @inheritParams shared-get
@@ -203,63 +218,54 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #' Get enrichments network from a study
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @export
-getEnrichmentsNetwork <- function(study, modelID, annotationID, ...) {
-  UseMethod("getEnrichmentsNetwork")
-}
+getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
+  if (inherits(study, "oaStudy")) {
+    stop("The Enrichment Network is only available for study packages")
+  }
 
-#' @rdname getEnrichmentsNetwork
-#' @importFrom dplyr "%>%"
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
-#' @export
-getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID, ...) {
+  annotation <- getAnnotations(
+    study,
+    annotationID = annotationID,
+    libraries = libraries
+  )
 
-  terms <- dplyr::tbl(study, "terms") %>%
-    dplyr::filter(.data$annotationID == !! annotationID) %>%
-    dplyr::group_by(.data$termID) %>%
-    dplyr::tally(name = "geneSetSize") %>%
-    dplyr::collect()
+  terms <- lengths(annotation[["terms"]])
+  terms <- data.frame(
+    termID = names(terms),
+    geneSetSize = terms,
+    stringsAsFactors = FALSE
+  )
 
   enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
-  nodesLong <- enrichmentsTable %>%
-    dplyr::left_join(terms, by = "termID") %>%
-    dplyr::arrange(.data$testID)
+  nodesLong <- merge(enrichmentsTable, terms, by = "termID",
+                     all.x = TRUE, all.y = FALSE, sort = FALSE)
+  nodesLong <- nodesLong[order(nodesLong[["testID"]]), ]
 
   tests <- unique(nodesLong[["testID"]])
 
-  if (nrow(nodesLong) == 0) {
-    stop("Invalid filters.\n",
-         if (is.null(modelID)) "modelID: No filter applied\n"
-         else sprintf("modelID: \"%s\"\n", modelID),
-         if (is.null(annotationID)) "annotationID: No filter applied\n"
-         else sprintf("annotationID: \"%s\"\n", annotationID)
-    )
-  }
+  nodes <- aggregate(
+    cbind(nominal, adjusted) ~ termID + description + geneSetSize,
+    data = nodesLong,
+    FUN = list
+  )
+  nodes <- cbind(id = seq_len(nrow(nodes)), nodes)
 
-  nodes <- nodesLong %>%
-    dplyr::group_by(.data$termID, .data$description, .data$geneSetSize) %>%
-    dplyr::summarize(nominal = list(.data$nominal), adjusted = list(.data$adjusted)) %>%
-    dplyr::ungroup() %>%
-    dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(.data$id, .data$termID, .data$description, .data$geneSetSize,
-                  .data$nominal, .data$adjusted) %>%
-    as.data.frame()
+  overlaps <- getOverlaps(
+    study,
+    annotationID = annotationID,
+    libraries = libraries
+  )
 
-  links <- dplyr::tbl(study, "overlaps") %>%
-    dplyr::filter(.data$annotationID ==  !! annotationID) %>%
-    dplyr::select(-.data$annotationID) %>%
-    dplyr::arrange(.data$term1, .data$term2) %>%
-    dplyr::rename(source = .data$term1, target = .data$term2) %>%
-    dplyr::collect() %>%
-    dplyr::semi_join(nodes, by = c("source" = "termID")) %>%
-    dplyr::semi_join(nodes, by = c("target" = "termID")) %>%
-    dplyr::mutate(id = seq_len(dplyr::n())) %>%
-    dplyr::select(.data$id, dplyr::everything()) %>%
-    as.data.frame()
+  links <- overlaps
+  colnames(links)[1:2] <- c("source", "target")
+  links <- links[links[["source"]] %in% nodes[["termID"]] &
+                 links[["target"]] %in% nodes[["termID"]], ]
+  links <- cbind(id = seq_len(nrow(links)), links)
 
   # Use node IDs with links
   links[["source"]] <- match(links[["source"]], nodes[["termID"]])
@@ -268,27 +274,6 @@ getEnrichmentsNetwork.SQLiteConnection <- function(study, modelID, annotationID,
   enrichmentsNetwork <- list(tests = tests, nodes = nodes, links = links)
 
   return(enrichmentsNetwork)
-}
-
-#' @rdname getEnrichmentsNetwork
-#' @inheritParams listStudies
-#' @export
-getEnrichmentsNetwork.character <- function(study, modelID, annotationID, libraries = NULL, ...) {
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
-
-  enrichments <- getEnrichmentsNetwork(con, modelID = modelID, annotationID = annotationID, ...)
-
-  return(enrichments)
-}
-
-#' @export
-getEnrichmentsNetwork.default <- function(study, modelID, annotationID, ...) {
-  if (inherits(study, "oaStudy")) {
-    stop("The Enrichment Network is only available for study packages or databases")
-  }
-
-  stop(sprintf("No method for object of class \"%s\"", class(study)))
 }
 
 #' Get metaFeatures from a study
