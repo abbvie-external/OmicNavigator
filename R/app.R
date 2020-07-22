@@ -168,31 +168,30 @@ listStudies <- function(libraries = NULL) {
 #'
 #' @seealso \code{\link{getLinkFeatures}}
 #'
-#' @importFrom dplyr "%>%"
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
 #' @export
 getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
-  if (inherits(study, "oaStudy") || inherits(study, "SQLiteConnection")) {
+  if (inherits(study, "oaStudy")) {
     stop("\"study\" must be the name of an installed study package")
   }
+  stopifnot(
+    is.character(study), length(study) == 1,
+    is.character(annotationID), length(annotationID) == 1,
+    is.character(termID), length(termID) == 1
+  )
 
-  con <- connectDatabase(study, libraries = libraries)
-  on.exit(disconnectDatabase(con))
+  annotation <- getAnnotations(
+    study,
+    annotationID = annotationID,
+    libraries = libraries
+  )
 
-  terms <- dplyr::tbl(con, "terms") %>%
-    dplyr::filter(.data$annotationID == !! annotationID,
-                  .data$termID == !! termID) %>%
-    dplyr::collect()
-
-  if (nrow(terms) == 0) {
-    stop("Invalid filters.\n",
-         sprintf("annotationID: \"%s\"\n", annotationID),
-         sprintf("termID: \"%s\"\n", termID)
-    )
+  termsAvailable <- names(annotation[["terms"]])
+  if (!termID %in% termsAvailable) {
+    stop(sprintf("The termID \"%s\" is not available for annotationID \"%s\"",
+                 termID, annotationID))
   }
 
-  nodeFeatures <- sort(terms[["featureID"]])
+  nodeFeatures <- sort(annotation[["terms"]][[termID]])
 
   return(nodeFeatures)
 }
