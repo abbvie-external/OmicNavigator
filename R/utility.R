@@ -78,55 +78,13 @@ hasUniqueIdColumn <- function(x) {
   }
 }
 
-#' @importFrom dplyr "%>%"
-#' @importFrom rlang "!!"
-#' @importFrom rlang ".data"
-assaysToLong <- function(x, modelID) {
-  x %>%
-    dplyr::mutate(featureID = rownames(.)) %>%
-    tidyr::pivot_longer(cols = -.data$featureID,
-                        names_to = "sampleID",
-                        values_to = "quantification") %>%
-    dplyr::mutate(modelID = !! modelID) %>%
-    dplyr::select(.data$featureID, .data$sampleID, .data$modelID, .data$quantification)
-}
-
-assaysToWide <- function(x) {
-  wide <- tidyr::pivot_wider(x,
-                             names_from = "sampleID",
-                             values_from = "quantification")
-  wide <- as.data.frame(wide)
-  rownames(wide) <- wide[, 1]
-  wide <- wide[, -1]
-  return(wide)
-}
-
 enrichmentsToWide <- function(x, type) {
-  output <- x
-  if (type == "nominal") {
-    output[["adjusted"]] <- NULL
-    output <- tidyr::pivot_wider(
-      output,
-      names_from = .data$testID,
-      values_from = .data$nominal
-    )
-  } else {
-    output[["nominal"]] <- NULL
-    output <- tidyr::pivot_wider(
-      output,
-      names_from = .data$testID,
-      values_from = .data$adjusted
-    )
-  }
-
-  output <- as.data.frame(output)
+  data.table::setDT(x)
+  output <- data.table::dcast.data.table(
+    x,
+    termID + description ~ testID,
+    value.var = type
+  )
+  data.table::setDF(output)
   return(output)
-}
-
-removeNaColumns <- function(x) {
-  stopifnot(inherits(x, "data.frame"))
-
-  naCols <- vapply(x, function(y) all(is.na(y)), logical(1))
-
-  return(x[, !naCols])
 }

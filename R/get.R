@@ -248,7 +248,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 
   tests <- unique(nodesLong[["testID"]])
 
-  nodes <- aggregate(
+  nodes <- stats::aggregate(
     cbind(nominal, adjusted) ~ termID + description + geneSetSize,
     data = nodesLong,
     FUN = list

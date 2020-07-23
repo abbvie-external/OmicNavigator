@@ -114,7 +114,7 @@ expect_true(all(getTests(testStudyName, testModelName)[, "testID"] %in% colnames
 
 expect_error(
   getEnrichmentsTable(1),
-  "No method for object of class \"numeric\""
+  "missing"
 )
 
 expect_identical(
