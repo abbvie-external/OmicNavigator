@@ -443,9 +443,7 @@ getElements.character <- function(
   ...
 )
 {
-  oaDirectory <- system.file("OmicAnalyzer/",
-                             package = paste0("OAstudy", study),
-                             lib.loc = libraries)
+  oaDirectory <- getDirectory(study, libraries)
   if (oaDirectory == "") {
     stop(sprintf("The study \"%s\" is not installed\n", study),
          "Did you run installStudy()?\n")
@@ -489,6 +487,12 @@ getElements.character <- function(
   }
 
   return(object)
+}
+
+getDirectory <- function(study, libraries = NULL) {
+  system.file("OmicAnalyzer/",
+              package = paste0("OAstudy", study),
+              lib.loc = libraries)
 }
 
 getFiles <- function(path, fileType = "txt") {

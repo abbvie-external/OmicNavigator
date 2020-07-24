@@ -47,114 +47,86 @@ listStudies <- function(libraries = NULL) {
       )
     }
 
-    attempt <- try(
-      con <- connectDatabase(studyName, libraries = libraries),
-      silent = TRUE
-    )
-    if (inherits(attempt, "try-error")) {
+    studyDirectory <- getDirectory(studyName, libraries)
+    studyFiles <- getFiles(studyDirectory)
+    if (!all(c("results", "enrichments", "plots") %in% names(studyFiles))) {
       warning(sprintf("Unable to import package %s", pkgName),
               immediate. = TRUE)
       next
     }
 
-    # Results available
-    output[[i]][["results"]] <- list()
-    models <- dplyr::tbl(con, "models")
-    tests <- dplyr::tbl(con, "tests")
-    results <- dplyr::tbl(con, "results") %>%
-      dplyr::select(.data$modelID, .data$testID) %>%
-      dplyr::distinct() %>%
-      dplyr::arrange(.data$modelID, .data$testID) %>%
-      dplyr::left_join(models, by = "modelID") %>%
-      dplyr::left_join(tests, by = "testID", suffix = c(".model", ".test")) %>%
-      dplyr::rename(modelID = .data$modelID.model) %>%
-      dplyr::collect() %>%
-      as.data.frame(stringsAsFactors = FALSE)
+    models <- getModels(studyName, libraries = libraries)
+    tests <- getTests(studyName, libraries = libraries)
+    testsVectors <- lapply(tests, function(x) {
+      vec <- x[["description"]]
+      stats::setNames(vec, x[["testID"]])
+    })
 
-    resultsModels <- unique(results[["modelID"]])
-    for (j in seq_along(resultsModels)) {
-      modelID <- resultsModels[j]
-      modelDisplay <- unique(results[results[["modelID"]] == modelID,
-                                     "description.model"])
-      output[[i]][["results"]][[j]] <- list(
-        modelID = modelID,
-        modelDisplay = modelDisplay
-      )
-      modelTests <- results[results[["modelID"]] == modelID, "testID"]
-      modelTestsDescriptions <- results[results[["modelID"]] == modelID,
-                                        "description.test"]
-      output[[i]][["results"]][[j]][["tests"]] <- vector("list", length(modelTests))
-      for (k in seq_along(modelTests)) {
-        output[[i]][["results"]][[j]][["tests"]][[k]] <- list(
-          testID = modelTests[k],
-          testDisplay = modelTestsDescriptions[k]
-        )
+    # Results available
+    results <- studyFiles[["results"]]
+    resultsModels <- names(results)
+    resultsModelsDisplay <- unlist(models[resultsModels], use.names = FALSE)
+    outputResults <- vector("list", length = length(resultsModels))
+    for (j in seq_along(outputResults)) {
+      tmpModelID <- resultsModels[j]
+      outputResults[[j]] <- list(modelID = tmpModelID,
+                                 modelDisplay = resultsModelsDisplay[j])
+      tmpTests <- names(results[[j]])
+      tmpTestsDisplay <- testsVectors[[tmpModelID]][tmpTests]
+      names(tmpTestsDisplay) <- NULL
+      outputResults[[j]][["tests"]] <- vector("list", length = length(tmpTests))
+      for (k in seq_along(tmpTests)) {
+        outputResults[[j]][["tests"]][[k]] <- list(testID = tmpTests[k],
+                                                   testDisplay = tmpTestsDisplay[k])
       }
     }
+
+    output[[i]][["results"]] <- outputResults
 
     # Enrichments available
-    output[[i]][["enrichments"]] <- list()
-    annotations <- dplyr::tbl(con, "annotations")
-    enrichments <- dplyr::tbl(con, "enrichments") %>%
-      dplyr::select(.data$modelID, .data$annotationID) %>%
-      dplyr::distinct() %>%
-      dplyr::arrange(.data$modelID, .data$annotationID) %>%
-      dplyr::left_join(models, by = "modelID") %>%
-      dplyr::left_join(annotations, by = "annotationID", suffix = c(".model", ".annotation")) %>%
-      dplyr::collect() %>%
-      as.data.frame(stringsAsFactors = FALSE)
-
-    enrichmentsModels <- unique(enrichments[["modelID"]])
-    for (j in seq_along(enrichmentsModels)) {
-      modelID <- enrichmentsModels[j]
-      modelDisplay <- unique(enrichments[enrichments[["modelID"]] == modelID,
-                                         "description.model"])
-      output[[i]][["enrichments"]][[j]] <- list(
-        modelID = modelID,
-        modelDisplay = modelDisplay
-      )
-      modelAnnotations <- enrichments[enrichments[["modelID"]] == modelID, "annotationID"]
-      modelAnnotationsDescriptions <- enrichments[enrichments[["modelID"]] == modelID,
-                                                  "description.annotation"]
-      output[[i]][["enrichments"]][[j]][["annotations"]] <- vector("list", length(modelAnnotations))
-      for (k in seq_along(modelAnnotations)) {
-        output[[i]][["enrichments"]][[j]][["annotations"]][[k]] <- list(
-          annotationID = modelAnnotations[k],
-          annotationDisplay = modelAnnotationsDescriptions[k]
-        )
+    enrichments <- studyFiles[["enrichments"]]
+    enrichmentsModels <- names(enrichments)
+    enrichmentsModelsDisplay <- unlist(models[enrichmentsModels], use.names = FALSE)
+    outputEnrichments <- vector("list", length = length(enrichmentsModels))
+    for (j in seq_along(outputEnrichments)) {
+      tmpModelID <- enrichmentsModels[j]
+      outputEnrichments[[j]] <- list(modelID = tmpModelID,
+                                 modelDisplay = enrichmentsModelsDisplay[j])
+      tmpAnnotations <- names(enrichments[[j]])
+      outputEnrichments[[j]][["annotations"]] <- vector("list", length = length(tmpAnnotations))
+      for (k in seq_along(tmpAnnotations)) {
+        outputEnrichments[[j]][["annotations"]][[k]] <- list(annotationID = tmpAnnotations[k],
+                                                             annotationDisplay = "need-to-implement")
       }
     }
+
+    output[[i]][["enrichments"]] <- outputEnrichments
 
     # Plots available
     plotsModels <- unique(c(resultsModels, enrichmentsModels))
-    modelsTable <- dplyr::collect(models)
-    plotsModelsDescriptions <- modelsTable[["description"]][
-      match(plotsModels, modelsTable[["modelID"]])
-    ]
-    output[[i]][["plots"]] <- vector("list", length(plotsModels))
-    for (j in seq_along(plotsModels)) {
-      modelID <- plotsModels[j]
-      modelDisplay <- plotsModelsDescriptions[j]
-      output[[i]][["plots"]][[j]] <- list(
-        modelID = modelID,
-        modelDisplay = modelDisplay
-      )
+    plotsModelsDisplay <- unlist(models[plotsModels], use.names = FALSE)
+    outputPlots <- vector("list", length = length(plotsModels))
+    for (j in seq_along(outputPlots)) {
+      tmpModelID <- plotsModels[j]
+      outputPlots[[j]] <- list(modelID = tmpModelID,
+                               modelDisplay = plotsModelsDisplay[j])
       plots <- tryCatch(
-        getPlots(con, modelID = modelID),
+        getPlots(studyName, modelID = tmpModelID),
         error = function(e) list()
       )
-      plotsDisplay <- vapply(plots, function(x) x[["displayName"]],
-                             character(1), USE.NAMES = FALSE)
-      output[[i]][["plots"]][[j]][["plots"]] <- vector("list", length(plots))
-      for (k in seq_along(plots)) {
-        output[[i]][["plots"]][[j]][["plots"]][[k]] <- list(
-          plotID = names(plots)[k],
-          plotDisplay = plotsDisplay[k]
-        )
+
+      tmpPlots <- names(plots)
+      outputPlots[[j]][["plots"]] <- vector("list", length = length(tmpPlots))
+      for (k in seq_along(tmpPlots)) {
+        tmpPlotID <- tmpPlots[k]
+        tmpPlotDisplay <- plots[[k]][["displayName"]]
+        if (is.null(tmpPlotDisplay)) tmpPlotDisplay <- tmpPlotID
+        outputPlots[[j]][["plots"]][[k]] <- list(plotID = tmpPlotID,
+                                                 plotDisplay = tmpPlotDisplay)
       }
     }
 
-    disconnectDatabase(con)
+    output[[i]][["plots"]] <- outputPlots
   }
 
   return(output)
