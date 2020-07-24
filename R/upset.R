@@ -329,6 +329,7 @@ getEnrichmentsUpset <- function(
   sigValue,
   operator,
   type,
+  tests,
   ...
 )
 {
@@ -350,7 +351,8 @@ getEnrichmentsUpset <- function(
     annotation = annotationID,
     sigValue = sigValue,
     operator = operator,
-    pValType = type
+    pValType = type,
+    tests = tests
   )
 
   return(enrichmentsUpset)
@@ -363,6 +365,7 @@ getEnrichmentsUpset <- function(
 #' @param annotation The annotation
 #' @param operator The operators
 #' @param pValType nominal or adjusted
+#' @param tests The tests
 #' Note: The sigValue and operator parameter vectors must be the same length.
 #'
 #' @return An SVG
@@ -375,44 +378,51 @@ getEnrichmentsUpset <- function(
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'   * Passed `na.rm = TRUE` to sum() to handle missing values
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
+#'   * Added tests parameter and respective subset functionality
+#'   * Removed colsUsed variable and replaced with tests
 #'
 #' @noRd
-EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal") {
+EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal", tests) {
 
   if (length(sigValue) != length(operator)) {
     stop("The arguments sigValue and operator must be the same length")
+  }
+  if(length(tests) < 2){
+    stop("UpSet plot requires two or more tests to subset")
   }
 
   if(pValType=="nominal"){
     Identifier <- Enrichment.Results[[testCategory]][[annotation]][,1]
     data <- Enrichment.Results[[testCategory]][[annotation]][,names(Enrichment.Results[[testCategory]][[annotation]])]
-    colsUsed <- names(Enrichment.Results[[testCategory]][[annotation]])
   }else{
     Identifier <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,1]
     data <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,names(Enrichment.Results.Adjusted[[testCategory]][[annotation]])]
-    colsUsed <- names(Enrichment.Results.Adjusted[[testCategory]][[annotation]])
   }
 
   for(i in 1:ncol(data)){
-    temp = data.frame(data[,1])
-    temp$newCol = 1
-    for(j in 1:length(operator)){
-      sigCol = data[,i]
-      if(operator[j]=="<"){sigCol <- as.numeric(sigCol < sigValue[j])}
-      else if(operator[j]==">"){sigCol <- as.numeric(sigCol > sigValue[j])}
-      temp = cbind(temp, sigCol)
-      temp[,2] = as.integer(temp[,2] & temp[,3])
-      temp = temp[,-3]
+    if(colnames(data)[i]%in%tests){
+      temp = data.frame(data[,1])
+      temp$newCol = 1
+      for(j in 1:length(operator)){
+        sigCol = data[,i]
+        if(operator[j]=="<"){sigCol <- as.numeric(sigCol < sigValue[j])}
+        else if(operator[j]==">"){sigCol <- as.numeric(sigCol > sigValue[j])}
+        temp = cbind(temp, sigCol)
+        temp[,2] = as.integer(temp[,2] & temp[,3])
+        temp = temp[,-3]
+      }
+      if(sum(temp[,2], na.rm = TRUE) == 0){tests <- tests[tests != colnames(data)[i]]}
+      data[,i] = temp[,2]
     }
-    if(sum(temp[,2], na.rm = TRUE) == 0){colsUsed <- colsUsed[colsUsed != colnames(data)[i]]}
-    data[,i] = temp[,2]
   }
-  if(length(colsUsed) <= 1){return(NULL)}
+  if(length(tests) < 2){
+    stop("Not enough significant elements to create upset plot")
+  }
 
   data <- cbind(Identifier, data)
 
   #Create the upset plot.
-  rv <- UpSetR::upset(data, sets = colsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+  rv <- UpSetR::upset(data, sets = tests, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
 
   print(rv)
   invisible();
