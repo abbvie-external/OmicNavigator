@@ -6,8 +6,6 @@
 #'   \code{\link[utils]{installed.packages}} will use the result of
 #'   \code{\link{.libPaths}}.
 #'
-#' @importFrom dplyr "%>%"
-#' @importFrom rlang ".data"
 #' @export
 listStudies <- function(libraries = NULL) {
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))

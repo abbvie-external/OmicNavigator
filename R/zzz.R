@@ -3,11 +3,6 @@
 # version, then listStudies() will throw a warning.
 minVersionCompatible <- "0.5.0"
 
-utils::globalVariables(".")
-
-#' @importFrom dbplyr as.sql
-NULL
-
 #' Shared parameters for add functions
 #'
 #' @name shared-add

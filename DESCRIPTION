@@ -21,13 +21,8 @@ Depends:
   R (>= 3.2.0)
 Imports:
   data.table,
-  DBI,
-  dbplyr,
-  dplyr (>= 1.0.0),
   graphics,
   jsonlite,
-  rlang,
-  RSQLite (>= 2.1.1),
   stats,
   UpSetR,
   utils
