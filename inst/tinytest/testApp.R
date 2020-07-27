@@ -2,8 +2,10 @@
 
 # Setup ------------------------------------------------------------------------
 
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicAnalyzer)
-library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
@@ -93,10 +95,10 @@ expect_true(all(colnames(results) %in% colnames(resultsTable)))
 
 expect_error(
   getResultsTable(1),
-  "No method for object of class \"numeric\""
+  "missing"
 )
 
-expect_identical(
+expect_equal_with_diff(
   resultsTable,
   getResultsTable(testStudyObj, testModelName, testTestName)
 )
@@ -208,7 +210,7 @@ expect_identical(
   info = "Barcode results should be ordered by statistic column"
 )
 
-expect_equal(
+expect_equal_with_diff(
   barcodeData[["highest"]],
   ceiling(max(abs(barcodeData[["data"]][, "statistic"])))
 )
