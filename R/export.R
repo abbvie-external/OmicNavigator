@@ -50,6 +50,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportMetaFeatures(study[["metaFeatures"]], directoryname)
   exportPlots(study[["plots"]], directoryname)
   exportBarcodes(study[["barcodes"]], directoryname)
+  exportSummary(study, directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
     study <- addOverlaps(study)
   }
@@ -176,6 +177,78 @@ exportBarcodes <- function(x, path = ".") {
     fileName <- paste0(fileName, ".json")
     jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
   }
+}
+
+exportSummary <- function(x, path = ".") {
+
+  resultsModels <- names(x[["results"]])
+  enrichmentsModels <- names(x[["enrichments"]])
+  # Plots can be shared across models using modelID "default". Thus need to
+  # consider all models that have inference results or enrichments available.
+  plotsModels <- unique(c(resultsModels, enrichmentsModels))
+
+  output <- list(
+    results = vector("list", length(resultsModels)),
+    enrichments = vector("list", length(enrichmentsModels)),
+    plots = vector("list", length(plotsModels))
+  )
+
+  for (i in seq_along(resultsModels)) {
+    modelID <- resultsModels[i]
+    output[["results"]][[i]] <- list(
+      modelID = modelID,
+      modelDisplay = getModels(x, modelID = modelID)
+    )
+    modelTests <- names(x[["results"]][[modelID]])
+    output[["results"]][[i]][["tests"]] <- vector("list", length(modelTests))
+    for (j in seq_along(modelTests)) {
+      testID <- modelTests[j]
+      output[["results"]][[i]][["tests"]][[j]] <- list(
+        testID = testID,
+        testDisplay = getTests(x, modelID = modelID)[j, "description"]
+      )
+    }
+  }
+
+  for (i in seq_along(enrichmentsModels)) {
+    modelID <- enrichmentsModels[i]
+    output[["enrichments"]][[i]] <- list(
+      modelID = modelID,
+      modelDisplay = getModels(x, modelID = modelID)
+    )
+    modelAnnotations <- names(x[["enrichments"]][[modelID]])
+    output[["enrichments"]][[i]][["annotations"]] <- vector("list", length(modelAnnotations))
+    for (j in seq_along(modelAnnotations)) {
+      annotationID <- modelAnnotations[j]
+      output[["enrichments"]][[i]][["annotations"]][[j]] <- list(
+        annotationID = annotationID,
+        annotationDisplay = getAnnotations(x, annotationID = annotationID)[["description"]]
+      )
+    }
+  }
+
+  for (i in seq_along(plotsModels)) {
+    modelID <- plotsModels[i]
+    output[["plots"]][[i]] <- list(
+      modelID = modelID,
+      modelDisplay = getModels(x, modelID = modelID)
+    )
+    modelPlots <-tryCatch(
+      getPlots(x, modelID = modelID),
+      error = function(e) list()
+    )
+    output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
+    for (j in seq_along(modelPlots)) {
+      plotID <- names(modelPlots)[j]
+      output[["plots"]][[i]][["plots"]][[j]] <- list(
+        plotID = plotID,
+        plotDisplay = modelPlots[[j]][["displayName"]]
+      )
+    }
+  }
+
+  fileName <- file.path(path, "summary.json")
+  jsonlite::write_json(output, fileName, auto_unbox = TRUE, pretty = TRUE)
 }
 
 exportOverlaps <- function(x, path = ".") {

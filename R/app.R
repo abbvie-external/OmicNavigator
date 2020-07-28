@@ -46,85 +46,15 @@ listStudies <- function(libraries = NULL) {
     }
 
     studyDirectory <- getDirectory(studyName, libraries)
-    studyFiles <- getFiles(studyDirectory)
-    if (!all(c("results", "enrichments", "plots") %in% names(studyFiles))) {
+    studySummaryFile <- file.path(studyDirectory, "summary.json")
+    if (!file.exists(studySummaryFile)) {
       warning(sprintf("Unable to import package %s", pkgName),
               immediate. = TRUE)
       next
     }
 
-    models <- getModels(studyName, libraries = libraries)
-    tests <- getTests(studyName, libraries = libraries)
-    testsVectors <- lapply(tests, function(x) {
-      vec <- x[["description"]]
-      stats::setNames(vec, x[["testID"]])
-    })
-
-    # Results available
-    results <- studyFiles[["results"]]
-    resultsModels <- names(results)
-    resultsModelsDisplay <- unlist(models[resultsModels], use.names = FALSE)
-    outputResults <- vector("list", length = length(resultsModels))
-    for (j in seq_along(outputResults)) {
-      tmpModelID <- resultsModels[j]
-      outputResults[[j]] <- list(modelID = tmpModelID,
-                                 modelDisplay = resultsModelsDisplay[j])
-      tmpTests <- names(results[[j]])
-      tmpTestsDisplay <- testsVectors[[tmpModelID]][tmpTests]
-      names(tmpTestsDisplay) <- NULL
-      outputResults[[j]][["tests"]] <- vector("list", length = length(tmpTests))
-      for (k in seq_along(tmpTests)) {
-        outputResults[[j]][["tests"]][[k]] <- list(testID = tmpTests[k],
-                                                   testDisplay = tmpTestsDisplay[k])
-      }
-    }
-
-    output[[i]][["results"]] <- outputResults
-
-    # Enrichments available
-    enrichments <- studyFiles[["enrichments"]]
-    enrichmentsModels <- names(enrichments)
-    enrichmentsModelsDisplay <- unlist(models[enrichmentsModels], use.names = FALSE)
-    outputEnrichments <- vector("list", length = length(enrichmentsModels))
-    for (j in seq_along(outputEnrichments)) {
-      tmpModelID <- enrichmentsModels[j]
-      outputEnrichments[[j]] <- list(modelID = tmpModelID,
-                                 modelDisplay = enrichmentsModelsDisplay[j])
-      tmpAnnotations <- names(enrichments[[j]])
-      outputEnrichments[[j]][["annotations"]] <- vector("list", length = length(tmpAnnotations))
-      for (k in seq_along(tmpAnnotations)) {
-        outputEnrichments[[j]][["annotations"]][[k]] <- list(annotationID = tmpAnnotations[k],
-                                                             annotationDisplay = "need-to-implement")
-      }
-    }
-
-    output[[i]][["enrichments"]] <- outputEnrichments
-
-    # Plots available
-    plotsModels <- unique(c(resultsModels, enrichmentsModels))
-    plotsModelsDisplay <- unlist(models[plotsModels], use.names = FALSE)
-    outputPlots <- vector("list", length = length(plotsModels))
-    for (j in seq_along(outputPlots)) {
-      tmpModelID <- plotsModels[j]
-      outputPlots[[j]] <- list(modelID = tmpModelID,
-                               modelDisplay = plotsModelsDisplay[j])
-      plots <- tryCatch(
-        getPlots(studyName, modelID = tmpModelID),
-        error = function(e) list()
-      )
-
-      tmpPlots <- names(plots)
-      outputPlots[[j]][["plots"]] <- vector("list", length = length(tmpPlots))
-      for (k in seq_along(tmpPlots)) {
-        tmpPlotID <- tmpPlots[k]
-        tmpPlotDisplay <- plots[[k]][["displayName"]]
-        if (is.null(tmpPlotDisplay)) tmpPlotDisplay <- tmpPlotID
-        outputPlots[[j]][["plots"]][[k]] <- list(plotID = tmpPlotID,
-                                                 plotDisplay = tmpPlotDisplay)
-      }
-    }
-
-    output[[i]][["plots"]] <- outputPlots
+    studySummary <- jsonlite::read_json(studySummaryFile, simplifyVector = FALSE)
+    output[[i]] <- c(output[[i]], studySummary)
   }
 
   return(output)
