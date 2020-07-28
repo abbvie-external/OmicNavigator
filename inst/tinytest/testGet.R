@@ -152,12 +152,12 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getAssays(testStudyName),
   testStudyObj[["assays"]]
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getAssays(testStudyName, modelID = testModelName),
   testStudyObj[["assays"]][[testModelName]]
 )
@@ -186,7 +186,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   getModels(testStudyObj, modelID = testModelName),
-  testStudyObj[["models"]][testModelName]
+  testStudyObj[["models"]][[testModelName]]
 )
 
 expect_error(
@@ -201,7 +201,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   getModels(testStudyName, modelID = testModelName),
-  testStudyObj[["models"]][testModelName]
+  testStudyObj[["models"]][[testModelName]]
 )
 
 expect_error(
@@ -343,7 +343,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getResults(testStudyName, modelID = testModelName, testID = testTestName),
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )

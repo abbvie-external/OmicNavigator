@@ -32,6 +32,6 @@ Suggests:
   markdown,
   opencpu,
   tinytest,
-  ttdo
+  ttdo (>= 0.0.6)
 RoxygenNote: 7.1.1
 VignetteBuilder: knitr
