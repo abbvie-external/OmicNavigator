@@ -35,86 +35,100 @@ exportStudy <- function(study, type = c("rds", "text", "package"), path = NULL) 
   }
 }
 
-# To do: abstract/generalize this as much as possible
 createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
 
   dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
-  exportSamples(study[["samples"]], directoryname)
-  exportFeatures(study[["features"]], directoryname)
-  exportModels(study[["models"]], directoryname)
-  exportAssays(study[["assays"]], directoryname)
-  exportTests(study[["tests"]], directoryname)
-  exportAnnotations(study[["annotations"]], directoryname)
+  exportSamples(study, directoryname)
+  exportFeatures(study, directoryname)
+  exportModels(study, directoryname)
+  exportAssays(study, directoryname)
+  exportTests(study, directoryname)
+  exportAnnotations(study, directoryname)
   exportResults(study[["results"]], directoryname)
   exportEnrichments(study[["enrichments"]], directoryname)
-  exportMetaFeatures(study[["metaFeatures"]], directoryname)
-  exportPlots(study[["plots"]], directoryname)
-  exportBarcodes(study[["barcodes"]], directoryname)
+  exportMetaFeatures(study, directoryname)
+  exportPlots(study, directoryname)
+  exportBarcodes(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
     study <- addOverlaps(study)
   }
-  exportOverlaps(study[["overlaps"]], directoryname)
+  exportOverlaps(study, directoryname)
 }
 
-exportSamples <- function(x, path = ".") {
-  directory <- file.path(path, "samples")
+exportElements <- function(
+  study,
+  elements,
+  path = ".",
+  fileType = c("txt", "json"),
+  hasRowNames = FALSE
+)
+{
+  directory <- file.path(path, elements)
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
+  x <- study[[elements]]
+  fileType <- match.arg(fileType)
   for (i in seq_along(x)) {
     fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
+    if (fileType == "txt") {
+      fileName <- paste0(fileName, ".txt")
+      writeTable(x[[i]], file = fileName, row.names = hasRowNames)
+    } else {
+      fileName <- paste0(fileName, ".json")
+      writeJson(x[[i]], file = fileName)
+    }
   }
 }
 
-exportFeatures <- function(x, path = ".") {
-  directory <- file.path(path, "features")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
-  }
+exportSamples <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "samples",
+    path = path
+  )
 }
 
-exportModels <- function(x, path = ".") {
-  directory <- file.path(path, "models")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".json")
-    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
-  }
+exportFeatures <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "features",
+    path = path
+  )
 }
 
-exportAssays <- function(x, path = ".") {
-  directory <- file.path(path, "assays")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t", row.names = TRUE)
-  }
+exportModels <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "models",
+    path = path,
+    fileType = "json"
+  )
 }
 
-exportTests <- function(x, path = ".") {
-  directory <- file.path(path, "tests")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
-  }
+exportAssays <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "assays",
+    path = path,
+    hasRowNames = TRUE
+  )
 }
 
-exportAnnotations <- function(x, path = ".") {
-  directory <- file.path(path, "annotations")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".json")
-    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
-  }
+exportTests <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "tests",
+    path = path
+  )
+}
+
+exportAnnotations <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "annotations",
+    path = path,
+    fileType = "json"
+  )
 }
 
 exportResults <- function(x, path = ".") {
@@ -126,7 +140,7 @@ exportResults <- function(x, path = ".") {
     for (j in seq_along(x[[i]])) {
       fileName <- file.path(subDirectory, names(x[[i]])[j])
       fileName <- paste0(fileName, ".txt")
-      data.table::fwrite(x[[i]][[j]], file = fileName, sep = "\t")
+      writeTable(x[[i]][[j]], file = fileName)
     }
   }
 }
@@ -143,40 +157,36 @@ exportEnrichments <- function(x, path = ".") {
       for (k in seq_along(x[[i]][[j]])) {
         fileName <- file.path(subSubDirectory, names(x[[i]][[j]])[k])
         fileName <- paste0(fileName, ".txt")
-        data.table::fwrite(x[[i]][[j]][[k]], file = fileName, sep = "\t")
+        writeTable(x[[i]][[j]][[k]], file = fileName)
       }
     }
   }
 }
 
-exportMetaFeatures <- function(x, path = ".") {
-  directory <- file.path(path, "metaFeatures")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
-  }
+exportMetaFeatures <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "metaFeatures",
+    path = path
+  )
 }
 
-exportPlots <- function(x, path = ".") {
-  directory <- file.path(path, "plots")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".json")
-    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
-  }
+exportPlots <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "plots",
+    path = path,
+    fileType = "json"
+  )
 }
 
-exportBarcodes <- function(x, path = ".") {
-  directory <- file.path(path, "barcodes")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".json")
-    jsonlite::write_json(x[[i]], fileName, auto_unbox = TRUE, pretty = TRUE)
-  }
+exportBarcodes <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "barcodes",
+    path = path,
+    fileType = "json"
+  )
 }
 
 exportSummary <- function(x, path = ".") {
@@ -248,17 +258,15 @@ exportSummary <- function(x, path = ".") {
   }
 
   fileName <- file.path(path, "summary.json")
-  jsonlite::write_json(output, fileName, auto_unbox = TRUE, pretty = TRUE)
+  writeJson(output, file = fileName)
 }
 
-exportOverlaps <- function(x, path = ".") {
-  directory <- file.path(path, "overlaps")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    fileName <- paste0(fileName, ".txt")
-    data.table::fwrite(x[[i]], file = fileName, sep = "\t")
-  }
+exportOverlaps <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "overlaps",
+    path = path
+  )
 }
 
 createPackage <- function(study, directoryname) {

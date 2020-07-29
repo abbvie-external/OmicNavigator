@@ -10,8 +10,16 @@ readTable <- function(x, hasRowNames = FALSE, data.table = FALSE, ...) {
   d
 }
 
+writeTable <- function(x, file, sep = "\t", ...) {
+  data.table::fwrite(x, file = file, sep = sep, ...)
+}
+
 readJson <- function(x, simplifyVector = TRUE, ...) {
   jsonlite::read_json(x, simplifyVector = simplifyVector, ...)
+}
+
+writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
+  jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
 }
 
 ## Lists -----------------------------------------------------------------------
