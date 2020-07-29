@@ -70,18 +70,14 @@ exportElements <- function(
   x <- study[[elements]]
   fileType <- match.arg(fileType)
 
-  if (nested == 0) {
-    for (i in seq_along(x)) {
-      fileName <- file.path(directory, names(x)[i])
-      if (fileType == "txt") {
-        fileName <- paste0(fileName, ".txt")
-        writeTable(x[[i]], file = fileName, row.names = hasRowNames)
-      } else {
-        fileName <- paste0(fileName, ".json")
-        writeJson(x[[i]], file = fileName)
-      }
-    }
-  } else {
+  if (nested == 0) { # base case
+    exportElementsWrite(
+      x,
+      path = directory,
+      fileType = fileType,
+      hasRowNames = hasRowNames
+    )
+  } else if (nested > 0) { # recursive case
     for (i in seq_along(x)) {
       exportElements(
         x,
@@ -91,6 +87,27 @@ exportElements <- function(
         hasRowNames = hasRowNames,
         nested = nested - 1
       )
+    }
+  } else {
+    stop("Something has gone wrong with the recursion")
+  }
+}
+
+exportElementsWrite <- function(
+  x,
+  path = ".",
+  fileType = c("txt", "json"),
+  hasRowNames = FALSE
+)
+{
+  for (i in seq_along(x)) {
+    fileName <- file.path(path, names(x)[i])
+    if (fileType == "txt") {
+      fileName <- paste0(fileName, ".txt")
+      writeTable(x[[i]], file = fileName, row.names = hasRowNames)
+    } else {
+      fileName <- paste0(fileName, ".json")
+      writeJson(x[[i]], file = fileName)
     }
   }
 }
