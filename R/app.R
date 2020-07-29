@@ -53,7 +53,7 @@ listStudies <- function(libraries = NULL) {
       next
     }
 
-    studySummary <- jsonlite::read_json(studySummaryFile, simplifyVector = FALSE)
+    studySummary <- readJson(studySummaryFile, simplifyVector = FALSE)
     output[[i]] <- c(output[[i]], studySummary)
   }
 

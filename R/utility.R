@@ -1,8 +1,8 @@
 
 ## I/O -------------------------------------------------------------------------
 
-readTable <- function(x, hasRowNames = FALSE, ...) {
-  d <- data.table::fread(file = x, data.table = FALSE, ...)
+readTable <- function(x, hasRowNames = FALSE, data.table = FALSE, ...) {
+  d <- data.table::fread(file = x, data.table = data.table, ...)
   if (hasRowNames) {
     row.names(d) <- d[[1]]
     d[[1]] <- NULL
@@ -10,8 +10,8 @@ readTable <- function(x, hasRowNames = FALSE, ...) {
   d
 }
 
-readJson <- function(x, ...) {
-  jsonlite::read_json(x, simplifyVector = TRUE, ...)
+readJson <- function(x, simplifyVector = TRUE, ...) {
+  jsonlite::read_json(x, simplifyVector = simplifyVector, ...)
 }
 
 ## Lists -----------------------------------------------------------------------
