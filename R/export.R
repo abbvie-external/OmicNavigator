@@ -44,8 +44,8 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportAssays(study, directoryname)
   exportTests(study, directoryname)
   exportAnnotations(study, directoryname)
-  exportResults(study[["results"]], directoryname)
-  exportEnrichments(study[["enrichments"]], directoryname)
+  exportResults(study, directoryname)
+  exportEnrichments(study, directoryname)
   exportMetaFeatures(study, directoryname)
   exportPlots(study, directoryname)
   exportBarcodes(study, directoryname)
@@ -61,21 +61,36 @@ exportElements <- function(
   elements,
   path = ".",
   fileType = c("txt", "json"),
-  hasRowNames = FALSE
+  hasRowNames = FALSE,
+  nested = 0
 )
 {
   directory <- file.path(path, elements)
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
   x <- study[[elements]]
   fileType <- match.arg(fileType)
-  for (i in seq_along(x)) {
-    fileName <- file.path(directory, names(x)[i])
-    if (fileType == "txt") {
-      fileName <- paste0(fileName, ".txt")
-      writeTable(x[[i]], file = fileName, row.names = hasRowNames)
-    } else {
-      fileName <- paste0(fileName, ".json")
-      writeJson(x[[i]], file = fileName)
+
+  if (nested == 0) {
+    for (i in seq_along(x)) {
+      fileName <- file.path(directory, names(x)[i])
+      if (fileType == "txt") {
+        fileName <- paste0(fileName, ".txt")
+        writeTable(x[[i]], file = fileName, row.names = hasRowNames)
+      } else {
+        fileName <- paste0(fileName, ".json")
+        writeJson(x[[i]], file = fileName)
+      }
+    }
+  } else {
+    for (i in seq_along(x)) {
+      exportElements(
+        x,
+        elements = names(x)[i],
+        path = directory,
+        fileType = fileType,
+        hasRowNames = hasRowNames,
+        nested = nested - 1
+      )
     }
   }
 }
@@ -131,36 +146,22 @@ exportAnnotations <- function(study, path = ".") {
   )
 }
 
-exportResults <- function(x, path = ".") {
-  directory <- file.path(path, "results")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    for (j in seq_along(x[[i]])) {
-      fileName <- file.path(subDirectory, names(x[[i]])[j])
-      fileName <- paste0(fileName, ".txt")
-      writeTable(x[[i]][[j]], file = fileName)
-    }
-  }
+exportResults <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "results",
+    path = path,
+    nested = 1
+  )
 }
 
-exportEnrichments <- function(x, path = ".") {
-  directory <- file.path(path, "enrichments")
-  dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  for (i in seq_along(x)) {
-    subDirectory <- file.path(directory, names(x)[i])
-    dir.create(subDirectory, showWarnings = FALSE, recursive = TRUE)
-    for (j in seq_along(x[[i]])) {
-      subSubDirectory <- file.path(subDirectory, names(x[[i]])[j])
-      dir.create(subSubDirectory, showWarnings = FALSE, recursive = TRUE)
-      for (k in seq_along(x[[i]][[j]])) {
-        fileName <- file.path(subSubDirectory, names(x[[i]][[j]])[k])
-        fileName <- paste0(fileName, ".txt")
-        writeTable(x[[i]][[j]][[k]], file = fileName)
-      }
-    }
-  }
+exportEnrichments <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "enrichments",
+    path = path,
+    nested = 2
+  )
 }
 
 exportMetaFeatures <- function(study, path = ".") {
