@@ -11,7 +11,7 @@ getEnrichmentsUpset(
   sigValue,
   operator,
   type,
-  tests,
+  tests = NULL,
   ...
 )
 }

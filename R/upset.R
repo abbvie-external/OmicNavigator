@@ -329,7 +329,7 @@ getEnrichmentsUpset <- function(
   sigValue,
   operator,
   type,
-  tests,
+  tests = NULL,
   ...
 )
 {
@@ -382,12 +382,12 @@ getEnrichmentsUpset <- function(
 #'   * Removed colsUsed variable and replaced with tests
 #'
 #' @noRd
-EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal", tests) {
+EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal", tests=NULL) {
 
   if (length(sigValue) != length(operator)) {
     stop("The arguments sigValue and operator must be the same length")
   }
-  if(length(tests) < 2){
+  if(!is.null(tests) && length(tests) < 2){
     stop("UpSet plot requires two or more tests to subset")
   }
 
@@ -397,6 +397,9 @@ EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted,
   }else{
     Identifier <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,1]
     data <- Enrichment.Results.Adjusted[[testCategory]][[annotation]][,names(Enrichment.Results.Adjusted[[testCategory]][[annotation]])]
+  }
+  if(is.null(tests)){
+    tests = colnames(data)
   }
 
   for(i in 1:ncol(data)){
