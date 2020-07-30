@@ -143,7 +143,7 @@ expect_identical(
   )
 )
 
-# getEnrichmentsIntersection -------------------------------------------------------
+# getEnrichmentsIntersection ---------------------------------------------------
 
 enrichmentsIntersection <- getEnrichmentsIntersection(
   study = testStudyObj,
@@ -151,7 +151,7 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   annotationID = testAnnotationName,
   mustTests = testTestsAll,
   notTests = c(),
-  sigValue = .03,
+  sigValue = .05,
   operator = "<",
   type = "nominal"
 )
@@ -162,7 +162,7 @@ expect_true(
 
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.03)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
 }
 
@@ -172,7 +172,7 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   annotationID = testAnnotationName,
   mustTests = testTestsAll,
   notTests = c(),
-  sigValue = c(.04, .02),
+  sigValue = c(.05, .02),
   operator = c("<", ">"),
   type = "nominal"
 )
@@ -183,7 +183,7 @@ expect_true(
 
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.04)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
   expect_true(
     all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
@@ -250,7 +250,7 @@ resultsUpset <- getResultsUpset(
   column = "p_val"
 )
 
-# getEnrichmentsUpset --------------------------------------------------------------
+# getEnrichmentsUpset ----------------------------------------------------------
 
 enrichmentsUpset <- getEnrichmentsUpset(
   study = testStudyObj,

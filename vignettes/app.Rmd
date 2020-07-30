@@ -220,7 +220,7 @@ enrichmentsUpset <- getEnrichmentsUpset(
   study = "ABC",
   modelID = "model_01",
   annotationID = "annotation_02",
-  sigValue = .02,
+  sigValue = .05,
   operator = "<",
   type = "nominal"
 )

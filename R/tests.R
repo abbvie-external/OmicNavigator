@@ -83,7 +83,7 @@ testTests <- function(n = 2) {
   return(tests)
 }
 
-testAnnotations <- function(n = 3, terms = 10, featureID = "customID", seed = 12345L) {
+testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12345L) {
   set.seed(12345)
   annotations <- vector(mode = "list", length = n)
   names(annotations) <- sprintf("annotation_%02d", seq_len(n))
@@ -124,7 +124,7 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
   return(results)
 }
 
-testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, seed = 12345L) {
+testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, terms = 50, seed = 12345L) {
   set.seed(seed)
   enrichments <- vector(mode = "list", length = n_models)
   names(enrichments) <- sprintf("model_%02d", seq_len(n_models))
@@ -135,10 +135,9 @@ testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, seed =
       enrichments[[i]][[j]] <- vector(mode = "list", length = n_tests)
       names(enrichments[[i]][[j]]) <- sprintf("test_%02d", seq_len(n_tests))
       for (k in seq_len(n_tests)) {
-        n_terms <- sample(5:8, 1)
         tmp <- data.frame(
-          termID = sprintf("term_%02d", seq_len(n_terms)),
-          nominal = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
+          termID = sprintf("term_%02d", seq_len(terms)),
+          nominal = sample(seq(0.01, 0.1, by = 0.01), terms, replace = TRUE),
           stringsAsFactors = FALSE
         )
         tmp[["description"]] <- sprintf("Description of %s", tmp[["termID"]])
