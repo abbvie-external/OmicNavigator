@@ -20,7 +20,7 @@ LazyData: true
 Depends:
   R (>= 3.2.0)
 Imports:
-  data.table,
+  data.table (>= 1.9.8),
   graphics,
   jsonlite,
   stats,
