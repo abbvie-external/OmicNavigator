@@ -33,6 +33,10 @@ resultsIntersection <- getResultsIntersection(
 )
 
 expect_true(
+  nrow(resultsIntersection) > 0
+)
+
+expect_true(
   all(resultsIntersection[["p_val"]] < 0.5)
 )
 
@@ -48,6 +52,10 @@ resultsIntersection <- getResultsIntersection(
 )
 
 expect_true(
+  nrow(resultsIntersection) > 0
+)
+
+expect_true(
   all(resultsIntersection[["beta"]] > 1.2)
 )
 
@@ -60,6 +68,10 @@ resultsIntersection <- getResultsIntersection(
   sigValue = c(.5, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
+)
+
+expect_true(
+  nrow(resultsIntersection) > 0
 )
 
 expect_true(
@@ -86,6 +98,10 @@ resultsIntersection <- getResultsIntersection(
   column = "p_val"
 )
 
+expect_true(
+  nrow(resultsIntersection) > 0
+)
+
 expect_identical(
   unique(resultsIntersection[, "Set_Membership"]),
   testTestName
@@ -100,6 +116,10 @@ resultsIntersection <- getResultsIntersection(
   sigValue = c(.5, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
+)
+
+expect_true(
+  nrow(resultsIntersection) > 0
 )
 
 expect_true(
@@ -136,6 +156,10 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   type = "nominal"
 )
 
+expect_true(
+  nrow(enrichmentsIntersection) > 0
+)
+
 for (i in seq_along(testTestsAll)) {
   expect_true(
     all(enrichmentsIntersection[[testTestsAll[i]]] < 0.03)
@@ -148,14 +172,18 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   annotationID = testAnnotationName,
   mustTests = testTestsAll,
   notTests = c(),
-  sigValue = c(.03, .02),
+  sigValue = c(.04, .02),
   operator = c("<", ">"),
   type = "nominal"
 )
 
+expect_true(
+  nrow(enrichmentsIntersection) > 0
+)
+
 for (i in seq_along(testTestsAll)) {
   expect_true(
-    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.03)
+    all(enrichmentsIntersection[[testTestsAll[i]]] < 0.04)
   )
   expect_true(
     all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
@@ -171,6 +199,10 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   sigValue = c(.05, .02),
   operator = c("<", ">"),
   type = "adjusted"
+)
+
+expect_true(
+  nrow(enrichmentsIntersection) > 0
 )
 
 for (i in seq_along(testTestsAll)) {
@@ -233,7 +265,7 @@ enrichmentsUpset <- getEnrichmentsUpset(
   study = testStudyObj,
   modelID = testModelName,
   annotationID = "annotation_02",
-  sigValue = .02,
+  sigValue = .04,
   operator = "<",
   type = "nominal"
 )
@@ -275,7 +307,7 @@ enrichmentsUpset <- getEnrichmentsUpset(
   study = testStudyObj,
   modelID = testModelName,
   annotationID = "annotation_02",
-  sigValue = .02,
+  sigValue = .04,
   operator = "<",
   type = "nominal",
   tests = testTestsAll

@@ -135,7 +135,7 @@ testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, seed =
       enrichments[[i]][[j]] <- vector(mode = "list", length = n_tests)
       names(enrichments[[i]][[j]]) <- sprintf("test_%02d", seq_len(n_tests))
       for (k in seq_len(n_tests)) {
-        n_terms <- sample(3:5, 1)
+        n_terms <- sample(5:8, 1)
         tmp <- data.frame(
           termID = sprintf("term_%02d", seq_len(n_terms)),
           nominal = sample(seq(0.01, 0.05, by = 0.01), n_terms, replace = TRUE),
