@@ -1,3 +1,8 @@
+# 0.11.0.9000
+
+* `getEnrichmentsUpset()` has a new argument `tests`, which restricts the UpSet
+plot to only include the desired tests (#1, @MOOREJX3)
+
 # 0.11.0
 
 * The release tarball includes [version 0.1.4 of the web app][app-v0.1.4]
