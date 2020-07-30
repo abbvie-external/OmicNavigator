@@ -30,6 +30,8 @@ of an installed study package.}
 
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
 
+\item{tests}{Restrict UpSet plot to these tests}
+
 \item{...}{Currently unused but required for potential future arguments. See
 the section
 \href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic

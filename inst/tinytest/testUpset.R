@@ -268,6 +268,42 @@ expect_error(
   "wrong"
 )
 
+# Test new argument `tests`. The tests aren't ideal because my example created
+# study created with testTests() only has 2 tests.
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = "annotation_02",
+  sigValue = .02,
+  operator = "<",
+  type = "nominal",
+  tests = testTestsAll
+)
+
+enrichmentsUpset <- getEnrichmentsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = "annotation_02",
+  sigValue = .05,
+  operator = "<",
+  type = "adjusted",
+  tests = testTestsAll
+)
+
+expect_error(
+  enrichmentsUpset <- getEnrichmentsUpset(
+    study = testStudyName,
+    modelID = testModelName,
+    annotationID = "annotation_02",
+    sigValue = .05,
+    operator = "<",
+    type = "adjusted",
+    tests = testTestsAll[1]
+  ),
+  "UpSet plot requires two or more tests to subset"
+)
+
 # getUpsetCols -----------------------------------------------------------------
 
 upsetCols <- getUpsetCols(

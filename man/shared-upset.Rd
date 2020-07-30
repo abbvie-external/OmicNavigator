@@ -17,6 +17,8 @@
 \item{column}{The columns to be thresheld.}
 
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
+
+\item{tests}{Restrict UpSet plot to these tests}
 }
 \description{
 Shared parameters for upset functions

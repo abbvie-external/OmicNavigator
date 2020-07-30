@@ -52,6 +52,7 @@ NULL
 #' @param operator The operators for each column.
 #' @param column The columns to be thresheld.
 #' @param type Type of p-value (\code{"nominal"} or \code{"adjusted"})
+#' @param tests Restrict UpSet plot to these tests
 #'
 #' @keywords internal
 NULL
