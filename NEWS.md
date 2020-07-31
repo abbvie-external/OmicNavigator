@@ -1,4 +1,8 @@
-# 0.11.0.9000
+# 0.12.0
+
+* The release tarball includes [version 0.1.5 of the web app][app-v0.1.5]
+
+[app-v0.1.5]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.5
 
 * `getEnrichmentsUpset()` has a new argument `tests`, which restricts the UpSet
 plot to only include the desired tests (#1, @MOOREJX3)
