@@ -4,7 +4,7 @@
 \alias{getResultsUpset}
 \title{getResultsUpset}
 \usage{
-getResultsUpset(study, modelID, sigValue, operator, column, ...)
+getResultsUpset(study, modelID, sigValue, operator, column)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
@@ -17,13 +17,6 @@ or the name of an installed study package.}
 \item{operator}{The operators for each column.}
 
 \item{column}{The columns to be thresheld.}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 }
 \description{
 getResultsUpset

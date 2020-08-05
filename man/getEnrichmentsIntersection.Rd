@@ -12,8 +12,7 @@ getEnrichmentsIntersection(
   notTests,
   sigValue,
   operator,
-  type,
-  ...
+  type
 )
 }
 \arguments{
@@ -33,13 +32,6 @@ or the name of an installed study package.}
 \item{operator}{The operators for each column.}
 
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
-
-\item{...}{Currently unused but required for potential future arguments. See
-the section
-\href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-functions and methods} in
-\href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-Extensions}.}
 }
 \description{
 getEnrichmentsIntersection

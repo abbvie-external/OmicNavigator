@@ -12,8 +12,7 @@ getResultsIntersection <- function(
   notTests,
   sigValue,
   operator,
-  column,
-  ...
+  column
 )
 {
   results <- getResults(study, modelID = modelID)
@@ -129,8 +128,7 @@ getEnrichmentsIntersection <- function(
   notTests,
   sigValue,
   operator,
-  type,
-  ...
+  type
 )
 {
   if (type == "nominal") {
@@ -229,8 +227,7 @@ getResultsUpset <- function(
   modelID,
   sigValue,
   operator,
-  column,
-  ...
+  column
 )
 {
   results <- getResults(study, modelID = modelID)
@@ -329,8 +326,7 @@ getEnrichmentsUpset <- function(
   sigValue,
   operator,
   type,
-  tests = NULL,
-  ...
+  tests = NULL
 )
 {
   if (type == "nominal") {
@@ -454,8 +450,7 @@ formatEnrichmentResults <- function(study, modelID, annotationID, type) {
 #' @export
 getUpsetCols <- function(
   study,
-  modelID,
-  ...
+  modelID
 )
 {
   results <- getResults(study, modelID = modelID)

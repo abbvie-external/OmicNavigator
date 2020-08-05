@@ -25,12 +25,6 @@ NULL
 #' @param termID Filter by termID
 #' @param featureID Filter by featureID
 #' @param plotID Filter by plotID
-#' @param ... Currently unused but required for potential future arguments. See
-#'   the section
-#'   \href{https://cran.r-project.org/doc/manuals/R-exts.html#Generic-functions-and-methods}{Generic
-#'   functions and methods} in
-#'   \href{https://cran.r-project.org/doc/manuals/R-exts.html}{Writing R
-#'   Extensions}.
 #'
 #' @keywords internal
 NULL
