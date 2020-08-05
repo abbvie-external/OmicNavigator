@@ -107,7 +107,7 @@ expect_equal_with_diff(
 
 enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)
 
-expect_identical(
+expect_identical_xl(
   class(enrichmentsTable),
   "data.frame"
 )
@@ -119,7 +119,7 @@ expect_error(
   "missing"
 )
 
-expect_identical(
+expect_equal_xl(
   enrichmentsTable,
   getEnrichmentsTable(testStudyObj, testModelName, testAnnotationName)
 )
@@ -132,17 +132,17 @@ enrichmentsNetwork <- getEnrichmentsNetwork(
   testAnnotationName
 )
 
-expect_identical(
+expect_identical_xl(
   class(enrichmentsNetwork),
   "list"
 )
 
-expect_identical(
+expect_identical_xl(
   names(enrichmentsNetwork),
   c("tests", "nodes", "links")
 )
 
-expect_identical(
+expect_identical_xl(
   enrichmentsNetwork[["tests"]],
   getTests(testStudyName, testModelName)[, "testID"]
 )
