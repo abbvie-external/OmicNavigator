@@ -360,12 +360,12 @@ expect_error(
 
 # getEnrichments ---------------------------------------------------------------
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyObj),
   testStudyObj[["enrichments"]]
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyObj, modelID = testModelName),
   testStudyObj[["enrichments"]][[testModelName]]
 )
@@ -375,7 +375,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
@@ -390,7 +390,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
@@ -425,12 +425,12 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyName),
   testStudyObj[["enrichments"]]
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyName, modelID = testModelName),
   testStudyObj[["enrichments"]][[testModelName]]
 )
@@ -440,7 +440,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
@@ -455,7 +455,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = testTestName),
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
