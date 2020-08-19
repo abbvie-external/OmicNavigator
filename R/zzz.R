@@ -1,7 +1,7 @@
 # The minimum version of OmicAnalyzer that is still compatible with the current
 # version. If a study package is created with a version less than this minimum
 # version, then listStudies() will throw a warning.
-minVersionCompatible <- "0.5.0"
+minVersionCompatible <- "0.13.0"
 
 #' Shared parameters for add functions
 #'

@@ -1,3 +1,13 @@
+# 0.13.0
+
+This release includes substantial internal changes. The study data is now
+exported as plaintext files instead of as an SQLite file. There are no changes
+to the API, so no changes need to be made to R scripts or the JavaScript
+frontend. However, since the storage mechanism has changed, all existing
+OmicAnalyzer studies need to be reinstalled in order to be compatible with this
+version. Furthermore, the dependencies have changed, so you may have to re-run
+`remotes::install_deps()`.
+
 # 0.12.1
 
 * The release tarball includes [version 0.1.6 of the web app][app-v0.1.6]
