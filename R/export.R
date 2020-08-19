@@ -51,6 +51,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportBarcodes(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
+    message("Calculating pairwise overlaps. This may take a while...")
     study <- addOverlaps(study)
   }
   exportOverlaps(study, directoryname)
@@ -261,9 +262,11 @@ exportSummary <- function(x, path = ".") {
       modelID = modelID,
       modelDisplay = getModels(x, modelID = modelID)
     )
-    modelPlots <-tryCatch(
-      getPlots(x, modelID = modelID),
-      error = function(e) list()
+    suppressMessages(
+      modelPlots <-tryCatch(
+        getPlots(x, modelID = modelID),
+        error = function(e) list()
+      )
     )
     output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
     for (j in seq_along(modelPlots)) {
