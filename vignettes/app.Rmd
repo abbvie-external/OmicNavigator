@@ -76,7 +76,8 @@ metadata and the inference results.
 
 The column names are chosen by the user. The first column is the unique
 featureID used in the study. It should be passed to
-[`plotStudy()`](#custom-plots) to create any custom plots.
+[`plotStudy()`](#custom-plots) to create any custom plots. All the feature
+metadata columns are returned as character strings, even if they appear numeric.
 
 ```{r results-table}
 resultsTable <- getResultsTable("ABC", "model_01", "test_01")

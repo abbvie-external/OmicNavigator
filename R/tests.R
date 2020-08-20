@@ -36,11 +36,13 @@ testSamples <- function(rows = 10, cols = 5, seed = 12345L) {
   return(samples)
 }
 
-testFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
+testFeatures <- function(rows = 100, cols = 5, seed = 12345L) {
   set.seed(seed)
-  features <- matrix(sample(letters, size = rows * cols, replace = TRUE),
-                    nrow = rows, ncol = cols)
-  colnames(features) <- sprintf("featureVar%02d", seq_len(cols))
+  features <- matrix(sample(letters, size = rows * (cols - 2), replace = TRUE),
+                    nrow = rows, ncol = cols - 2)
+  colnames(features) <- sprintf("featureVar%02d", seq_len(cols - 2))
+  featureVarNumeric <- sample(1:100, size = rows, replace = TRUE)
+  features <- cbind(featureVarNumeric, features)
   featureID <- sprintf("feature_%04d", seq_len(rows))
   features <- cbind(customID = featureID, features)
   features <- as.data.frame(features, stringsAsFactors = FALSE)

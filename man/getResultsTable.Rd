@@ -19,6 +19,12 @@ left as \code{NULL} (the default), then
 \code{\link[utils]{installed.packages}} will use the result of
 \code{\link{.libPaths}}.}
 }
+\value{
+A data frame which includes the columns from the features table
+  followed by the columns from the results table. All the columns from the
+  features table will be character strings, even if the values appear
+  numeric.
+}
 \description{
 Get results table from a study
 }

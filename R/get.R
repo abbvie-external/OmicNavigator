@@ -56,6 +56,10 @@ getSamples <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
+#' @return A data frame (if \code{modelID} is specified) or a list of data
+#'   frames. All the columns will be character strings, even if the values
+#'   appear numeric.
+#'
 #' @export
 getFeatures <- function(study, modelID = NULL, libraries = NULL) {
   getElements(
@@ -63,7 +67,8 @@ getFeatures <- function(study, modelID = NULL, libraries = NULL) {
     elements = "features",
     filters = list(modelID = modelID),
     default = "default",
-    libraries = libraries
+    libraries = libraries,
+    colClasses = "character"
   )
 }
 
@@ -154,6 +159,11 @@ getResults <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
 #'
 #' @inheritParams shared-get
 #' @inheritParams listStudies
+#'
+#' @return A data frame which includes the columns from the features table
+#'   followed by the columns from the results table. All the columns from the
+#'   features table will be character strings, even if the values appear
+#'   numeric.
 #'
 #' @export
 getResultsTable <- function(study, modelID, testID, libraries = NULL) {

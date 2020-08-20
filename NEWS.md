@@ -1,5 +1,7 @@
 # 0.13.0.9000
 
+* `getFeatures()` and `getResultsTable()` always return the columns of the
+features table as character strings, even if they appear numeric.
 
 # 0.13.0
 
