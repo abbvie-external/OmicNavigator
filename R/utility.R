@@ -77,3 +77,14 @@ enrichmentsToWide <- function(x, type) {
   data.table::setDF(output)
   return(output)
 }
+
+coerceColsToCharacter <- function(x) {
+  numberOfCols <- ncol(x)
+  if (is.null(numberOfCols) || numberOfCols == 0) {
+    stop("Invalid input. No columns to coerce.")
+  }
+
+  result <- lapply(x, as.character)
+  result <- as.data.frame(result, stringsAsFactors = FALSE)
+  return(result)
+}

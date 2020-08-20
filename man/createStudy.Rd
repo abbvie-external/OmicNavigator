@@ -36,7 +36,7 @@ ID "default".}
 study. The input object is a list of data frames (one per model). The first
 column of each data frame is used as the feature ID, so it must contain
 unique values. To share a data frame across multiple models, use the model
-ID "default".}
+ID "default". All columns will be coerced to character strings.}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to

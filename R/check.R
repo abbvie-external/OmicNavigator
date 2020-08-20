@@ -53,6 +53,15 @@ checkFeatures <- function(features) {
       ncol(features[[i]]) > 0
     )
     hasUniqueIdColumn(features[[i]])
+    characterColsFilter <- vapply(features[[i]], is.character, logical(1))
+    nonCharacterCols <- colnames(features[[i]])[!characterColsFilter]
+    if (!isEmpty(nonCharacterCols)) {
+      warning(
+        "Detected non-character columns in features table input. ",
+        "The following columns were automatically coerced to character strings: ",
+        paste(nonCharacterCols, collapse = ", ")
+      )
+    }
   }
 
   return(NULL)

@@ -111,13 +111,15 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 #'   study. The input object is a list of data frames (one per model). The first
 #'   column of each data frame is used as the feature ID, so it must contain
 #'   unique values. To share a data frame across multiple models, use the model
-#'   ID "default".
+#'   ID "default". All columns will be coerced to character strings.
 #' @inheritParams shared-add
 #'
 #' @export
 addFeatures <- function(study, features, overwrite = FALSE) {
   checkStudy(study)
   checkFeatures(features)
+
+  features <- lapply(features, coerceColsToCharacter)
 
   study[["features"]] <- addToList(study[["features"]], features, overwrite = overwrite)
 

@@ -1,5 +1,8 @@
 # 0.13.0.9000
 
+* `addFeatures()` now automatically converts all columns to character. It throws
+a warning if it detects any non-character columns.
+
 * `getFeatures()` and `getResultsTable()` always return the columns of the
 features table as character strings, even if they appear numeric.
 
