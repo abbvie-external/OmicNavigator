@@ -1,4 +1,4 @@
-# 0.13.0.9000
+# 0.13.1
 
 * `addFeatures()` now automatically converts all columns to character. It throws
 a warning if it detects any non-character columns.
