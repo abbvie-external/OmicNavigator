@@ -170,8 +170,13 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
   results <- getResults(study, modelID, testID)
   features <- getFeatures(study, modelID)
 
-  resultsTable <- merge(features, results, by = 1,
-                        all.x = FALSE, all.y = TRUE, sort = FALSE)
+  # Results must be first argument to preserve input order
+  resultsTable <- merge(results, features, by = 1,
+                        all.x = TRUE, all.y = FALSE, sort = FALSE)
+  # Rearrange columns so that features are listed first
+  columnsOrder <- c(colnames(features),
+                    setdiff(colnames(results), colnames(features)))
+  resultsTable <- resultsTable[, columnsOrder]
 
   return(resultsTable)
 }

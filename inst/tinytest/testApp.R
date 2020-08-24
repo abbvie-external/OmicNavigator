@@ -93,6 +93,11 @@ expect_true(all(colnames(features) %in% colnames(resultsTable)))
 results <- getResults(testStudyObj, testModelName, testTestName)
 expect_true(all(colnames(results) %in% colnames(resultsTable)))
 
+expect_identical_xl(
+  resultsTable[, 1],
+  results[, 1]
+)
+
 expect_error(
   getResultsTable(1),
   "missing"

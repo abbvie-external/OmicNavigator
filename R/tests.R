@@ -112,13 +112,16 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
     results[[i]] <- vector(mode = "list", length = n_tests)
     names(results[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
     for (j in seq_len(n_tests)) {
-      results[[i]][[j]] <- data.frame(
+      tmpResults <- data.frame(
         customID = sprintf("feature_%04d", seq_len(n_features)),
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         beta_x = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
         stringsAsFactors = FALSE
       )
+      tmpResults <- tmpResults[order(tmpResults[["p_val"]]), ]
+      row.names(tmpResults) <- seq_len(nrow(tmpResults))
+      results[[i]][[j]] <- tmpResults
       # Give beta_x a test-specific name
       colnames(results[[i]][[j]])[3] <- paste0("beta_", j)
     }

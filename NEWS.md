@@ -1,5 +1,8 @@
 # 0.13.2.9000
 
+* Bug fix: Preserve input order for results table. Due to the merge with the
+features table, `getResultsTable()` was changing the original row order. Bug
+identified by Brett Engelmann.
 
 # 0.13.2
 
