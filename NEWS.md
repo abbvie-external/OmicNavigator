@@ -1,3 +1,9 @@
+# 0.13.2
+
+* The release tarball includes [version 0.1.7 of the web app][app-v0.1.7]
+
+[app-v0.1.7]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.7
+
 # 0.13.1
 
 * `addFeatures()` now automatically converts all columns to character. It throws
