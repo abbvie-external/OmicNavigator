@@ -1,4 +1,4 @@
-# 0.13.2.9000
+# 0.13.3
 
 * Bug fix: Preserve input order for results table. Due to the merge with the
 features table, `getResultsTable()` was changing the original row order. Bug
