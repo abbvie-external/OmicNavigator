@@ -4,3 +4,4 @@
 ^.*\.sqlite$
 ^rlibs$
 ^CONTRIBUTING\.md$
+^scripts$
