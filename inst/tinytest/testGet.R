@@ -618,6 +618,45 @@ expect_identical_xl(
   info = "Confirm model-specific barcode data returned"
 )
 
+# getReports ---------------------------------------------------------------------
+
+expect_identical_xl(
+  getReports(testStudyObj),
+  testStudyObj[["reports"]]
+)
+
+expect_identical_xl(
+  getReports(testStudyObj, modelID = testModelName),
+  testStudyObj[["reports"]][["default"]]
+)
+
+expect_identical_xl(
+  getReports(testStudyObj, modelID = "model_03"),
+  testStudyObj[["reports"]][["model_03"]],
+  info = "Confirm model-specific report data returned"
+)
+
+expect_error(
+  getReports(emptyStudy),
+  "No reports available"
+)
+
+expect_error(
+  getReports(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical_xl(
+  getReports(testStudyName, modelID = testModelName),
+  "https://www.domain.com/default.html"
+)
+
+expect_identical_xl(
+  getReports(testStudyName, modelID = "model_03"),
+  testStudyObj[["reports"]][["model_03"]],
+  info = "Confirm model-specific report data returned"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

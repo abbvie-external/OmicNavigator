@@ -68,3 +68,12 @@ expect_error(
 expect_error(
   addBarcodes(study, barcodes = NULL)
 )
+
+expect_error(
+  addReports(study, reports = NULL)
+)
+
+expect_error(
+  addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
+  "is.character"
+)

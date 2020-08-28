@@ -242,3 +242,17 @@ checkBarcodes <- function(barcodes) {
 
   return(NULL)
 }
+
+
+checkReports <- function(reports) {
+  checkList(reports)
+
+  for (i in seq_along(reports)) {
+    stopifnot(
+      is.character(reports[[i]]),
+      length(reports[[i]]) == 1
+    )
+  }
+
+  return(NULL)
+}

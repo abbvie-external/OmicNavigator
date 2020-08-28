@@ -33,6 +33,9 @@ study <- addMetaFeatures(study, metaFeatures = metaFeatures)
 barcodes <- OmicAnalyzer:::testBarcodes()
 study <- addBarcodes(study, barcodes = barcodes)
 
+reports <- OmicAnalyzer:::testReports()
+study <- addReports(study, reports = reports)
+
 expect_identical(
   study,
   OmicAnalyzer:::testStudy(name = "test")

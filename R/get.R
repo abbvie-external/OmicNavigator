@@ -343,6 +343,23 @@ getBarcodes <- function(study, modelID = NULL, libraries = NULL) {
   )
 }
 
+#' Get reports from a study
+#'
+#' @inheritParams shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getReports <- function(study, modelID = NULL, libraries = NULL) {
+  getElements(
+    study,
+    elements = "reports",
+    filters = list(modelID = modelID),
+    default = "default",
+    fileType = "json",
+    libraries = libraries
+  )
+}
+
 # Wrapper around base::split()
 splitTableIntoList <- function(dataFrame, columnName) {
 

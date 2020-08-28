@@ -16,6 +16,7 @@
 #' @inheritParams addMetaFeatures
 #' @inheritParams addPlots
 #' @inheritParams addBarcodes
+#' @inheritParams addReports
 #'
 #' @seealso
 #'   \code{\link{addSamples}},
@@ -29,6 +30,7 @@
 #'   \code{\link{addMetaFeatures}},
 #'   \code{\link{addPlots}},
 #'   \code{\link{addBarcodes}},
+#'   \code{\link{addReports}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -51,6 +53,7 @@ createStudy <- function(name,
                         metaFeatures = list(),
                         plots = list(),
                         barcodes = list(),
+                        reports = list(),
                         version = NULL)
 {
   stopifnot(is.character(name), is.character(description))
@@ -68,6 +71,7 @@ createStudy <- function(name,
                 metaFeatures = list(),
                 plots = list(),
                 barcodes = list(),
+                reports = list(),
                 version = version)
   class(study) <- "oaStudy"
 
@@ -82,6 +86,7 @@ createStudy <- function(name,
   if (!isEmpty(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
   if (!isEmpty(plots)) study <- addPlots(study, plots = plots)
   if (!isEmpty(barcodes)) study <- addBarcodes(study, barcodes = barcodes)
+  if (!isEmpty(reports)) study <- addReports(study, reports = reports)
 
   return(study)
 }
@@ -350,6 +355,29 @@ addBarcodes <- function(study, barcodes, overwrite = FALSE) {
   checkBarcodes(barcodes)
 
   study[["barcodes"]] <- addToList(study[["barcodes"]], barcodes, overwrite = overwrite)
+
+  return(study)
+}
+
+#' Add reports
+#'
+#' You can include reports of the analyses you performed to generate the
+#' results.
+#'
+#' @param reports The analysis report(s) that explain how the study results were
+#'   generated. The input object is a list of character vectors (one per model).
+#'   Each element should be either a URL or a path to a file on your computer.
+#'   If it is a path to a file, this file will be included in the exported study
+#'   package. To share a report across multiple models, use the model ID
+#'   "default".
+#' @inheritParams shared-add
+#'
+#' @export
+addReports <- function(study, reports, overwrite = FALSE) {
+  checkStudy(study)
+  checkReports(reports)
+
+  study[["reports"]] <- addToList(study[["reports"]], reports, overwrite = overwrite)
 
   return(study)
 }

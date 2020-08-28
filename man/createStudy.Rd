@@ -18,6 +18,7 @@ createStudy(
   metaFeatures = list(),
   plots = list(),
   barcodes = list(),
+  reports = list(),
   version = NULL
 )
 }
@@ -116,6 +117,13 @@ the log fold change values.
 on hover.
 To share metadata across multiple models, use the model ID "default".}
 
+\item{reports}{The analysis report(s) that explain how the study results were
+generated. The input object is a list of character vectors (one per model).
+Each element should be either a URL or a path to a file on your computer.
+If it is a path to a file, this file will be included in the exported study
+package. To share a report across multiple models, use the model ID
+"default".}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -141,6 +149,7 @@ study <- createStudy(name = "ABC",
   \code{\link{addMetaFeatures}},
   \code{\link{addPlots}},
   \code{\link{addBarcodes}},
+  \code{\link{addReports}},
   \code{\link{exportStudy}},
   \code{\link{installStudy}}
 }

@@ -49,6 +49,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportMetaFeatures(study, directoryname)
   exportPlots(study, directoryname)
   exportBarcodes(study, directoryname)
+  exportReports(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps && is.null(study[["overlaps"]])) {
     message("Calculating pairwise overlaps. This may take a while...")
@@ -205,6 +206,15 @@ exportBarcodes <- function(study, path = ".") {
   exportElements(
     study,
     elements = "barcodes",
+    path = path,
+    fileType = "json"
+  )
+}
+
+exportReports <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "reports",
     path = path,
     fileType = "json"
   )
@@ -368,6 +378,10 @@ createPackage <- function(study, directoryname) {
     writeLines(code, r_file)
   }
 
+  # Reports
+  if (!isEmpty(study[["reports"]])) {
+    # include report files
+  }
   return(invisible(directoryname))
 }
 

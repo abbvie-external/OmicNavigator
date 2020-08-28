@@ -19,6 +19,7 @@ testStudy <- function(name,
                        metaFeatures = testMetaFeatures(seed = seed),
                        plots = list(),
                        barcodes = testBarcodes(),
+                       reports = testReports(),
                        version = version)
 
   return(study)
@@ -213,4 +214,12 @@ testBarcodes <- function(n = 3) {
     )
   )
   return(barcodes)
+}
+
+testReports <- function(n = 3) {
+  reports <- list(
+    default = "https://www.domain.com/default.html",
+    model_03 = "https://www.domain.com/model_03.html"
+  )
+  return(reports)
 }
