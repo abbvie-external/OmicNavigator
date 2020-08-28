@@ -1,5 +1,8 @@
 # 0.13.3.9000
 
+* Support for linking to external analysis report files (`addReports()`,
+`getReports()`). Accepts a URL or a path to file.
+
 * `exportStudy()` no longer exports empty directories for unused elements of the
 OmicAnalyzer study object.
 

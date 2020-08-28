@@ -1,5 +1,15 @@
+# Test checkX() methods
+
+# Setup ------------------------------------------------------------------------
+
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicAnalyzer)
-library(tinytest)
+
+study <- createStudy(name = "test")
+
+# checkStudy -------------------------------------------------------------------
 
 invalidStudy <- list(nameIncorrect = "incorrect")
 class(invalidStudy) <- "oaStudy"
@@ -9,7 +19,7 @@ expect_error(
   "name"
 )
 
-study <- createStudy(name = "test")
+# checkX -----------------------------------------------------------------------
 
 expect_error(
   addFeatures(study, features = NULL)
@@ -76,4 +86,15 @@ expect_error(
 expect_error(
   addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
   "is.character"
+)
+
+expect_error(
+  addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
+                                               "https://www.domain.com/report2.html"))),
+  "length"
+)
+
+expect_error(
+  addReports(study, reports = list(modelID = "C:/path/to/non-existent/file")),
+  "Report must be a URL or a path to an existing file"
 )

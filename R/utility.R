@@ -88,3 +88,15 @@ coerceColsToCharacter <- function(x) {
   result <- as.data.frame(result, stringsAsFactors = FALSE)
   return(result)
 }
+
+# Miscellaneous ----------------------------------------------------------------
+
+# Returns TRUE if matches URL pattern, else FALSE
+#
+# > isUrl(c("http://somewhere.net", "https://secure.com/", "C:/path/to/file"))
+# [1] FALSE  TRUE FALSE
+#
+isUrl <- function(x) {
+  regex <- "^https?://.+"
+  grepl(regex, x)
+}
