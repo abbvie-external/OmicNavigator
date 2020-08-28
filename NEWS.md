@@ -1,5 +1,7 @@
 # 0.13.3.9000
 
+* `exportStudy()` no longer exports empty directories for unused elements of the
+OmicAnalyzer study object.
 
 # 0.13.3
 

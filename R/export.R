@@ -66,9 +66,11 @@ exportElements <- function(
   nested = 0
 )
 {
+  x <- study[[elements]]
+  if (isEmpty(x)) return(NULL)
+
   directory <- file.path(path, elements)
   dir.create(directory, showWarnings = FALSE, recursive = TRUE)
-  x <- study[[elements]]
   fileType <- match.arg(fileType)
 
   if (nested == 0) { # base case
