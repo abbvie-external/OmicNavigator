@@ -379,8 +379,21 @@ createPackage <- function(study, directoryname) {
   }
 
   # Reports
-  if (!isEmpty(study[["reports"]])) {
-    # include report files
+  reports <- study[["reports"]]
+  if (!isEmpty(reports) && any(!isUrl(unlist(reports)))) {
+    reportsdir <- file.path(directoryname, "inst", "OmicAnalyzerReports")
+    dir.create(reportsdir, showWarnings = FALSE, recursive = TRUE)
+    for (i in seq_along(reports)) {
+      report <- reports[[i]]
+      modelID <- names(reports)[i]
+      if (!isUrl(report)) {
+        newPath <- file.path(reportsdir, modelID)
+        dir.create(newPath, showWarnings = FALSE, recursive = TRUE)
+        fileExtension <- tools::file_ext(report)
+        newPath <- file.path(newPath, paste0("report.", fileExtension))
+        file.copy(report, newPath)
+      }
+    }
   }
   return(invisible(directoryname))
 }

@@ -15,6 +15,11 @@ testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 testTermName <- names(testStudyObj[["annotations"]][[testAnnotationName]][["terms"]])[1]
 
+# Add a report file
+tmpReport <- tempfile(fileext = ".html")
+writeLines("<p>example</p>", tmpReport)
+testStudyObj <- addReports(testStudyObj, list(model_02 = tmpReport))
+
 tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
@@ -232,6 +237,18 @@ expect_identical(
   barcodeData[["labelStat"]],
   "Effect size",
   info = "Confirm model-specific barcode data returned"
+)
+
+# getReportLink ----------------------------------------------------------------
+
+expect_identical(
+  getReportLink(testStudyName, testModelName),
+  getReports(testStudyObj, modelID = testModelName)
+)
+
+expect_identical_xl(
+  getReportLink(testStudyName, "model_02"),
+  "OmicAnalyzerReports/model_02/report.html"
 )
 
 # getNodeFeatures --------------------------------------------------------------

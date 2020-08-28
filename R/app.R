@@ -245,3 +245,25 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   )
   return (newList)
 }
+
+
+#' Get link to report
+#'
+#' @inheritParams shared-get
+#'
+#' @export
+getReportLink <- function(study, modelID) {
+  report <- getReports(study, modelID = modelID)
+
+  if (isUrl(report)) return(report)
+
+  reportDir <- file.path("OmicAnalyzerReports", modelID)
+  pkgName <- paste0("OAstudy", study)
+  reportDir <- system.file(reportDir, package = pkgName)
+  reportFile <- list.files(reportDir, full.names = TRUE)
+  stopifnot(length(reportFile) == 1)
+  pkgDir <- system.file(package = pkgName)
+  removePkgPathRegex <- paste0("^", pkgDir, "/")
+  reportFile <- sub(removePkgPathRegex, "", reportFile)
+  return(reportFile)
+}

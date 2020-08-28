@@ -97,6 +97,7 @@ coerceColsToCharacter <- function(x) {
 # [1] FALSE  TRUE FALSE
 #
 isUrl <- function(x) {
+  if (is.null(x)) return(FALSE)
   regex <- "^https?://.+"
   grepl(regex, x)
 }
