@@ -41,16 +41,17 @@ library(OmicAnalyzer)
 ```
 
 ```{r test-data, include=FALSE}
-tmplib <- tempfile()
-dir.create(tmplib)
-.libPaths(c(tmplib, .libPaths()))
-abc <- OmicAnalyzer:::testStudy(name = "ABC")
-plots <- OmicAnalyzer:::testPlots()
-abc <- addPlots(abc, plots)
-plotsAll <- unlist(lapply(plots, names), use.names = FALSE)
-OmicAnalyzer::installStudy(abc)
-OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
-rm(plots, list = plotsAll)
+.tmplib <- tempfile()
+local({
+  dir.create(.tmplib)
+  .libPaths(c(.tmplib, .libPaths()))
+  abc <- OmicAnalyzer:::testStudy(name = "ABC")
+  plots <- OmicAnalyzer:::testPlots()
+  abc <- addPlots(abc, plots)
+  plotsAll <- unlist(lapply(plots, names), use.names = FALSE)
+  OmicAnalyzer::installStudy(abc)
+  OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
+})
 ```
 
 ## List studies
@@ -63,7 +64,7 @@ studies <- listStudies()
 ```
 
 ```{r list-studies-hidden, echo=FALSE}
-studies <- listStudies(libraries = tmplib)
+studies <- listStudies(libraries = .tmplib)
 ```
 
 ```{r list-studies-json}
@@ -114,7 +115,12 @@ network graph.
 
 ```{r enrichments-network}
 enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
-toJSON(enrichmentsNetwork, auto_unbox = TRUE, pretty = TRUE)
+enrichmentsNetworkMinimal <- list(
+  tests = enrichmentsNetwork[["tests"]],
+  nodes = enrichmentsNetwork[["nodes"]][1:3, ],
+  links = enrichmentsNetwork[["links"]][1:3, ]
+)
+toJSON(enrichmentsNetworkMinimal, auto_unbox = TRUE, pretty = TRUE)
 ```
 
 ## Features in a network node
