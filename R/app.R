@@ -257,13 +257,12 @@ getReportLink <- function(study, modelID) {
 
   if (isUrl(report)) return(report)
 
-  reportDir <- file.path("OmicAnalyzerReports", modelID)
   pkgName <- paste0("OAstudy", study)
-  reportDir <- system.file(reportDir, package = pkgName)
-  reportFile <- list.files(reportDir, full.names = TRUE)
-  stopifnot(length(reportFile) == 1)
-  pkgDir <- system.file(package = pkgName)
-  removePkgPathRegex <- paste0("^", pkgDir, "/")
-  reportFile <- sub(removePkgPathRegex, "", reportFile)
-  return(reportFile)
+  installationDir <- dirname(find.package(package = pkgName))
+  reportFile <- file.path(installationDir, report)
+  if (!file.exists(reportFile)) {
+    stop(sprintf("The requested report file does not exist: %s", reportFile))
+  }
+
+  return(report)
 }

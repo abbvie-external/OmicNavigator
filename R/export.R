@@ -321,6 +321,30 @@ createPackage <- function(study, directoryname) {
   )
   write.dcf(description, file = description_file)
 
+  # Reports
+  reports <- study[["reports"]]
+  if (!isEmpty(reports) && any(!isUrl(unlist(reports)))) {
+    reportsdir <- file.path(directoryname, "inst", "OmicAnalyzerReports")
+    dir.create(reportsdir, showWarnings = FALSE, recursive = TRUE)
+    for (i in seq_along(reports)) {
+      report <- reports[[i]]
+      modelID <- names(reports)[i]
+      if (!isUrl(report)) {
+        newPath <- file.path(reportsdir, modelID)
+        dir.create(newPath, showWarnings = FALSE, recursive = TRUE)
+        fileExtension <- tools::file_ext(report)
+        newFile <- paste0("report.", fileExtension)
+        newPath <- file.path(newPath, newFile)
+        file.copy(report, newPath)
+        reports[[i]] <- file.path(pkgname, "OmicAnalyzerReports", modelID, newFile)
+      }
+    }
+    # Update study object to use new paths to installed reports
+    # Note: Can't use addReports() here b/c the file doesn't exist until package
+    # is installed.
+    study[["reports"]] <- reports
+  }
+
   # Data
   datadir <- file.path(directoryname, "inst", "OmicAnalyzer")
   dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
@@ -378,23 +402,6 @@ createPackage <- function(study, directoryname) {
     writeLines(code, r_file)
   }
 
-  # Reports
-  reports <- study[["reports"]]
-  if (!isEmpty(reports) && any(!isUrl(unlist(reports)))) {
-    reportsdir <- file.path(directoryname, "inst", "OmicAnalyzerReports")
-    dir.create(reportsdir, showWarnings = FALSE, recursive = TRUE)
-    for (i in seq_along(reports)) {
-      report <- reports[[i]]
-      modelID <- names(reports)[i]
-      if (!isUrl(report)) {
-        newPath <- file.path(reportsdir, modelID)
-        dir.create(newPath, showWarnings = FALSE, recursive = TRUE)
-        fileExtension <- tools::file_ext(report)
-        newPath <- file.path(newPath, paste0("report.", fileExtension))
-        file.copy(report, newPath)
-      }
-    }
-  }
   return(invisible(directoryname))
 }
 

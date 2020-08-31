@@ -48,7 +48,10 @@ local({
   abc <- OmicAnalyzer:::testStudy(name = "ABC")
   plots <- OmicAnalyzer:::testPlots()
   abc <- addPlots(abc, plots)
-  plotsAll <- unlist(lapply(plots, names), use.names = FALSE)
+  # Add a report file
+  tmpReport <- tempfile(fileext = ".html")
+  writeLines("<p>example</p>", tmpReport)
+  abc <- addReports(abc, list(model_02 = tmpReport))
   OmicAnalyzer::installStudy(abc)
   OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 })
@@ -284,12 +287,20 @@ toJSON(barcodeData, auto_unbox = TRUE, pretty = TRUE)
 ## Reports
 
 Given a study and model, `getReportLink()` returns a link to a report file. This
-can either be a URL or a relative path to a local file.
+can either be a URL or a path to a file installed in a study package.
 
-```{r getReportLink}
+```{r getReportLink-URL}
 reportLink <- getReportLink(
   study = "ABC",
   modelID = "model_01"
+)
+toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
+```
+
+```{r getReportLink-file}
+reportLink <- getReportLink(
+  study = "ABC",
+  modelID = "model_02"
 )
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
 ```

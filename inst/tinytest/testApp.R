@@ -248,7 +248,7 @@ expect_identical(
 
 expect_identical_xl(
   getReportLink(testStudyName, "model_02"),
-  "OmicAnalyzerReports/model_02/report.html"
+  sprintf("OAstudy%s/OmicAnalyzerReports/model_02/report.html", testStudyName)
 )
 
 # getNodeFeatures --------------------------------------------------------------
