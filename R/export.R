@@ -4,10 +4,19 @@
 #' @param type Export to a RDS file ("rds"), text files ("text"), or an
 #'   R package ("package")
 #' @param path Optional file path to save the object
+#' @param requireValid Require that study is valid before exporting
+#'
+#' @seealso \code{\link{validateStudy}}
 #'
 #' @export
-exportStudy <- function(study, type = c("rds", "text", "package"), path = NULL) {
-  checkStudy(study)
+exportStudy <- function(
+  study,
+  type = c("rds", "text", "package"),
+  path = NULL,
+  requireValid = TRUE
+)
+{
+  if (requireValid) validateStudy(study) else checkStudy(study)
 
   type <- match.arg(type)
 

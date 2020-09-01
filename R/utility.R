@@ -89,6 +89,20 @@ coerceColsToCharacter <- function(x) {
   return(result)
 }
 
+# Strings ----------------------------------------------------------------------
+
+# Capitalizes the first letter in each element of the character vector
+#
+# capitalize(c("metaFeatures", "results", "abc def"))
+# ## [1] "MetaFeatures" "Results"      "Abc def"
+#
+capitalize <- function(x) {
+  first <- substr(x, 1, 1)
+  firstCapitalized <- toupper(first)
+  final <- paste0(firstCapitalized, substring(x, 2))
+  return(final)
+}
+
 # Miscellaneous ----------------------------------------------------------------
 
 # Returns TRUE if matches URL pattern, else FALSE

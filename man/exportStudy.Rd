@@ -4,7 +4,12 @@
 \alias{exportStudy}
 \title{Export a study}
 \usage{
-exportStudy(study, type = c("rds", "text", "package"), path = NULL)
+exportStudy(
+  study,
+  type = c("rds", "text", "package"),
+  path = NULL,
+  requireValid = TRUE
+)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study}
@@ -13,7 +18,12 @@ exportStudy(study, type = c("rds", "text", "package"), path = NULL)
 R package ("package")}
 
 \item{path}{Optional file path to save the object}
+
+\item{requireValid}{Require that study is valid before exporting}
 }
 \description{
 Export a study
+}
+\seealso{
+\code{\link{validateStudy}}
 }

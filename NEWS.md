@@ -3,6 +3,10 @@
 * Support for linking to external analysis report files (`addReports()`,
 `getReports()`, `getReportLink()`). Accepts a URL or a path to file.
 
+* New function `validateStudy()` to validate a study. It is automatically run
+prior to exporting with `exportStudy()` (controlled by the new argument
+`requireValid`). It can also be run directly.
+
 * `exportStudy()` no longer exports empty directories for unused elements of the
 OmicAnalyzer study object.
 
