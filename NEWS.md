@@ -6,6 +6,9 @@
 * `exportStudy()` no longer exports empty directories for unused elements of the
 OmicAnalyzer study object.
 
+* Bug fix: `getMetaFeaturesTable()` now properly returns a data frame even if
+it only contains one column.
+
 # 0.13.3
 
 * Bug fix: Preserve input order for results table. Due to the merge with the

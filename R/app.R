@@ -125,7 +125,8 @@ getMetaFeaturesTable <- function(study, modelID, featureID) {
   metaFeatures <- getMetaFeatures(study, modelID = modelID)
 
   metaFeaturesTable <- metaFeatures[metaFeatures[, 1] == featureID, ]
-  metaFeaturesTable <- metaFeaturesTable[, -1]
+  metaFeaturesTable <- metaFeaturesTable[, -1, drop = FALSE]
+  row.names(metaFeaturesTable) <- NULL
 
   if (nrow(metaFeaturesTable) == 0) {
     warning(sprintf("No metaFeatures found for featureID \"%s\"", featureID))
