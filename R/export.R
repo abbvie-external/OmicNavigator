@@ -427,6 +427,9 @@ installStudy <- function(study, library = .libPaths()[1]) {
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
   tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
+  optionWarn <- getOption("warn", default = 0)
+  on.exit(options(warn = optionWarn), add = TRUE)
+  options(warn = 2) # warnings are errors
   utils::install.packages(
     tmpPkgDir,
     lib = library,
