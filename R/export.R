@@ -427,17 +427,14 @@ installStudy <- function(study, library = .libPaths()[1]) {
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
   tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
-  buildPkg(tmpPkgDir)
-  tarball <- Sys.glob(sprintf("OAstudy%s_*.tar.gz", study[["name"]]))
-  stopifnot(length(tarball) == 1)
-  on.exit(file.remove(tarball), add = TRUE)
-  utils::install.packages(tarball, lib = library, repos = NULL, quiet = TRUE)
+  utils::install.packages(
+    tmpPkgDir,
+    lib = library,
+    repos = NULL,
+    type = "source",
+    verbose = FALSE,
+    quiet = TRUE
+  )
 
   return(invisible(study))
-}
-
-buildPkg <- function(pkgDir) {
-  r <- file.path(R.home("bin"), "R")
-  system2(r, args = c("CMD", "build", pkgDir), stdout = NULL, stderr = NULL)
-  return(invisible(pkgDir))
 }
