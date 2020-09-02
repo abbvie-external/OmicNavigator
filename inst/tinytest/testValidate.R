@@ -21,3 +21,21 @@ expect_error_xl(
   validateStudy(invalidResults),
   "Name of features column doesn't match between results and features tables"
 )
+
+# Assays -----------------------------------------------------------------------
+
+invalidAssaysRow <- testStudyObj
+row.names(invalidAssaysRow[["assays"]][[1]])[3] <- "wrongFeatureID"
+
+expect_error_xl(
+  validateStudy(invalidAssaysRow),
+  "Row names of assays do not match featureID in features table"
+)
+
+invalidAssaysCol <- testStudyObj
+colnames(invalidAssaysCol[["assays"]][[1]])[3] <- "wrongSampleID"
+
+expect_error_xl(
+  validateStudy(invalidAssaysCol),
+  "Column names of assays do not match sampleID in samples table"
+)

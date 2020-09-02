@@ -16,6 +16,7 @@ validateStudy <- function(study) {
   }
 
   validateResults(study)
+  validateAssays(study)
 
   return(invisible(TRUE))
 }
@@ -38,6 +39,38 @@ validateResults <- function(study) {
         if (!all(dataFrame[, 1] %in% features[, 1])) {
           stop("Features in results table do not match features table")
         }
+      }
+    }
+  }
+
+  return(invisible(TRUE))
+}
+
+validateAssays <- function(study) {
+  assays <- study[["assays"]]
+
+  if (isEmpty(assays)) return(invisible(NA))
+
+  for (i in seq_along(assays)) {
+    modelID <- names(assays)[i]
+
+    # Confirm that row names are the featureID
+    rows <- row.names(assays[[i]])
+    features <- try(getFeatures(study, modelID = modelID), silent = TRUE)
+    if (!inherits(features, "try-error")) {
+      if (!all(rows %in% features[, 1])) {
+        stop("Row names of assays do not match featureID in features table\n",
+             sprintf("modelID: %s", modelID))
+      }
+    }
+
+    # Confirm that column names are the sampleID
+    cols <- colnames(assays[[i]])
+    samples <- try(getSamples(study, modelID = modelID), silent = TRUE)
+    if (!inherits(samples, "try-error")) {
+      if (!all(cols %in% samples[, 1])) {
+        stop("Column names of assays do not match sampleID in samples table\n",
+             sprintf("modelID: %s", modelID))
       }
     }
   }
