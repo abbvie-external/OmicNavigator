@@ -7,8 +7,8 @@
 validateStudy <- function(study) {
   checkStudy(study)
 
-  elementsFilter <- vapply(study, function(x) is.list(x) && !isEmpty(x), logical(1))
-  elements <- names(study)[elementsFilter]
+  emptyElements <- vapply(study, isEmpty, logical(1))
+  elements <- names(study)[!emptyElements]
   for (e in elements) {
     checkFunctionName <- paste0("check", capitalize(e))
     checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicAnalyzer")

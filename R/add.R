@@ -56,7 +56,9 @@ createStudy <- function(name,
                         reports = list(),
                         version = NULL)
 {
-  stopifnot(is.character(name), is.character(description))
+  checkName(name)
+  checkDescription(description)
+  checkVersion(version)
 
   study <- list(name = name,
                 description = description,

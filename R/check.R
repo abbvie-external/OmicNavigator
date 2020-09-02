@@ -6,6 +6,54 @@ checkStudy <- function(study) {
   )
 }
 
+checkName <- function(name) {
+  stopifnot(
+    is.character(name),
+    length(name) == 1
+  )
+
+  # Confirm package name is valid
+  regexPackage <- .standard_regexps()[["valid_package_name"]]
+  regexPackage <- paste0("^", regexPackage, "$")
+  nameIsValid <- grepl(regexPackage, name)
+  if (!nameIsValid) {
+    stop("Invalid name for a study package. It must follow these rules:\n",
+         "* Begin with a letter\n",
+         "* End with a letter or a number\n",
+         "* Be at least two characters long\n",
+         "* Only contain alphanumeric characters and periods (full stops)\n"
+    )
+  }
+}
+
+checkDescription <- function(description) {
+  stopifnot(
+    is.character(description),
+    length(description) == 1
+  )
+}
+
+checkVersion <- function(version) {
+  if (is.null(version)) return(NULL)
+  stopifnot(
+    is.character(version),
+    length(version) == 1
+  )
+
+  # Confirm version string is valid
+  regexVersion <- .standard_regexps()[["valid_package_version"]]
+  regexVersion <- paste0("^", regexVersion, "$")
+  versionIsValid <- grepl(regexVersion, version)
+  if (!versionIsValid) {
+    stop("Invalid version for a study package. It must follow these rules:\n",
+         "* Begin with a number\n",
+         "* End with a number\n",
+         "* Contain at least one period (full stop) or dash\n",
+         "* No letters\n"
+    )
+  }
+}
+
 checkList <- function(x) {
   listName <- deparse(substitute(x))
 
@@ -242,7 +290,6 @@ checkBarcodes <- function(barcodes) {
 
   return(NULL)
 }
-
 
 checkReports <- function(reports) {
   checkList(reports)

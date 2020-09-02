@@ -19,6 +19,89 @@ expect_error(
   "name"
 )
 
+# checkName --------------------------------------------------------------------
+
+expect_error_xl(
+  createStudy(name = TRUE)
+)
+
+expect_error_xl(
+  createStudy(name = c("one", "two"))
+)
+
+expect_error_xl(
+  createStudy(name = ""),
+  "Invalid name for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = ".invalid"),
+  "Invalid name for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "invalid."),
+  "Invalid name for a study package"
+)
+expect_error_xl(
+  createStudy(name = "0invalid"),
+  "Invalid name for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "in-valid"),
+  "Invalid name for a study package"
+)
+
+# checkDescription -------------------------------------------------------------
+
+expect_error_xl(
+  createStudy(name = "ok", description = TRUE)
+)
+
+expect_error_xl(
+  createStudy(name = "ok", description = c("one", "two"))
+)
+
+# checkVersion -----------------------------------------------------------------
+
+expect_error_xl(
+  createStudy(name = "ok", version = TRUE)
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = 1)
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = c("one", "two"))
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = "1"),
+  "Invalid version for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = "1/1"),
+  "Invalid version for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = "1a-1"),
+  "Invalid version for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = "1.1-"),
+  "Invalid version for a study package"
+)
+
+expect_error_xl(
+  createStudy(name = "ok", version = "-1.1"),
+  "Invalid version for a study package"
+)
+
 # checkX -----------------------------------------------------------------------
 
 expect_error(

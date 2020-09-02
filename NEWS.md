@@ -7,6 +7,9 @@
 prior to exporting with `exportStudy()` (controlled by the new argument
 `requireValid`). It can also be run directly.
 
+* `createStudy()` now checks that the arguments `name`, `description`, and
+`version` are valid.
+
 * `exportStudy()` no longer exports empty directories for unused elements of the
 OmicAnalyzer study object.
 
