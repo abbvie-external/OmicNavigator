@@ -1,3 +1,9 @@
+# 0.14.1
+
+* The release tarball includes [version 0.1.8 of the web app][app-v0.1.8]
+
+[app-v0.1.8]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.8
+
 # 0.14.0
 
 * Support for linking to external analysis report files (`addReports()`,
