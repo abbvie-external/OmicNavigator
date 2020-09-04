@@ -9,10 +9,16 @@
 \SweaveOpts{concordance=TRUE}
 \maketitle
 
-A code chunk:
+<<echo=FALSE>>=
+options(prompt = " ")
+@
+
+<<echo=FALSE>>=
+as.character(packageVersion("OmicAnalyzer"))
+@
 
 <<>>=
-1 + 1
+library(OmicAnalyzer)
 @
 
 \end{document}
