@@ -1,0 +1,18 @@
+%\VignetteIndexEntry{OmicAnalyzer User's Guide}
+%\VignetteEncoding{UTF-8}
+
+\documentclass{article}
+\usepackage[breaklinks]{hyperref}
+\title{OmicAnalyzer User's Guide}
+
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+
+A code chunk:
+
+<<>>=
+1 + 1
+@
+
+\end{document}
