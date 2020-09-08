@@ -8,6 +8,7 @@ inst/www
 *.sqlite
 *.tar.gz
 vignettes/*gz
+vignettes/images
 vignettes/*log
 vignettes/*pdf
 vignettes/*tex

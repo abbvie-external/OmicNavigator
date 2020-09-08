@@ -39,10 +39,10 @@ Second install the required and suggested dependencies:
 remotes::install_deps(dependencies = TRUE)
 @
 
-Third install LaTeX if you wish to re-build the vignettes:
+Third install LaTeX, Make, and Graphviz if you wish to re-build the vignettes:
 
 \begin{verbatim}
-sudo apt-get install texlive texinfo
+sudo apt-get install texlive texinfo make graphviz
 \end{verbatim}
 
 If you're on Windows or macOS, I recommend using the R package

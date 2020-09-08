@@ -1,0 +1,8 @@
+digraph G {
+  study -> "model 1";
+  study -> "model 2";
+  "example 1" -> transcript;
+  "example 1" -> protein;
+  "example 2" -> edgeR;
+  "example 2" -> DESeq2;
+}

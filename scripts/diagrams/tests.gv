@@ -1,0 +1,8 @@
+digraph G {
+  "model: cases vs controls" -> "test: cases vs controls";
+  "model: cases vs 2 treatments" -> "test: treatment 1 vs controls";
+  "model: cases vs 2 treatments" -> "test: treatment 2 vs controls";
+  "model: 3 groups" -> "test: group 1 vs group 2";
+  "model: 3 groups" -> "test: group 2 vs group 3";
+  "model: 3 groups" -> "test: group 1 vs group 3";
+}

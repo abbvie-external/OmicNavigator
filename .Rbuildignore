@@ -5,3 +5,4 @@
 ^rlibs$
 ^CONTRIBUTING\.md$
 ^scripts$
+^Makefile$

@@ -2,6 +2,7 @@
 %\VignetteEncoding{UTF-8}
 
 \documentclass{article}
+\usepackage{amsmath}
 \usepackage[breaklinks]{hyperref}
 \title{OmicAnalyzer User's Guide}
 
@@ -49,6 +50,98 @@ The steps include:
 \end{enumerate}
 
 \section*{Structure of analysis results}
+
+Before you start registering your data with OmicAnalyzer, it will be helpful to
+have a high-level understanding of how OmicAnalyzer defines the main components
+of the analysis results and how they relate to each other.
+
+\subsection*{study}
+
+The largest unit of organization is the study. This corresponds to all the
+experiments performed and analyses conducted in order to address a scientific
+question. A study should contain all the relevant results that someone would
+need to evaluate the scientific question. In more practical terms, any
+analyses that uses overlapping biological samples should be included in the
+same study (e.g. if you measured transcript and protein levels in the same
+samples).
+
+\subsection*{models}
+
+A study has one or models. The models can be very different (one model for
+transcript levels and another for protein levels) or very similar (same exact
+input data but differential expression performed with two different software
+packages).
+
+\includegraphics{images/models}
+
+\subsection*{tests}
+
+Each model has one or more tests. Each test (also commonly referred to as a
+\href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}) refers
+to the statistical results from testing a single coefficient (or a combination
+of coefficients) from the model. For example, a model that compares cases
+versus controls will only have one test; a model that compares a control
+versus two different treatments will likely have two tests; and a model that
+compares three distinct groups will likely have 3 tests (since $\binom{3}{2} =
+3$ pairwise comparisons).
+
+\includegraphics{images/tests}
+
+\subsection*{results}
+
+Every test of every model has a corresponding results table. The results refer
+to the statistics from a differential expression analysis (broadly defined,
+e.g. this could be differential methylation or any other molecular phenotype).
+Note that a study must have at least one result.
+
+\subsection*{annotations}
+
+Each study can have one or more annotations. These are only required if you are
+including enrichment analyses. For example, you could include the terms from the
+annotation databases Reactome and KEGG.
+
+\subsection*{enrichments}
+
+Each test from each model can have an enrichments table for any of the
+available annotations. The enrichments refer to the nominal and
+multiple-testing-adjusted significance values for each term that was tested
+for the given annotation.
+
+\subsection*{features, samples, and assays}
+
+Each model can optionally include extra data regarding the features, samples,
+and assays. The features table includes metadata columns that describe the
+rows of the results tables. The samples table includes metadata columns that
+describe the columns of the results tables. The assays table includes the
+measurements for each feature (row) and sample (column), which can be used for
+creating custom plots.
+
+Importantly, the features, samples, and assays tables can be shared across
+models. For example, in a study that analyzed transcript and protein levels
+from the same biological samples, the two models would share the same samples
+table.
+
+\subsection*{A small study}
+
+Imagine an RNA-seq study comparing cases and controls. There is only one
+molecular phenotype, and only one model is performed with one test. Enrichment
+analysis is performed using the annotation database Reactome. The bioinformatician
+creates an OmicAnalyzer study with one results table and one enrichments table.
+The layout of the study components is below.
+
+\includegraphics{images/study-small}
+
+\subsection*{A large study}
+
+Imagine a large study that measured transcript and protein levels for two
+treatment groups and a control group. There are two models, one for RNA and
+one for protein. Each model as two tests: treatment 1 vs controls and
+treatment 2 vs controls. Enrichment analysis is performed using the annotation
+databases Reactome and KEGG. The bioinformatician creates an OmicAnalyzer
+study with four results table and eight enrichments table. The layout of the
+study components is below.
+
+\includegraphics{images/study-large}
 
 \section*{Step-by-step example}
 
