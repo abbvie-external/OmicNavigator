@@ -17,6 +17,41 @@ options(prompt = " ")
 as.character(packageVersion("OmicAnalyzer"))
 @
 
+\section*{Overview}
+
+The goal of the OmicAnalyzer software is to facilitate the interactive
+exploration of the results from an omics experiment. Using OmicAnalyzer, any
+bioinformatician familar with the basics of the R programming language can
+create and share a high-quality, comprehensive dashboard for interactive
+investigation of the patterns and signals in the data.
+
+The steps include:
+
+\begin{enumerate}
+
+  \item The bioinformatician analyzes the data from the omics experiment. This
+  can be done in R or any other platform (e.g.
+  \href{https://omicsoftdocs.github.io/ArraySuiteDoc/tutorials/ArrayStudio/ArrayStudio/}{Array
+  Studio}).
+
+  \item The bioinformatician registers the results using the OmicAnalyzer R
+  functions. If the results were produced outside of R, they will need to be
+  exported to files, and then imported into R.
+
+  \item The bioinformatician uses OmicAnalyzer to export the analysis results to
+  a study pacakge and install it.
+
+  \item The bioinformatician can run the app locally or deploy it on a server.
+
+  \item If the app is deployed, collaborators can access the dashboard directly
+  in their web browser.
+
+\end{enumerate}
+
+\section*{Structure of analysis results}
+
+\section*{Step-by-step example}
+
 <<>>=
 library(OmicAnalyzer)
 @
