@@ -12,9 +12,8 @@
 options(prompt = " ")
 @
 
-<<echo=FALSE>>=
-as.character(packageVersion("OmicAnalyzer"))
-@
+This vignette was built with OmicAnalyzer version
+\Sexpr{packageVersion("OmicAnalyzer")}
 
 \section*{Files and directories}
 
