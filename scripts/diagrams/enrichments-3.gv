@@ -1,0 +1,16 @@
+digraph G {
+  testNode11 [label = "test: group 1 vs group 2"];
+  testNode12 [label = "test: group 2 vs group 3"];
+  testNode13 [label = "test: group 1 vs group 3"];
+  testNode21 [label = "test: group 1 vs group 2"];
+  testNode22 [label = "test: group 2 vs group 3"];
+  testNode23 [label = "test: group 1 vs group 3"];
+  "model: 3 groups" -> "annotation: KEGG";
+  "model: 3 groups" -> "annotation: Reactome";
+  "annotation: KEGG" -> testNode11;
+  "annotation: KEGG" -> testNode12;
+  "annotation: KEGG" -> testNode13;
+  "annotation: Reactome" -> testNode21;
+  "annotation: Reactome" -> testNode22;
+  "annotation: Reactome" -> testNode23;
+}

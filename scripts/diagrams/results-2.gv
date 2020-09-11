@@ -1,0 +1,4 @@
+digraph G {
+  "model: cases vs 2 treatments" -> "test: treatment 1 vs controls";
+  "model: cases vs 2 treatments" -> "test: treatment 2 vs controls";
+}

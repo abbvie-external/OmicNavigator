@@ -1,0 +1,12 @@
+digraph G {
+  testNode11 [label = "test: treatment 1 vs controls"];
+  testNode12 [label = "test: treatment 2 vs controls"];
+  testNode21 [label = "test: treatment 1 vs controls"];
+  testNode22 [label = "test: treatment 2 vs controls"];
+  "model: cases vs 2 treatments" -> "annotation: KEGG";
+  "model: cases vs 2 treatments" -> "annotation: Reactome";
+  "annotation: KEGG" -> testNode11;
+  "annotation: KEGG" -> testNode12;
+  "annotation: Reactome" -> testNode21;
+  "annotation: Reactome" -> testNode22;
+}

@@ -1,8 +1,0 @@
-digraph G {
-  "Small study" -> "model 1: Cases vs controls";
-  "Small study" -> "Annotation 1: Reactome";
-  "model 1: Cases vs controls" -> "test 1: Cases vs controls";
-  "test 1: Cases vs controls" -> "Results for model 1, test 1";
-  "test 1: Cases vs controls" -> "Encrichments 1: Reactome for model 1, test 1";
-  "Annotation 1: Reactome" -> "Encrichments 1: Reactome for model 1, test 1";
-}

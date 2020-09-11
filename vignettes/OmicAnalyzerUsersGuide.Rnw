@@ -54,7 +54,7 @@ Before you start registering your data with OmicAnalyzer, it will be helpful to
 have a high-level understanding of how OmicAnalyzer defines the main components
 of the analysis results and how they relate to each other.
 
-\subsection*{study}
+\subsection*{A study and its models}
 
 The largest unit of organization is the study. This corresponds to all the
 experiments performed and analyses conducted in order to address a scientific
@@ -64,8 +64,6 @@ analyses that uses overlapping biological samples should be included in the
 same study (e.g. if you measured transcript and protein levels in the same
 samples).
 
-\subsection*{models}
-
 A study has one or models. The models can be very different (one model for
 transcript levels and another for protein levels) or very similar (same exact
 input data but differential expression performed with two different software
@@ -73,74 +71,77 @@ packages).
 
 \includegraphics{images/models}
 
-\subsection*{tests}
+\subsection*{Differential expression results}
+
+One of the primary type of results that OmicAnalyzer displays for interactive
+investigation is the statistical results from a differential expression
+analysis. Here ``differential expression'' is broadly defined,
+e.g. this could be differential methylation or any other molecular phenotype.
 
 Each model has one or more tests. Each test (also commonly referred to as a
 \href{https://en.wikipedia.org/wiki/Contrast_(statistics)}{contrast}) refers
 to the statistical results from testing a single coefficient (or a combination
-of coefficients) from the model. For example, a model that compares cases
-versus controls will only have one test; a model that compares a control
-versus two different treatments will likely have two tests; and a model that
-compares three distinct groups will likely have 3 tests (since $\binom{3}{2} =
-3$ pairwise comparisons).
+of coefficients) from the model.
 
-\includegraphics{images/tests}
+For example, a model that compares cases versus controls will only have one
+test:
 
-\subsection*{results}
+\includegraphics{images/results-1}
 
-Every test of every model has a corresponding results table. The results refer
-to the statistics from a differential expression analysis (broadly defined,
-e.g. this could be differential methylation or any other molecular phenotype).
-Note that a study must have at least one result.
+A model that compares a control versus two different treatments will likely have
+two tests:
 
-\subsection*{annotations}
+\includegraphics{images/results-2}
 
-Each study can have one or more annotations. These are only required if you are
-including enrichment analyses. For example, you could include the terms from the
-annotation databases Reactome and KEGG.
+And a model that compares three distinct groups will likely have 3 tests
+(since $\binom{3}{2} = 3$ pairwise comparisons):
 
-\subsection*{enrichments}
+\includegraphics{images/results-3}
 
-Each test from each model can have an enrichments table for any of the
-available annotations. The enrichments refer to the nominal and
-multiple-testing-adjusted significance values for each term that was tested
-for the given annotation.
+\subsection*{Enrichments analysis}
 
-\subsection*{features, samples, and assays}
+A typical systems biology analysis to perform after a differential expression
+analysis is to test for enrichments of the differentially expressed features
+in known gene sets (e.g. \href{https://www.genome.jp/kegg/}{KEGG},
+\href{https://reactome.org/}{Reactome}). The OmicAnalyzer app provides a
+table, network, and various other visualizations to explore the output of
+enrichment analyses.
 
-Each model can optionally include extra data regarding the features, samples,
-and assays. The features table includes metadata columns that describe the
-rows of the results tables. The samples table includes metadata columns that
-describe the columns of the results tables. The assays table includes the
-measurements for each feature (row) and sample (column), which can be used for
-creating custom plots.
+Similar to the differential expression results, enrichments analyses are also
+added per model and per test. However, there is also the additional category of
+the annotation database that was used for the enrichment (e.g. KEGG, Reactome).
+Thus each enrichments table corresponds to a given study-annotation-test
+combination.
 
-Importantly, the features, samples, and assays tables can be shared across
-models. For example, in a study that analyzed transcript and protein levels
-from the same biological samples, the two models would share the same samples
-table.
+For example, imagine that enrichment analyses were performed with the KEGG and
+Reactome annotations. A model that compares cases versus controls will have
+two enrichments tables:
 
-\subsection*{A small study}
+\includegraphics{images/enrichments-1}
 
-Imagine an RNA-seq study comparing cases and controls. There is only one
-molecular phenotype, and only one model is performed with one test. Enrichment
-analysis is performed using the annotation database Reactome. The bioinformatician
-creates an OmicAnalyzer study with one results table and one enrichments table.
-The layout of the study components is below.
+A model that compares a control versus two different treatments will have
+four enrichment tables, 2 for each of the tests:
 
-\includegraphics{images/study-small}
+\includegraphics{images/enrichments-2}
 
-\subsection*{A large study}
+And a model that compares three distinct groups will have 6 enrichment tables,
+2 for each of the 3 tests:
 
-Imagine a large study that measured transcript and protein levels for two
-treatment groups and a control group. There are two models, one for RNA and
-one for protein. Each model as two tests: treatment 1 vs controls and
-treatment 2 vs controls. Enrichment analysis is performed using the annotation
-databases Reactome and KEGG. The bioinformatician creates an OmicAnalyzer
-study with four results table and eight enrichments table. The layout of the
-study components is below.
+\includegraphics{images/enrichments-3}
 
-\includegraphics{images/study-large}
+\subsection*{Additional information}
+
+The primary data sets are the differential expression results and the enrichments
+results. However, the more information you supply about the experimental data,
+the more details will be included in the app.
+
+For example, you can include metadata about the features, metadata about the
+samples, the individual measurements (expression, methylation,
+phosphorylation, etc.).
+
+This additional metadata can be added per model (e.g. different feature
+metadata for RNA versus protein measurements) or shared across models (e.g. if
+the same samples are used in each model).
 
 \section*{Step-by-step example}
 
