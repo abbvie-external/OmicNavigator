@@ -149,4 +149,9 @@ the same samples are used in each model).
 library(OmicAnalyzer)
 @
 
+<<>>=
+data("RNAseq123")
+ls()
+@
+
 \end{document}

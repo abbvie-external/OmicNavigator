@@ -3,7 +3,10 @@
 # Re-run RNAseq123 analysis, subset the objects, and save as examples for
 # User's Guide.
 #
-# https://master.bioconductor.org/packages/release/workflows/html/RNAseq123.html
+# https://bioconductor.org/packages/release/workflows/html/RNAseq123.html
+
+if (!file.exists("DESCRIPTION"))
+  stop("RNAseq123.R must be executed in the root directory of the package")
 
 if (!requireNamespace("BiocManager", quietly = TRUE))
   stop("Package {BiocManager} is required: install.packages(\"BiocManager\")")
@@ -25,4 +28,39 @@ cwd <- setwd(tempdir())
 message("Executing vignette...")
 suppressMessages(output <- utils::capture.output(base::eval(code)))
 setwd(cwd)
-ls()
+
+# Subset the data to only include the features in the 4 smallest reactome terms.
+reactome <- grepl("^REACTOME", names(Mm.c2))
+sizes <- lengths(Mm.c2)
+terms <- names(Mm.c2)[reactome & sizes < 10]
+stopifnot(length(terms) == 4)
+Mm.c2 <- Mm.c2[terms]
+genesSubset <- unlist(Mm.c2, use.names = FALSE)
+genesSubsetMeasured <- genesSubset[genesSubset %in% x$genes$ENTREZID]
+# Results
+basal.vs.lp <- basal.vs.lp[genesSubsetMeasured, ]
+basal.vs.ml <- basal.vs.ml[genesSubsetMeasured, ]
+# Enrichments
+cam.BasalvsLP <- cam.BasalvsLP[terms, ]
+cam.BasalvsML <- cam.BasalvsML[terms, ]
+# Features
+genes <- subset(genes, ENTREZID %in% genesSubsetMeasured)
+row.names(genes) <- NULL
+# Assays
+lcpm <- lcpm[genesSubsetMeasured, ]
+
+# Export
+dir.create("data/", showWarnings = FALSE)
+save(
+  Mm.c2,
+  basal.vs.lp,
+  basal.vs.ml,
+  cam.BasalvsLP,
+  cam.BasalvsML,
+  genes,
+  lcpm,
+  samplenames,
+  group,
+  lane,
+  file = "data/RNAseq123.RData"
+)
