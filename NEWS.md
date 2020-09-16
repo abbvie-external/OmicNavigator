@@ -1,5 +1,9 @@
 # 0.14.1.9000
 
+* Remove the argument `overwrite` for the add functions, e.g. `addSamples()`.
+Instead subsequent calls to the same add function will update the existing data
+using the rules of `utils::modifyList()`.
+
 * Support the option to manually calculate pairwise overlaps with
 `addOverlaps()` prior to installing or exporting the study package.
 

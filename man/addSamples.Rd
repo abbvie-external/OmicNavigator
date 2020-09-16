@@ -4,7 +4,7 @@
 \alias{addSamples}
 \title{Add sample metadata}
 \usage{
-addSamples(study, samples, overwrite = FALSE)
+addSamples(study, samples)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -14,8 +14,6 @@ The input object is a named list of data frames (one per model). The first
 column of each data frame is used as the sample ID, so it must contain
 unique values. To share a data frame across multiple models, use the model
 ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add sample metadata

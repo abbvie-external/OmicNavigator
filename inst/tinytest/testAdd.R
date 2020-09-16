@@ -9,8 +9,6 @@ library(OmicAnalyzer)
 
 tmplib <- tempfile()
 dir.create(tmplib)
-libOrig <- .libPaths()
-.libPaths(c(tmplib, libOrig))
 
 # Test addX() ------------------------------------------------------------------
 
@@ -59,13 +57,16 @@ expect_identical(
 plots <- OmicAnalyzer:::testPlots()
 study <- addPlots(study, plots = plots)
 
-suppressMessages(OmicAnalyzer::installStudy(study))
+suppressMessages(
+  OmicAnalyzer::exportStudy(study, type = "package", path = tmplib)
+)
 
-# Install again with overlaps pre-calculated
+# Export again with overlaps pre-calculated
 study <- addOverlaps(study)
-suppressMessages(OmicAnalyzer::installStudy(study))
+suppressMessages(
+  OmicAnalyzer::exportStudy(study, type = "package", path = tmplib)
+)
 
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
-.libPaths(libOrig)

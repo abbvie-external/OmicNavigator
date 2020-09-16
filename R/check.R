@@ -65,11 +65,7 @@ checkList <- function(x) {
     stop(sprintf("The object \"%s\" must be a list, not a data frame", listName))
   }
 
-  if (isEmpty(x)) {
-    stop(sprintf("The list \"%s\" cannot be empty", listName))
-  }
-
-  if (is.null(names(x))) {
+  if (!isEmpty(x) && is.null(names(x))) {
     stop(sprintf("The elements of list \"%s\" must be named", listName))
   }
 

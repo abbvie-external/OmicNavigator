@@ -38,23 +38,6 @@ writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
 
 isEmpty <- function(x) {length(x) == 0}
 
-addToList <- function(listOne, listTwo, overwrite = FALSE) {
-  listNew <- listOne
-
-  for (i in seq_along(listTwo)) {
-    elementName <- names(listTwo)[i]
-    if (elementName %in% names(listOne) && !overwrite) {
-      stop(sprintf("Data for \"%s\" already exists.\n", elementName),
-           "Set the argument overwrite to TRUE to replace it.",
-      call. = FALSE)
-    }
-
-    listNew[[elementName]] <- listTwo[[elementName]]
-  }
-
-  return(listNew)
-}
-
 ## Data frames -----------------------------------------------------------------
 
 hasUniqueIdColumn <- function(x) {

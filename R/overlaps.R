@@ -79,23 +79,17 @@ calc_pairwise_overlaps <- function(sets) {
 #' @inheritParams shared-add
 #'
 #' @export
-addOverlaps <- function(study, overwrite = FALSE) {
+addOverlaps <- function(study) {
   checkStudy(study)
 
-  if (isEmpty(study[["annotations"]]))
-    stop("Cannot calculate overlaps without annotations")
+  if (isEmpty(study[["annotations"]])) {
+    warning("Cannot calculate overlaps without annotations")
+    return(study)
+  }
+
+  message("Calculating pairwise overlaps. This may take a while...")
 
   annotationsAvailable <- names(study[["annotations"]])
-
-  if (!overwrite) {
-    annotationsAvailable <- setdiff(annotationsAvailable,
-                                    names(study[["overlaps"]]))
-  }
-
-  if (length(annotationsAvailable) > 0) {
-    message("Calculating pairwise overlaps. This may take a while...")
-  }
-
   overlapsList <- vector(mode = "list", length = length(annotationsAvailable))
   names(overlapsList) <- annotationsAvailable
   for (annotationID in annotationsAvailable) {
@@ -115,7 +109,7 @@ addOverlaps <- function(study, overwrite = FALSE) {
     overlaps <- overlaps[overlaps[["overlapSize"]] > 0, ]
     overlapsList[[annotationID]] <- overlaps
   }
-  study[["overlaps"]] <- addToList(study[["overlaps"]], overlapsList)
+  study[["overlaps"]] <- utils::modifyList(study[["overlaps"]], overlapsList)
 
   return(study)
 }

@@ -4,7 +4,7 @@
 \alias{addMetaFeatures}
 \title{Add meta-feature metadata}
 \usage{
-addMetaFeatures(study, metaFeatures, overwrite = FALSE)
+addMetaFeatures(study, metaFeatures)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -15,8 +15,6 @@ first column of each data frame is used as the feature ID, so it must
 contain the same IDs as the corresponding features data frame
 (\code{\link{addFeatures}}). To share a data frame across multiple models,
 use the model ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 The meta-features table is useful anytime there are metadata variables that

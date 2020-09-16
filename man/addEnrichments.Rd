@@ -4,7 +4,7 @@
 \alias{addEnrichments}
 \title{Add enrichment results}
 \usage{
-addEnrichments(study, enrichments, overwrite = FALSE)
+addEnrichments(study, enrichments)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -19,8 +19,6 @@ of these elements should be a data frame with enrichment results. Each
 table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
 adjusting for multiple testing). Any additional columns are ignored.}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add enrichment results

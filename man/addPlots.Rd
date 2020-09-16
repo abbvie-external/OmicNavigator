@@ -4,7 +4,7 @@
 \alias{addPlots}
 \title{Add custom plotting functions}
 \usage{
-addPlots(study, plots, overwrite = FALSE)
+addPlots(study, plots)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -16,8 +16,6 @@ define a \code{displayName} to control how the plot will be named in the
 app. Optionally, if the plottting function requires external packages,
 these can be defined in the element \code{packages}. To share plots across
 multiple models, use the model ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Include custom plots that the app will display when a feature is selected by

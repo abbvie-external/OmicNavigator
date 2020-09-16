@@ -78,18 +78,18 @@ createStudy <- function(name,
                 version = version)
   class(study) <- "oaStudy"
 
-  if (!isEmpty(samples)) study <- addSamples(study, samples = samples)
-  if (!isEmpty(features)) study <- addFeatures(study, features = features)
-  if (!isEmpty(models)) study <- addModels(study, models = models)
-  if (!isEmpty(assays)) study <- addAssays(study, assays = assays)
-  if (!isEmpty(tests)) study <- addTests(study, tests = tests)
-  if (!isEmpty(annotations)) study <- addAnnotations(study, annotations = annotations)
-  if (!isEmpty(results)) study <- addResults(study, results = results)
-  if (!isEmpty(enrichments)) study <- addEnrichments(study, enrichments = enrichments)
-  if (!isEmpty(metaFeatures)) study <- addMetaFeatures(study, metaFeatures = metaFeatures)
-  if (!isEmpty(plots)) study <- addPlots(study, plots = plots)
-  if (!isEmpty(barcodes)) study <- addBarcodes(study, barcodes = barcodes)
-  if (!isEmpty(reports)) study <- addReports(study, reports = reports)
+  study <- addSamples(study, samples = samples)
+  study <- addFeatures(study, features = features)
+  study <- addModels(study, models = models)
+  study <- addAssays(study, assays = assays)
+  study <- addTests(study, tests = tests)
+  study <- addAnnotations(study, annotations = annotations)
+  study <- addResults(study, results = results)
+  study <- addEnrichments(study, enrichments = enrichments)
+  study <- addMetaFeatures(study, metaFeatures = metaFeatures)
+  study <- addPlots(study, plots = plots)
+  study <- addBarcodes(study, barcodes = barcodes)
+  study <- addReports(study, reports = reports)
 
   return(study)
 }
@@ -104,11 +104,11 @@ createStudy <- function(name,
 #' @inheritParams shared-add
 #'
 #' @export
-addSamples <- function(study, samples, overwrite = FALSE) {
+addSamples <- function(study, samples) {
   checkStudy(study)
   checkSamples(samples)
 
-  study[["samples"]] <- addToList(study[["samples"]], samples, overwrite = overwrite)
+  study[["samples"]] <- utils::modifyList(study[["samples"]], samples)
 
   return(study)
 }
@@ -123,13 +123,13 @@ addSamples <- function(study, samples, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addFeatures <- function(study, features, overwrite = FALSE) {
+addFeatures <- function(study, features) {
   checkStudy(study)
   checkFeatures(features)
 
   features <- lapply(features, coerceColsToCharacter)
 
-  study[["features"]] <- addToList(study[["features"]], features, overwrite = overwrite)
+  study[["features"]] <- utils::modifyList(study[["features"]], features)
 
   return(study)
 }
@@ -142,11 +142,11 @@ addFeatures <- function(study, features, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addModels <- function(study, models, overwrite = FALSE) {
+addModels <- function(study, models) {
   checkStudy(study)
   checkModels(models)
 
-  study[["models"]] <- addToList(study[["models"]], models, overwrite = overwrite)
+  study[["models"]] <- utils::modifyList(study[["models"]], models)
 
   return(study)
 }
@@ -162,11 +162,11 @@ addModels <- function(study, models, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addAssays <- function(study, assays, overwrite = FALSE) {
+addAssays <- function(study, assays) {
   checkStudy(study)
   checkAssays(assays)
 
-  study[["assays"]] <- addToList(study[["assays"]], assays, overwrite = overwrite)
+  study[["assays"]] <- utils::modifyList(study[["assays"]], assays)
 
   return(study)
 }
@@ -182,7 +182,7 @@ addAssays <- function(study, assays, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addTests <- function(study, tests, overwrite = FALSE) {
+addTests <- function(study, tests) {
   checkStudy(study)
   checkTests(tests)
 
@@ -191,7 +191,7 @@ addTests <- function(study, tests, overwrite = FALSE) {
     colnames(tests[[i]]) <- c("testID", "description")
   }
 
-  study[["tests"]] <- addToList(study[["tests"]], tests, overwrite = overwrite)
+  study[["tests"]] <- utils::modifyList(study[["tests"]], tests)
 
   return(study)
 }
@@ -212,11 +212,11 @@ addTests <- function(study, tests, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addAnnotations <- function(study, annotations, overwrite = FALSE) {
+addAnnotations <- function(study, annotations) {
   checkStudy(study)
   checkAnnotations(annotations)
 
-  study[["annotations"]] <- addToList(study[["annotations"]], annotations, overwrite = overwrite)
+  study[["annotations"]] <- utils::modifyList(study[["annotations"]], annotations)
 
   return(study)
 }
@@ -231,11 +231,11 @@ addAnnotations <- function(study, annotations, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addResults <- function(study, results, overwrite = FALSE) {
+addResults <- function(study, results) {
   checkStudy(study)
   checkResults(results)
 
-  study[["results"]] <- addToList(study[["results"]], results, overwrite = overwrite)
+  study[["results"]] <- utils::modifyList(study[["results"]], results)
 
   return(study)
 }
@@ -255,11 +255,11 @@ addResults <- function(study, results, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addEnrichments <- function(study, enrichments, overwrite = FALSE) {
+addEnrichments <- function(study, enrichments) {
   checkStudy(study)
   checkEnrichments(enrichments)
 
-  study[["enrichments"]] <- addToList(study[["enrichments"]], enrichments, overwrite = overwrite)
+  study[["enrichments"]] <- utils::modifyList(study[["enrichments"]], enrichments)
 
   return(study)
 }
@@ -279,11 +279,11 @@ addEnrichments <- function(study, enrichments, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
+addMetaFeatures <- function(study, metaFeatures) {
   checkStudy(study)
   checkMetaFeatures(metaFeatures)
 
-  study[["metaFeatures"]] <- addToList(study[["metaFeatures"]], metaFeatures, overwrite = overwrite)
+  study[["metaFeatures"]] <- utils::modifyList(study[["metaFeatures"]], metaFeatures)
 
   return(study)
 }
@@ -320,11 +320,11 @@ addMetaFeatures <- function(study, metaFeatures, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addPlots <- function(study, plots, overwrite = FALSE) {
+addPlots <- function(study, plots) {
   checkStudy(study)
   checkPlots(plots)
 
-  study[["plots"]] <- addToList(study[["plots"]], plots, overwrite = overwrite)
+  study[["plots"]] <- utils::modifyList(study[["plots"]], plots)
 
   return(study)
 }
@@ -353,11 +353,11 @@ addPlots <- function(study, plots, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addBarcodes <- function(study, barcodes, overwrite = FALSE) {
+addBarcodes <- function(study, barcodes) {
   checkStudy(study)
   checkBarcodes(barcodes)
 
-  study[["barcodes"]] <- addToList(study[["barcodes"]], barcodes, overwrite = overwrite)
+  study[["barcodes"]] <- utils::modifyList(study[["barcodes"]], barcodes)
 
   return(study)
 }
@@ -376,11 +376,11 @@ addBarcodes <- function(study, barcodes, overwrite = FALSE) {
 #' @inheritParams shared-add
 #'
 #' @export
-addReports <- function(study, reports, overwrite = FALSE) {
+addReports <- function(study, reports) {
   checkStudy(study)
   checkReports(reports)
 
-  study[["reports"]] <- addToList(study[["reports"]], reports, overwrite = overwrite)
+  study[["reports"]] <- utils::modifyList(study[["reports"]], reports)
 
   return(study)
 }

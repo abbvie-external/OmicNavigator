@@ -5,8 +5,6 @@
 \title{Shared parameters for add functions}
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Shared parameters for add functions

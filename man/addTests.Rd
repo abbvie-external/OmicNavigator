@@ -4,7 +4,7 @@
 \alias{addTests}
 \title{Add tests}
 \usage{
-addTests(study, tests, overwrite = FALSE)
+addTests(study, tests)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -15,8 +15,6 @@ each test. The second column should contain a description of the test. Any
 additional columns will be removed. The column names will be set to
 "testID" and "desription". To share a data frame across multiple models,
 use the model ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add tests

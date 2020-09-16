@@ -4,12 +4,10 @@
 \alias{addOverlaps}
 \title{Add overlaps between annotation gene sets}
 \usage{
-addOverlaps(study, overwrite = FALSE)
+addOverlaps(study)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 The app's network view of the enrichments results requires pairwise overlap

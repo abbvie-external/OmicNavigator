@@ -4,7 +4,7 @@
 \alias{addModels}
 \title{Add models}
 \usage{
-addModels(study, models, overwrite = FALSE)
+addModels(study, models)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -12,8 +12,6 @@ addModels(study, models, overwrite = FALSE)
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
 the descriptions of the models.}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add models

@@ -4,7 +4,7 @@
 \alias{addFeatures}
 \title{Add feature metadata}
 \usage{
-addFeatures(study, features, overwrite = FALSE)
+addFeatures(study, features)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -14,8 +14,6 @@ study. The input object is a list of data frames (one per model). The first
 column of each data frame is used as the feature ID, so it must contain
 unique values. To share a data frame across multiple models, use the model
 ID "default". All columns will be coerced to character strings.}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add feature metadata

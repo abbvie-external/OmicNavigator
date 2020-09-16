@@ -4,7 +4,7 @@
 \alias{addAssays}
 \title{Add assays}
 \usage{
-addAssays(study, assays, overwrite = FALSE)
+addAssays(study, assays)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -15,8 +15,6 @@ frames (one per model). The row names should correspond to the feature IDs
 sample IDs (\code{\link{addSamples}}). The data frame should only contain
 numeric values. To share a data frame across multiple models, use the model
 ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add assays

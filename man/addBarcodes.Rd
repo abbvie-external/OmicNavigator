@@ -4,7 +4,7 @@
 \alias{addBarcodes}
 \title{Add barcode plot metadata}
 \usage{
-addBarcodes(study, barcodes, overwrite = FALSE)
+addBarcodes(study, barcodes)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -24,8 +24,6 @@ the log fold change values.
 6) \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
 To share metadata across multiple models, use the model ID "default".}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 The app can display a barcode plot of the enrichment results for a given

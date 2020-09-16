@@ -4,7 +4,7 @@
 \alias{addResults}
 \title{Add inference results}
 \usage{
-addResults(study, results, overwrite = FALSE)
+addResults(study, results)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
@@ -14,8 +14,6 @@ nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with inference
 results, one for each test. In each data frame, the feature ID must be in
 the first column, and all other columns must be numeric.}
-
-\item{overwrite}{Overwrite existing value}
 }
 \description{
 Add inference results
