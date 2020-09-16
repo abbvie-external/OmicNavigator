@@ -275,13 +275,16 @@ addEnrichments <- function(study, enrichments) {
 #'   first column of each data frame is used as the feature ID, so it must
 #'   contain the same IDs as the corresponding features data frame
 #'   (\code{\link{addFeatures}}). To share a data frame across multiple models,
-#'   use the model ID "default".
+#'   use the model ID "default". All columns will be coerced to character
+#'   strings.
 #' @inheritParams shared-add
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures) {
   checkStudy(study)
   checkMetaFeatures(metaFeatures)
+
+  metaFeatures <- lapply(metaFeatures, coerceColsToCharacter)
 
   study[["metaFeatures"]] <- utils::modifyList(study[["metaFeatures"]], metaFeatures)
 

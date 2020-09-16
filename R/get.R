@@ -305,7 +305,8 @@ getMetaFeatures <- function(study, modelID = NULL, libraries = NULL) {
     elements = "metaFeatures",
     filters = list(modelID = modelID),
     default = "default",
-    libraries = libraries
+    libraries = libraries,
+    colClasses = "character"
   )
 }
 

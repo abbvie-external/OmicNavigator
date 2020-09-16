@@ -72,6 +72,23 @@ coerceColsToCharacter <- function(x) {
   return(result)
 }
 
+warnIfNonCharacterCols <- function(x) {
+  stopifnot(is.data.frame(x))
+
+  characterColsFilter <- vapply(x, is.character, logical(1))
+  nonCharacterCols <- colnames(x)[!characterColsFilter]
+  if (!isEmpty(nonCharacterCols)) {
+    warning(
+      "Detected non-character columns. ",
+      "The following columns were automatically coerced to character strings: ",
+      paste(nonCharacterCols, collapse = ", "),
+      call. = FALSE
+    )
+  }
+
+  return(NULL)
+}
+
 # Strings ----------------------------------------------------------------------
 
 # Capitalizes the first letter in each element of the character vector

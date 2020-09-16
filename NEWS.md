@@ -4,6 +4,12 @@
 Instead subsequent calls to the same add function will update the existing data
 using the rules of `utils::modifyList()`.
 
+* `addMetaFeatures()` now automatically converts all columns to character. It
+throws a warning if it detects any non-character columns.
+
+* `getMetaFeatures()` and `getMetaFeaturesTable()` always return the columns of
+the features table as character strings, even if they appear numeric.
+
 * Support the option to manually calculate pairwise overlaps with
 `addOverlaps()` prior to installing or exporting the study package.
 
