@@ -62,5 +62,6 @@ save(
   samplenames,
   group,
   lane,
-  file = "data/RNAseq123.RData"
+  file = "data/RNAseq123.RData",
+  version = 2
 )
