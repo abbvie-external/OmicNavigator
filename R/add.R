@@ -74,6 +74,7 @@ createStudy <- function(name,
                 plots = list(),
                 barcodes = list(),
                 reports = list(),
+                overlaps = list(),
                 version = version)
   class(study) <- "oaStudy"
 

@@ -60,10 +60,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportBarcodes(study, directoryname)
   exportReports(study, directoryname)
   exportSummary(study, directoryname)
-  if (calcOverlaps && is.null(study[["overlaps"]])) {
-    message("Calculating pairwise overlaps. This may take a while...")
-    study <- addOverlaps(study)
-  }
+  if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
 }
 

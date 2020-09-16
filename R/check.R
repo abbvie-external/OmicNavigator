@@ -307,3 +307,18 @@ checkReports <- function(reports) {
 
   return(NULL)
 }
+
+checkOverlaps <- function(overlaps) {
+  checkList(overlaps)
+
+  for (i in seq_along(overlaps)) {
+    overlap <- overlaps[[i]]
+    stopifnot(
+      is.data.frame(overlap),
+      nrow(overlap) > 0,
+      ncol(overlap) == 5,
+      identical(colnames(overlap),
+                c("term1", "term2", "overlapSize", "overlap", "jaccard"))
+    )
+  }
+}

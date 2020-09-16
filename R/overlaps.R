@@ -67,13 +67,35 @@ calc_pairwise_overlaps <- function(sets) {
   return(result)
 }
 
-addOverlaps <- function(study) {
+#' Add overlaps between annotation gene sets
+#'
+#' The app's network view of the enrichments results requires pairwise overlap
+#' metrics between all the terms of each annotation in order to draw the edges
+#' between the nodes/terms. These overlaps are calculated automatically when
+#' installing or exporting an OmicAnalyzer study. If you'd like, you can
+#' manually calculate these pairwise overlaps by calling \code{addOverlaps}
+#' prior to installing or exporting your study.
+#'
+#' @inheritParams shared-add
+#'
+#' @export
+addOverlaps <- function(study, overwrite = FALSE) {
   checkStudy(study)
 
-  if (is.null(study[["annotations"]]))
+  if (isEmpty(study[["annotations"]]))
     stop("Cannot calculate overlaps without annotations")
 
   annotationsAvailable <- names(study[["annotations"]])
+
+  if (!overwrite) {
+    annotationsAvailable <- setdiff(annotationsAvailable,
+                                    names(study[["overlaps"]]))
+  }
+
+  if (length(annotationsAvailable) > 0) {
+    message("Calculating pairwise overlaps. This may take a while...")
+  }
+
   overlapsList <- vector(mode = "list", length = length(annotationsAvailable))
   names(overlapsList) <- annotationsAvailable
   for (annotationID in annotationsAvailable) {

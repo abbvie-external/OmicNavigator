@@ -1,5 +1,7 @@
 # 0.14.1.9000
 
+* Support the option to manually calculate pairwise overlaps with
+`addOverlaps()` prior to installing or exporting the study package.
 
 # 0.14.1
 

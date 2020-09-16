@@ -1,5 +1,18 @@
+# Test addX() methods
+
+# Setup ------------------------------------------------------------------------
+
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicAnalyzer)
-library(tinytest)
+
+tmplib <- tempfile()
+dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
+
+# Test addX() ------------------------------------------------------------------
 
 study <- createStudy(name = "test")
 
@@ -45,3 +58,14 @@ expect_identical(
 # when written to a package
 plots <- OmicAnalyzer:::testPlots()
 study <- addPlots(study, plots = plots)
+
+suppressMessages(OmicAnalyzer::installStudy(study))
+
+# Install again with overlaps pre-calculated
+study <- addOverlaps(study)
+suppressMessages(OmicAnalyzer::installStudy(study))
+
+# Teardown ---------------------------------------------------------------------
+
+unlink(tmplib, recursive = TRUE, force = TRUE)
+.libPaths(libOrig)
