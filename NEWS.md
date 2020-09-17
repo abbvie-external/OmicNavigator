@@ -1,4 +1,8 @@
-# 0.14.1.9000
+# 0.15.0
+
+* The release tarball includes [version 0.1.9 of the web app][app-v0.1.9]
+
+[app-v0.1.9]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.9
 
 * Remove the argument `overwrite` for the add functions, e.g. `addSamples()`.
 Instead subsequent calls to the same add function will update the existing data
