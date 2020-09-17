@@ -480,7 +480,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-# getMetaFeatures -------------------------------------------------------------------
+# getMetaFeatures --------------------------------------------------------------
 
 expect_identical_xl(
   getMetaFeatures(testStudyObj),

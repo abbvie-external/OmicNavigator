@@ -182,7 +182,13 @@ expect_identical(
 
 expect_identical(
   dim(metaFeaturesTable),
-  c(3L, 4L)
+  c(3L, 5L)
+)
+
+# Confirm that even numeric-looking columns are returned as character
+expect_identical(
+  unique(vapply(metaFeaturesTable, class, FUN.VALUE = character(1), USE.NAMES = FALSE)),
+  "character"
 )
 
 expect_warning(

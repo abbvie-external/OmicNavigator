@@ -162,6 +162,8 @@ testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
   metaFeatures <- matrix(sample(letters, size = 3 * rows * cols, replace = TRUE),
                      nrow = 3 * rows, ncol = cols)
   colnames(metaFeatures) <- sprintf("metaFeatureVar%02d", seq_len(cols))
+  metaFeatureVarNumeric <- sample(seq(3 * rows), size = rows, replace = TRUE)
+  metaFeatures <- cbind(metaFeatureVarNumeric, metaFeatures)
   featureID <- rep(sprintf("feature_%04d", seq_len(rows)), times = 3)
   metaFeatureID <- sprintf("metaFeature_%04d", seq_len(3 * rows))
   metaFeatures <- cbind(customID = featureID, metaFeatureID, metaFeatures)

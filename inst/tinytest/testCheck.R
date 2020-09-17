@@ -154,6 +154,11 @@ expect_error(
   addMetaFeatures(study, metaFeatures = NULL)
 )
 
+expect_warning_xl(
+  addMetaFeatures(study, metaFeatures = nonCharacterFeatures),
+  ".+non-character.+x.+z"
+)
+
 expect_error(
   addPlots(study, plots = NULL)
 )
