@@ -3,19 +3,19 @@
 \documentclass{article}
 \usepackage[breaklinks]{hyperref}
 \title{OmicAnalyzer Developer's Guide}
+\author{John Blischak}
+\date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \maketitle
+\tableofcontents
 
 <<echo=FALSE>>=
 options(prompt = " ")
 @
 
-This vignette was built with OmicAnalyzer version
-\Sexpr{packageVersion("OmicAnalyzer")}
-
-\section*{Files and directories}
+\section{Files and directories}
 
 \begin{itemize}
   \item \texttt{R/} - R source code files
@@ -24,7 +24,7 @@ This vignette was built with OmicAnalyzer version
   \item \texttt{scripts/} - Utility scripts for maintaining the package
 \end{itemize}
 
-\section*{Setup your development environment}
+\section{Setup your development environment}
 
 First install the development only packages:
 

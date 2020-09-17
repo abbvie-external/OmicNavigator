@@ -5,19 +5,19 @@
 \usepackage{amsmath}
 \usepackage[breaklinks]{hyperref}
 \title{OmicAnalyzer User's Guide}
+\author{John Blischak}
+\date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
 \maketitle
+\tableofcontents
 
 <<echo=FALSE>>=
 options(prompt = " ")
 @
 
-This vignette was built with OmicAnalyzer version
-\Sexpr{packageVersion("OmicAnalyzer")}
-
-\section*{Overview}
+\section{Overview}
 
 The goal of the OmicAnalyzer software is to facilitate the interactive
 exploration of the results from an omics experiment. Using OmicAnalyzer, any
@@ -48,13 +48,13 @@ The steps include:
 
 \end{enumerate}
 
-\section*{Structure of analysis results}
+\section{Structure of analysis results}
 
 Before you start registering your data with OmicAnalyzer, it will be helpful to
 have a high-level understanding of how OmicAnalyzer defines the main components
 of the analysis results and how they relate to each other.
 
-\subsection*{A study and its models}
+\subsection{A study and its models}
 
 The largest unit of organization is the study. This corresponds to all the
 experiments performed and analyses conducted in order to address a scientific
@@ -71,7 +71,7 @@ packages).
 
 \includegraphics{images/models}
 
-\subsection*{Differential expression results}
+\subsection{Differential expression results}
 
 One of the primary type of results that OmicAnalyzer displays for interactive
 investigation is the statistical results from a differential expression
@@ -98,7 +98,7 @@ And a model that compares three distinct groups will likely have 3 tests
 
 \includegraphics{images/results-3}
 
-\subsection*{Enrichments analysis}
+\subsection{Enrichments analysis}
 
 A typical systems biology analysis to perform after a differential expression
 analysis is to test for enrichments of the differentially expressed features
@@ -129,7 +129,7 @@ And a model that compares three distinct groups will have 6 enrichment tables,
 
 \includegraphics{images/enrichments-3}
 
-\subsection*{Additional information}
+\subsection{Additional information}
 
 The primary data sets are the differential expression results and the enrichments
 results. However, the more information you supply about the experimental data,
@@ -143,7 +143,7 @@ This additional metadata can be added per model (e.g. different feature
 metadata for RNA versus protein measurements) or shared across models (e.g. if
 the same samples are used in each model).
 
-\section*{Step-by-step example}
+\section{Step-by-step example}
 
 <<>>=
 library(OmicAnalyzer)
