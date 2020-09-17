@@ -10,7 +10,13 @@ vignettes := $(patsubst vignettes/%.Rnw, \
                         $(wildcard vignettes/*.Rnw) \
               )
 
-all: $(diagrams) data/RNAseq123.RData $(vignettes)
+all: diagrams data vignettes
+
+diagrams: $(diagrams)
+
+data: data/RNAseq123.RData
+
+vignettes: ${vignettes}
 
 vignettes/images/%.pdf: scripts/diagrams/%.gv
 	mkdir -p vignettes/images/

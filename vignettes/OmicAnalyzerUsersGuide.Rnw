@@ -1,9 +1,11 @@
 %\VignetteIndexEntry{OmicAnalyzer User's Guide}
 %\VignetteEncoding{UTF-8}
 
-\documentclass{article}
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage[breaklinks]{hyperref}
+
 \title{OmicAnalyzer User's Guide}
 \author{John Blischak}
 \date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
@@ -144,6 +146,10 @@ metadata for RNA versus protein measurements) or shared across models (e.g. if
 the same samples are used in each model).
 
 \section{Step-by-step example}
+
+\begin{equation}
+Y=\beta_{Basal}+\beta_{LP}+\beta_{ML}+\beta_{L06}+\beta_{L08}+\epsilon
+\end{equation}
 
 <<>>=
 library(OmicAnalyzer)

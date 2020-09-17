@@ -1,7 +1,9 @@
 %\VignetteIndexEntry{OmicAnalyzer Developer's Guide}
 %\VignetteEncoding{UTF-8}
-\documentclass{article}
+\documentclass[12pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
 \usepackage[breaklinks]{hyperref}
+
 \title{OmicAnalyzer Developer's Guide}
 \author{John Blischak}
 \date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
