@@ -19,17 +19,17 @@ vignettes/images/%.pdf: scripts/diagrams/%.gv
 data/RNAseq123.RData: scripts/RNAseq123.R
 	Rscript $<
 
-# Work in progress. Need to figure out best way to deal with directories.
 vignettes/%.tex: vignettes/%.Rnw
-	Rscript -e 'utils::Sweave("$<")'
-	mv `basename $@` $@
-	pdflatex $@
+	cd vignettes; Rscript -e 'utils::Sweave(basename("$<"))'
+	cd vignettes; Rscript -e 'tools::texi2pdf(basename("$@"))'
 
 .PHONY: clean
 
 clean:
 	rm --force vignettes/images/*pdf \
+	           vignettes/*aux \
 	           vignettes/*log \
+	           vignettes/*out \
 	           vignettes/*pdf \
 	           vignettes/*synctex.gz \
 	           vignettes/*tex \

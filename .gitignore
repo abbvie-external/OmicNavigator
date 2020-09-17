@@ -7,9 +7,11 @@ inst/www
 *.rds
 *.sqlite
 *.tar.gz
+vignettes/*aux
 vignettes/*gz
 vignettes/images
 vignettes/*log
+vignettes/*out
 vignettes/*pdf
 vignettes/*tex
 vignettes/*toc
