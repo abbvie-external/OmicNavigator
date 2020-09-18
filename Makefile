@@ -34,6 +34,8 @@ vignettes/%.tex: vignettes/%.Rnw
 clean:
 	rm --force vignettes/images/*pdf \
 	           vignettes/*aux \
+	           vignettes/*bbl \
+	           vignettes/*blg \
 	           vignettes/*log \
 	           vignettes/*out \
 	           vignettes/*pdf \

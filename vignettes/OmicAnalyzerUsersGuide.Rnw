@@ -147,6 +147,9 @@ the same samples are used in each model).
 
 \section{Step-by-step example}
 
+\cite{RNAseq123}
+\cite{Sheridan2015}
+
 \begin{equation}
 Y=\beta_{Basal}+\beta_{LP}+\beta_{ML}+\beta_{L06}+\beta_{L08}+\epsilon
 \end{equation}
@@ -159,5 +162,23 @@ library(OmicAnalyzer)
 data("RNAseq123")
 ls()
 @
+
+\phantomsection
+\addcontentsline{toc}{section}{References}
+\begin{thebibliography}{2}
+
+  \bibitem{RNAseq123}
+    Law CW, Alhamdoosh M, Su S, Dong X, Tian L, Smyth GK, Ritchie ME.
+    \href{https://f1000research.com/articles/5-1408/v3}
+    {RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR [version 3; peer review: 3 approved].}
+    F1000Research 2018, 5:1408
+
+  \bibitem{Sheridan2015}
+     Sheridan, J.M., Ritchie, M.E., Best, S.A. et al.
+     \href{https://doi.org/10.1186/s12885-015-1187-z}
+     {A pooled shRNA screen for regulators of primary mammary stem and progenitor cells identifies roles for \textit{Asap1} and \textit{Prox1}.}
+     BMC Cancer 15, 221 (2015).
+
+\end{thebibliography}
 
 \end{document}
