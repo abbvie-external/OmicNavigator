@@ -2,7 +2,7 @@
 %\VignetteEncoding{UTF-8}
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
-\usepackage[breaklinks]{hyperref}
+\usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 
 \title{OmicAnalyzer Developer's Guide}
 \author{John Blischak}

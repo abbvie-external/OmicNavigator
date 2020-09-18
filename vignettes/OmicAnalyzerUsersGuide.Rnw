@@ -4,7 +4,7 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
-\usepackage[breaklinks]{hyperref}
+\usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 
 \title{OmicAnalyzer User's Guide}
 \author{John Blischak}
