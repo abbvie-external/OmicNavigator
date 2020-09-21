@@ -2,8 +2,10 @@
 %\VignetteEncoding{UTF-8}
 
 \documentclass[10pt, letterpaper]{article}
-\usepackage[utf8]{inputenc}
+
+\usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
+\usepackage[utf8]{inputenc}
 
 \title{OmicAnalyzer API}
 \author{John Blischak}

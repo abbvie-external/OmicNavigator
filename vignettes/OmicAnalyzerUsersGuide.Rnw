@@ -2,10 +2,13 @@
 %\VignetteEncoding{UTF-8}
 
 \documentclass[12pt, letterpaper]{article}
-\usepackage[utf8]{inputenc}
+
 \usepackage{amsmath}
 \usepackage{float}
+\usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
+\usepackage[utf8]{inputenc}
+
 
 \title{OmicAnalyzer User's Guide}
 \author{John Blischak}
