@@ -37,10 +37,7 @@ Imports:
   utils
 Suggests:
   ggplot2,
-  knitr,
-  markdown,
   opencpu,
   tinytest,
   ttdo (>= 0.0.6)
 RoxygenNote: 7.1.1
-VignetteBuilder: knitr

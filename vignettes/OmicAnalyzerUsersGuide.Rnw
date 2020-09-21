@@ -16,7 +16,7 @@
 \maketitle
 \tableofcontents
 
-<<echo=FALSE>>=
+<<setup, echo=FALSE>>=
 options(prompt = " ")
 @
 

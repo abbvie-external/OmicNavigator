@@ -1,46 +1,30 @@
-<!--
-%\VignetteIndexEntry{OmicAnalyzer app}
-%\VignetteEngine{knitr::knitr}
+%\VignetteIndexEntry{OmicAnalyzer API}
 %\VignetteEncoding{UTF-8}
--->
 
-# OmicAnalyzer app
+\documentclass[10pt, letterpaper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 
-**Date:** `r Sys.Date()`
+\title{OmicAnalyzer API}
+\author{John Blischak}
+\date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
 
-**Package version:** `r packageVersion("OmicAnalyzer")`
+\begin{document}
+\SweaveOpts{concordance=TRUE}
+\maketitle
+\tableofcontents
 
-* [List studies](#list-studies)
-* [Results table](#results-table)
-* [Enrichments table](#enrichments-table)
-* [Enrichments network](#enrichments-network)
-* [Features in a network node](#features-in-a-network-node)
-* [Features in a network link](#features-in-a-network-link)
-* [Custom plots](#custom-plots)
-* [Results intersection](#results-intersection)
-* [Enrichments intersection](#enrichments-intersection)
-* [Results UpSet plot](#results-upset-plot)
-* [Enrichments UpSet plot](#enrichments-upset-plot)
-* [UpSet columns](#upset-columns)
-* [metaFeatures table](#metafeatures-table)
-* [Barcode](#barcode)
-* [Reports](#reports)
+<<setup, echo=FALSE>>=
+options(prompt = "R> ")
+@
 
-These functions are intended to support the web application via OpenCPU calls.
 
-```{r setup, include = FALSE}
-knitr::opts_chunk$set(
-  comment = "",
-  message = FALSE
-)
-```
-
-```{r packages}
+<<packages>>=
 library(jsonlite)
 library(OmicAnalyzer)
-```
+@
 
-```{r test-data, include=FALSE}
+<<test-data, echo=FALSE>>=
 .tmplib <- tempfile()
 local({
   dir.create(.tmplib)
@@ -53,70 +37,73 @@ local({
   writeLines("<p>example</p>", tmpReport)
   abc <- addReports(abc, list(model_02 = tmpReport))
   OmicAnalyzer::installStudy(abc)
-  OmicAnalyzer::installStudy(OmicAnalyzer:::testStudy(name = "XYZ"))
 })
-```
+@
 
-## List studies
+\section{List studies}
+\label{sec:list-studies}
 
 List all the available studies along with their models, tests, annotations, and
 plots.
 
-```{r list-studies, eval=FALSE}
+<<list-studies, eval=FALSE>>=
 studies <- listStudies()
-```
+@
 
-```{r list-studies-hidden, echo=FALSE}
+<<list-studies-hidden, echo=FALSE>>=
 studies <- listStudies(libraries = .tmplib)
-```
+@
 
-```{r list-studies-json}
+<<list-studies-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
-```
+@
 
-## Results table
+\section{Results table}
+\label{sec:results-table}
 
 For a given study, model, and test, return a table that contains the feature
 metadata and the inference results.
 
 The column names are chosen by the user. The first column is the unique
 featureID used in the study. It should be passed to
-[`plotStudy()`](#custom-plots) to create any custom plots. All the feature
+\texttt{plotStudy()} (Section \ref{sec:custom-plots}) to create any custom plots. All the feature
 metadata columns are returned as character strings, even if they appear numeric.
 
-```{r results-table}
+<<results-table>>=
 resultsTable <- getResultsTable("ABC", "model_01", "test_01")
 toJSON(resultsTable[1:2, ], pretty = TRUE)
-```
+@
 
-## Enrichments table
+\section{Enrichments table}
+\label{sec:enrichments-table}
 
 For a given study, model, and annotation, return a table that contains the
 enrichment results. The default is to return the nominal statistical values.
 
-```{r enrichments-table}
+<<enrichments-table>>=
 enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
-```
+@
 
-Set `type = "adjusted"` to obtain statistical values adjusted for multiple
-testing.
+Set \texttt{type = "adjusted"} to obtain statistical values adjusted for
+multiple testing.
 
-```{r enrichments-table-adjusted}
+<<enrichments-table-adjusted>>=
 enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01", type = "adjusted")
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
-```
+@
 
-The first two columns are always `termID` and `description`. The remaining
-columns are the names of the tests defined by the user. The column `termID` is
-used to create the [barcode plot](#barcode).
+The first two columns are always \texttt{termID} and \texttt{description}. The
+remaining columns are the names of the tests defined by the user. The column
+\texttt{termID} is used to create the barcode plot (Section
+\ref{sec:barcode}).
 
-## Enrichments network
+\section{Enrichments network}
 
 For a given study, model, and annotation, return the nodes and links of the
 network graph.
 
-```{r enrichments-network}
+<<enrichments-network>>=
 enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
 enrichmentsNetworkMinimal <- list(
   tests = enrichmentsNetwork[["tests"]],
@@ -124,62 +111,65 @@ enrichmentsNetworkMinimal <- list(
   links = enrichmentsNetwork[["links"]][1:3, ]
 )
 toJSON(enrichmentsNetworkMinimal, auto_unbox = TRUE, pretty = TRUE)
-```
+@
 
-## Features in a network node
+\section{Features in a network node}
 
 For a given study, annotation, and term, return the features in that term.
 
-```{r getNodeFeatures}
+<<getNodeFeatures>>=
 nodeFeatures <- getNodeFeatures("ABC", "annotation_01", "term_01")
 toJSON(nodeFeatures, pretty = TRUE)
-```
+@
 
-## Features in a network link
+\section{Features in a network link}
 
 For a given study, annotation, and two terms, return the features shared by the
 terms.
 
-```{r getLinkFeatures}
+<<getLinkFeatures>>=
 linkFeatures <- getLinkFeatures("ABC", "annotation_01", "term_01", "term_03")
 toJSON(linkFeatures, pretty = TRUE)
-```
+@
 
-## Custom plots
+\section{Custom plots}
+\label{sec:custom-plots}
 
-Display the custom plots provided by the user with `plotStudy()`. Provided a
-study, model, feature, and plot, `plotStudy()` generates the custom plot.
+Display the custom plots provided by the user with \texttt{plotStudy()}. Provided a
+study, model, feature, and plot, \texttt{plotStudy()} generates the custom plot.
 
 The featureID is obtained from the first column returned by
-[`getResultsTable()`](#results-table). The remaining arguments are obtained from
-the output from [`listStudies()`](#list-studies).
+\texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining arguments
+are obtained from the output from \texttt{listStudies()}
+(Section \ref{sec:list-studies}).
 
-```{r plotStudy-plotBase}
+<<plotStudy-plotBase, fig=TRUE>>=
 plotStudy(
   study = "ABC",
   modelID = "model_01",
   featureID = "feature_0001",
   plotID = "plotBase"
 )
-```
+@
 
-```{r plotStudy-plotGg}
+<<plotStudy-plotGg, fig=TRUE>>=
 plotStudy(
   study = "ABC",
   modelID = "model_03",
   featureID = "feature_0001",
   plotID = "plotGg"
 )
-```
+@
 
-## Results intersection
+\section{Results intersection}
+\label{sec:results-intersection}
 
 For a given study and model, filter the inference results table by the values of
 specific columns in any test of that model. Use
-[`getUpsetCols()`](#upset-columns) to obtain the common columns across all tests
+\texttt{getUpsetCols()} (Section \ref{sec:upset-columns}) to obtain the common columns across all tests
 of the model.
 
-```{r getResultsIntersection}
+<<getResultsIntersection>>=
 resultsIntersection <- getResultsIntersection(
   study = "ABC",
   modelID = "model_01",
@@ -191,14 +181,14 @@ resultsIntersection <- getResultsIntersection(
   column = "p_val"
 )
 toJSON(resultsIntersection[1:2, ], pretty = TRUE)
-```
+@
 
-## Enrichments intersection
+\section{Enrichments intersection}
 
 For a given study and model, filter the enrichments table (or network) by the
 results of the enrichment tests.
 
-```{r getEnrichmentsIntersection}
+<<getEnrichmentsIntersection>>=
 enrichmentsIntersection <- getEnrichmentsIntersection(
   study = "ABC",
   modelID = "model_01",
@@ -210,11 +200,11 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   type = "nominal"
 )
 toJSON(enrichmentsIntersection[1:2, ], pretty = TRUE)
-```
+@
 
-## Results UpSet plot
+\section{Results UpSet plot}
 
-```{r getResultsUpset}
+<<getResultsUpset, fig=TRUE>>=
 resultsUpset <- getResultsUpset(
   study = "ABC",
   modelID = "model_01",
@@ -222,11 +212,11 @@ resultsUpset <- getResultsUpset(
   operator = "<",
   column = "p_val"
 )
-```
+@
 
-## Enrichments UpSet plot
+\section{Enrichments UpSet plot}
 
-```{r getEnrichmentsUpset}
+<<getEnrichmentsUpset, fig=TRUE>>=
 enrichmentsUpset <- getEnrichmentsUpset(
   study = "ABC",
   modelID = "model_01",
@@ -235,45 +225,47 @@ enrichmentsUpset <- getEnrichmentsUpset(
   operator = "<",
   type = "nominal"
 )
-```
+@
 
-## UpSet columns
+\section{UpSet columns}
+\label{sec:upset-columns}
 
-Given a study and model, `getUpsetCols()` returns the columns common across all
+Given a study and model, \texttt{getUpsetCols()} returns the columns common across all
 the available tests, and thus are available for filtering with
-[`getResultsIntersection()`](#results-intersection).
+\texttt{getResultsIntersection()} (Section \ref{sec:results-intersection}).
 
-```{r getUpsetCols}
+<<getUpsetCols>>=
 upsetCols <- getUpsetCols(
   study = "ABC",
   modelID = "model_01"
 )
 toJSON(upsetCols, auto_unbox = TRUE, pretty = TRUE)
-```
+@
 
-## metaFeatures table
+\section{metaFeatures table}
 
 For a given study, model, and featureID, return a table that contains the metaFeatures
 associated with that featureID.
 
-```{r metaFeatures-table}
+<<metaFeatures-table>>=
 metaFeaturesTable <- getMetaFeaturesTable("ABC", "model_01", "feature_0001")
 toJSON(metaFeaturesTable[1:2, ], pretty = TRUE)
-```
+@
 
-## Barcode
+\section{Barcode}
+\label{sec:barcode}
 
-Given a study, model, test, annotation, and term, `getBarcodeData()` returns
-the data required to create the barcode and violin plots.
+Given a study, model, test, annotation, and term, \texttt{getBarcodeData()}
+returns the data required to create the barcode and violin plots.
 
-The `termID` is obtained from [`getEnrichmentsTable()`](#enrichments-table). The
-remaining arguments are obtained from the output from
-[`listStudies()`](#list-studies).
+The \texttt{termID} is obtained from \texttt{getEnrichmentsTable()} (Section
+\ref{sec:enrichments-table}). The remaining arguments are obtained from the
+output from \texttt{listStudies()} (Section \ref{sec:list-studies}).
 
-The elements of the `data` array are sorted by the value of `statistic` (highest
+The elements of the \texttt{data} array are sorted by the value of \texttt{statistic} (highest
 to lowest).
 
-```{r getBarcodeData}
+<<getBarcodeData>>=
 barcodeData <- getBarcodeData(
   study = "ABC",
   modelID = "model_01",
@@ -282,25 +274,27 @@ barcodeData <- getBarcodeData(
   termID = "term_05"
 )
 toJSON(barcodeData, auto_unbox = TRUE, pretty = TRUE)
-```
+@
 
-## Reports
+\section{Reports}
 
-Given a study and model, `getReportLink()` returns a link to a report file. This
+Given a study and model, \texttt{getReportLink()} returns a link to a report file. This
 can either be a URL or a path to a file installed in a study package.
 
-```{r getReportLink-URL}
+<<getReportLink-URL>>=
 reportLink <- getReportLink(
   study = "ABC",
   modelID = "model_01"
 )
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
-```
+@
 
-```{r getReportLink-file}
+<<getReportLink-file>>=
 reportLink <- getReportLink(
   study = "ABC",
   modelID = "model_02"
 )
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
-```
+@
+
+\end{document}
