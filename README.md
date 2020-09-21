@@ -18,9 +18,8 @@ repository, you will only obtain the R code without the app.
 1. Install dependencies:
 
     ```
-    if (!requireNamespace("remotes", quietly = TRUE))
-      install.packages("remotes")
-    remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz", dependencies = TRUE)
+    install.packages("opencpu")
+    remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")
     ```
 
 1. Install OmicAnalyzer:
@@ -34,8 +33,8 @@ repository, you will only obtain the R code without the app.
 1. Install dependencies:
 
     ```
-    Rscript -e 'if (!requireNamespace("remotes", quietly = TRUE)) install.packages("remotes")'
-    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz", dependencies = TRUE)'
+    Rscript -e 'install.packages("opencpu")'
+    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")'
     ```
 
 1. Install OmicAnalyzer:
