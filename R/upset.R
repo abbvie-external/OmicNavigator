@@ -263,6 +263,7 @@ getResultsUpset <- function(
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
+#'   * Set `newpage = FALSE` when printing to avoid blank page
 #'
 #' @noRd
 InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operator=c("<"), column= c("adj_P_Val")) {
@@ -309,7 +310,7 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
   #Create the upset plot.
   rv <- UpSetR::upset(data,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
   #rv <- upset(data,point.size=1.1, line.size=0.4,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
-  print(rv)
+  print(rv, newpage = FALSE)
   invisible();
 }
 
@@ -376,6 +377,7 @@ getEnrichmentsUpset <- function(
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'   * Added tests parameter and respective subset functionality
 #'   * Removed colsUsed variable and replaced with tests
+#'   * Set `newpage = FALSE` when printing to avoid blank page
 #'
 #' @noRd
 EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal", tests=NULL) {
@@ -423,7 +425,7 @@ EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted,
   #Create the upset plot.
   rv <- UpSetR::upset(data, sets = tests, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
 
-  print(rv)
+  print(rv, newpage = FALSE)
   invisible();
 }
 
