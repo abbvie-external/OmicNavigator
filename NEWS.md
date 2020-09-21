@@ -1,5 +1,7 @@
 # 0.15.0.9000
 
+* Add `summary()` method for OmicAnalyzer study objects (class `oaStudy`)
+
 # 0.15.0
 
 * The release tarball includes [version 0.1.9.1 of the web app][app-v0.1.9.1]
