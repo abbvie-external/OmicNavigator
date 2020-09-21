@@ -20,6 +20,10 @@
 options(prompt = "R> ")
 @
 
+\section{Introduction}
+
+Below are example calls to the available endpoints for retrieving data or plots
+from installed study packages.
 
 <<packages>>=
 library(jsonlite)
