@@ -115,3 +115,35 @@ the latest versions of all the package functions into the R console by running
 output too much, you can wrap the tinytest function call with
 `suppressMessages()`. This will suppress the messages from the OmicAnalyzer
 functions but still display the test results.
+
+## Setup your development environment
+
+First install the development only packages:
+
+```
+install.packages(c("remotes", "roxygen2"))
+```
+
+Second install the required and suggested dependencies:
+
+```
+remotes::install_deps(dependencies = TRUE)
+```
+
+Third install LaTeX, Make, and Graphviz if you wish to re-build the
+vignettes:
+
+```
+sudo apt-get install texlive texinfo make graphviz
+```
+
+If you’re on Windows or macOS, I recommend using the R package
+[tinytex](https://cran.r-project.org/package=tinytex) to install the
+minimal [TinyTex](https://yihui.org/tinytex/) distribution.
+
+# Files and directories
+
+* `R/` - R source code files
+* `inst/tinytest/` - Test files
+* `inst/www/` - Web app
+* `scripts/` - Utility scripts for maintaining the package
