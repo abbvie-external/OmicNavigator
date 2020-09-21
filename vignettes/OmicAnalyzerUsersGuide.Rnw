@@ -71,7 +71,11 @@ transcript levels and another for protein levels) or very similar (same exact
 input data but differential expression performed with two different software
 packages).
 
-\includegraphics{images/models}
+\begin{figure}[h]
+  \includegraphics{images/models}
+  \centering
+  \label{fig:models}
+\end{figure}
 
 \subsection{Differential expression results}
 
@@ -88,17 +92,29 @@ of coefficients) from the model.
 For example, a model that compares cases versus controls will only have one
 test:
 
-\includegraphics{images/results-1}
+\begin{figure}[h]
+  \includegraphics{images/results-1}
+  \centering
+  \label{fig:results-1}
+\end{figure}
 
 A model that compares a control versus two different treatments will likely have
 two tests:
 
-\includegraphics{images/results-2}
+\begin{figure}[h]
+  \includegraphics{images/results-2}
+  \centering
+  \label{fig:results-2}
+\end{figure}
 
 And a model that compares three distinct groups will likely have 3 tests
 (since $\binom{3}{2} = 3$ pairwise comparisons):
 
-\includegraphics{images/results-3}
+\begin{figure}[h]
+  \includegraphics{images/results-3}
+  \centering
+  \label{fig:results-3}
+\end{figure}
 
 \subsection{Enrichments analysis}
 
@@ -119,17 +135,29 @@ For example, imagine that enrichment analyses were performed with the KEGG and
 Reactome annotations. A model that compares cases versus controls will have
 two enrichments tables:
 
-\includegraphics{images/enrichments-1}
+\begin{figure}[h]
+  \includegraphics{images/enrichments-1}
+  \centering
+  \label{fig:enrichments-1}
+\end{figure}
 
 A model that compares a control versus two different treatments will have
 four enrichment tables, 2 for each of the tests:
 
-\includegraphics{images/enrichments-2}
+\begin{figure}[h]
+  \includegraphics{images/enrichments-2}
+  \centering
+  \label{fig:enrichments-2}
+\end{figure}
 
 And a model that compares three distinct groups will have 6 enrichment tables,
 2 for each of the 3 tests:
 
-\includegraphics{images/enrichments-3}
+\begin{figure}[h]
+  \includegraphics{images/enrichments-3}
+  \centering
+  \label{fig:enrichments-3}
+\end{figure}
 
 \subsection{Additional information}
 
