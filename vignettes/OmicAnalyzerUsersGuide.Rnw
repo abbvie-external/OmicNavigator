@@ -4,6 +4,7 @@
 \documentclass[12pt, letterpaper]{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{float}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 
 \title{OmicAnalyzer User's Guide}
@@ -71,7 +72,7 @@ transcript levels and another for protein levels) or very similar (same exact
 input data but differential expression performed with two different software
 packages).
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/models}
   \centering
   \label{fig:models}
@@ -92,7 +93,7 @@ of coefficients) from the model.
 For example, a model that compares cases versus controls will only have one
 test:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/results-1}
   \centering
   \label{fig:results-1}
@@ -101,7 +102,7 @@ test:
 A model that compares a control versus two different treatments will likely have
 two tests:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/results-2}
   \centering
   \label{fig:results-2}
@@ -110,7 +111,7 @@ two tests:
 And a model that compares three distinct groups will likely have 3 tests
 (since $\binom{3}{2} = 3$ pairwise comparisons):
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/results-3}
   \centering
   \label{fig:results-3}
@@ -135,7 +136,7 @@ For example, imagine that enrichment analyses were performed with the KEGG and
 Reactome annotations. A model that compares cases versus controls will have
 two enrichments tables:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/enrichments-1}
   \centering
   \label{fig:enrichments-1}
@@ -144,7 +145,7 @@ two enrichments tables:
 A model that compares a control versus two different treatments will have
 four enrichment tables, 2 for each of the tests:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/enrichments-2}
   \centering
   \label{fig:enrichments-2}
@@ -153,7 +154,7 @@ four enrichment tables, 2 for each of the tests:
 And a model that compares three distinct groups will have 6 enrichment tables,
 2 for each of the 3 tests:
 
-\begin{figure}[h]
+\begin{figure}[H]
   \includegraphics{images/enrichments-3}
   \centering
   \label{fig:enrichments-3}
