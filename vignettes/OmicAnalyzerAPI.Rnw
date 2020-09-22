@@ -3,9 +3,23 @@
 
 \documentclass[10pt, letterpaper]{article}
 
+\usepackage{fancyvrb}
 \usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 \usepackage[utf8]{inputenc}
+
+\usepackage{color}
+\definecolor{blue}{rgb}{0,0,0.5}
+
+\usepackage{Sweave}
+\RecustomVerbatimEnvironment{Sinput}{Verbatim}{
+  xleftmargin=2em,
+  fontshape=n,
+  formatcom=\color{blue}
+}
+\RecustomVerbatimEnvironment{Soutput}{Verbatim}{
+  xleftmargin=2em
+}
 
 \title{OmicAnalyzer API}
 \author{John Blischak}
@@ -17,7 +31,7 @@
 \tableofcontents
 
 <<setup, echo=FALSE>>=
-options(prompt = "R> ")
+options(prompt = " ", continue = " ")
 @
 
 \section{Introduction}
