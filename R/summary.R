@@ -1,7 +1,7 @@
 #' @export
-summary.oaStudy <- function(x, ...) {
-  display(x)
-  return(invisible(x))
+summary.oaStudy <- function(object, ...) {
+  display(object)
+  return(invisible(object))
 }
 
 display <- function(x, indent = "") {
