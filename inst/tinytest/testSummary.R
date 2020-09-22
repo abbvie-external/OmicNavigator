@@ -1,4 +1,4 @@
-# Test print.oaStudy()
+# Test summary.oaStudy()
 
 # Setup ------------------------------------------------------------------------
 
@@ -11,16 +11,16 @@ emptyStudy <- createStudy(name = "empty", description = "An empty study")
 testStudy <- OmicAnalyzer:::testStudy(name = "test", description = "A test study")
 testStudyPlots <- addPlots(testStudy, OmicAnalyzer:::testPlots())
 
-# Test print.oaStudy() ---------------------------------------------------------
+# Test summary.oaStudy() -------------------------------------------------------
 
 expect_stdout(
-  concatenateOutput(emptyStudy)
+  concatenateOutput(summary(emptyStudy))
 )
 
 expect_stdout(
-  concatenateOutput(testStudy)
+  concatenateOutput(summary(testStudy))
 )
 
 expect_stdout(
-  concatenateOutput(testStudyPlots)
+  concatenateOutput(summary(testStudyPlots))
 )
