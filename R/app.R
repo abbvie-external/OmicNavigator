@@ -22,7 +22,7 @@ listStudies <- function(libraries = NULL) {
 
     # package metadata
     pkgName <- pkgsOa[i]
-    pkgDescription <- utils::packageDescription(pkgName)
+    pkgDescription <- utils::packageDescription(pkgName, lib.loc = libraries)
     output[[i]][["package"]] <- list(
       description = pkgDescription[["Description"]],
       version = pkgDescription[["Version"]],

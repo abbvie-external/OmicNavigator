@@ -2,6 +2,9 @@
 
 * Add `summary()` method for OmicAnalyzer study objects (class `oaStudy`)
 
+* Bugfix: `listStudies()` now works if its argument `libraries` is pointed to a
+specific directory
+
 # 0.15.0
 
 * The release tarball includes [version 0.1.9.1 of the web app][app-v0.1.9.1]
