@@ -22,13 +22,13 @@ display <- function(x, indent = "") {
 }
 
 displayDataFrame <- function(x, name, indent = "") {
-  paste(indent, "o-", name, ":", nrow(x), "x", ncol(x))
+  sprintf("%so-%s: %dx%d", indent, name, nrow(x), ncol(x))
 }
 
 displayList <- function(x, name, indent = "") {
-  paste(indent, "|-", name, "(", length(x), ")")
+  sprintf("%s|-%s (%d)", indent, name, length(x))
 }
 
 displayCharacter <- function(x, name, indent = "") {
-  paste(indent, "o-", name, ":", x)
+  sprintf("%so-%s: %s", indent, name, x)
 }
