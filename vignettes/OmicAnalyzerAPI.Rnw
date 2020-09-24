@@ -90,7 +90,11 @@ featureID used in the study. It should be passed to
 metadata columns are returned as character strings, even if they appear numeric.
 
 <<results-table>>=
-resultsTable <- getResultsTable("ABC", "model_01", "test_01")
+resultsTable <- getResultsTable(
+  study = "ABC",
+  modelID = "model_01",
+  testID = "test_01"
+)
 toJSON(resultsTable[1:2, ], pretty = TRUE)
 @
 
@@ -101,7 +105,11 @@ For a given study, model, and annotation, return a table that contains the
 enrichment results. The default is to return the nominal statistical values.
 
 <<enrichments-table>>=
-enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01")
+enrichmentsTable <- getEnrichmentsTable(
+  study = "ABC",
+  modelID = "model_01",
+  annotationID = "annotation_01"
+)
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
 @
 
@@ -109,7 +117,12 @@ Set \texttt{type = "adjusted"} to obtain statistical values adjusted for
 multiple testing.
 
 <<enrichments-table-adjusted>>=
-enrichmentsTable <- getEnrichmentsTable("ABC", "model_01", "annotation_01", type = "adjusted")
+enrichmentsTable <- getEnrichmentsTable(
+  study = "ABC",
+  modelID = "model_01",
+  annotationID = "annotation_01",
+  type = "adjusted"
+)
 toJSON(enrichmentsTable[1:2, ], pretty = TRUE)
 @
 
@@ -124,7 +137,11 @@ For a given study, model, and annotation, return the nodes and links of the
 network graph.
 
 <<enrichments-network>>=
-enrichmentsNetwork <- getEnrichmentsNetwork("ABC", "model_01", "annotation_01")
+enrichmentsNetwork <- getEnrichmentsNetwork(
+  study = "ABC",
+  modelID = "model_01",
+  annotationID = "annotation_01"
+)
 enrichmentsNetworkMinimal <- list(
   tests = enrichmentsNetwork[["tests"]],
   nodes = enrichmentsNetwork[["nodes"]][1:3, ],
@@ -138,8 +155,12 @@ toJSON(enrichmentsNetworkMinimal, auto_unbox = TRUE, pretty = TRUE)
 For a given study, annotation, and term, return the features in that term.
 
 <<getNodeFeatures>>=
-nodeFeatures <- getNodeFeatures("ABC", "annotation_01", "term_01")
-toJSON(nodeFeatures, pretty = TRUE)
+nodeFeatures <- getNodeFeatures(
+  study = "ABC",
+  annotationID = "annotation_01",
+  termID = "term_01"
+)
+toJSON(nodeFeatures[1:4], pretty = TRUE)
 @
 
 \section{Features in a network link}
@@ -148,8 +169,13 @@ For a given study, annotation, and two terms, return the features shared by the
 terms.
 
 <<getLinkFeatures>>=
-linkFeatures <- getLinkFeatures("ABC", "annotation_01", "term_01", "term_03")
-toJSON(linkFeatures, pretty = TRUE)
+linkFeatures <- getLinkFeatures(
+  study = "ABC",
+  annotationID = "annotation_01",
+  termID1 = "term_01",
+  termID2 = "term_03"
+)
+toJSON(linkFeatures[1:4], pretty = TRUE)
 @
 
 \section{Custom plots}
@@ -268,7 +294,11 @@ For a given study, model, and featureID, return a table that contains the metaFe
 associated with that featureID.
 
 <<metaFeatures-table>>=
-metaFeaturesTable <- getMetaFeaturesTable("ABC", "model_01", "feature_0001")
+metaFeaturesTable <- getMetaFeaturesTable(
+  study = "ABC",
+  modelID = "model_01",
+  featureID = "feature_0001"
+)
 toJSON(metaFeaturesTable[1:2, ], pretty = TRUE)
 @
 
