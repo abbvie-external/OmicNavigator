@@ -24,3 +24,7 @@ expect_stdout(
 expect_stdout(
   concatenateOutput(summary(testStudyPlots))
 )
+
+expect_stdout(
+  concatenateOutput(summary(testStudyPlots, elements = c("annotations", "enrichments")))
+)

@@ -1,5 +1,18 @@
+#' Summarize elements of OmicAnalyzer study
+#'
+#' Displays a tree-like summary of the elements that have been added to an
+#' OmicAnalyzer study.
+#'
+#' @param object OmicAnalyzer study object (class \code{oaStudy})
+#' @param elements Subset the output to only include specific elements of the
+#'   study, e.g. \code{c("results", "enrichments")}
+#' @param ... Currently unused
+#'
 #' @export
-summary.oaStudy <- function(object, ...) {
+summary.oaStudy <- function(object, elements = NULL, ...) {
+  if (!is.null(elements) && is.character(elements)) {
+    object <- object[elements]
+  }
   display(object)
   return(invisible(object))
 }
