@@ -129,16 +129,16 @@ And a model that compares three distinct groups will likely have 3 tests
   \label{fig:results-3}
 \end{figure}
 
-\subsection{Enrichments analysis}
+\subsection{Enrichment analysis}
 
 A typical systems biology analysis to perform after a differential expression
-analysis is to test for enrichments of the differentially expressed features
-in known gene sets (e.g. \href{https://www.genome.jp/kegg/}{KEGG},
+analysis is to test for enrichment of the differentially expressed features
+in terms from curated annotation databases (e.g. \href{https://www.genome.jp/kegg/}{KEGG},
 \href{https://reactome.org/}{Reactome}). The OmicAnalyzer app provides a
 table, network, and various other visualizations to explore the output of
 enrichment analyses.
 
-Similar to the differential expression results, enrichments analyses are also
+Similar to the differential expression results, enrichment analyses are also
 added per model and per test. However, there is also the additional category of
 the annotation database that was used for the enrichment (e.g. KEGG, Reactome).
 Thus each enrichments table corresponds to a given study-annotation-test
@@ -179,7 +179,7 @@ results. However, the more information you supply about the experimental data,
 the more details will be included in the app.
 
 For example, you can include metadata about the features, metadata about the
-samples, the individual measurements (expression, methylation,
+samples, or the individual assay measurements (expression, methylation,
 phosphorylation, etc.).
 
 This additional metadata can be added per model (e.g. different feature
@@ -188,21 +188,100 @@ the same samples are used in each model).
 
 \section{Step-by-step example}
 
-\cite{RNAseq123}
-\cite{Sheridan2015}
+Now it's time to convert your results into an OmicAnalyzer study! Below you will
+see how to:
 
-\begin{equation}
-Y=\beta_{Basal}+\beta_{LP}+\beta_{ML}+\beta_{L06}+\beta_{L08}+\epsilon
-\end{equation}
+\begin{enumerate}
 
-<<>>=
+  \item Create a new OmicAnalyzer study
+
+  \item Add your existing results to your OmicAnalyzer study
+
+  \item Install your OmicAnalyzer study as an R package
+
+  \item Start the app to interactively explore your results
+
+\end{enumerate}
+
+\subsection{Example data: RNAseq123}
+
+As an illustrative example, this vignette uses the results from the
+Bioconductor workflow package
+\href{https://bioconductor.org/packages/release/workflows/html/RNAseq123.html}{RNAseq123}
+\cite{RNAseq123}. It is a limma+voom analysis of RNA-seq data from 3 cell
+populations in the mouse mammary gland collected by Sheridan et al., 2015
+\cite{Sheridan2015}.
+
+The 3 cell populations are basal, luminal progenitor (LP), and mature luminal (ML).
+In the RNAseq123 analysis, the primary differential expression results obtained
+are for the tests Basal versus LP and Basal versus ML. This is similar to
+the design diagrammed in Figure \ref{fig:results-2}.
+
+\begin{figure}[H]
+  \includegraphics{images/results-rna}
+  \centering
+  \label{fig:results-rna}
+\end{figure}
+
+Furthermore they performed enrichment analysis with one annotation database:
+the Broad Institute's MSigDB c2 collection, which was converted converted
+from human to mouse gene identifiers by
+\href{http://bioinf.wehi.edu.au/software/MSigDB/}{WEHI Bioinformatics}.
+
+\begin{figure}[H]
+  \includegraphics{images/enrichments-rna}
+  \centering
+  \label{fig:enrichchments-rna}
+\end{figure}
+
+To obtain their results, we ran their script
+\href{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.R}{limmaWorkflow.R}
+and saved a subset of the objects to use in this vignette.
+
+<<data>>=
+data("RNAseq123", package = "OmicAnalyzer")
+ls()
+@
+
+You are welcome to follow along with these example data if you like. However,
+the main goal of this document is for you to input your own study data into
+OmicAnalyzer. The particular details of this specific study are not important.
+It happens to be an RNA-seq analysis of mice that was analyzed with limma+voom,
+but none of that has to apply to your own study.
+
+\subsection{Create an OmicAnalyzer study}
+
+The first step is to load the OmicAnalyzer package into the current R session.
+
+<<package>>=
 library(OmicAnalyzer)
 @
 
-<<>>=
-data("RNAseq123")
-ls()
+Next run \texttt{createStudy()} to create your OmicAnalyzer study object. The
+first argument is the name of the study. The second argument (optional) is a description of
+the study.
+
+<<createStudy>>=
+study <- createStudy("vignetteExample",
+                     "Bioc workflow package converted to OmicAnalyzer")
 @
+
+Because the \texttt{name} will be used when naming the study package, it must
+follow these rules that apply to all R package names:
+
+\begin{enumerate}
+
+  \item Begin with a letter
+
+  \item End with a letter or a number
+
+  \item Be at least two characters long
+
+  \item Only contain alphanumeric characters and periods (full stops)
+
+\end{enumerate}
+
+\subsection{Add differential expression results}
 
 <<>>=
 head(basal.vs.lp)

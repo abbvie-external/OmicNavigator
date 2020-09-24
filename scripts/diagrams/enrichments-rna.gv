@@ -1,0 +1,5 @@
+digraph G {
+  "model: Main model" -> "annotation: MSigDB c2";
+  "annotation: MSigDB c2" -> "test: Basal vs ML";
+  "annotation: MSigDB c2" -> "test: Basal vs LP";
+}
