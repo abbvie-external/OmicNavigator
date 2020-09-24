@@ -3,12 +3,21 @@
 
 \documentclass[12pt, letterpaper]{article}
 
+\usepackage{fancyvrb}
 \usepackage{amsmath}
 \usepackage{float}
 \usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 \usepackage[utf8]{inputenc}
 
+\usepackage{color}
+\definecolor{blue}{rgb}{0,0,0.5}
+
+\usepackage{Sweave}
+\RecustomVerbatimEnvironment{Sinput}{Verbatim}{
+  fontshape=n,
+  formatcom=\color{blue}
+}
 
 \title{OmicAnalyzer User's Guide}
 \author{John Blischak}
@@ -20,7 +29,7 @@
 \tableofcontents
 
 <<setup, echo=FALSE>>=
-options(prompt = " ")
+if (!interactive()) options(prompt = " ", continue = " ", width = 70)
 @
 
 \section{Overview}
@@ -193,6 +202,14 @@ library(OmicAnalyzer)
 <<>>=
 data("RNAseq123")
 ls()
+@
+
+<<>>=
+head(basal.vs.lp)
+@
+
+<<>>=
+head(cam.BasalvsLP)
 @
 
 \phantomsection

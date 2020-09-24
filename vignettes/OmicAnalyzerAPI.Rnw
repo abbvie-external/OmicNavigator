@@ -31,7 +31,7 @@
 \tableofcontents
 
 <<setup, echo=FALSE>>=
-options(prompt = " ", continue = " ")
+if (!interactive()) options(prompt = " ", continue = " ", width = 70)
 @
 
 \section{Introduction}
