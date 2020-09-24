@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 inst/doc
+inst/www
 *.rds
 *.sqlite
 *.tar.gz
