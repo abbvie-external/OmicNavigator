@@ -19,6 +19,9 @@
   formatcom=\color{blue}
 }
 
+\setlength{\parindent}{0em}
+\setlength{\parskip}{0.5em}
+
 \title{OmicAnalyzer User's Guide}
 \author{John Blischak}
 \date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
