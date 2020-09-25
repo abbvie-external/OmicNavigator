@@ -626,6 +626,44 @@ within RStudio Server.
 startApp()
 @
 
+\subsection{Add report with analysis details}
+
+Some users of the app may be interested in learning more of the details of the
+analysis. If you created a report of your analysis, you can add this to your
+OmicAnalyzer study. Then it will be available for interested users. The report
+can be any file format. You need to provide a path to the file on your local
+machine (in which case it will be bundled into the study package), or you can
+provide a URL that points to the file.
+
+In this case, the
+\href{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}{RNAseq123
+analysis report} is hosted on Bioconductor's website. Below I purposefully use a
+small text size in order to display the full URL.
+
+\begin{scriptsize}
+
+<<>>=
+reportUrl = "https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html"
+@
+
+\end{scriptsize}
+
+As usual, I create a nested list with one entry per \texttt{modelID}.
+
+<<>>=
+reports <- list(
+  main = reportUrl
+)
+@
+
+And add it to the OmicAnalyzer study with \texttt{addReports()}.
+
+<<>>=
+study <- addReports(study, reports)
+@
+
+For more details, run \texttt{?addReports}.
+
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \begin{thebibliography}{2}
