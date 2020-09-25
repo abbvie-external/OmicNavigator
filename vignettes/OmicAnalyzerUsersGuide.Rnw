@@ -463,6 +463,89 @@ study <- addEnrichments(study, enrichments = enrichments)
 
 For more details, run \texttt{?addEnrichments}.
 
+\subsection{Describe models}
+
+You can provide more detailed descriptions of your models. These will be
+displayed in the app when a user hovers over each \texttt{modelID}. Below I
+describe the only model I currently have for this study.
+
+<<>>=
+models <- list(
+  main = "limma+voom model of RNA-seq experiment of mouse mammary glands"
+)
+@
+
+And then add it to the OmicAnalyzer study with \texttt{addModels}.
+
+<<>>=
+study <- addModels(study, models = models)
+@
+
+For more details, run \texttt{?addModels}.
+
+\subsection{Describe tests}
+
+You can provide more detailed descriptions of your tests. These will be
+displayed in the app when a user hovers over each \texttt{testID}. Below I
+describe the two tests that were performed for the modelID \texttt{main}. The
+input must be a data frame with the columns \texttt{testID} and
+\texttt{description}.
+
+<<>>=
+tests <- list(
+  main = data.frame(
+    testID = c("basal.vs.lp", "basal.vs.ml"),
+    description = c("Which genes are DE between Basal and LP cells?",
+                    "Which genes are DE between Basal and ML cells?"),
+    stringsAsFactors = FALSE
+  )
+)
+@
+
+I then add this to the OmicAnalyzer study with \texttt{addTests}.
+
+<<>>=
+study <- addTests(study, tests = tests)
+@
+
+For more details, run \texttt{?addTests}.
+
+\subsection{Add features metadata}
+
+Recall that I removed the feature metadata columns from the results tables. I
+still want to include these when exploring the results in the app. I can add
+them in the features table of OmicAnalyzer. The features table has the following
+requirements:
+
+\begin{itemize}
+
+  \item The first column must contain the study featureID. It must be unique,
+  and it must be a character vector.
+
+  \item The remaining columns must all be character vectors
+
+\end{itemize}
+
+Even though the two results tables were sorted by p-value for each test, this is
+not a problem for OmicAnalyzer. It will automatically merge the test results and
+feature metadata in the app's display. Thus I can take the first 3 columns of
+one of the objects returned by \texttt{topTable()} to use as the features table
+for the modelID \texttt{main}.
+
+<<>>=
+features <- list(
+  main = basal.vs.lp[, 1:3]
+)
+@
+
+And add it to the OmicAnalyzer study with \texttt{addFeatures()}.
+
+<<>>=
+study <- addFeatures(study, features = features)
+@
+
+For more details, run \texttt{?addFeatures}.
+
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \begin{thebibliography}{2}
