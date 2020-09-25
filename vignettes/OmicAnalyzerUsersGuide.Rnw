@@ -599,6 +599,33 @@ study <- addAnnotations(study, annotations)
 
 For more details, run \texttt{?addAnnotations}.
 
+\subsection{Install the study}
+
+Now I can install the study as an R package with \texttt{installStudy()}.
+
+<<install, eval=FALSE>>=
+installStudy(study)
+@
+
+If I needed to transfer the study package to a different machine, instead of
+directly installing it, I could export it to a directory with
+\texttt{exportStudy()}.
+
+<<export, eval=FALSE>>=
+exportStudy(study, type = "package")
+@
+
+\subsection{Run the app locally}
+
+After the study package is installed, I can run \texttt{startApp()} to open
+the app in the browser. If the study package was properly installed, I should
+be able to select it from the app's menu. Note that the app can't be run from
+within RStudio Server.
+
+<<startApp, eval=FALSE>>=
+startApp()
+@
+
 \phantomsection
 \addcontentsline{toc}{section}{References}
 \begin{thebibliography}{2}
