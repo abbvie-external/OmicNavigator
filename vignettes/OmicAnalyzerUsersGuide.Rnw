@@ -254,9 +254,9 @@ but none of that has to apply to your own study.
 
 \subsection{Create an OmicAnalyzer study}
 
-The first step is to load the OmicAnalyzer package into the current R session.
-\footnote{If you haven't installed OmicAnalyzer yet, please see the file
-\texttt{README.md} for the installation instructions.}
+The first step is to load the OmicAnalyzer package into the current R
+session.\footnote{If you haven't installed OmicAnalyzer yet, please see the
+file \texttt{README.md} for the installation instructions.}
 
 <<package>>=
 library(OmicAnalyzer)
@@ -373,7 +373,7 @@ results <- list(
 I add this to the OmicAnalyzer study with \texttt{addResults()}.
 
 <<>>=
-study <- addResults(study, results = results)
+study <- addResults(study, results)
 @
 
 For more details, run \texttt{?addResults}.
@@ -458,7 +458,7 @@ enrichments <- list(
 I add this to the OmicAnalyzer study with \texttt{addEnrichments()}.
 
 <<>>=
-study <- addEnrichments(study, enrichments = enrichments)
+study <- addEnrichments(study, enrichments)
 @
 
 For more details, run \texttt{?addEnrichments}.
@@ -478,7 +478,7 @@ models <- list(
 And then add it to the OmicAnalyzer study with \texttt{addModels}.
 
 <<>>=
-study <- addModels(study, models = models)
+study <- addModels(study, models)
 @
 
 For more details, run \texttt{?addModels}.
@@ -505,7 +505,7 @@ tests <- list(
 I then add this to the OmicAnalyzer study with \texttt{addTests}.
 
 <<>>=
-study <- addTests(study, tests = tests)
+study <- addTests(study, tests)
 @
 
 For more details, run \texttt{?addTests}.
@@ -541,10 +541,63 @@ features <- list(
 And add it to the OmicAnalyzer study with \texttt{addFeatures()}.
 
 <<>>=
-study <- addFeatures(study, features = features)
+study <- addFeatures(study, features)
 @
 
 For more details, run \texttt{?addFeatures}.
+
+\subsection{Add annotations}
+
+In addition to a table of enrichments, the app can also display a network view
+of the enrichment results. In order to do this, OmicAnalyzer needs more
+information about the annotation terms that were used. Each node of the
+network is a \texttt{termID} and the edges between the nodes are determined by
+the number of shared features between any two of the \texttt{termID}'s. The
+more shared features, the thicker the edge line will be.\footnote{The user of
+the app is able to choose which overlap metric to use when drawing the
+thickness of the edge lines.}
+
+The input format for the terms is a named list of character vectors. The names
+of the list are the \texttt{termID}'s. Each element is a character vector that
+contains the features in that term. Conveniently the c2 terms are already in
+this format.
+
+<<>>=
+Mm.c2
+@
+
+Recall that the data was purposefully subset to provide a minimal example for
+this User's Guide. This list only contains 4 terms, whereas the original
+\texttt{Mm.c2} used in the RNAseq123 analysis has thousands of terms.
+
+The annotations are added as a nested list. The first level are the names of the
+annotations, referred to as the \texttt{annotationID}. This must match the
+\texttt{annotationID} used when entering the enrichments tables. The second level
+is a list that describes each annotation. In addition to the list of terms, I
+include a human readable description as well as the name of the column in the
+features table that was used in the enrichments analysis (\texttt{ENTREZID}).
+
+<<>>=
+annotations <- list(
+  c2 = list(
+    terms = Mm.c2,
+    description = "Broad Institute's MSigDB c2 collection",
+    featureID = "ENTREZID"
+  )
+)
+@
+
+If I were to perform an enrichment analysis with an annotation database that
+instead used the gene symbols in its terms, then I would set \texttt{featureID
+= "SYMBOL"}.
+
+I add it to the OmicAnalyzer study with \texttt{addAnnotations()}.
+
+<<>>=
+study <- addAnnotations(study, annotations)
+@
+
+For more details, run \texttt{?addAnnotations}.
 
 \phantomsection
 \addcontentsline{toc}{section}{References}
