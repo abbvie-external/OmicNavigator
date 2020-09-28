@@ -1,31 +1,46 @@
-# Convert graphviz diagrams to PDF for vignettes
+# Create vignettes
+
+# Variables --------------------------------------------------------------------
 
 diagrams := $(patsubst scripts/diagrams/%.gv, \
                        vignettes/images/%.pdf, \
                        $(wildcard scripts/diagrams/*.gv) \
              )
 
+data := data/RNAseq123.RData
+
 vignettes := $(patsubst vignettes/%.Rnw, \
                         vignettes/%.tex, \
                         $(wildcard vignettes/*.Rnw) \
               )
 
+# Targets ----------------------------------------------------------------------
+
 all: diagrams data vignettes
 
 diagrams: $(diagrams)
 
-data: data/RNAseq123.RData
+data: $(data)
 
-vignettes: ${vignettes}
+vignettes: $(vignettes)
 
+guide: vignettes/OmicAnalyzerUsersGuide.tex
+
+api: vignettes/OmicAnalyzerAPI.tex
+
+# Rules ------------------------------------------------------------------------
+
+# Convert graphviz diagrams to PDF for vignettes
 vignettes/images/%.pdf: scripts/diagrams/%.gv
 	mkdir -p vignettes/images/
 	dot -Tpdf $< > $@
 
-data/RNAseq123.RData: scripts/RNAseq123.R
+# Run RNAseq123 analysis, subset objects, and save them for use in User's Guide
+$(data): scripts/RNAseq123.R
 	Rscript $<
 
-vignettes/%.tex: vignettes/%.Rnw
+# Weave vignettes to LaTeX and compile to PDF
+vignettes/%.tex: vignettes/%.Rnw $(diagrams) $(data)
 	cd vignettes; Rscript -e 'utils::Sweave(basename("$<"))'
 	cd vignettes; Rscript -e 'tools::texi2pdf(basename("$@"))'
 
