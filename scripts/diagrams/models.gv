@@ -1,4 +1,5 @@
 digraph G {
+  graph [fontsize="16"];
   study -> "model 1";
   study -> "model 2";
   "example 1" -> transcript;

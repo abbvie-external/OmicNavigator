@@ -1,3 +1,4 @@
 digraph G {
+  graph [rankdir="LR", fontsize="16"];
   "model: cases vs controls" -> "test: cases vs controls";
 }

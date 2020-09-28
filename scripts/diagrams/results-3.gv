@@ -1,4 +1,5 @@
 digraph G {
+  graph [rankdir="LR", fontsize="16"];
   "model: 3 groups" -> "test: group 1 vs group 2";
   "model: 3 groups" -> "test: group 2 vs group 3";
   "model: 3 groups" -> "test: group 1 vs group 3";

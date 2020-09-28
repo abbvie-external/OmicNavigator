@@ -1,4 +1,5 @@
 digraph G {
+  graph [rankdir="LR", fontsize="16"];
   testNode11 [label = "test: group 1 vs group 2"];
   testNode12 [label = "test: group 2 vs group 3"];
   testNode13 [label = "test: group 1 vs group 3"];
