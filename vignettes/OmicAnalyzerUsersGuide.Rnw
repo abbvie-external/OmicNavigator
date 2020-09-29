@@ -605,6 +605,79 @@ For more details, run \texttt{?addAnnotations}.
 
 \subsection{Barcodes}
 
+The app can create an interactive barcode plot\footnote{If you're unfamiliar
+with barcode plots, check out the function \texttt{barcodeplot()} from the
+Bioconductor package \href{https://bioconductor.org/packages/limma/}{limma}.}
+to display the enrichments results for a given termID. In order to enable this
+view, you first need to add some information about how to construct the
+barcode plot.
+
+The barcode plot displays the magnitude of the differential expression statistic
+for all of the features contained in a given termID. In a differential
+expression analysis, this is typically a t-statistic or F-statistic. Since the
+columns of the results table can be named anything you like, OmicAnalyzer
+doesn't know which column to use.
+
+In the RNAseq123 example, the test statistic is in the column \texttt{t}.
+
+<<>>=
+head(basal.vs.lp.oa)
+@
+
+In addition to specifying which column to use for the statistic in the barcode
+plot, you can provide other optional values to customize the appearance of the
+plot. All of the possible fields are listed below.
+
+\begin{itemize}
+
+  \item \texttt{statistic} (required) - The column name in the results table
+  to use to construct the barcode plot.
+
+  \item \texttt{absolute} (optional) - Convert the statistic to its absolute
+  value (default is \texttt{TRUE}).
+
+  \item \texttt{logFoldChange} (optional) - The column name in the results
+  table that contains the log fold change values. This is used to create an
+  additional view containing a violin plot.
+
+  \item \texttt{labelStat} (optional) - The x-axis label to describe the
+  statistic.
+
+  \item \texttt{labelLow} (optional) - The left-side label to describe low
+  values of the statistic.
+
+  \item \texttt{labelHigh} (optional) - The right-side label to describe high
+  values of the statistic.
+
+  \item \texttt{featureDisplay} (optional) - The feature variable to use to
+  label the barcode plot on hover. This is a column name from the features
+  table.
+
+\end{itemize}
+
+Below I customize the barcode plot for the RNAseq123 example. I specify that
+the test statistics are in the column \texttt{t} in the results table, the log
+fold change values are in the column \texttt{logFC}, the x-axis is labeled as
+\texttt{"abs{t}"}, and the ID that is displayed when hovering over a line in the
+barcode plot is the column \texttt{SYMBOL} from the features table.\footnote{The
+default is the featureID, in this case the Entrez ID.} This is contained in a
+nested list applied to the modelID \texttt{main}, and I add the information to
+the study with \texttt{addBarcodes()}.
+
+<<>>=
+barcodes <- list(
+  main = list(
+    statistic = "t",
+    logFoldChange = "logFC",
+    labelStat = "abs(t)",
+    featureDisplay = "SYMBOL"
+  )
+)
+
+study <- addBarcodes(study, barcodes)
+@
+
+For more details, run \texttt{?addBarcodes}.
 
 \subsection{Install the study}
 
