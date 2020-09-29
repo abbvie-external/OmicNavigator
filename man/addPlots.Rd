@@ -25,10 +25,9 @@ the user.
 All custom plotting functions are required to have the same function
 signature. The first argument is always \code{x}, which will be a data frame
 that combines the sample metadata with a column containing the assay
-measurements for a specific feature. That column will always be named
+measurements for a specific featureID. That column will always be named
 \code{feature}. The second argument, \code{featureID}, is the unique ID of
-the feature (idea: pass in the entire row from the features table so that the
-user can decide what metadata to display). This is for labeling the plot.
+the feature. This is for labeling the plot.
 
 Note that any ggplot2 plots will require extra care. This is because the
 plotting code will be inserted into a study package, and thus must follow the
