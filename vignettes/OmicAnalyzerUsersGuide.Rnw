@@ -33,6 +33,12 @@
 
 <<setup, echo=FALSE>>=
 if (!interactive()) options(prompt = " ", continue = " ", width = 70)
+# Create temporary directory to install study "vignetteExample"
+local({
+  .tmplib <- tempfile()
+  dir.create(.tmplib)
+  .libPaths(c(.tmplib, .libPaths()))
+})
 @
 
 \section{Overview}
@@ -687,7 +693,7 @@ For more details, run \texttt{?addBarcodes}.
 
 Now I can install the study as an R package with \texttt{installStudy()}.
 
-<<install, eval=FALSE>>=
+<<install, eval=TRUE>>=
 installStudy(study)
 @
 
@@ -1059,7 +1065,7 @@ study objects defined in the current R session as well as installed
 OmicAnalyzer study packages. Instead of passing the object, you pass the name
 of the OmicAnalyzer study.
 
-<<eval=FALSE>>=
+<<eval=TRUE>>=
 str(getFeatures("vignetteExample", modelID = "main"))
 @
 
@@ -1107,5 +1113,11 @@ str(getFeatures(studyWithDefault, modelID = "modelThatDoesntExistYet"))
      BMC Cancer 15, 221 (2015).
 
 \end{thebibliography}
+
+\section{Session information}
+
+<<results=tex>>=
+utils::toLatex(sessionInfo())
+@
 
 \end{document}
