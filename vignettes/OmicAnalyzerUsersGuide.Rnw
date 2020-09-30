@@ -1096,8 +1096,7 @@ studyWithDefault <- addFeatures(study, list(default = basal.vs.lp[, 1:3]))
 str(getFeatures(studyWithDefault, modelID = "modelThatDoesntExistYet"))
 @
 
-\phantomsection
-\addcontentsline{toc}{section}{References}
+\section{References}
 \begin{thebibliography}{2}
 
   \bibitem{RNAseq123}
@@ -1116,7 +1115,7 @@ str(getFeatures(studyWithDefault, modelID = "modelThatDoesntExistYet"))
 
 \section{Session information}
 
-<<results=tex>>=
+<<session-information, echo=FALSE, results=tex>>=
 utils::toLatex(sessionInfo())
 @
 
