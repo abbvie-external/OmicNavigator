@@ -52,7 +52,7 @@ local({
 
 The goal of the OmicAnalyzer software is to facilitate the interactive
 exploration of the results from an omics experiment. Using OmicAnalyzer, any
-bioinformatician familar with the basics of the R programming language can
+bioinformatician familiar with the basics of the R programming language can
 create and share a high-quality, comprehensive dashboard for interactive
 investigation of the patterns and signals in the data.
 
@@ -70,7 +70,7 @@ The steps include:
   exported to files, and then imported into R.
 
   \item The bioinformatician uses OmicAnalyzer to export the analysis results to
-  a study pacakge and install it.
+  a study package and install it.
 
   \item The bioinformatician can run the app locally or deploy it on a server.
 
@@ -592,10 +592,11 @@ Mm.c2
 @
 
 Recall that I purposefully subset the data to provide a minimal example for
-this User's Guide. This list only contains 4 terms, whereas the original
-\texttt{Mm.c2} used in the RNAseq123 analysis has thousands of terms.
+this User's Guide. This list only contains \Sexpr{length(Mm.c2)} terms,
+whereas the original \texttt{Mm.c2} used in the RNAseq123 analysis has
+thousands of terms.
 
-The annotations are added as a nested list. The first level are the names of the
+The annotations are added as a nested list. The first level is the names of the
 annotations, referred to as the \texttt{annotationID}. This must match the
 \texttt{annotationID} used when entering the enrichments tables
 (Section \ref{sec:enrichments}). The second level
@@ -680,7 +681,7 @@ plot. All of the possible fields are listed below.
 Below I customize the barcode plot for the RNAseq123 example. I specify that
 the test statistics are in the column \texttt{t} in the results table, the log
 fold change values are in the column \texttt{logFC}, the x-axis is labeled as
-\texttt{"abs{t}"}, and the ID that is displayed when hovering over a line in the
+\texttt{"abs(t)"}, and the ID that is displayed when hovering over a line in the
 barcode plot is the column \texttt{SYMBOL} from the features table.\footnote{The
 default is the featureID, in this case the Entrez ID.} This is contained in a
 nested list applied to the modelID \texttt{main}, and I add the information to
@@ -786,11 +787,11 @@ the following requirements:
 
 \begin{itemize}
 
-  \item The row names should be included in the first column of the features
-  table (order doesn't matter)
+  \item The row names should match the featureID's in the first column of the
+  features table (order doesn't matter)
 
-  \item The column names should be included in the first column of the samples
-  table (order doesn't matter)
+  \item The column names should match the sampleID's in the first column of
+  the samples table (order doesn't matter)
 
   \item The columns should all be numeric
 
@@ -942,7 +943,7 @@ For more details, run \texttt{?addPlots}.
 
 After you add the plotting functions, you can test that they work as you expect
 using the same function called by the app, \texttt{plotStudy()}. Below I call
-both custom functions using a different featureID.
+both custom functions using featureID 21390.
 
 <<plotStudy1, fig=TRUE>>=
 plotStudy(study, modelID = "main", featureID = "21390",
@@ -959,7 +960,7 @@ package with \texttt{installStudy()}.
 
 \section{Extras}
 
-I didn't include every possible addition above in Section
+I didn't include every possible addition in Section
 \ref{sec:step-by-step-example} above. Below are some extras you can also
 include in your study package. Similar to many of the other elements, these
 are purely optional. They are available to enhance your study package if you
@@ -1046,8 +1047,8 @@ Each function to add elements to an OmicAnalyzer study, e.g.
 OmicAnalyzer study, e.g. \texttt{getFeatures()}. Below I collectively refer to
 these as ``get'' functions.
 
-Calling the function on the study without any additional arguments will return
-a nested list with all the available information.
+Calling a ``get'' function on the study without any additional arguments will
+return a nested list with all the available information.
 
 <<>>=
 str(getFeatures(study))
@@ -1088,13 +1089,14 @@ However, you are able to have has many models as you like. As mentioned in
 Section \ref{sec:overview-models}, different models can be completely different
 (e.g. transcripts versus protein measurements) or very similar (e.g. addition of
 one extra coefficient to the statistical model). In the case where two or more
-models are very similar, it would be unnecessarily tedious and storage-intensive
-to store identical information for each study. To avoid this, OmicAnalyzer
-recognizes the special modelID \texttt{default}. If a ``get'' function requests an
-element for a modelID which doesn't exist, it then looks to see if there is a
-table available for the modelID \texttt{default}. This allows you to specify
-shared elements that apply across models of a study as well as override the
-default for a subset of the models.
+models are very similar, it would be unnecessarily tedious and
+storage-intensive to store identical information for multiple models of a
+given study. To avoid this, OmicAnalyzer recognizes the special modelID
+\texttt{default}. If a ``get'' function requests an element for a modelID
+which doesn't exist, it then looks to see if there is a table available for
+the modelID \texttt{default}. This allows you to specify shared elements that
+apply across models of a study as well as override the default for a subset of
+the models.
 
 As an example, in the RNAseq123 study, many of the elements could have been
 added for the modelID \texttt{default}. This would make no difference when
