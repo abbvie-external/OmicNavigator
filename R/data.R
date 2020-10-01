@@ -5,6 +5,24 @@
 # Saved in data/RNAseq123.RData
 # Used by vignettes/OmicAnalyzerUsersGuide.Rnw
 
+#' Shared sections for data objects
+#'
+#' @name shared-data
+#'
+#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#'
+#' @references
+#'   Law CW, Alhamdoosh M, Su S, Dong X, Tian L, Smyth GK, Ritchie ME.
+#'   \href{https://f1000research.com/articles/5-1408/v3}{RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR [version 3; peer review: 3 approved].}
+#'   F1000Research 2018, 5:1408
+#'
+#'   Sheridan, J.M., Ritchie, M.E., Best, S.A. et al.
+#'   \href{https://doi.org/10.1186/s12885-015-1187-z}{A pooled shRNA screen for regulators of primary mammary stem and progenitor cells identifies roles for \emph{Asap1} and \emph{Prox1}.}
+#'   BMC Cancer 2015, 15:221
+#'
+#' @keywords internal
+NULL
+
 #' basal.vs.lp from Bioconductor workflow RNAseq123
 #'
 #' A subset of the object \code{basal.vs.lp} from Bioconductor workflow RNAseq123.
@@ -26,8 +44,8 @@
 #'   head(basal.vs.lp)
 #'   str(basal.vs.lp)
 #'
-#'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "basal.vs.lp"
 
 #' basal.vs.ml from Bioconductor workflow RNAseq123
@@ -51,7 +69,8 @@
 #'   head(basal.vs.ml)
 #'   str(basal.vs.ml)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "basal.vs.ml"
 
 #' cam.BasalvsLP from Bioconductor workflow RNAseq123
@@ -71,7 +90,8 @@
 #'   head(cam.BasalvsLP)
 #'   str(cam.BasalvsLP)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "cam.BasalvsLP"
 
 #' cam.BasalvsML from Bioconductor workflow RNAseq123
@@ -91,7 +111,8 @@
 #'   head(cam.BasalvsML)
 #'   str(cam.BasalvsML)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "cam.BasalvsML"
 
 #' genes from Bioconductor workflow RNAseq123
@@ -110,7 +131,8 @@
 #'   head(genes)
 #'   str(genes)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "genes"
 
 #' group from Bioconductor workflow RNAseq123
@@ -129,7 +151,8 @@
 #'   table(group)
 #'   str(group)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "group"
 
 #' lane from Bioconductor workflow RNAseq123
@@ -148,7 +171,8 @@
 #'   table(lane)
 #'   str(lane)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "lane"
 
 #' lcpm from Bioconductor workflow RNAseq123
@@ -162,7 +186,8 @@
 #'   head(lcpm)
 #'   str(lcpm)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "lcpm"
 
 #' Mm.c2 from Bioconductor workflow RNAseq123
@@ -176,7 +201,8 @@
 #'  Mm.c2[[1]]
 #'  str(Mm.c2)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "Mm.c2"
 
 #' samplenames from Bioconductor workflow RNAseq123
@@ -190,5 +216,6 @@
 #'  head(samplenames)
 #'  str(samplenames)
 #'
-#' @source \url{https://bioconductor.org/packages/release/workflows/vignettes/RNAseq123/inst/doc/limmaWorkflow.html}
+#' @inherit shared-data source
+#' @inherit shared-data references
 "samplenames"
