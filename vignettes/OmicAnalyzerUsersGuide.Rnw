@@ -9,6 +9,7 @@
 \usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 \usepackage[utf8]{inputenc}
+\usepackage{parskip} % no indentation, adds spacing between text paragraphs only
 
 \usepackage{color}
 \definecolor{blue}{rgb}{0,0,0.5}
@@ -18,9 +19,6 @@
   fontshape=n,
   formatcom=\color{blue}
 }
-
-\setlength{\parindent}{0em}
-\setlength{\parskip}{0.5em}
 
 % Hack to remove automatic title of bibliography environment
 \renewcommand{\refname}{}
