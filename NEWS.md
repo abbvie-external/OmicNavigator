@@ -1,5 +1,7 @@
 # 0.15.0.9000
 
+* New User's Guide and API vignettes created with Sweave
+
 * Add `summary()` method for OmicAnalyzer study objects (class `oaStudy`)
 
 * Bugfix: `listStudies()` now works if its argument `libraries` is pointed to a
