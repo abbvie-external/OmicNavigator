@@ -38,13 +38,13 @@ Mm.c2 <- Mm.c2[terms]
 genesSubset <- unlist(Mm.c2, use.names = FALSE)
 genesSubsetMeasured <- genesSubset[genesSubset %in% x$genes$ENTREZID]
 # Results
-basal.vs.lp <- basal.vs.lp[genesSubsetMeasured, ]
-basal.vs.ml <- basal.vs.ml[genesSubsetMeasured, ]
+basal.vs.lp <- basal.vs.lp[rownames(basal.vs.lp) %in% genesSubsetMeasured, ]
+basal.vs.ml <- basal.vs.ml[rownames(basal.vs.ml) %in% genesSubsetMeasured, ]
 # Enrichments
-cam.BasalvsLP <- cam.BasalvsLP[terms, ]
-cam.BasalvsML <- cam.BasalvsML[terms, ]
+cam.BasalvsLP <- cam.BasalvsLP[rownames(cam.BasalvsLP) %in% terms, ]
+cam.BasalvsML <- cam.BasalvsML[rownames(cam.BasalvsML) %in% terms, ]
 # Assays
-lcpm <- lcpm[genesSubsetMeasured, ]
+lcpm <- lcpm[rownames(lcpm) %in% genesSubsetMeasured, ]
 
 # Export
 dir.create("data/", showWarnings = FALSE)
