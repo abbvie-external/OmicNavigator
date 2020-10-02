@@ -322,8 +322,12 @@ head(basal.vs.lp)
 
 The first column contains the Entrez gene identifier for each gene that they
 tested. OmicAnalyzer refers to this primary feature identifier of the study as
-the featureID. It must be unique, i.e. there must be only one row of results
-per featureID. The second and third columns contain more information about the
+the featureID.\footnote{This example study happened to use Entrez gene
+identifiers for the featureID. You can use whichever featureID you like for
+your own study. OmicAnalyzer only requires that the featureID is unique per
+feature, a character vector, and used consistently between the various input
+tables.} It must be unique, i.e. there must be only one row of results per
+featureID. The second and third columns contain more information about the
 features: the gene symbol and chromosomal location, respectively. OmicAnalyzer
 stores feature metadata columns in a separate table, so these will be removed
 from the results table. The remaining columns contain the quantitative
@@ -553,6 +557,11 @@ study <- addFeatures(study, features)
 @
 
 For more details, run \texttt{?addFeatures}.
+
+\textbf{Tip:} Be judicious in the number of columns you add to the features
+table. These will be displayed in the app next to the differential expression
+results. If you have too many features columns, they will obscure from the
+columns with the statistics.
 
 \subsection{Annotations}
 
