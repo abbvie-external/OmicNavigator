@@ -43,9 +43,6 @@ basal.vs.ml <- basal.vs.ml[genesSubsetMeasured, ]
 # Enrichments
 cam.BasalvsLP <- cam.BasalvsLP[terms, ]
 cam.BasalvsML <- cam.BasalvsML[terms, ]
-# Features
-genes <- subset(genes, ENTREZID %in% genesSubsetMeasured)
-row.names(genes) <- NULL
 # Assays
 lcpm <- lcpm[genesSubsetMeasured, ]
 
@@ -57,7 +54,6 @@ save(
   basal.vs.ml,
   cam.BasalvsLP,
   cam.BasalvsML,
-  genes,
   lcpm,
   samplenames,
   group,
