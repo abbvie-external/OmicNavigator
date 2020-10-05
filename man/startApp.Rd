@@ -10,5 +10,15 @@ startApp(...)
 \item{...}{extra parameters passed to \link[opencpu]{ocpu_start_server}}
 }
 \description{
-Start app on local machine
+After you have installed at least one OmicAnalyzer study package with
+\code{\link{installStudy}}, you can explore the results in the app. The
+function \code{startApp} starts a local instance of the app running on your
+current machine. It will automatically open the app in your default browser.
+For the best experience, use Google Chrome. From the dropdown menu, you will
+be able to select from any of the studies you have installed on your machine.
+When you are finished, you can stop the web server by returning to the R
+console and pressing the Esc key (Windows) or Ctrl-C (Linux, macOS).
+}
+\details{
+Note that the app can't be run from
 }

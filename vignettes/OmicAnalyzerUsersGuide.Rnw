@@ -721,6 +721,10 @@ within RStudio Server.
 startApp()
 @
 
+When I'm finished exploring the results in the app, I can stop the web server
+by returning to the R console and pressing the Esc key (Windows) or Ctrl-C
+(Linux, macOS).
+
 \section{Custom plots}
 
 You can create custom plots to visualize the expression pattern of individual
