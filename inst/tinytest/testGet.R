@@ -79,7 +79,7 @@ expect_identical_xl(
   testStudyObj[["samples"]][["default"]]
 )
 
-expect_error(
+expect_message(
   getSamples(emptyStudy),
   "No samples available"
 )
@@ -131,7 +131,7 @@ expect_identical_xl(
   testStudyObj[["features"]][["default"]]
 )
 
-expect_error(
+expect_message(
   getFeatures(emptyStudy),
   "No features available"
 )
@@ -173,7 +173,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_error(
+expect_message(
   getAssays(emptyStudy),
   "No assays available"
 )
@@ -215,7 +215,7 @@ expect_error(
   "non-existent-model"
 )
 
-expect_error(
+expect_message(
   getModels(emptyStudy),
   "No models available"
 )
@@ -267,7 +267,7 @@ expect_error(
   "Must specify a model in order to specify a test"
 )
 
-expect_error(
+expect_message(
   getTests(emptyStudy),
   "No tests available"
 )
@@ -299,7 +299,7 @@ expect_identical_xl(
   testStudyObj[["annotations"]][[testAnnotationName]]
 )
 
-expect_error(
+expect_message(
   getAnnotations(emptyStudy),
   "No annotations available"
 )
@@ -341,7 +341,7 @@ expect_error(
   "Must specify a model in order to specify a test"
 )
 
-expect_error(
+expect_message(
   getResults(emptyStudy),
   "No results available"
 )
@@ -441,7 +441,7 @@ expect_error(
   "Must specify a model in order to specify an annotation"
 )
 
-expect_error(
+expect_message(
   getEnrichments(emptyStudy),
   "No enrichments available"
 )
@@ -548,7 +548,7 @@ expect_identical_xl(
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
-expect_error(
+expect_message(
   getMetaFeatures(emptyStudy),
   "No metaFeatures available"
 )
@@ -575,7 +575,7 @@ expect_identical_xl(
   testStudyObj[["plots"]][["model_03"]]
 )
 
-expect_error(
+expect_message(
   getPlots(emptyStudy),
   "No plots available"
 )
@@ -618,7 +618,7 @@ expect_identical_xl(
   info = "Confirm model-specific barcode data returned"
 )
 
-expect_error(
+expect_message(
   getBarcodes(emptyStudy),
   "No barcodes available"
 )
@@ -662,7 +662,7 @@ expect_identical_xl(
   info = "Confirm model-specific report data returned"
 )
 
-expect_error(
+expect_message(
   getReports(emptyStudy),
   "No reports available"
 )

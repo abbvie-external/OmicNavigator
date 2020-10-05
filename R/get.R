@@ -192,6 +192,9 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
   results <- getResults(study, modelID, testID)
   features <- getFeatures(study, modelID)
 
+  if (isEmpty(results)) return(data.frame())
+  if (isEmpty(features)) return(results)
+
   # Results must be first argument to preserve input order
   resultsTable <- merge(results, features, by = 1,
                         all.x = TRUE, all.y = FALSE, sort = FALSE)
@@ -246,6 +249,8 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
     annotationID = annotationID,
     libraries = libraries
   )
+
+  if (isEmpty(enrichments)) return(data.frame())
 
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
@@ -465,7 +470,8 @@ getElements.onStudy <- function(
   elementsList <- study[[elements]]
 
   if (isEmpty(elementsList)) {
-    stop(sprintf("No %s available for study \"%s\"", elements, study[["name"]]))
+    message(sprintf("No %s available for study \"%s\"", elements, study[["name"]]))
+    return(list())
   }
 
   filters <- Filter(function(x) !is.null(x), filters)
@@ -508,14 +514,17 @@ getElements.character <- function(
 
   elementsDirectory <- file.path(oaDirectory, elements)
   if (!dir.exists(elementsDirectory)) {
-    stop(sprintf("Study \"%s\" does not have any elements named \"%s\"",
-                 study, elements), call. = FALSE)
+    message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
+                 study, elements))
+    return(list())
   }
   fileType <- match.arg(fileType, c("txt", "json"))
   elementsFiles <- getFiles(elementsDirectory, fileType = fileType)
 
   if (isEmpty(elementsFiles)) {
-    stop(sprintf("No \"%s\" available for this study", elements), call. = FALSE)
+    message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
+                    study, elements))
+    return(list())
   }
 
   filters <- Filter(function(x) !is.null(x), filters)

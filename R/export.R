@@ -282,12 +282,7 @@ exportSummary <- function(x, path = ".") {
       modelID = modelID,
       modelDisplay = getModels(x, modelID = modelID)
     )
-    suppressMessages(
-      modelPlots <-tryCatch(
-        getPlots(x, modelID = modelID),
-        error = function(e) list()
-      )
-    )
+    modelPlots <- getPlots(x, modelID = modelID)
     output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
     for (j in seq_along(modelPlots)) {
       plotID <- names(modelPlots)[j]
