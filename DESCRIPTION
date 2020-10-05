@@ -11,7 +11,7 @@ Description:
   deployed online to be explored by collaborators. The dashboard includes
   sortable tables, interactive plots including network visualization, and
   fine-grained filtering based on statistical significance.
-Version: 0.16.0
+Version: 0.16.0.9000
 Authors@R: c(
   person("John", "Blischak", role = c("aut", "cre"),
          email = "john.blischak@abbvie.com"),
