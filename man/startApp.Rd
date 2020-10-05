@@ -20,5 +20,5 @@ When you are finished, you can stop the web server by returning to the R
 console and pressing the Esc key (Windows) or Ctrl-C (Linux, macOS).
 }
 \details{
-Note that the app can't be run from
+Note that the app can't be run from within RStudio Server.
 }
