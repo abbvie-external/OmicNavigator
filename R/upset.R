@@ -1,3 +1,19 @@
+#' Shared parameters for upset functions
+#'
+#' @name shared-upset
+#'
+#' @param anchor The primary test to filter from.
+#' @param mustTests The tests whose significant values must be included. (The intersection)
+#' @param notTests The tests whose significant values will be removed. (The difference)
+#' @param sigValue The significance levels for each column.
+#' @param operator The operators for each column.
+#' @param column The columns to be thresheld.
+#' @param type Type of p-value (\code{"nominal"} or \code{"adjusted"})
+#' @param tests Restrict UpSet plot to these tests
+#'
+#' @keywords internal
+NULL
+
 #' getResultsIntersection
 #'
 #' @inheritParams shared-upset

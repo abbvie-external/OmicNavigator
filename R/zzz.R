@@ -3,43 +3,39 @@
 # version, then listStudies() will throw a warning.
 minVersionCompatible <- "0.13.0"
 
-#' Shared parameters for add functions
-#'
-#' @name shared-add
-#'
-#' @param study An OmicAnalyzer study created with \code{\link{createStudy}}
-#'
-#' @keywords internal
-NULL
+# Configure OmicAnalzyer options when package is loaded
+.onLoad <- function(libname, pkgname) {
+  # Default options
+  oaOptions <- list(
+    OmicAnalyzer.prefix = "OAstudy"
+  )
 
-#' Shared parameters for get functions
-#'
-#' @name shared-get
-#'
-#' @param study An OmicAnalyzer study. Either an object of class \code{oaStudy},
-#'   or the name of an installed study package.
-#' @param modelID Filter by modelID
-#' @param testID Filter by testID
-#' @param annotationID Filter by annotation
-#' @param termID Filter by termID
-#' @param featureID Filter by featureID
-#' @param plotID Filter by plotID
-#'
-#' @keywords internal
-NULL
+  # Only set defaults for OmicAnalyzer options that have not been set by user
+  for (i in seq_along(oaOptions)) {
+    optionName <- names(oaOptions)[i]
+    optionValue <- oaOptions[i]
+    optionCurrent <- getOption(optionName)
+    if (is.null(optionCurrent)) {
+      options(oaOptions[i])
+    }
+  }
 
-#' Shared parameters for upset functions
+  return(NULL)
+}
+
+#' OmicAnalyzer
 #'
-#' @name shared-upset
+#' Package options to control package-wide behavior are described below.
 #'
-#' @param anchor The primary test to filter from.
-#' @param mustTests The tests whose significant values must be included. (The intersection)
-#' @param notTests The tests whose significant values will be removed. (The difference)
-#' @param sigValue The significance levels for each column.
-#' @param operator The operators for each column.
-#' @param column The columns to be thresheld.
-#' @param type Type of p-value (\code{"nominal"} or \code{"adjusted"})
-#' @param tests Restrict UpSet plot to these tests
+#' The default prefix for OmicAnalyzer study packages is "OAstudy". If you
+#' would prefer to use a different prefix, you can change the package option
+#' \code{OmicAnalyzer.prefix}. For example, to use the prefix "OmicAnalyzerStudy",
+#' you could add the following line to your \code{.Rprofile} file.
 #'
-#' @keywords internal
+#' \preformatted{
+#' options(OmicAnalyzer.prefix = "OmicAnalyzerStudy")
+#' }
+#'
+#' @docType package
+#' @name OmicAnalyzer
 NULL

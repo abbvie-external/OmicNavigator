@@ -8,11 +8,7 @@
 #'
 #' @export
 listStudies <- function(libraries = NULL) {
-  pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
-  names(pkgsAll) <- NULL
-  pkgsOa <- grep("^OAstudy", pkgsAll, value = TRUE)
-  studies <- sub("^OAstudy", "", pkgsOa)
-  studies <- sort(studies)
+  studies <- getInstalledStudies(libraries = libraries)
 
   output <- vector(mode = "list", length = length(studies))
   for (i in seq_along(studies)) {
@@ -21,7 +17,7 @@ listStudies <- function(libraries = NULL) {
     output[[i]][["name"]] <- studyName
 
     # package metadata
-    pkgName <- pkgsOa[i]
+    pkgName <- studyToPkg(studyName)
     pkgDescription <- utils::packageDescription(pkgName, lib.loc = libraries)
     output[[i]][["package"]] <- list(
       description = pkgDescription[["Description"]],
@@ -258,7 +254,7 @@ getReportLink <- function(study, modelID) {
 
   if (isUrl(report)) return(report)
 
-  pkgName <- paste0("OAstudy", study)
+  pkgName <- studyToPkg(study)
   installationDir <- dirname(find.package(package = pkgName))
   reportFile <- file.path(installationDir, report)
   if (!file.exists(reportFile)) {

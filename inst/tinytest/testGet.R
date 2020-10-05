@@ -30,6 +30,12 @@ expect_identical_xl(
   testStudyName
 )
 
+# If there are no OmicAnalyzer study packages installed, return an empty list.
+expect_identical(
+  listStudies(libraries = tempfile()),
+  list()
+)
+
 # getSamples -------------------------------------------------------------------
 
 expect_identical_xl(

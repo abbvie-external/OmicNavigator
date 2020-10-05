@@ -94,6 +94,15 @@ createStudy <- function(name,
   return(study)
 }
 
+#' Shared parameters for add functions
+#'
+#' @name shared-add
+#'
+#' @param study An OmicAnalyzer study created with \code{\link{createStudy}}
+#'
+#' @keywords internal
+NULL
+
 #' Add sample metadata
 #'
 #' @param samples The metadata variables that describe the samples in the study.

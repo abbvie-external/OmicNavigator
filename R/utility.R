@@ -1,3 +1,24 @@
+## OmicAnalzyer ----------------------------------------------------------------
+
+# Get the prefix used to label OmicAnalyzer study packages.
+#
+# regex - Prepend "^" to convert the prefix to a regular expression
+getPrefix <- function(regex = FALSE) {
+  prefix = getOption("OmicAnalyzer.prefix", default = "OAstudy")
+  if (regex) prefix <- paste0("^", prefix)
+  return(prefix)
+}
+
+studyToPkg <- function(study) {
+  pkg <- paste0(getPrefix(), study)
+  return(pkg)
+}
+
+pkgToStudy <- function(pkg) {
+  regex <- getPrefix(regex = TRUE)
+  study <- sub(regex, "", pkg)
+  return(study)
+}
 
 ## I/O -------------------------------------------------------------------------
 

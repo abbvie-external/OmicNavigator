@@ -54,7 +54,7 @@ getPlotFunction <- function(plotID, study = NULL) {
   if (is.null(study)) {
     f <- dynGet(plotID, ifnotfound = list(NA), inherits = TRUE)
   } else {
-    pkg <- sprintf("OAstudy%s", study)
+    pkg <- paste0(getPrefix(), study)
     f <- utils::getFromNamespace(plotID, ns = pkg)
   }
 

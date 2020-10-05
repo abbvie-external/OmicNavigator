@@ -1106,6 +1106,26 @@ studyWithDefault <- addFeatures(study, list(default = basal.vs.lp[, 1:3]))
 str(getFeatures(studyWithDefault, modelID = "modelThatDoesntExistYet"))
 @
 
+\subsection{Naming OmicAnalyzer study packages}
+
+OmicAnalyzer studies are installed as standard R packages on your machine. This
+allows the app to query them using the \href{https://www.opencpu.org/}{OpenCPU}
+framework. In order to distinguish them from other R packages, by default the
+prefix ``OAstudy'' is added to the package name. For example, an OmicAnalyzer
+study named ``ABC'' is installed as ``OAstudyABC''.
+
+If you'd like to change the default prefix, you can change the OmicAnalyzer
+package option that controls this behavior, \texttt{OmicAnalyzer.prefix}. For
+example, to use the prefix ``OmicAnalyzerStudy'', you could add the following
+line to your .Rprofile file.
+
+<<package-option-prefix, eval=FALSE>>=
+options(OmicAnalyzer.prefix = "OmicAnalyzerStudy")
+@
+
+For more details about this and other OmicAnalyzer package options, run
+\texttt{?OmicAnalyzer}.
+
 \section{Session information}
 
 <<session-information, echo=FALSE, results=tex>>=

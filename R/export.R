@@ -36,7 +36,7 @@ exportStudy <- function(
     return(invisible(directoryname))
   } else if (type == "package") {
     message(sprintf("Exporting study \"%s\" to an R package", study[["name"]]))
-    directoryname <- paste0("OAstudy", study[["name"]])
+    directoryname <- paste0(getPrefix(), study[["name"]])
     if (!is.null(path)) directoryname <- file.path(path, directoryname)
     createPackage(study, directoryname)
     message(sprintf("Exported study to %s", directoryname))

@@ -10,14 +10,31 @@
 #'
 #' @export
 getInstalledStudies <- function(libraries = NULL) {
-  pkgs_all <- rownames(utils::installed.packages(lib.loc = libraries))
-  names(pkgs_all) <- NULL
-  pkgs_oa <- grep("^OAstudy", pkgs_all, value = TRUE)
-  studies <- sub("^OAstudy", "", pkgs_oa)
+  pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
+  names(pkgsAll) <- NULL
+  regex <- getPrefix(regex = TRUE)
+  pkgsOa <- grep(regex, pkgsAll, value = TRUE)
+  studies <- pkgToStudy(pkgsOa)
   studies <- sort(studies)
 
   return(studies)
 }
+
+#' Shared parameters for get functions
+#'
+#' @name shared-get
+#'
+#' @param study An OmicAnalyzer study. Either an object of class \code{oaStudy},
+#'   or the name of an installed study package.
+#' @param modelID Filter by modelID
+#' @param testID Filter by testID
+#' @param annotationID Filter by annotation
+#' @param termID Filter by termID
+#' @param featureID Filter by featureID
+#' @param plotID Filter by plotID
+#'
+#' @keywords internal
+NULL
 
 #' Get models from a study
 #'
@@ -526,7 +543,7 @@ getElements.character <- function(
 
 getDirectory <- function(study, libraries = NULL) {
   system.file("OmicAnalyzer/",
-              package = paste0("OAstudy", study),
+              package = paste0(getPrefix(), study),
               lib.loc = libraries)
 }
 

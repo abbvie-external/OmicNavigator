@@ -1,5 +1,8 @@
 # 0.16.2.9000
 
+* New package option `OmicAnalyzer.prefix` to conrol the prefix used to label
+OmicAnalyzer study packages. The default is still "OAstudy". Run `?OmicAnalyzer`
+for more information on OmicAnalyzer package options.
 
 # 0.16.2
 

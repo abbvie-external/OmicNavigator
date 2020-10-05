@@ -16,7 +16,7 @@ dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
-testPkgName <- paste0("OAstudy", testStudyName)
+testPkgName <- paste0(OmicAnalyzer:::getPrefix(), testStudyName)
 
 # Test plots in exported package -----------------------------------------------
 
@@ -179,7 +179,6 @@ expect_identical(
 
 # Teardown ---------------------------------------------------------------------
 
-pkgName <- paste0("OAstudy", testStudyName)
-unloadNamespace(pkgName)
+unloadNamespace(testPkgName)
 unlink(tmplib, recursive = TRUE, force = TRUE)
 .libPaths(libOrig)
