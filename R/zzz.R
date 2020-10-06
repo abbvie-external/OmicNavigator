@@ -3,11 +3,16 @@
 # version, then listStudies() will throw a warning.
 minVersionCompatible <- "0.13.0"
 
+# The default prefix added to OmicAnalyzer study packages. Used by .onLoad()
+# below and by getPrefix() in utility.R. The default is overriden by setting
+# the package option OmicAnalyzer.prefix.
+OmicAnalyzerPrefix <- "OAstudy"
+
 # Configure OmicAnalzyer options when package is loaded
 .onLoad <- function(libname, pkgname) {
   # Default options
   oaOptions <- list(
-    OmicAnalyzer.prefix = "OAstudy"
+    OmicAnalyzer.prefix = OmicAnalyzerPrefix
   )
 
   # Only set defaults for OmicAnalyzer options that have not been set by user

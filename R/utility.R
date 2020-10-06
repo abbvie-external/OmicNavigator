@@ -3,8 +3,10 @@
 # Get the prefix used to label OmicAnalyzer study packages.
 #
 # regex - Prepend "^" to convert the prefix to a regular expression
+#
+# Global internal package variable `OmicAnalyzerPrefix` is defined in zzz.R
 getPrefix <- function(regex = FALSE) {
-  prefix = getOption("OmicAnalyzer.prefix", default = "OAstudy")
+  prefix = getOption("OmicAnalyzer.prefix", default = OmicAnalyzerPrefix)
   if (regex) prefix <- paste0("^", prefix)
   return(prefix)
 }
