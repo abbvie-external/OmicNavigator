@@ -62,7 +62,9 @@ suppressMessages(
 )
 
 # Export again with overlaps pre-calculated
-study <- addOverlaps(study)
+suppressMessages(
+  study <- addOverlaps(study)
+)
 suppressMessages(
   OmicNavigator::exportStudy(study, type = "package", path = tmplib)
 )

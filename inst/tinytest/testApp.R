@@ -83,7 +83,7 @@ expect_identical(
   names(getPlots(testStudyObj, modelID = testModelName))
 )
 
-# If there are no OmicAnalyzer study packages installed, return an empty list.
+# If there are no OmicNavigator study packages installed, return an empty list.
 expect_identical(
   listStudies(libraries = tempfile()),
   list()
