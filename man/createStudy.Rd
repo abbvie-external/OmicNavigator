@@ -29,26 +29,26 @@ createStudy(
 
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object is a named list of data frames (one per model). The first
-column of each data frame is used as the sample ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default".}
+column of each data frame is used as the sampleID, so it must contain
+unique values. To share a data frame across multiple models, use the
+modelID "default".}
 
 \item{features}{The metadata variables that describe the features in the
 study. The input object is a list of data frames (one per model). The first
-column of each data frame is used as the feature ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default". All columns will be coerced to character strings.}
+column of each data frame is used as the featureID, so it must contain
+unique values. To share a data frame across multiple models, use the
+modelID "default". All columns will be coerced to character strings.}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
 the descriptions of the models.}
 
 \item{assays}{The assays from the study. The input object is a list of data
-frames (one per model). The row names should correspond to the feature IDs
-(\code{\link{addFeatures}}). The column names should corresond to the
-sample IDs (\code{\link{addSamples}}). The data frame should only contain
-numeric values. To share a data frame across multiple models, use the model
-ID "default".}
+frames (one per model). The row names should correspond to the featureIDs
+(\code{\link{addFeatures}}). The column names should correspond to the
+sampleIDs (\code{\link{addSamples}}). The data frame should only contain
+numeric values. To share a data frame across multiple models, use the
+modelID "default".}
 
 \item{tests}{The tests from the study. The input object is a list of lists.
 Each element of the top-level list is a model. The names should be the
@@ -67,12 +67,12 @@ describes the resource, 2) \code{featureID}, the name of the column in the
 features table that was used for the enrichment analysis, and 3) \code{terms},
 a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
-character vector of feature IDs.}
+character vector of featureIDs.}
 
 \item{results}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with inference
-results, one for each test. In each data frame, the feature ID must be in
+results, one for each test. In each data frame, the featureID must be in
 the first column, and all other columns must be numeric.}
 
 \item{enrichments}{The enrichment results from each model. The input is a
@@ -88,10 +88,10 @@ adjusting for multiple testing). Any additional columns are ignored.}
 
 \item{metaFeatures}{The metadata variables that describe the meta-features in
 the study. The input object is a list of data frames (one per model). The
-first column of each data frame is used as the feature ID, so it must
+first column of each data frame is used as the featureID, so it must
 contain the same IDs as the corresponding features data frame
 (\code{\link{addFeatures}}). To share a data frame across multiple models,
-use the model ID "default". All columns will be coerced to character
+use the modelID "default". All columns will be coerced to character
 strings.}
 
 \item{plots}{Custom plotting functions for the study. The input object is a
@@ -100,7 +100,7 @@ correspond to functions defined in the current R session. Each sublist must
 define a \code{displayName} to control how the plot will be named in the
 app. Optionally, if the plottting function requires external packages,
 these can be defined in the element \code{packages}. To share plots across
-multiple models, use the model ID "default".}
+multiple models, use the modelID "default".}
 
 \item{barcodes}{The metadata variables that describe the barcode plot.
 The input object is a list of lists (one per model). Each sublist must
@@ -116,13 +116,13 @@ the log fold change values.
 5) \code{labelHigh} - The right-side label to describe high values of the statistic.
 6) \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
-To share metadata across multiple models, use the model ID "default".}
+To share metadata across multiple models, use the modelID "default".}
 
 \item{reports}{The analysis report(s) that explain how the study results were
 generated. The input object is a list of character vectors (one per model).
 Each element should be either a URL or a path to a file on your computer.
 If it is a path to a file, this file will be included in the exported study
-package. To share a report across multiple models, use the model ID
+package. To share a report across multiple models, use the modelID
 "default".}
 
 \item{version}{(Optional) Include a version number to track the updates to

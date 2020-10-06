@@ -11,9 +11,9 @@ addSamples(study, samples)
 
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object is a named list of data frames (one per model). The first
-column of each data frame is used as the sample ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default".}
+column of each data frame is used as the sampleID, so it must contain
+unique values. To share a data frame across multiple models, use the
+modelID "default".}
 }
 \description{
 Add sample metadata

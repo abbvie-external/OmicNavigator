@@ -23,7 +23,7 @@ the log fold change values.
 5) \code{labelHigh} - The right-side label to describe high values of the statistic.
 6) \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
-To share metadata across multiple models, use the model ID "default".}
+To share metadata across multiple models, use the modelID "default".}
 }
 \description{
 The app can display a barcode plot of the enrichment results for a given

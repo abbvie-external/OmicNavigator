@@ -10,11 +10,11 @@ addAssays(study, assays)
 \item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
 
 \item{assays}{The assays from the study. The input object is a list of data
-frames (one per model). The row names should correspond to the feature IDs
-(\code{\link{addFeatures}}). The column names should corresond to the
-sample IDs (\code{\link{addSamples}}). The data frame should only contain
-numeric values. To share a data frame across multiple models, use the model
-ID "default".}
+frames (one per model). The row names should correspond to the featureIDs
+(\code{\link{addFeatures}}). The column names should correspond to the
+sampleIDs (\code{\link{addSamples}}). The data frame should only contain
+numeric values. To share a data frame across multiple models, use the
+modelID "default".}
 }
 \description{
 Add assays

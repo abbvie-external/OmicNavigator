@@ -13,7 +13,7 @@ addReports(study, reports)
 generated. The input object is a list of character vectors (one per model).
 Each element should be either a URL or a path to a file on your computer.
 If it is a path to a file, this file will be included in the exported study
-package. To share a report across multiple models, use the model ID
+package. To share a report across multiple models, use the modelID
 "default".}
 }
 \description{

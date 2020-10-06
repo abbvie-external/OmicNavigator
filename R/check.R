@@ -176,7 +176,7 @@ checkResults <- function(results) {
   checkList(results)
 
   if ("defaults" %in% names(results)) {
-    stop("The results cannot be shared using the model ID \"defaults\"")
+    stop("The results cannot be shared using the modelID \"defaults\"")
   }
 
   for (i in seq_along(results)) {
@@ -199,7 +199,7 @@ checkEnrichments <- function(enrichments) {
   checkList(enrichments)
 
   if ("defaults" %in% names(enrichments)) {
-    stop("The enrichments cannot be shared using the model ID \"defaults\"")
+    stop("The enrichments cannot be shared using the modelID \"defaults\"")
   }
 
   for (i in seq_along(enrichments)) {

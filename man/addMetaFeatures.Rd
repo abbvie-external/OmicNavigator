@@ -11,10 +11,10 @@ addMetaFeatures(study, metaFeatures)
 
 \item{metaFeatures}{The metadata variables that describe the meta-features in
 the study. The input object is a list of data frames (one per model). The
-first column of each data frame is used as the feature ID, so it must
+first column of each data frame is used as the featureID, so it must
 contain the same IDs as the corresponding features data frame
 (\code{\link{addFeatures}}). To share a data frame across multiple models,
-use the model ID "default". All columns will be coerced to character
+use the modelID "default". All columns will be coerced to character
 strings.}
 }
 \description{

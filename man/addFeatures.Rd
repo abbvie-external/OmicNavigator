@@ -11,9 +11,9 @@ addFeatures(study, features)
 
 \item{features}{The metadata variables that describe the features in the
 study. The input object is a list of data frames (one per model). The first
-column of each data frame is used as the feature ID, so it must contain
-unique values. To share a data frame across multiple models, use the model
-ID "default". All columns will be coerced to character strings.}
+column of each data frame is used as the featureID, so it must contain
+unique values. To share a data frame across multiple models, use the
+modelID "default". All columns will be coerced to character strings.}
 }
 \description{
 Add feature metadata

@@ -19,7 +19,7 @@ describes the resource, 2) \code{featureID}, the name of the column in the
 features table that was used for the enrichment analysis, and 3) \code{terms},
 a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
-character vector of feature IDs.}
+character vector of featureIDs.}
 }
 \description{
 Add annotations

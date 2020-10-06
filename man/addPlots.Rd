@@ -15,7 +15,7 @@ correspond to functions defined in the current R session. Each sublist must
 define a \code{displayName} to control how the plot will be named in the
 app. Optionally, if the plottting function requires external packages,
 these can be defined in the element \code{packages}. To share plots across
-multiple models, use the model ID "default".}
+multiple models, use the modelID "default".}
 }
 \description{
 Include custom plots that the app will display when a feature is selected by
