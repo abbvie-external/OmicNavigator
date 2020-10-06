@@ -103,8 +103,15 @@ checkFeatures <- function(features) {
   return(NULL)
 }
 
-checkModels <- function(models, study = NULL) {
-  stopifnot(inherits(models, "list"))
+checkModels <- function(models) {
+  checkList(models)
+
+  for (i in seq_along(models)) {
+    stopifnot(
+      is.character(models[[i]]),
+      length(models[[i]]) == 1
+    )
+  }
 
   return(NULL)
 }
