@@ -11,7 +11,7 @@ testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
 testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
+testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 
 tmplib <- tempfile()
@@ -238,6 +238,16 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  getTests(testStudyObj, modelID = testModelName, testID = testTestName),
+  testStudyObj[["tests"]][["default"]][[testTestName]]
+)
+
+expect_error(
+  getTests(testStudyObj, testID = testTestName),
+  "Must specify a model in order to specify a test"
+)
+
+expect_identical_xl(
   getTests(testStudyName),
   testStudyObj[["tests"]]
 )
@@ -245,6 +255,16 @@ expect_identical_xl(
 expect_identical_xl(
   getTests(testStudyName, modelID = testModelName),
   testStudyObj[["tests"]][["default"]]
+)
+
+expect_identical_xl(
+  getTests(testStudyName, modelID = testModelName, testID = testTestName),
+  testStudyObj[["tests"]][["default"]][[testTestName]]
+)
+
+expect_error(
+  getTests(testStudyName, testID = testTestName),
+  "Must specify a model in order to specify a test"
 )
 
 expect_error(

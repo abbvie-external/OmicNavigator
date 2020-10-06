@@ -50,12 +50,12 @@ sample IDs (\code{\link{addSamples}}). The data frame should only contain
 numeric values. To share a data frame across multiple models, use the model
 ID "default".}
 
-\item{tests}{The tests from the study. The input object is a list of data
-frames (one per model). The first column should contain the unique ID for
-each test. The second column should contain a description of the test. Any
-additional columns will be removed. The column names will be set to
-"testID" and "desription". To share a data frame across multiple models,
-use the model ID "default".}
+\item{tests}{The tests from the study. The input object is a list of lists.
+Each element of the top-level list is a model. The names should be the
+modelIDs. For each modelID, each element of the nested list is a test. The
+names should be the testIDs. The value should be a single character string
+describing the testID. To share tests across multiple models, use the
+modelID "default".}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per

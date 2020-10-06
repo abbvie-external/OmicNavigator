@@ -134,12 +134,13 @@ checkTests <- function(tests) {
   checkList(tests)
 
   for (i in seq_along(tests)) {
-    stopifnot(
-      inherits(tests[[i]], "data.frame"),
-      nrow(tests[[i]]) > 0,
-      ncol(tests[[i]]) > 0
-    )
-    hasUniqueIdColumn(tests[[i]])
+    checkList(tests[[i]])
+    for (j in seq_along(tests[[i]])) {
+      stopifnot(
+        is.character(tests[[i]][[j]]),
+        length(tests[[i]][[j]]) == 1
+      )
+    }
   }
 
   return(NULL)

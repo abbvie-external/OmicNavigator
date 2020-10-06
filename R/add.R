@@ -182,23 +182,28 @@ addAssays <- function(study, assays) {
 
 #' Add tests
 #'
-#' @param tests The tests from the study. The input object is a list of data
-#'   frames (one per model). The first column should contain the unique ID for
-#'   each test. The second column should contain a description of the test. Any
-#'   additional columns will be removed. The column names will be set to
-#'   "testID" and "desription". To share a data frame across multiple models,
-#'   use the model ID "default".
+#' @param tests The tests from the study. The input object is a list of lists.
+#'   Each element of the top-level list is a model. The names should be the
+#'   modelIDs. For each modelID, each element of the nested list is a test. The
+#'   names should be the testIDs. The value should be a single character string
+#'   describing the testID. To share tests across multiple models, use the
+#'   modelID "default".
 #' @inheritParams shared-add
+#'
+#' @examples
+#'   study <- createStudy("example")
+#'   tests <- list(
+#'     default = list(
+#'       test1 = "Name of first test",
+#'       test2 = "Name of second test"
+#'     )
+#'   )
+#'   study <- addTests(study, tests)
 #'
 #' @export
 addTests <- function(study, tests) {
   checkStudy(study)
   checkTests(tests)
-
-  for (i in seq_along(tests)) {
-    tests[[i]] <- tests[[i]][, 1:2]
-    colnames(tests[[i]]) <- c("testID", "description")
-  }
 
   study[["tests"]] <- utils::modifyList(study[["tests"]], tests)
 

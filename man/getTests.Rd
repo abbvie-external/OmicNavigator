@@ -4,13 +4,15 @@
 \alias{getTests}
 \title{Get tests from a study}
 \usage{
-getTests(study, modelID = NULL, libraries = NULL)
+getTests(study, modelID = NULL, testID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicAnalyzer study. Either an object of class \code{oaStudy},
 or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
+
+\item{testID}{Filter by testID}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

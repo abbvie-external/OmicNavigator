@@ -9,7 +9,7 @@ testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
 testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestsAll <- testStudyObj[["tests"]][[1]][, "testID"]
+testTestsAll <- names(testStudyObj[["tests"]][[1]])
 testTestName <- testTestsAll[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 

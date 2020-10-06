@@ -112,12 +112,17 @@ getAssays <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getTests <- function(study, modelID = NULL, libraries = NULL) {
+getTests <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
+  if (is.null(modelID) && !is.null(testID)) {
+    stop("Must specify a model in order to specify a test")
+  }
+
   getElements(
     study,
     elements = "tests",
-    filters = list(modelID = modelID),
+    filters = list(modelID = modelID, testID = testID),
     default = "default",
+    fileType = "json",
     libraries = libraries
   )
 }

@@ -160,7 +160,9 @@ exportTests <- function(study, path = ".") {
   exportElements(
     study,
     elements = "tests",
-    path = path
+    path = path,
+    fileType = "json",
+    nested = 1
   )
 }
 
@@ -252,7 +254,7 @@ exportSummary <- function(x, path = ".") {
       testID <- modelTests[j]
       output[["results"]][[i]][["tests"]][[j]] <- list(
         testID = testID,
-        testDisplay = getTests(x, modelID = modelID)[j, "description"]
+        testDisplay = getTests(x, modelID = modelID, testID = testID)
       )
     }
   }

@@ -500,16 +500,15 @@ For more details, run \texttt{?addModels}.
 You can provide more detailed descriptions of your tests. These will be
 displayed in the app when a user hovers over each \texttt{testID}. Below I
 describe the two tests that were performed for the modelID \texttt{main}. The
-input must be a data frame with the columns \texttt{testID} and
-\texttt{description}.
+input must be a nested list, similar to the input to \texttt{addResults()}. Each
+element of the top-level list is a modelID, and each element of the nested list
+is a testID. The value is a single character string that describes the test.
 
 <<>>=
 tests <- list(
-  main = data.frame(
-    testID = c("basal.vs.lp", "basal.vs.ml"),
-    description = c("Which genes are DE between Basal and LP cells?",
-                    "Which genes are DE between Basal and ML cells?"),
-    stringsAsFactors = FALSE
+  main = list(
+    basal.vs.lp = "Which genes are DE between Basal and LP cells?",
+    basal.vs.ml = "Which genes are DE between Basal and ML cells?"
   )
 )
 @

@@ -1,6 +1,14 @@
 # 0.16.2.9000
 
-* New package option `OmicAnalyzer.prefix` to conrol the prefix used to label
+## Breaking change
+
+* The input to `addTests()` is now a named list, similar to `addModels()`. You
+will need to update your code and re-install any existing OmicAnalyzer study
+packages.
+
+## Other updates
+
+* New package option `OmicAnalyzer.prefix` to control the prefix used to label
 OmicAnalyzer study packages. The default is still "OAstudy". Run `?OmicAnalyzer`
 for more information on OmicAnalyzer package options.
 

@@ -11,7 +11,7 @@ testStudyName <- "ABC"
 testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
 testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestName <- testStudyObj[["tests"]][[1]][1, "testID"]
+testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 testTermName <- names(testStudyObj[["annotations"]][[testAnnotationName]][["terms"]])[1]
 
@@ -58,7 +58,7 @@ expect_identical(
 expect_identical(
   vapply(studies[[1]][["results"]][[1]][["tests"]],
          function(x) x[["testID"]], character(1)),
-  getTests(testStudyObj, modelID = testModelName)[, "testID"]
+  names(getTests(testStudyObj, modelID = testModelName))
 )
 
 expect_identical(
@@ -122,7 +122,7 @@ expect_identical_xl(
   "data.frame"
 )
 
-expect_true(all(getTests(testStudyName, testModelName)[, "testID"] %in% colnames(enrichmentsTable)))
+expect_true(all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable)))
 
 expect_error(
   getEnrichmentsTable(1),
@@ -154,7 +154,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   enrichmentsNetwork[["tests"]],
-  getTests(testStudyName, testModelName)[, "testID"]
+  names(getTests(testStudyName, testModelName))
 )
 
 expect_error(

@@ -77,11 +77,9 @@ testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
 }
 
 testTests <- function(n = 2) {
-  tests <- data.frame(
-    testID = sprintf("test_%02d", seq_len(n)),
-    description = sprintf("test %d", seq_len(n)),
-    stringsAsFactors = FALSE
-  )
+  tests <- sprintf("test %d", seq_len(n))
+  tests <- as.list(tests)
+  names(tests) <- sprintf("test_%02d", seq_len(n))
   tests <- list(default = tests)
   return(tests)
 }
