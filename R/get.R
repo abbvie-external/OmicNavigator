@@ -553,7 +553,7 @@ getFiles <- function(path, fileType = "txt") {
     contentsNames <- basename(contents)
     extensionRegEx <- sprintf("\\.%s$", fileType)
     contentsNames <- sub(extensionRegEx, "", contentsNames)
-    stats::setNames(lapply(contents, getFiles), contentsNames)
+    stats::setNames(lapply(contents, getFiles, fileType = fileType), contentsNames)
   } else {
     path
   }
