@@ -108,7 +108,7 @@ capitalize <- function(x) {
 # Returns TRUE if matches URL pattern, else FALSE
 #
 # > isUrl(c("http://somewhere.net", "https://secure.com/", "C:/path/to/file"))
-# [1] FALSE  TRUE FALSE
+# [1] TRUE  TRUE FALSE
 #
 isUrl <- function(x) {
   if (is.null(x)) return(FALSE)
