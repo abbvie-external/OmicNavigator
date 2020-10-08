@@ -51,10 +51,9 @@ hasUniqueIdColumn <- function(x) {
 }
 
 enrichmentsToWide <- function(x, type) {
-  data.table::setDT(x)
   output <- data.table::dcast.data.table(
-    x,
-    termID + description ~ testID,
+    data = data.table::as.data.table(x),
+    formula = termID + description ~ testID,
     value.var = type
   )
   data.table::setDF(output)
