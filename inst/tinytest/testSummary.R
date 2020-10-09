@@ -14,17 +14,21 @@ testStudyPlots <- addPlots(testStudy, OmicAnalyzer:::testPlots())
 # Test summary.oaStudy() -------------------------------------------------------
 
 expect_stdout(
-  concatenateOutput(summary(emptyStudy))
+  summary(emptyStudy),
+  "empty"
 )
 
 expect_stdout(
-  concatenateOutput(summary(testStudy))
+  summary(testStudy),
+  "\\|-reports \\(2\\)"
 )
 
 expect_stdout(
-  concatenateOutput(summary(testStudyPlots))
+  summary(testStudyPlots),
+  "\\|-plots \\(2\\)"
 )
 
 expect_stdout(
-  concatenateOutput(summary(testStudyPlots, elements = c("annotations", "enrichments")))
+  summary(testStudyPlots, elements = c("annotations", "enrichments")),
+  "annotations"
 )

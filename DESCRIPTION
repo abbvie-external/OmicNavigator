@@ -38,6 +38,6 @@ Imports:
 Suggests:
   ggplot2,
   opencpu,
-  tinytest,
+  tinytest (>= 1.2.3),
   ttdo (>= 0.0.6)
 RoxygenNote: 7.1.1

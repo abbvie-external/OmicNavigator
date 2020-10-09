@@ -14,13 +14,16 @@ testStudyPlots <- addPlots(testStudy, OmicAnalyzer:::testPlots())
 # Test print.oaStudy() ---------------------------------------------------------
 
 expect_stdout(
-  concatenateOutput(emptyStudy)
+  print(emptyStudy),
+  "0 models"
 )
 
 expect_stdout(
-  concatenateOutput(testStudy)
+  print(testStudy),
+  "3 models"
 )
 
 expect_stdout(
-  concatenateOutput(testStudyPlots)
+  print(testStudyPlots),
+  "3 annotations"
 )

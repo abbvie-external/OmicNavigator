@@ -7,9 +7,6 @@ using(ttdo)
 
 library(OmicAnalyzer)
 
-tmplib <- tempfile()
-dir.create(tmplib)
-
 # Test isUrl() -----------------------------------------------------------------
 
 testUrls <- c("http://somewhere.net", "https://secure.com/", "C:/path/to/file")
