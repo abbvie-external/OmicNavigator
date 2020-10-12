@@ -1,7 +1,7 @@
 # The minimum version of OmicAnalyzer that is still compatible with the current
 # version. If a study package is created with a version less than this minimum
 # version, then listStudies() will throw a warning.
-minVersionCompatible <- "0.16.0.9000"
+minVersionCompatible <- "0.17.0"
 
 # The default prefix added to OmicAnalyzer study packages. Used by .onLoad()
 # below and by getPrefix() in utility.R. The default is overriden by setting
