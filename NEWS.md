@@ -43,7 +43,7 @@ for more information on OmicNavigator package options.
 
 * New User's Guide and API vignettes created with Sweave
 
-* Add `summary()` method for OmicNavigator study objects (class `oaStudy`)
+* Add `summary()` method for OmicNavigator study objects (class `onStudy`)
 
 * Bugfix: `listStudies()` now works if its argument `libraries` is pointed to a
 specific directory
@@ -246,7 +246,7 @@ graphing parameters if they are changed by the custom plotting function
 columns that are included in `getResultsTable()`
 
 * Fix bug in `getResults()` that returned columns of `NA` for columns specific
-to other tests (only affected study packages, not oaStudy objects)
+to other tests (only affected study packages, not onStudy objects)
 
 # 0.5.1
 

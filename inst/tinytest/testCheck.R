@@ -12,7 +12,7 @@ study <- createStudy(name = "test")
 # checkStudy -------------------------------------------------------------------
 
 invalidStudy <- list(nameIncorrect = "incorrect")
-class(invalidStudy) <- "oaStudy"
+class(invalidStudy) <- "onStudy"
 
 expect_error(
   addFeatures(invalidStudy, features = data.frame()),

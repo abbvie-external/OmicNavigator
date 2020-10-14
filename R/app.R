@@ -67,7 +67,7 @@ listStudies <- function(libraries = NULL) {
 #'
 #' @export
 getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
-  if (inherits(study, "oaStudy")) {
+  if (inherits(study, "onStudy")) {
     stop("\"study\" must be the name of an installed study package")
   }
   stopifnot(

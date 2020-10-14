@@ -76,7 +76,7 @@ createStudy <- function(name,
                 reports = list(),
                 overlaps = list(),
                 version = version)
-  class(study) <- "oaStudy"
+  class(study) <- "onStudy"
 
   study <- addSamples(study, samples = samples)
   study <- addFeatures(study, features = features)

@@ -13,7 +13,7 @@ getEnrichmentsTable(
 )
 }
 \arguments{
-\item{study}{An OmicNavigator study. Either an object of class \code{oaStudy},
+\item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}

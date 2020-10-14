@@ -1,5 +1,5 @@
 #' @export
-print.oaStudy <- function(x, ...) {
+print.onStudy <- function(x, ...) {
 
   cat("== OmicNavigator ==\n")
   cat(sprintf("* name: %s\n", x[["name"]]))

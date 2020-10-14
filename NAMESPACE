@@ -2,9 +2,9 @@
 
 S3method(getElements,character)
 S3method(getElements,default)
-S3method(getElements,oaStudy)
-S3method(print,oaStudy)
-S3method(summary,oaStudy)
+S3method(getElements,onStudy)
+S3method(print,onStudy)
+S3method(summary,onStudy)
 export(addAnnotations)
 export(addAssays)
 export(addBarcodes)

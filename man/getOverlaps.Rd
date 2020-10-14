@@ -7,7 +7,7 @@
 getOverlaps(study, annotationID = NULL, libraries = NULL)
 }
 \arguments{
-\item{study}{An OmicNavigator study. Either an object of class \code{oaStudy},
+\item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{annotationID}{Filter by annotation}

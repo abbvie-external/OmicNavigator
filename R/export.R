@@ -415,13 +415,13 @@ createPackage <- function(study, directoryname) {
 
 #' Install a study as an R package
 #'
-#' @param study An OmicNavigator study to install (class \code{oaStudy})
+#' @param study An OmicNavigator study to install (class \code{onStudy})
 #' @param library Directory to install package. Defaults to first directory
 #'   returned by \code{\link{.libPaths}}.
 #'
 #' @export
 installStudy <- function(study, library = .libPaths()[1]) {
-  stopifnot(inherits(study, "oaStudy"), dir.exists(library))
+  stopifnot(inherits(study, "onStudy"), dir.exists(library))
 
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
   tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)

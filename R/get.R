@@ -24,7 +24,7 @@ getInstalledStudies <- function(libraries = NULL) {
 #'
 #' @name shared-get
 #'
-#' @param study An OmicNavigator study. Either an object of class \code{oaStudy},
+#' @param study An OmicNavigator study. Either an object of class \code{onStudy},
 #'   or the name of an installed study package.
 #' @param modelID Filter by modelID
 #' @param testID Filter by testID
@@ -261,7 +261,7 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #'
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
-  if (inherits(study, "oaStudy")) {
+  if (inherits(study, "onStudy")) {
     stop("The Enrichment Network is only available for study packages")
   }
 
@@ -452,7 +452,7 @@ getElements.default <- function(
 }
 
 #' @export
-getElements.oaStudy <- function(
+getElements.onStudy <- function(
   study,
   elements,
   filters = list(),

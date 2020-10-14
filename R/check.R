@@ -1,7 +1,7 @@
 
 checkStudy <- function(study) {
   stopifnot(
-    inherits(study, "oaStudy"),
+    inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
 }
