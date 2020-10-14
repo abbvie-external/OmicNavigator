@@ -8,7 +8,7 @@
 Package options to control package-wide behavior are described below.
 }
 \details{
-The default prefix for OmicNavigator study packages is "OAstudy". If you
+The default prefix for OmicNavigator study packages is "ONstudy". If you
 would prefer to use a different prefix, you can change the package option
 \code{OmicNavigator.prefix}. For example, to use the prefix "OmicNavigatorStudy",
 you could add the following line to your \code{.Rprofile} file.

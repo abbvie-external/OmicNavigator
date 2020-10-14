@@ -2,7 +2,10 @@
 
 ## Breaking change
 
-* Changed name of app and R package from OmicAnalyzer to OmicNavigator
+* Changed name of app and R package from OmicAnalyzer to OmicNavigator. This
+breaks all previously installed study packages. Re-run your scripts to
+re-install the study packages. Also note that the default study package prefix
+has changed from "OAstudy" to "ONstudy".
 
 ## Other changes
 

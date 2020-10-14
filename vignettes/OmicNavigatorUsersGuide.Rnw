@@ -1107,11 +1107,13 @@ str(getFeatures(studyWithDefault, modelID = "modelThatDoesntExistYet"))
 
 \subsection{Naming OmicNavigator study packages}
 
-OmicNavigator studies are installed as standard R packages on your machine. This
-allows the app to query them using the \href{https://www.opencpu.org/}{OpenCPU}
-framework. In order to distinguish them from other R packages, by default the
-prefix ``OAstudy'' is added to the package name. For example, an OmicNavigator
-study named ``ABC'' is installed as ``OAstudyABC''.
+OmicNavigator studies are installed as standard R packages on your machine.
+This allows the app to query them using the
+\href{https://www.opencpu.org/}{OpenCPU} framework. In order to distinguish
+them from other R packages, by default the prefix
+``\Sexpr{OmicNavigator:::getPrefix()}'' is added to the package name. For
+example, an OmicNavigator study named ``ABC'' is installed as
+``\Sexpr{OmicNavigator:::studyToPkg("ABC")}''.
 
 If you'd like to change the default prefix, you can change the OmicNavigator
 package option that controls this behavior, \texttt{OmicNavigator.prefix}. For
