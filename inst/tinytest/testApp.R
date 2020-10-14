@@ -5,11 +5,11 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
-testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
@@ -24,7 +24,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
+suppressMessages(OmicNavigator::installStudy(testStudyObj))
 
 # listStudies ------------------------------------------------------------------
 
@@ -46,8 +46,8 @@ expect_identical(
 )
 
 expect_identical(
-  studies[[1]][["package"]][["OmicAnalyzerVersion"]],
-  as.character(utils::packageVersion("OmicAnalyzer"))
+  studies[[1]][["package"]][["OmicNavigatorVersion"]],
+  as.character(utils::packageVersion("OmicNavigator"))
 )
 
 expect_identical(
@@ -254,8 +254,8 @@ expect_identical(
 
 expect_identical_xl(
   getReportLink(testStudyName, "model_02"),
-  sprintf("%s%s/OmicAnalyzerReports/model_02/report.html",
-          OmicAnalyzer:::getPrefix(), testStudyName)
+  sprintf("%s%s/OmicNavigatorReports/model_02/report.html",
+          OmicNavigator:::getPrefix(), testStudyName)
 )
 
 # getNodeFeatures --------------------------------------------------------------

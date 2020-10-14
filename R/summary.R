@@ -1,9 +1,9 @@
-#' Summarize elements of OmicAnalyzer study
+#' Summarize elements of OmicNavigator study
 #'
 #' Displays a tree-like summary of the elements that have been added to an
-#' OmicAnalyzer study.
+#' OmicNavigator study.
 #'
-#' @param object OmicAnalyzer study object (class \code{oaStudy})
+#' @param object OmicNavigator study object (class \code{oaStudy})
 #' @param elements Subset the output to only include specific elements of the
 #'   study, e.g. \code{c("results", "enrichments")}
 #' @param ... Currently unused

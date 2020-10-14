@@ -1,7 +1,7 @@
 
 #' Validate a study
 #'
-#' @param study An OmicAnalyzer study object
+#' @param study An OmicNavigator study object
 #'
 #' @export
 validateStudy <- function(study) {
@@ -11,7 +11,7 @@ validateStudy <- function(study) {
   elements <- names(study)[!emptyElements]
   for (e in elements) {
     checkFunctionName <- paste0("check", capitalize(e))
-    checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicAnalyzer")
+    checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicNavigator")
     checkFunction(study[[e]])
   }
 

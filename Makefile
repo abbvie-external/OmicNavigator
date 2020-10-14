@@ -24,9 +24,9 @@ data: $(data)
 
 vignettes: $(vignettes)
 
-guide: vignettes/OmicAnalyzerUsersGuide.tex
+guide: vignettes/OmicNavigatorUsersGuide.tex
 
-api: vignettes/OmicAnalyzerAPI.tex
+api: vignettes/OmicNavigatorAPI.tex
 
 # Rules ------------------------------------------------------------------------
 

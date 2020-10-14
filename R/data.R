@@ -3,7 +3,7 @@
 #
 # Created by scripts/RNAseq123.R
 # Saved in data/RNAseq123.RData
-# Used by vignettes/OmicAnalyzerUsersGuide.Rnw
+# Used by vignettes/OmicNavigatorUsersGuide.Rnw
 
 #' Shared sections for data objects
 #'
@@ -40,7 +40,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(basal.vs.lp)
 #'   str(basal.vs.lp)
 #'
@@ -65,7 +65,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(basal.vs.ml)
 #'   str(basal.vs.ml)
 #'
@@ -86,7 +86,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(cam.BasalvsLP)
 #'   str(cam.BasalvsLP)
 #'
@@ -107,7 +107,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(cam.BasalvsML)
 #'   str(cam.BasalvsML)
 #'
@@ -127,7 +127,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   table(group)
 #'   str(group)
 #'
@@ -147,7 +147,7 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   table(lane)
 #'   str(lane)
 #'
@@ -162,7 +162,7 @@ NULL
 #' @format A matrix with 24 rows and 9 columns
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicAnalyzer")
+#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(lcpm)
 #'   str(lcpm)
 #'
@@ -177,7 +177,7 @@ NULL
 #' @format A list of 4 character vectors
 #'
 #' @examples
-#'  data("RNAseq123", package = "OmicAnalyzer")
+#'  data("RNAseq123", package = "OmicNavigator")
 #'  Mm.c2[[1]]
 #'  str(Mm.c2)
 #'
@@ -192,7 +192,7 @@ NULL
 #' @format A character vector containing the unique sample identifiers
 #'
 #' @examples
-#'  data("RNAseq123", package = "OmicAnalyzer")
+#'  data("RNAseq123", package = "OmicNavigator")
 #'  head(samplenames)
 #'  str(samplenames)
 #'

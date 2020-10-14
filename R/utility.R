@@ -1,12 +1,12 @@
 ## OmicAnalzyer ----------------------------------------------------------------
 
-# Get the prefix used to label OmicAnalyzer study packages.
+# Get the prefix used to label OmicNavigator study packages.
 #
 # regex - Prepend "^" to convert the prefix to a regular expression
 #
-# Global internal package variable `OmicAnalyzerPrefix` is defined in zzz.R
+# Global internal package variable `OmicNavigatorPrefix` is defined in zzz.R
 getPrefix <- function(regex = FALSE) {
-  prefix = getOption("OmicAnalyzer.prefix", default = OmicAnalyzerPrefix)
+  prefix = getOption("OmicNavigator.prefix", default = OmicNavigatorPrefix)
   if (regex) prefix <- paste0("^", prefix)
   return(prefix)
 }

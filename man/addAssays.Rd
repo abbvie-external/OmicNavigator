@@ -7,7 +7,7 @@
 addAssays(study, assays)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{assays}{The assays from the study. The input object is a list of data
 frames (one per model). The row names should correspond to the featureIDs

@@ -4,7 +4,7 @@
 \alias{shared-add}
 \title{Shared parameters for add functions}
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 }
 \description{
 Shared parameters for add functions

@@ -7,7 +7,7 @@
 addReports(study, reports)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{reports}{The analysis report(s) that explain how the study results were
 generated. The input object is a list of character vectors (one per model).

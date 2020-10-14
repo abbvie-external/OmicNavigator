@@ -7,7 +7,7 @@
 installStudy(study, library = .libPaths()[1])
 }
 \arguments{
-\item{study}{An OmicAnalyzer study to install (class \code{oaStudy})}
+\item{study}{An OmicNavigator study to install (class \code{oaStudy})}
 
 \item{library}{Directory to install package. Defaults to first directory
 returned by \code{\link{.libPaths}}.}

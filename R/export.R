@@ -1,6 +1,6 @@
 #' Export a study
 #'
-#' @param study An OmicAnalyzer study
+#' @param study An OmicNavigator study
 #' @param type Export to a RDS file ("rds"), text files ("text"), or an
 #'   R package ("package")
 #' @param path Optional file path to save the object
@@ -320,11 +320,11 @@ createPackage <- function(study, directoryname) {
   pkgversion <- if (is.null(study[["version"]])) "0.0.0.9000" else study[["version"]]
   description <- data.frame(
     Package = pkgname,
-    Title = sprintf("OmicAnalyzer study %s", study[["name"]]),
+    Title = sprintf("OmicNavigator study %s", study[["name"]]),
     Version = pkgversion,
-    Description = sprintf("The OmicAnalyzer data package for the study \"%s\"",
+    Description = sprintf("The OmicNavigator data package for the study \"%s\"",
                           study[["name"]]),
-    OmicAnalyzerVersion = utils::packageVersion("OmicAnalyzer"),
+    OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
     stringsAsFactors = FALSE
   )
   write.dcf(description, file = description_file)
@@ -332,7 +332,7 @@ createPackage <- function(study, directoryname) {
   # Reports
   reports <- study[["reports"]]
   if (!isEmpty(reports) && any(!isUrl(unlist(reports)))) {
-    reportsdir <- file.path(directoryname, "inst", "OmicAnalyzerReports")
+    reportsdir <- file.path(directoryname, "inst", "OmicNavigatorReports")
     dir.create(reportsdir, showWarnings = FALSE, recursive = TRUE)
     for (i in seq_along(reports)) {
       report <- reports[[i]]
@@ -344,7 +344,7 @@ createPackage <- function(study, directoryname) {
         newFile <- paste0("report.", fileExtension)
         newPath <- file.path(newPath, newFile)
         file.copy(report, newPath)
-        reports[[i]] <- file.path(pkgname, "OmicAnalyzerReports", modelID, newFile)
+        reports[[i]] <- file.path(pkgname, "OmicNavigatorReports", modelID, newFile)
       }
     }
     # Update study object to use new paths to installed reports
@@ -354,7 +354,7 @@ createPackage <- function(study, directoryname) {
   }
 
   # Data
-  datadir <- file.path(directoryname, "inst", "OmicAnalyzer")
+  datadir <- file.path(directoryname, "inst", "OmicNavigator")
   dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
   createTextFiles(study, datadir, calcOverlaps = TRUE)
 
@@ -415,7 +415,7 @@ createPackage <- function(study, directoryname) {
 
 #' Install a study as an R package
 #'
-#' @param study An OmicAnalyzer study to install (class \code{oaStudy})
+#' @param study An OmicNavigator study to install (class \code{oaStudy})
 #' @param library Directory to install package. Defaults to first directory
 #'   returned by \code{\link{.libPaths}}.
 #'

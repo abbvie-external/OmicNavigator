@@ -1,4 +1,4 @@
-%\VignetteIndexEntry{OmicAnalyzer API}
+%\VignetteIndexEntry{OmicNavigator API}
 %\VignetteEncoding{UTF-8}
 
 \documentclass[10pt, letterpaper]{article}
@@ -21,9 +21,9 @@
   xleftmargin=2em
 }
 
-\title{OmicAnalyzer API}
+\title{OmicNavigator API}
 \author{John Blischak}
-\date{\today{} \hfill OmicAnalyzer \Sexpr{packageVersion("OmicAnalyzer")}}
+\date{\today{} \hfill OmicNavigator \Sexpr{packageVersion("OmicNavigator")}}
 
 \begin{document}
 \SweaveOpts{concordance=TRUE}
@@ -41,7 +41,7 @@ from installed study packages.
 
 <<packages>>=
 library(jsonlite)
-library(OmicAnalyzer)
+library(OmicNavigator)
 @
 
 <<test-data, echo=FALSE>>=
@@ -49,14 +49,14 @@ library(OmicAnalyzer)
 local({
   dir.create(.tmplib)
   .libPaths(c(.tmplib, .libPaths()))
-  abc <- OmicAnalyzer:::testStudy(name = "ABC")
-  plots <- OmicAnalyzer:::testPlots()
+  abc <- OmicNavigator:::testStudy(name = "ABC")
+  plots <- OmicNavigator:::testPlots()
   abc <- addPlots(abc, plots)
   # Add a report file
   tmpReport <- tempfile(fileext = ".html")
   writeLines("<p>example</p>", tmpReport)
   abc <- addReports(abc, list(model_02 = tmpReport))
-  OmicAnalyzer::installStudy(abc)
+  OmicNavigator::installStudy(abc)
 })
 @
 

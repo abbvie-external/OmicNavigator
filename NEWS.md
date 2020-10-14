@@ -3,32 +3,32 @@
 ## Breaking change
 
 * The input to `addTests()` is now a named list, similar to `addModels()`. You
-will need to update your code and re-install any existing OmicAnalyzer study
+will need to update your code and re-install any existing OmicNavigator study
 packages.
 
 ## Other updates
 
-* New package option `OmicAnalyzer.prefix` to control the prefix used to label
-OmicAnalyzer study packages. The default is still "OAstudy". Run `?OmicAnalyzer`
-for more information on OmicAnalyzer package options.
+* New package option `OmicNavigator.prefix` to control the prefix used to label
+OmicNavigator study packages. The default is still "OAstudy". Run `?OmicNavigator`
+for more information on OmicNavigator package options.
 
 # 0.16.2
 
 * The release tarball includes [version 0.2.2 of the web app][app-v0.2.2]
 
-[app-v0.2.2]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.2.2
+[app-v0.2.2]: ***REMOVED***/releases/tag/v0.2.2
 
 # 0.16.1
 
 * The release tarball includes [version 0.2.1 of the web app][app-v0.2.1]
 
-[app-v0.2.1]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.2.1
+[app-v0.2.1]: ***REMOVED***/releases/tag/v0.2.1
 
 # 0.16.0
 
 * New User's Guide and API vignettes created with Sweave
 
-* Add `summary()` method for OmicAnalyzer study objects (class `oaStudy`)
+* Add `summary()` method for OmicNavigator study objects (class `oaStudy`)
 
 * Bugfix: `listStudies()` now works if its argument `libraries` is pointed to a
 specific directory
@@ -37,7 +37,7 @@ specific directory
 
 * The release tarball includes [version 0.1.9.1 of the web app][app-v0.1.9.1]
 
-[app-v0.1.9.1]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.9.1
+[app-v0.1.9.1]: ***REMOVED***/releases/tag/v0.1.9.1
 
 * Remove the argument `overwrite` for the add functions, e.g. `addSamples()`.
 Instead subsequent calls to the same add function will update the existing data
@@ -56,7 +56,7 @@ the features table as character strings, even if they appear numeric.
 
 * The release tarball includes [version 0.1.8 of the web app][app-v0.1.8]
 
-[app-v0.1.8]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.8
+[app-v0.1.8]: ***REMOVED***/releases/tag/v0.1.8
 
 # 0.14.0
 
@@ -71,7 +71,7 @@ prior to exporting with `exportStudy()` (controlled by the new argument
 `version` are valid.
 
 * `exportStudy()` no longer exports empty directories for unused elements of the
-OmicAnalyzer study object.
+OmicNavigator study object.
 
 * Bug fix: `getMetaFeaturesTable()` now properly returns a data frame even if
 it only contains one column.
@@ -86,7 +86,7 @@ identified by Brett Engelmann.
 
 * The release tarball includes [version 0.1.7 of the web app][app-v0.1.7]
 
-[app-v0.1.7]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.7
+[app-v0.1.7]: ***REMOVED***/releases/tag/v0.1.7
 
 # 0.13.1
 
@@ -102,7 +102,7 @@ This release includes substantial internal changes. The study data is now
 exported as plaintext files instead of as an SQLite file. There are no changes
 to the API, so no changes need to be made to R scripts or the JavaScript
 frontend. However, since the storage mechanism has changed, all existing
-OmicAnalyzer studies need to be reinstalled in order to be compatible with this
+OmicNavigator studies need to be reinstalled in order to be compatible with this
 version. Furthermore, the dependencies have changed, so you may have to re-run
 `remotes::install_deps()`.
 
@@ -110,13 +110,13 @@ version. Furthermore, the dependencies have changed, so you may have to re-run
 
 * The release tarball includes [version 0.1.6 of the web app][app-v0.1.6]
 
-[app-v0.1.6]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.6
+[app-v0.1.6]: ***REMOVED***/releases/tag/v0.1.6
 
 # 0.12.0
 
 * The release tarball includes [version 0.1.5 of the web app][app-v0.1.5]
 
-[app-v0.1.5]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.5
+[app-v0.1.5]: ***REMOVED***/releases/tag/v0.1.5
 
 * `getEnrichmentsUpset()` has a new argument `tests`, which restricts the UpSet
 plot to only include the desired tests (#1, @MOOREJX3)
@@ -125,7 +125,7 @@ plot to only include the desired tests (#1, @MOOREJX3)
 
 * The release tarball includes [version 0.1.4 of the web app][app-v0.1.4]
 
-[app-v0.1.4]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.4
+[app-v0.1.4]: ***REMOVED***/releases/tag/v0.1.4
 
 * If `startApp()` is unable to run because the package was installed without the
 bundled web app, provide the URL for the releases page to download the tarball.
@@ -141,32 +141,32 @@ Also offer to open the page in the browser.
 
 * The release tarball includes [version 0.1.3 of the web app][app-v0.1.3]
 
-[app-v0.1.3]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.3
+[app-v0.1.3]: ***REMOVED***/releases/tag/v0.1.3
 
 # 0.9.2
 
 * Fix bug in `getResultsIntersection()` introduced in commit [ff1ac89][] and
 released in version [0.7.0][pkg-v0.7.0]
 
-[ff1ac89]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/commit/ff1ac89226b245072effbc5e8a7074c005360a4f
-[pkg-v0.7.0]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases/tag/v0.7.0
+[ff1ac89]: ***REMOVED***/commit/ff1ac89226b245072effbc5e8a7074c005360a4f
+[pkg-v0.7.0]: ***REMOVED***/releases/tag/v0.7.0
 
 * The release tarball includes [version 0.1.2 of the web app][app-v0.1.2]
 
-[app-v0.1.2]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.2
+[app-v0.1.2]: ***REMOVED***/releases/tag/v0.1.2
 
 # 0.9.1
 
 * The release tarball includes [version 0.1.1 of the web app][app-v0.1.1]
 
-[app-v0.1.1]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.1
+[app-v0.1.1]: ***REMOVED***/releases/tag/v0.1.1
 
 # 0.9.0
 
 * The release tarball includes [version 0.1.0 of the web app][app-v0.1.0]. Run
 `startApp()` to run it locally.
 
-[app-v0.1.0]: https://***REMOVED***/IProt/OmicAnalyzer/releases/tag/v0.1.0
+[app-v0.1.0]: ***REMOVED***/releases/tag/v0.1.0
 
 * New function `getUpsetCols()` to get the columns common across all tests of a
 model, and thus are available for filtering with UpSet.

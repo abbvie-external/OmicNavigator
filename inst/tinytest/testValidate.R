@@ -5,10 +5,10 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
 
 # Results ----------------------------------------------------------------------
 

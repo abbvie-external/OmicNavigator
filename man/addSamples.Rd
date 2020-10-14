@@ -7,7 +7,7 @@
 addSamples(study, samples)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{samples}{The metadata variables that describe the samples in the study.
 The input object is a named list of data frames (one per model). The first

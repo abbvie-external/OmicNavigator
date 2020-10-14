@@ -1,6 +1,6 @@
 #' Start app on local machine
 #'
-#' After you have installed at least one OmicAnalyzer study package with
+#' After you have installed at least one OmicNavigator study package with
 #' \code{\link{installStudy}}, you can explore the results in the app. The
 #' function \code{startApp} starts a local instance of the app running on your
 #' current machine. It will automatically open the app in your default browser.
@@ -19,21 +19,21 @@ startApp <- function(...) {
     stop("Install the package \"opencpu\" to run the app locally")
   }
 
-  www <- system.file("www/", package = "OmicAnalyzer")
+  www <- system.file("www/", package = "OmicNavigator")
   if (identical(www, "") || !dir.exists(www)) {
     if (interactive()) on.exit(openReleasesPage(), add = TRUE)
-    stop("The app is not installed with the OmicAnalyzer package.\n",
-         "Make sure you install the release tarball of OmicAnalyzer.\n",
-         "Go to https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases/\n",
-         "and download the asset named OmicAnalyzer_x.x.x.tar.gz\n",
+    stop("The app is not installed with the OmicNavigator package.\n",
+         "Make sure you install the release tarball of OmicNavigator.\n",
+         "Go to ***REMOVED***/releases/\n",
+         "and download the asset named OmicNavigator_x.x.x.tar.gz\n",
          "where x.x.x is the package version.\n")
   }
 
-  opencpu::ocpu_start_app("OmicAnalyzer", ...)
+  opencpu::ocpu_start_app("OmicNavigator", ...)
 }
 
 openReleasesPage <- function() {
-  url <- "https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases/"
+  url <- "***REMOVED***/releases/"
   answer <- readline(
     "Would you like R to open the releases page in your browser? (y/N) "
   )

@@ -2,12 +2,12 @@
 
 # Setup ------------------------------------------------------------------------
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 library(tinytest)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName, version = "0.3")
-testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestsAll <- names(testStudyObj[["tests"]][[1]])
 testTestName <- testTestsAll[1]
@@ -17,7 +17,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
+suppressMessages(OmicNavigator::installStudy(testStudyObj))
 
 # getResultsIntersection -------------------------------------------------------
 

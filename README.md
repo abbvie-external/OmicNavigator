@@ -1,14 +1,14 @@
-# OmicAnalyzer
+# OmicNavigator
 
-The R backend for the OmicAnalyzer app deployed at
-***REMOVED***/ocpu/library/OmicAnalyzer/
+The R backend for the OmicNavigator app deployed at
+***REMOVED***/ocpu/library/OmicNavigator/
 
 ## Download
 
 Download the tarball from the [releases page][releases] on ***REMOVED***. It will look
-like `OmicAnalyzer_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
+like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
 
-[releases]: https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases
+[releases]: ***REMOVED***/releases
 
 You need to download the tarball in order to run the app. If you clone the Git
 repository, you will only obtain the R code without the app.
@@ -19,13 +19,13 @@ repository, you will only obtain the R code without the app.
 
     ```
     install.packages("opencpu")
-    remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")
+    remotes::install_deps("OmicNavigator_x.x.x.tar.gz")
     ```
 
-1. Install OmicAnalyzer:
+1. Install OmicNavigator:
 
     ```
-    install.packages("OmicAnalyzer_x.x.x.tar.gz", repos = NULL)
+    install.packages("OmicNavigator_x.x.x.tar.gz", repos = NULL)
     ```
 
 ## Installation from the terminal
@@ -34,13 +34,13 @@ repository, you will only obtain the R code without the app.
 
     ```
     Rscript -e 'install.packages("opencpu")'
-    Rscript -e 'remotes::install_deps("OmicAnalyzer_x.x.x.tar.gz")'
+    Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz")'
     ```
 
-1. Install OmicAnalyzer:
+1. Install OmicNavigator:
 
     ```
-    R CMD INSTALL --no-multiarch --with-keep.source OmicAnalyzer_x.x.x.tar.gz
+    R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_x.x.x.tar.gz
     ```
 
 ## Installation troubleshooting

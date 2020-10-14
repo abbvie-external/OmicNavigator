@@ -7,7 +7,7 @@
 validateStudy(study)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study object}
+\item{study}{An OmicNavigator study object}
 }
 \description{
 Validate a study

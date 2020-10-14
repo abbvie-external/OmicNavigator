@@ -17,7 +17,7 @@ Mm.c2
 A subset of the object \code{Mm.c2} from Bioconductor workflow RNAseq123.
 }
 \examples{
- data("RNAseq123", package = "OmicAnalyzer")
+ data("RNAseq123", package = "OmicNavigator")
  Mm.c2[[1]]
  str(Mm.c2)
 

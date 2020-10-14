@@ -1,13 +1,13 @@
 # Contributing instructions
 
-Thanks for your interest in contributing to OmicAnalyzer!
+Thanks for your interest in contributing to OmicNavigator!
 
 ## Branches
 
 Branch        | Purpose
 ------------- | -------------
 stable        | Contains latest stable version (**default**)
-release       | Matches the latest [release](https://***REMOVED***/***REMOVED***/OmicAnalyzer/releases)
+release       | Matches the latest [release](***REMOVED***/releases)
 dev           | Contains experimental new features
 feature-\<x\> | Implements feature \<x\>
 bugfix-\<x\>  | Fixes bug \<x\>
@@ -31,7 +31,7 @@ feature-<x>
 Work on the dev branch.
 
 ```
-git clone https://***REMOVED***/<fork>/OmicAnalyzer.git
+git clone https://***REMOVED***/<fork>/OmicNavigator.git
 git checkout dev
 git checkout -b feature-<x>
 # implement feature, add, commit
@@ -45,7 +45,7 @@ Submit a pull request to the dev branch.
 Work on the stable branch.
 
 ```
-git clone https://***REMOVED***/<fork>/OmicAnalyzer.git
+git clone https://***REMOVED***/<fork>/OmicNavigator.git
 git checkout stable
 git checkout -b bugfix-<x>
 # fix bug, add, commit
@@ -111,9 +111,9 @@ Some additional testing tips:
 the latest versions of all the package functions into the R console by running
 `devtools::load_all(".")` (or Ctrl-Shift-L in RStudio).
 
-* If the messages returned by OmicAnalyzer functions are obscuring the test
+* If the messages returned by OmicNavigator functions are obscuring the test
 output too much, you can wrap the tinytest function call with
-`suppressMessages()`. This will suppress the messages from the OmicAnalyzer
+`suppressMessages()`. This will suppress the messages from the OmicNavigator
 functions but still display the test results.
 
 ## Setup your development environment

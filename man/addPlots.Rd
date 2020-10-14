@@ -7,7 +7,7 @@
 addPlots(study, plots)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{plots}{Custom plotting functions for the study. The input object is a
 named list of lists (one per model). The names of the sublists should

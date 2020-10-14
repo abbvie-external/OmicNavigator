@@ -98,7 +98,7 @@ createStudy <- function(name,
 #'
 #' @name shared-add
 #'
-#' @param study An OmicAnalyzer study created with \code{\link{createStudy}}
+#' @param study An OmicNavigator study created with \code{\link{createStudy}}
 #'
 #' @keywords internal
 NULL

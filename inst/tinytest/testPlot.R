@@ -2,12 +2,12 @@
 
 # Setup ------------------------------------------------------------------------
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 library(tinytest)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
-plots <- OmicAnalyzer:::testPlots()
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
+plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
 testModelName <- names(testStudyObj[["models"]])[1]
 
@@ -15,8 +15,8 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
-testPkgName <- paste0(OmicAnalyzer:::getPrefix(), testStudyName)
+suppressMessages(OmicNavigator::installStudy(testStudyObj))
+testPkgName <- paste0(OmicNavigator:::getPrefix(), testStudyName)
 
 # Test plots in exported package -----------------------------------------------
 

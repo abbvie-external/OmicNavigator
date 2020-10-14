@@ -7,13 +7,13 @@
 addOverlaps(study)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 }
 \description{
 The app's network view of the enrichments results requires pairwise overlap
 metrics between all the terms of each annotation in order to draw the edges
 between the nodes/terms. These overlaps are calculated automatically when
-installing or exporting an OmicAnalyzer study. If you'd like, you can
+installing or exporting an OmicNavigator study. If you'd like, you can
 manually calculate these pairwise overlaps by calling \code{addOverlaps}
 prior to installing or exporting your study.
 }

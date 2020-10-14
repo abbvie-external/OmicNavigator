@@ -12,7 +12,7 @@ exportStudy(
 )
 }
 \arguments{
-\item{study}{An OmicAnalyzer study}
+\item{study}{An OmicNavigator study}
 
 \item{type}{Export to a RDS file ("rds"), text files ("text"), or an
 R package ("package")}

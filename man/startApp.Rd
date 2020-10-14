@@ -10,7 +10,7 @@ startApp(...)
 \item{...}{extra parameters passed to \link[opencpu]{ocpu_start_server}}
 }
 \description{
-After you have installed at least one OmicAnalyzer study package with
+After you have installed at least one OmicNavigator study package with
 \code{\link{installStudy}}, you can explore the results in the app. The
 function \code{startApp} starts a local instance of the app running on your
 current machine. It will automatically open the app in your default browser.

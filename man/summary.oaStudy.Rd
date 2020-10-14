@@ -2,12 +2,12 @@
 % Please edit documentation in R/summary.R
 \name{summary.oaStudy}
 \alias{summary.oaStudy}
-\title{Summarize elements of OmicAnalyzer study}
+\title{Summarize elements of OmicNavigator study}
 \usage{
 \method{summary}{oaStudy}(object, elements = NULL, ...)
 }
 \arguments{
-\item{object}{OmicAnalyzer study object (class \code{oaStudy})}
+\item{object}{OmicNavigator study object (class \code{oaStudy})}
 
 \item{elements}{Subset the output to only include specific elements of the
 study, e.g. \code{c("results", "enrichments")}}
@@ -16,5 +16,5 @@ study, e.g. \code{c("results", "enrichments")}}
 }
 \description{
 Displays a tree-like summary of the elements that have been added to an
-OmicAnalyzer study.
+OmicNavigator study.
 }

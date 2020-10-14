@@ -23,18 +23,18 @@ listStudies <- function(libraries = NULL) {
       description = pkgDescription[["Description"]],
       version = pkgDescription[["Version"]],
       buildInfo = pkgDescription[["Built"]],
-      OmicAnalyzerVersion = pkgDescription[["OmicAnalyzerVersion"]]
+      OmicNavigatorVersion = pkgDescription[["OmicNavigatorVersion"]]
     )
 
-    if (as.package_version(pkgDescription[["OmicAnalyzerVersion"]]) <
+    if (as.package_version(pkgDescription[["OmicNavigatorVersion"]]) <
         as.package_version(minVersionCompatible)) {
       warning(
-        "OmicAnalyzer version incompatibility\n",
+        "OmicNavigator version incompatibility\n",
         sprintf("Study \"%s\" was created with version %s\n", studyName,
-                pkgDescription[["OmicAnalyzerVersion"]]),
-        sprintf("OmicAnalyzer version %s is currently installed\n",
-                utils::packageVersion("OmicAnalyzer")),
-        sprintf("It requires study packages to be created with a minimum OmicAnalyzer version of %s\n",
+                pkgDescription[["OmicNavigatorVersion"]]),
+        sprintf("OmicNavigator version %s is currently installed\n",
+                utils::packageVersion("OmicNavigator")),
+        sprintf("It requires study packages to be created with a minimum OmicNavigator version of %s\n",
                 minVersionCompatible),
         sprintf("Reinstall the study to avoid any potential issues\n"),
         immediate. = TRUE
@@ -58,7 +58,7 @@ listStudies <- function(libraries = NULL) {
 
 #' Get the features in a network node
 #'
-#' @param study An OmicAnalyzer study. Only accepts name of installed study
+#' @param study An OmicNavigator study. Only accepts name of installed study
 #'   package.
 #' @inheritParams shared-get
 #' @inheritParams listStudies

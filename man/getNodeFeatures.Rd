@@ -7,7 +7,7 @@
 getNodeFeatures(study, annotationID, termID, libraries = NULL)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study. Only accepts name of installed study
+\item{study}{An OmicNavigator study. Only accepts name of installed study
 package.}
 
 \item{annotationID}{Filter by annotation}

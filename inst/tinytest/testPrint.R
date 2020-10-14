@@ -5,11 +5,11 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 emptyStudy <- createStudy(name = "empty", description = "An empty study")
-testStudy <- OmicAnalyzer:::testStudy(name = "test", description = "A test study")
-testStudyPlots <- addPlots(testStudy, OmicAnalyzer:::testPlots())
+testStudy <- OmicNavigator:::testStudy(name = "test", description = "A test study")
+testStudyPlots <- addPlots(testStudy, OmicNavigator:::testPlots())
 
 # Test print.oaStudy() ---------------------------------------------------------
 

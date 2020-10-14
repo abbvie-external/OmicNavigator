@@ -5,11 +5,11 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicAnalyzer:::testStudy(name = testStudyName)
-testStudyObj <- addPlots(testStudyObj, OmicAnalyzer:::testPlots())
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
+testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
@@ -18,7 +18,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicAnalyzer::installStudy(testStudyObj))
+suppressMessages(OmicNavigator::installStudy(testStudyObj))
 
 emptyStudy <- createStudy(name = "empty")
 
@@ -30,7 +30,7 @@ expect_identical_xl(
   testStudyName
 )
 
-# If there are no OmicAnalyzer study packages installed, return an empty list.
+# If there are no OmicNavigator study packages installed, return an empty list.
 expect_identical(
   listStudies(libraries = tempfile()),
   list()

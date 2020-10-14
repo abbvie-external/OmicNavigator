@@ -7,7 +7,7 @@
 addModels(study, models)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to

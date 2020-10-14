@@ -7,7 +7,7 @@
 addTests(study, tests)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{tests}{The tests from the study. The input object is a list of lists.
 Each element of the top-level list is a model. The names should be the

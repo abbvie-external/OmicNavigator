@@ -1,7 +1,7 @@
 #' @export
 print.oaStudy <- function(x, ...) {
 
-  cat("== OmicAnalyzer ==\n")
+  cat("== OmicNavigator ==\n")
   cat(sprintf("* name: %s\n", x[["name"]]))
   cat(sprintf("* description: %s\n", x[["description"]]))
   modelsAll <- listAllModels(x)

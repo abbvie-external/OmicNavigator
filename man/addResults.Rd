@@ -7,7 +7,7 @@
 addResults(study, results)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{results}{The inference results from each model. The input is a
 nested named list. The names of the list correspond to the model names.

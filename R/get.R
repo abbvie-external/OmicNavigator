@@ -1,9 +1,9 @@
-#' Get installed OmicAnalyzer studies
+#' Get installed OmicNavigator studies
 #'
 #' @param libraries Character vector of library directories to search for study
 #'   packages. If \code{NULL}, uses \code{.libPaths}.
 #'
-#' @return character vector of OmicAnalyzer study packages
+#' @return character vector of OmicNavigator study packages
 #'
 #' @examples
 #'  getInstalledStudies()
@@ -24,7 +24,7 @@ getInstalledStudies <- function(libraries = NULL) {
 #'
 #' @name shared-get
 #'
-#' @param study An OmicAnalyzer study. Either an object of class \code{oaStudy},
+#' @param study An OmicNavigator study. Either an object of class \code{oaStudy},
 #'   or the name of an installed study package.
 #' @param modelID Filter by modelID
 #' @param testID Filter by testID
@@ -547,7 +547,7 @@ getElements.character <- function(
 }
 
 getDirectory <- function(study, libraries = NULL) {
-  system.file("OmicAnalyzer/",
+  system.file("OmicNavigator/",
               package = paste0(getPrefix(), study),
               lib.loc = libraries)
 }

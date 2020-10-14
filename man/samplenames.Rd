@@ -17,7 +17,7 @@ samplenames
 A subset of the object \code{samplenames} from Bioconductor workflow RNAseq123.
 }
 \examples{
- data("RNAseq123", package = "OmicAnalyzer")
+ data("RNAseq123", package = "OmicNavigator")
  head(samplenames)
  str(samplenames)
 

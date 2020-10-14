@@ -5,7 +5,7 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 study <- createStudy(name = "test")
 

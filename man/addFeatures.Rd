@@ -7,7 +7,7 @@
 addFeatures(study, features)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{features}{The metadata variables that describe the features in the
 study. The input object is a list of data frames (one per model). The first

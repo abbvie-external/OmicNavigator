@@ -7,7 +7,7 @@
 addBarcodes(study, barcodes)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{barcodes}{The metadata variables that describe the barcode plot.
 The input object is a list of lists (one per model). Each sublist must

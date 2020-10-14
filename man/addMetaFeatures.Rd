@@ -7,7 +7,7 @@
 addMetaFeatures(study, metaFeatures)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{metaFeatures}{The metadata variables that describe the meta-features in
 the study. The input object is a list of data frames (one per model). The

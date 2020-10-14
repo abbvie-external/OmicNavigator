@@ -5,7 +5,7 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 tmplib <- tempfile()
 dir.create(tmplib)
@@ -14,57 +14,57 @@ dir.create(tmplib)
 
 study <- createStudy(name = "test")
 
-features <- OmicAnalyzer:::testFeatures()
+features <- OmicNavigator:::testFeatures()
 study <- addFeatures(study, features = features)
 
-samples <- OmicAnalyzer:::testSamples()
+samples <- OmicNavigator:::testSamples()
 study <- addSamples(study, samples = samples)
 
-models <- OmicAnalyzer:::testModels()
+models <- OmicNavigator:::testModels()
 study <- addModels(study, models = models)
 
-assays <- OmicAnalyzer:::testAssays()
+assays <- OmicNavigator:::testAssays()
 study <- addAssays(study, assays = assays)
 
-tests <- OmicAnalyzer:::testTests()
+tests <- OmicNavigator:::testTests()
 study <- addTests(study, tests = tests)
 
-annotations <- OmicAnalyzer:::testAnnotations()
+annotations <- OmicNavigator:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
 
-results <- OmicAnalyzer:::testResults()
+results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
 
-enrichments <- OmicAnalyzer:::testEnrichments()
+enrichments <- OmicNavigator:::testEnrichments()
 study <- addEnrichments(study, enrichments = enrichments)
 
-metaFeatures <- OmicAnalyzer:::testMetaFeatures()
+metaFeatures <- OmicNavigator:::testMetaFeatures()
 study <- addMetaFeatures(study, metaFeatures = metaFeatures)
 
-barcodes <- OmicAnalyzer:::testBarcodes()
+barcodes <- OmicNavigator:::testBarcodes()
 study <- addBarcodes(study, barcodes = barcodes)
 
-reports <- OmicAnalyzer:::testReports()
+reports <- OmicNavigator:::testReports()
 study <- addReports(study, reports = reports)
 
 expect_identical(
   study,
-  OmicAnalyzer:::testStudy(name = "test")
+  OmicNavigator:::testStudy(name = "test")
 )
 
 # Plots include a unique enclosing environment, which is ultimately discarded
 # when written to a package
-plots <- OmicAnalyzer:::testPlots()
+plots <- OmicNavigator:::testPlots()
 study <- addPlots(study, plots = plots)
 
 suppressMessages(
-  OmicAnalyzer::exportStudy(study, type = "package", path = tmplib)
+  OmicNavigator::exportStudy(study, type = "package", path = tmplib)
 )
 
 # Export again with overlaps pre-calculated
 study <- addOverlaps(study)
 suppressMessages(
-  OmicAnalyzer::exportStudy(study, type = "package", path = tmplib)
+  OmicNavigator::exportStudy(study, type = "package", path = tmplib)
 )
 
 # Teardown ---------------------------------------------------------------------

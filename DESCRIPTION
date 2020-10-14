@@ -1,8 +1,8 @@
-Package: OmicAnalyzer
+Package: OmicNavigator
 Type: Package
-Title: The OmicAnalyzer R backend
+Title: The OmicNavigator R backend
 Description:
-  OmicAnalyzer is a tool for interactive exploration of the results from omics
+  OmicNavigator is a tool for interactive exploration of the results from omics
   experiments to facilitate novel discoveries from high-throughput biology. The
   software includes R functions for the bioinformatician to deposit study
   metadata and the outputs from statistical analyses (e.g. differential

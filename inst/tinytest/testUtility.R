@@ -5,13 +5,13 @@
 source("tinytestSettings.R")
 using(ttdo)
 
-library(OmicAnalyzer)
+library(OmicNavigator)
 
 # Test isUrl() -----------------------------------------------------------------
 
 testUrls <- c("http://somewhere.net", "https://secure.com/", "C:/path/to/file")
 
 expect_identical_xl(
-  OmicAnalyzer:::isUrl(testUrls),
+  OmicNavigator:::isUrl(testUrls),
   c(TRUE, TRUE, FALSE)
 )

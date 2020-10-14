@@ -7,7 +7,7 @@
 addAnnotations(study, annotations)
 }
 \arguments{
-\item{study}{An OmicAnalyzer study created with \code{\link{createStudy}}}
+\item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per

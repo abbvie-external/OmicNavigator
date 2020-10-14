@@ -2,7 +2,7 @@
 % Please edit documentation in R/get.R
 \name{getInstalledStudies}
 \alias{getInstalledStudies}
-\title{Get installed OmicAnalyzer studies}
+\title{Get installed OmicNavigator studies}
 \usage{
 getInstalledStudies(libraries = NULL)
 }
@@ -11,10 +11,10 @@ getInstalledStudies(libraries = NULL)
 packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
-character vector of OmicAnalyzer study packages
+character vector of OmicNavigator study packages
 }
 \description{
-Get installed OmicAnalyzer studies
+Get installed OmicNavigator studies
 }
 \examples{
  getInstalledStudies()
