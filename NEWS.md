@@ -1,3 +1,15 @@
+# 0.18.0
+
+## Breaking change
+
+* Changed name of app and R package from OmicAnalyzer to OmicNavigator
+
+## Other changes
+
+* The release tarball includes [version 0.2.3 of the web app][app-v0.2.3]
+
+[app-v0.2.3]: ***REMOVED***/releases/tag/v0.2.3
+
 # 0.17.0
 
 ## Breaking change
