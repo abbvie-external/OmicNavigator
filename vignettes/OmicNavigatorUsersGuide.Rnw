@@ -94,7 +94,7 @@ analyses that uses overlapping biological samples should be included in the
 same study (e.g. if you measured transcript and protein levels in the same
 samples).
 
-A study has one or models. The models can be very different (one model for
+A study has one or more models. The models can be very different (one model for
 transcript levels and another for protein levels) or very similar (same exact
 input data but differential expression performed with two different software
 packages).
@@ -544,6 +544,7 @@ Thus I can take the first 3 columns of one of the objects returned by
 \texttt{main}.
 
 <<>>=
+basal.vs.lp[1:2, 1:6]
 features <- list(
   main = basal.vs.lp[, 1:3]
 )
