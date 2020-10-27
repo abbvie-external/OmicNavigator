@@ -282,40 +282,6 @@ getReports <- function(study, modelID = NULL, libraries = NULL) {
   )
 }
 
-# Wrapper around base::split()
-splitTableIntoList <- function(dataFrame, columnName) {
-
-  splitVariable <- dataFrame[[columnName]]
-  splitData <- dataFrame
-  splitData[[columnName]] <- NULL
-
-  result <- split(splitData, splitVariable)
-  result <- lapply(result, function(x) {rownames(x) <- NULL; x})
-
-  return(result)
-}
-
-combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
-  stopifnot(
-    is.list(listObj),
-    length(listObj) > 0,
-    is.character(newColumnName)
-  )
-
-  listNames <- names(listObj)
-  newListObj <- listObj
-  for (i in seq_along(listObj)) {
-    newListObj[[i]][[newColumnName]] <- listNames[i]
-  }
-
-  names(newListObj) <- NULL # to avoid row names in output
-  newTable <- do.call(rbind, newListObj)
-  newColumnIndex <- ncol(newTable)
-  newTable <- newTable[, c(newColumnIndex, seq_len(newColumnIndex - 1))]
-
-  return(newTable)
-}
-
 # ... Arguments passed to either data.table::fread() or jsonlite::read_json()
 getElements <- function(
   study,

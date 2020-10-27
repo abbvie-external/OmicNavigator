@@ -61,6 +61,27 @@ writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
 
 isEmpty <- function(x) {length(x) == 0}
 
+combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
+  stopifnot(
+    is.list(listObj),
+    length(listObj) > 0,
+    is.character(newColumnName)
+  )
+
+  listNames <- names(listObj)
+  newListObj <- listObj
+  for (i in seq_along(listObj)) {
+    newListObj[[i]][[newColumnName]] <- listNames[i]
+  }
+
+  names(newListObj) <- NULL # to avoid row names in output
+  newTable <- do.call(rbind, newListObj)
+  newColumnIndex <- ncol(newTable)
+  newTable <- newTable[, c(newColumnIndex, seq_len(newColumnIndex - 1))]
+
+  return(newTable)
+}
+
 ## Data frames -----------------------------------------------------------------
 
 hasUniqueIdColumn <- function(x) {
