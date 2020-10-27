@@ -487,8 +487,9 @@ getElements.onStudy <- function(
                       default, elements, filterName, filterValue))
       elementsList <- elementsList[[default]]
     } else {
-      stop(sprintf("No %s available for %s \"%s\"",
-                   elements, filterName, filterValue))
+      message(sprintf("No %s available for %s \"%s\"",
+                      elements, filterName, filterValue))
+      return(list())
     }
   }
 
@@ -540,8 +541,9 @@ getElements.character <- function(
                       default, elements, filterName, filterValue))
       elementsFiles <- elementsFiles[[default]]
     } else {
-      stop(sprintf("No %s available for %s \"%s\"",
-                   elements, filterName, filterValue))
+      message(sprintf("No %s available for %s \"%s\"",
+                      elements, filterName, filterValue))
+      return(list())
     }
   }
 

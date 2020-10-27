@@ -153,7 +153,7 @@ expect_identical_xl(
   testStudyObj[["assays"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getAssays(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -168,7 +168,7 @@ expect_equal_xl(
   testStudyObj[["assays"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getAssays(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -195,7 +195,7 @@ expect_identical_xl(
   testStudyObj[["models"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getModels(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -210,7 +210,7 @@ expect_identical_xl(
   testStudyObj[["models"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getModels(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -321,7 +321,7 @@ expect_identical_xl(
   testStudyObj[["results"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getResults(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -331,7 +331,7 @@ expect_identical_xl(
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
 
-expect_error(
+expect_message(
   getResults(testStudyObj, modelID = testModelName, testID = "non-existent-test"),
   "non-existent-test"
 )
@@ -364,7 +364,7 @@ expect_identical_xl(
   lapply(testStudyObj[["results"]][[testModelName]], dim)
 )
 
-expect_error(
+expect_message(
   getResults(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -374,7 +374,7 @@ expect_equal_xl(
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
 
-expect_error(
+expect_message(
   getResults(testStudyName, modelID = testModelName, testID = "non-existent-test"),
   "non-existent-test"
 )
@@ -396,7 +396,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -406,7 +406,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = "non-existent-annotation"),
   "non-existent-annotation"
 )
@@ -421,7 +421,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )
@@ -461,7 +461,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -471,7 +471,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = "non-existent-annotation"),
   "non-existent-annotation"
 )
@@ -486,7 +486,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
 
-expect_error(
+expect_message(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )

@@ -18,8 +18,19 @@ results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
 
 models <- OmicNavigator:::testModels()
-study <- addModels(study, models = models)
+# Confirm a message is emitted and empty list returned when only some models
+# have a description available.
+study <- addModels(study, models = models[1])
+expect_message(
+  modelReturnObject <- getModels(study, modelID = names(models)[2]),
+  names(models)[2]
+)
+expect_identical_xl(
+  modelReturnObject,
+  list()
+)
 
+study <- addModels(study, models = models)
 tests <- OmicNavigator:::testTests()
 study <- addTests(study, tests = tests)
 
