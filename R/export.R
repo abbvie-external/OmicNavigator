@@ -244,51 +244,63 @@ exportSummary <- function(x, path = ".") {
 
   for (i in seq_along(resultsModels)) {
     modelID <- resultsModels[i]
+    modelDisplay <- getModels(x, modelID = modelID)
+    if (isEmpty(modelDisplay)) modelDisplay <- modelID
     output[["results"]][[i]] <- list(
       modelID = modelID,
-      modelDisplay = getModels(x, modelID = modelID)
+      modelDisplay = modelDisplay
     )
     modelTests <- names(x[["results"]][[modelID]])
     output[["results"]][[i]][["tests"]] <- vector("list", length(modelTests))
     for (j in seq_along(modelTests)) {
       testID <- modelTests[j]
+      testDisplay <- getTests(x, modelID = modelID, testID = testID)
+      if (isEmpty(testDisplay)) testDisplay <- testID
       output[["results"]][[i]][["tests"]][[j]] <- list(
         testID = testID,
-        testDisplay = getTests(x, modelID = modelID, testID = testID)
+        testDisplay = testDisplay
       )
     }
   }
 
   for (i in seq_along(enrichmentsModels)) {
     modelID <- enrichmentsModels[i]
+    modelDisplay <- getModels(x, modelID = modelID)
+    if (isEmpty(modelDisplay)) modelDisplay <- modelID
     output[["enrichments"]][[i]] <- list(
       modelID = modelID,
-      modelDisplay = getModels(x, modelID = modelID)
+      modelDisplay = modelDisplay
     )
     modelAnnotations <- names(x[["enrichments"]][[modelID]])
     output[["enrichments"]][[i]][["annotations"]] <- vector("list", length(modelAnnotations))
     for (j in seq_along(modelAnnotations)) {
       annotationID <- modelAnnotations[j]
+      annotationDisplay = getAnnotations(x, annotationID = annotationID)[["description"]]
+      if (isEmpty(annotationDisplay)) annotationDisplay <- annotationID
       output[["enrichments"]][[i]][["annotations"]][[j]] <- list(
         annotationID = annotationID,
-        annotationDisplay = getAnnotations(x, annotationID = annotationID)[["description"]]
+        annotationDisplay = annotationDisplay
       )
     }
   }
 
   for (i in seq_along(plotsModels)) {
     modelID <- plotsModels[i]
+    modelDisplay <- getModels(x, modelID = modelID)
+    if (isEmpty(modelDisplay)) modelDisplay <- modelID
     output[["plots"]][[i]] <- list(
       modelID = modelID,
-      modelDisplay = getModels(x, modelID = modelID)
+      modelDisplay = modelDisplay
     )
     modelPlots <- getPlots(x, modelID = modelID)
     output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
     for (j in seq_along(modelPlots)) {
       plotID <- names(modelPlots)[j]
+      plotDisplay = modelPlots[[j]][["displayName"]]
+      if (isEmpty(plotDisplay)) plotDisplay <- plotID
       output[["plots"]][[i]][["plots"]][[j]] <- list(
         plotID = plotID,
-        plotDisplay = modelPlots[[j]][["displayName"]]
+        plotDisplay = plotDisplay
       )
     }
   }
