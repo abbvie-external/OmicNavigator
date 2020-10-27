@@ -19,6 +19,19 @@ left as \code{NULL} (the default), then
 \code{\link[utils]{installed.packages}} will use the result of
 \code{\link{.libPaths}}.}
 }
+\value{
+The object returned depends on the data available and any filters
+  (e.g. the argument  \code{modelID}):
+
+If no filters are specified, then the object returned is a nested list,
+similar to the original input object.
+
+If one or more filters are applied, then only a subset of the original nested
+list is returned. Technically, each filter applied is used to subset the
+original nested list using \code{\link[base]{[[}}.
+
+If no data is available, an empty list is returned (\code{list()}).
+}
 \description{
 Get tests from a study
 }

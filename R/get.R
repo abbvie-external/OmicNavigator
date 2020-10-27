@@ -33,12 +33,24 @@ getInstalledStudies <- function(libraries = NULL) {
 #' @param featureID Filter by featureID
 #' @param plotID Filter by plotID
 #'
+#' @return The object returned depends on the data available and any filters
+#'   (e.g. the argument  \code{modelID}):
+#'
+#' If no filters are specified, then the object returned is a nested list,
+#' similar to the original input object.
+#'
+#' If one or more filters are applied, then only a subset of the original nested
+#' list is returned. Technically, each filter applied is used to subset the
+#' original nested list using \code{\link[base]{[[}}.
+#'
+#' If no data is available, an empty list is returned (\code{list()}).
+#'
 #' @keywords internal
 NULL
 
 #' Get models from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -54,7 +66,7 @@ getModels <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get samples from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -70,7 +82,7 @@ getSamples <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get features from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @return A data frame (if \code{modelID} is specified) or a list of data
@@ -91,7 +103,7 @@ getFeatures <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get assays from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -108,7 +120,7 @@ getAssays <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get tests from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -129,7 +141,7 @@ getTests <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
 
 #' Get annotations from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -145,7 +157,7 @@ getAnnotations <- function(study, annotationID = NULL, libraries = NULL) {
 
 #' Get overlaps from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -160,7 +172,7 @@ getOverlaps <- function(study, annotationID = NULL, libraries = NULL) {
 
 #' Get results from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -210,7 +222,7 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
 
 #' Get enrichments from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -322,7 +334,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 
 #' Get metaFeatures from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -339,7 +351,7 @@ getMetaFeatures <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get plots from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -356,7 +368,7 @@ getPlots <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get barcodes from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
@@ -373,7 +385,7 @@ getBarcodes <- function(study, modelID = NULL, libraries = NULL) {
 
 #' Get reports from a study
 #'
-#' @inheritParams shared-get
+#' @inherit shared-get
 #' @inheritParams listStudies
 #'
 #' @export
