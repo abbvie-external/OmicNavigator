@@ -189,37 +189,6 @@ getResults <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
   )
 }
 
-#' Get results table from a study
-#'
-#' @inheritParams shared-get
-#' @inheritParams listStudies
-#'
-#' @return A data frame which includes the columns from the features table
-#'   followed by the columns from the results table. All the columns from the
-#'   features table will be character strings, even if the values appear
-#'   numeric.
-#'
-#' @export
-getResultsTable <- function(study, modelID, testID, libraries = NULL) {
-  results <- getResults(study, modelID, testID)
-  features <- getFeatures(study, modelID)
-
-  if (isEmpty(results)) return(data.frame())
-  if (isEmpty(features)) return(results)
-
-  # Results must be first argument to preserve input order
-  resultsTable <- merge(results, features, by = 1,
-                        all.x = TRUE, all.y = FALSE, sort = FALSE)
-  # Rearrange columns so that features are listed first
-  columnsOrder <- c(colnames(features),
-                    setdiff(colnames(results), colnames(features)))
-  resultsTable <- resultsTable[, columnsOrder]
-  # featureID column must be character
-  resultsTable[, 1] <- as.character(resultsTable[, 1])
-
-  return(resultsTable)
-}
-
 #' Get enrichments from a study
 #'
 #' @inherit shared-get
@@ -243,93 +212,6 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
     filters = list(modelID = modelID, annotationID = annotationID, testID = testID),
     libraries = libraries
   )
-}
-
-#' Get enrichments table from a study
-#'
-#' @inheritParams shared-get
-#' @inheritParams shared-upset
-#' @inheritParams listStudies
-#'
-#' @export
-getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", libraries = NULL) {
-  stopifnot(type %in% c("nominal", "adjusted"))
-
-  enrichments <- getEnrichments(
-    study,
-    modelID = modelID,
-    annotationID = annotationID,
-    libraries = libraries
-  )
-
-  if (isEmpty(enrichments)) return(data.frame())
-
-  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
-
-  enrichmentsTableWide <- enrichmentsToWide(enrichmentsTable, type = type)
-
-  return(enrichmentsTableWide)
-}
-
-#' Get enrichments network from a study
-#'
-#' @inheritParams shared-get
-#' @inheritParams listStudies
-#'
-#' @export
-getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
-  if (inherits(study, "onStudy")) {
-    stop("The Enrichment Network is only available for study packages")
-  }
-
-  annotation <- getAnnotations(
-    study,
-    annotationID = annotationID,
-    libraries = libraries
-  )
-
-  terms <- lengths(annotation[["terms"]])
-  terms <- data.frame(
-    termID = names(terms),
-    geneSetSize = terms,
-    stringsAsFactors = FALSE
-  )
-
-  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
-  enrichmentsTable <- combineListIntoTable(enrichments, "testID")
-
-  nodesLong <- merge(enrichmentsTable, terms, by = "termID",
-                     all.x = TRUE, all.y = FALSE, sort = FALSE)
-  nodesLong <- nodesLong[order(nodesLong[["testID"]]), ]
-
-  tests <- unique(nodesLong[["testID"]])
-
-  nodes <- stats::aggregate(
-    cbind(nominal, adjusted) ~ termID + description + geneSetSize,
-    data = nodesLong,
-    FUN = list
-  )
-  nodes <- cbind(id = seq_len(nrow(nodes)), nodes)
-
-  overlaps <- getOverlaps(
-    study,
-    annotationID = annotationID,
-    libraries = libraries
-  )
-
-  links <- overlaps
-  colnames(links)[1:2] <- c("source", "target")
-  links <- links[links[["source"]] %in% nodes[["termID"]] &
-                 links[["target"]] %in% nodes[["termID"]], ]
-  links <- cbind(id = seq_len(nrow(links)), links)
-
-  # Use node IDs with links
-  links[["source"]] <- match(links[["source"]], nodes[["termID"]])
-  links[["target"]] <- match(links[["target"]], nodes[["termID"]])
-
-  enrichmentsNetwork <- list(tests = tests, nodes = nodes, links = links)
-
-  return(enrichmentsNetwork)
 }
 
 #' Get metaFeatures from a study
