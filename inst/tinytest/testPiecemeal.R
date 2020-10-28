@@ -12,10 +12,18 @@ dir.create(tmplib)
 
 study <- createStudy(name = "test")
 
-# Test results, models, and tests ----------------------------------------------
+# Test results -----------------------------------------------------------------
 
 results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
+
+suppressWarnings(
+  suppressMessages(
+    OmicNavigator::exportStudy(study, type = "package", path = tmplib)
+  )
+)
+
+# Test models and tests --------------------------------------------------------
 
 models <- OmicNavigator:::testModels()
 # Confirm a message is emitted and empty list returned when only some models
