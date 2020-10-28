@@ -1,4 +1,4 @@
-# Test piecemeal addition and export
+# Test piecemeal addition, export, and retrieval
 
 # Setup ------------------------------------------------------------------------
 
@@ -9,6 +9,8 @@ library(OmicNavigator)
 
 tmplib <- tempfile()
 dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
 
 study <- createStudy(name = "test")
 
@@ -17,10 +19,49 @@ study <- createStudy(name = "test")
 results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
 
-suppressWarnings(
-  suppressMessages(
-    OmicNavigator::exportStudy(study, type = "package", path = tmplib)
-  )
+suppressWarnings(suppressMessages(installStudy(study)))
+
+testModelName <- names(study[["results"]])[1]
+testTestName <- names(study[["results"]][[1]])[1]
+
+expect_equal_xl(
+  getResultsTable(study$name, testModelName, testTestName),
+  getResults(study$name, testModelName, testTestName)
+)
+
+expect_identical_xl(
+  getEnrichmentsTable(study$name, testModelName, "non-existent-annotation"),
+  data.frame()
+)
+
+expect_identical_xl(
+  getEnrichmentsNetwork(study$name, testModelName, "non-existent-annotation"),
+  list()
+)
+
+expect_identical_xl(
+  getNodeFeatures(study$name, "non-existent-annotation", "non-existent-term"),
+  character()
+)
+
+expect_identical_xl(
+  getLinkFeatures(study$name, "non-existent-annotation", "non-existent-term-1", "non-existent-term-2"),
+  character()
+)
+
+expect_identical_xl(
+  getMetaFeaturesTable(study$name, testModelName, "non-existent-feature"),
+  data.frame()
+)
+
+expect_identical_xl(
+  getBarcodeData(study$name, testModelName, testTestName, "non-existent-annotation", "non-existent-term"),
+  list()
+)
+
+expect_identical_xl(
+  getReportLink(study, testModelName),
+  character()
 )
 
 # Test models and tests --------------------------------------------------------
@@ -44,7 +85,7 @@ study <- addTests(study, tests = tests)
 
 suppressWarnings(
   suppressMessages(
-    OmicNavigator::exportStudy(study, type = "package", path = tmplib)
+    exportStudy(study, type = "package", path = tmplib)
   )
 )
 
@@ -61,7 +102,7 @@ study <- addAssays(study, assays = assays)
 
 suppressWarnings(
   suppressMessages(
-    OmicNavigator::exportStudy(study, type = "package", path = tmplib)
+    exportStudy(study, type = "package", path = tmplib)
   )
 )
 
@@ -74,9 +115,10 @@ annotations <- OmicNavigator:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
 
 suppressMessages(
-  OmicNavigator::exportStudy(study, type = "package", path = tmplib)
+  exportStudy(study, type = "package", path = tmplib)
 )
 
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
+.libPaths(libOrig)
