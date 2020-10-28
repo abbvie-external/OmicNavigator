@@ -163,9 +163,9 @@ expect_identical_xl(
   names(getTests(testStudyName, testModelName))
 )
 
-expect_error(
-  getEnrichmentsNetwork(testStudyObj),
-  "The Enrichment Network is only available for study packages"
+expect_message(
+  getEnrichmentsNetwork(testStudyObj, testModelName, testAnnotationName),
+  "No overlaps available"
 )
 
 expect_error(
@@ -197,7 +197,7 @@ expect_identical(
   "character"
 )
 
-expect_warning(
+expect_message(
   getMetaFeaturesTable(
     testStudyName,
     testModelName,
@@ -273,17 +273,17 @@ expect_identical(
   sort(annotation[["terms"]][[testTermName]])
 )
 
-expect_error(
-  getNodeFeatures(testStudyObj),
-  "\"study\" must be the name of an installed study package"
+expect_identical(
+  getNodeFeatures(testStudyObj, testAnnotationName, testTermName),
+  sort(annotation[["terms"]][[testTermName]])
 )
 
-expect_error(
+expect_message(
   getNodeFeatures(testStudyName, testAnnotationName, "non-existent-term"),
   "non-existent-term"
 )
 
-expect_error(
+expect_message(
   getNodeFeatures(testStudyName, "non-existent-annotation", testTermName),
   "non-existent-annotation"
 )
@@ -296,9 +296,10 @@ expect_identical(
                  annotation[["terms"]][["term_03"]]))
 )
 
-expect_error(
-  getLinkFeatures(testStudyObj),
-  "\"study\" must be the name of an installed study package"
+expect_identical(
+  getLinkFeatures(testStudyObj, testAnnotationName, testTermName, "term_03"),
+  sort(intersect(annotation[["terms"]][[testTermName]],
+                 annotation[["terms"]][["term_03"]]))
 )
 
 # Teardown ---------------------------------------------------------------------

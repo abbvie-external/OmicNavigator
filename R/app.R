@@ -121,24 +121,27 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #'
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
-  if (inherits(study, "onStudy")) {
-    stop("The Enrichment Network is only available for study packages")
-  }
 
   annotation <- getAnnotations(
     study,
     annotationID = annotationID,
     libraries = libraries
   )
+  if (isEmpty(annotation)) return(list())
 
-  terms <- lengths(annotation[["terms"]])
+  termsVec <- annotation[["terms"]]
+  if (isEmpty(termsVec)) {
+    message(sprintf("No terms available for annotationID \"%s\"", annotationID))
+    return(list())
+  }
   terms <- data.frame(
-    termID = names(terms),
-    geneSetSize = terms,
+    termID = names(termsVec),
+    geneSetSize = lengths(termsVec),
     stringsAsFactors = FALSE
   )
 
   enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
+  if (isEmpty(enrichments)) return(list())
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
 
   nodesLong <- merge(enrichmentsTable, terms, by = "termID",
@@ -159,6 +162,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     annotationID = annotationID,
     libraries = libraries
   )
+  if (isEmpty(overlaps)) return(list())
 
   links <- overlaps
   colnames(links)[1:2] <- c("source", "target")
@@ -186,11 +190,8 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 #'
 #' @export
 getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
-  if (inherits(study, "onStudy")) {
-    stop("\"study\" must be the name of an installed study package")
-  }
+
   stopifnot(
-    is.character(study), length(study) == 1,
     is.character(annotationID), length(annotationID) == 1,
     is.character(termID), length(termID) == 1
   )
@@ -200,11 +201,13 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
     annotationID = annotationID,
     libraries = libraries
   )
+  if (isEmpty(annotation)) return(character())
 
   termsAvailable <- names(annotation[["terms"]])
   if (!termID %in% termsAvailable) {
-    stop(sprintf("The termID \"%s\" is not available for annotationID \"%s\"",
-                 termID, annotationID))
+    message(sprintf("The termID \"%s\" is not available for annotationID \"%s\"",
+                    termID, annotationID))
+    return(character())
   }
 
   nodeFeatures <- sort(annotation[["terms"]][[termID]])
@@ -238,13 +241,14 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 #' @export
 getMetaFeaturesTable <- function(study, modelID, featureID) {
   metaFeatures <- getMetaFeatures(study, modelID = modelID)
+  if (isEmpty(metaFeatures)) return(data.frame())
 
   metaFeaturesTable <- metaFeatures[metaFeatures[, 1] == featureID, ]
   metaFeaturesTable <- metaFeaturesTable[, -1, drop = FALSE]
   row.names(metaFeaturesTable) <- NULL
 
   if (nrow(metaFeaturesTable) == 0) {
-    warning(sprintf("No metaFeatures found for featureID \"%s\"", featureID))
+    message(sprintf("No metaFeatures found for featureID \"%s\"", featureID))
   }
 
   return(metaFeaturesTable)
@@ -259,7 +263,9 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   # Adapted from: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getBarcodeData.R
 
   resultsTable <- getResultsTable(study, modelID = modelID, testID = testID)
+  if (isEmpty(resultsTable)) return(list())
   barcodes <- getBarcodes(study, modelID = modelID)
+  if (isEmpty(barcodes)) return(list())
 
   # Default barcode settings. See ?addBarcodes
   if (is.null(barcodes[["logFoldChange"]])) {
@@ -287,6 +293,7 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   }
 
   annotations <- getAnnotations(study, annotationID = annotationID)
+  if (isEmpty(annotations)) return(list())
   if (!termID %in% names(annotations[["terms"]])) {
     stop(sprintf("The term \"%s\" is not available for the annotation \"%s\"",
          termID, annotationID))
@@ -362,7 +369,6 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   return (newList)
 }
 
-
 #' Get link to report
 #'
 #' @inheritParams shared-get
@@ -370,6 +376,7 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
 #' @export
 getReportLink <- function(study, modelID) {
   report <- getReports(study, modelID = modelID)
+  if (isEmpty(report)) return(character())
 
   if (isUrl(report)) return(report)
 
