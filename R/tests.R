@@ -223,3 +223,12 @@ testReports <- function(n = 3) {
   )
   return(reports)
 }
+
+testStudyMinimal <- function() {
+  createStudy(
+    name = "minimal",
+    description = "A minimal study for testing",
+    results = testResults(),
+    enrichments = testEnrichments()
+  )
+}

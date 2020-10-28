@@ -14,7 +14,7 @@ libOrig <- .libPaths()
 
 study <- createStudy(name = "test")
 
-# Test results -----------------------------------------------------------------
+# Test results only ------------------------------------------------------------
 
 results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
@@ -120,10 +120,48 @@ suppressWarnings(
   )
 )
 
-# Test enrichments and annotations ---------------------------------------------
+# Test enrichments -------------------------------------------------------------
 
 enrichments <- OmicNavigator:::testEnrichments()
 study <- addEnrichments(study, enrichments = enrichments)
+
+suppressWarnings(suppressMessages(installStudy(study)))
+
+testAnnotationName <- names(study[["enrichments"]][[1]])[1]
+
+enrichmentsTable <- getEnrichmentsTable(study$name, testModelName, testAnnotationName)
+expect_true_xl(nrow(enrichmentsTable) > 0)
+expect_true_xl(ncol(enrichmentsTable) > 0)
+
+expect_identical_xl(
+  getEnrichmentsNetwork(study$name, testModelName, testAnnotationName),
+  list()
+)
+
+expect_identical_xl(
+  getNodeFeatures(study$name, testAnnotationName, "non-existent-term"),
+  character()
+)
+
+expect_identical_xl(
+  getLinkFeatures(study$name, testAnnotationName, "non-existent-term-1", "non-existent-term-2"),
+  character()
+)
+
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = "minimal",
+  modelID = "model_01",
+  annotationID = "annotation_01",
+  mustTests = c(),
+  notTests = c(),
+  sigValue = 0.05,
+  operator = "<",
+  type = "nominal"
+)
+expect_true_xl(nrow(enrichmentsIntersection) > 0)
+expect_true_xl(ncol(enrichmentsIntersection) > 0)
+
+# Test annotations -------------------------------------------------------------
 
 annotations <- OmicNavigator:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
