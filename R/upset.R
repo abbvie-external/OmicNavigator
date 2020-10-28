@@ -47,7 +47,11 @@ getResultsIntersection <- function(
   )
 
   features <- getFeatures(study, modelID = modelID)
-  intersectionTable <- merge(features, intersection, by = 1)
+  if (isEmpty(features)) {
+    intersectionTable <- intersection
+  } else {
+    intersectionTable <- merge(features, intersection, by = 1)
+  }
   columnsOrder <- union(c(colnames(features), "Set_Membership"),
                         colnames(intersection))
   intersectionTable <- intersectionTable[, columnsOrder]

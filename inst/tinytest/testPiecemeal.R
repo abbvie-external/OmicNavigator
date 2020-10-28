@@ -49,6 +49,20 @@ expect_identical_xl(
   character()
 )
 
+resultsIntersection <- getResultsIntersection(
+  study$name,
+  testModelName,
+  testTestName,
+  mustTests = c(),
+  notTests = c(),
+  sigValue = 0.05,
+  operator = "<",
+  column = "beta"
+)
+
+expect_true_xl(nrow(resultsIntersection) > 0)
+expect_true_xl(ncol(resultsIntersection) > 0)
+
 expect_identical_xl(
   getMetaFeaturesTable(study$name, testModelName, "non-existent-feature"),
   data.frame()
