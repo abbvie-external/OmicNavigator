@@ -347,4 +347,25 @@ reportLink <- getReportLink(
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
 @
 
+\section{Unavailable data}
+\label{sec:unavailable-data}
+
+If a requested data resource is unavailable, an empty array is returned.
+
+<<unavailable-data>>=
+toJSON(getResultsTable(study = "ABC", modelID = "?", testID = "?"))
+toJSON(getEnrichmentsTable(study = "ABC", modelID = "?", annotationID = "?"))
+toJSON(getEnrichmentsNetwork(study = "ABC", modelID = "?", annotationID = "?"))
+toJSON(getNodeFeatures(study = "ABC", annotationID = "?", termID = "?"))
+toJSON(getLinkFeatures(study = "ABC", annotationID = "?", termID1 = "?",
+                       termID2 = "?"))
+toJSON(getUpsetCols(study = "ABC", modelID = "?"))
+toJSON(getMetaFeaturesTable(study = "ABC", modelID = "?", featureID = "?"))
+toJSON(getBarcodeData(study = "ABC", modelID = "?", testID = "?",
+                      annotationID = "?", termID = "?"))
+# The study "ABC" has a default report that is returned for any modelID.
+# Otherwise an empty array would have been returned.
+toJSON(getReportLink(study = "ABC", modelID = "?"))
+@
+
 \end{document}
