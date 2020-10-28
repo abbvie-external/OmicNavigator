@@ -348,6 +348,11 @@ expect_identical(
   c("beta", "p_val")
 )
 
+expect_identical_xl(
+  getUpsetCols(study = testStudyName, modelID = "non-existent-model"),
+  character()
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

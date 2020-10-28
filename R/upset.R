@@ -476,6 +476,7 @@ getUpsetCols <- function(
 )
 {
   results <- getResults(study, modelID = modelID)
+  if (isEmpty(results)) return(character())
   colsAll <- lapply(results, function(x) colnames(x[, -1]))
   colsCommon <- Reduce(intersect, colsAll)
   return(colsCommon)
