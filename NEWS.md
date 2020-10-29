@@ -1,5 +1,13 @@
-# 0.18.2.9000
+# 0.19.0
 
+* Most package functions now consistenly return empty data structures (e.g.
+`list()`) when a query requests data that is unavailable. Previously the
+functions would throw an error if the requested data was unavailable. There is
+a new section in the API vignette documenting this behavior for the functions
+called by the app.
+
+* It is now possible to export a study that only contains a single results
+table.
 
 # 0.18.2
 
