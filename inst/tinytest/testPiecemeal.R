@@ -149,9 +149,9 @@ expect_identical_xl(
 )
 
 enrichmentsIntersection <- getEnrichmentsIntersection(
-  study = "minimal",
-  modelID = "model_01",
-  annotationID = "annotation_01",
+  study = study$name,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
   mustTests = c(),
   notTests = c(),
   sigValue = 0.05,
