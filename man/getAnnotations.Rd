@@ -4,13 +4,15 @@
 \alias{getAnnotations}
 \title{Get annotations from a study}
 \usage{
-getAnnotations(study, annotationID = NULL, libraries = NULL)
+getAnnotations(study, annotationID = NULL, quiet = FALSE, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{annotationID}{Filter by annotation}
+
+\item{quiet}{Suppress messages (default: \code{FALSE})}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

@@ -4,13 +4,15 @@
 \alias{getPlots}
 \title{Get plots from a study}
 \usage{
-getPlots(study, modelID = NULL, libraries = NULL)
+getPlots(study, modelID = NULL, quiet = FALSE, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
+
+\item{quiet}{Suppress messages (default: \code{FALSE})}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

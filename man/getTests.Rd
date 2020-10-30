@@ -4,7 +4,7 @@
 \alias{getTests}
 \title{Get tests from a study}
 \usage{
-getTests(study, modelID = NULL, testID = NULL, libraries = NULL)
+getTests(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -13,6 +13,8 @@ or the name of an installed study package.}
 \item{modelID}{Filter by modelID}
 
 \item{testID}{Filter by testID}
+
+\item{quiet}{Suppress messages (default: \code{FALSE})}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

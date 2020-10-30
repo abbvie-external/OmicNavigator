@@ -32,6 +32,7 @@ getInstalledStudies <- function(libraries = NULL) {
 #' @param termID Filter by termID
 #' @param featureID Filter by featureID
 #' @param plotID Filter by plotID
+#' @param quiet Suppress messages (default: \code{FALSE})
 #'
 #' @return The object returned depends on the data available and any filters
 #'   (e.g. the argument  \code{modelID}):
@@ -54,12 +55,13 @@ NULL
 #' @inheritParams listStudies
 #'
 #' @export
-getModels <- function(study, modelID = NULL, libraries = NULL) {
+getModels <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "models",
     filters = list(modelID = modelID),
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -70,12 +72,13 @@ getModels <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getSamples <- function(study, modelID = NULL, libraries = NULL) {
+getSamples <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "samples",
     filters = list(modelID = modelID),
     default = "default",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -90,12 +93,13 @@ getSamples <- function(study, modelID = NULL, libraries = NULL) {
 #'   appear numeric.
 #'
 #' @export
-getFeatures <- function(study, modelID = NULL, libraries = NULL) {
+getFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "features",
     filters = list(modelID = modelID),
     default = "default",
+    quiet = quiet,
     libraries = libraries,
     colClasses = "character"
   )
@@ -107,12 +111,13 @@ getFeatures <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getAssays <- function(study, modelID = NULL, libraries = NULL) {
+getAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "assays",
     filters = list(modelID = modelID),
     default = "default",
+    quiet = quiet,
     libraries = libraries,
     hasRowNames = TRUE
   )
@@ -124,7 +129,7 @@ getAssays <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getTests <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
+getTests <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
   if (is.null(modelID) && !is.null(testID)) {
     stop("Must specify a model in order to specify a test")
   }
@@ -135,6 +140,7 @@ getTests <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
     filters = list(modelID = modelID, testID = testID),
     default = "default",
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -145,12 +151,13 @@ getTests <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getAnnotations <- function(study, annotationID = NULL, libraries = NULL) {
+getAnnotations <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "annotations",
     filters = list(annotationID = annotationID),
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -161,11 +168,12 @@ getAnnotations <- function(study, annotationID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getOverlaps <- function(study, annotationID = NULL, libraries = NULL) {
+getOverlaps <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "overlaps",
     filters = list(annotationID = annotationID),
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -176,7 +184,7 @@ getOverlaps <- function(study, annotationID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getResults <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
+getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
   if (is.null(modelID) && !is.null(testID)) {
     stop("Must specify a model in order to specify a test")
   }
@@ -185,6 +193,7 @@ getResults <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
     study,
     elements = "results",
     filters = list(modelID = modelID, testID = testID),
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -195,7 +204,7 @@ getResults <- function(study, modelID = NULL, testID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, libraries = NULL) {
+getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
   if (is.null(modelID) && !is.null(annotationID)) {
     stop("Must specify a model in order to specify an annotation")
   }
@@ -210,6 +219,7 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
     study,
     elements = "enrichments",
     filters = list(modelID = modelID, annotationID = annotationID, testID = testID),
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -220,12 +230,13 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
 #' @inheritParams listStudies
 #'
 #' @export
-getMetaFeatures <- function(study, modelID = NULL, libraries = NULL) {
+getMetaFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "metaFeatures",
     filters = list(modelID = modelID),
     default = "default",
+    quiet = quiet,
     libraries = libraries,
     colClasses = "character"
   )
@@ -237,13 +248,14 @@ getMetaFeatures <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getPlots <- function(study, modelID = NULL, libraries = NULL) {
+getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "plots",
     filters = list(modelID = modelID),
     default = "default",
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -254,13 +266,14 @@ getPlots <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getBarcodes <- function(study, modelID = NULL, libraries = NULL) {
+getBarcodes <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "barcodes",
     filters = list(modelID = modelID),
     default = "default",
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -271,13 +284,14 @@ getBarcodes <- function(study, modelID = NULL, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getReports <- function(study, modelID = NULL, libraries = NULL) {
+getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "reports",
     filters = list(modelID = modelID),
     default = "default",
     fileType = "json",
+    quiet = quiet,
     libraries = libraries
   )
 }
@@ -289,6 +303,7 @@ getElements <- function(
   filters = list(),
   default = NULL,
   fileType = c("txt", "json"),
+  quiet = FALSE,
   libraries = NULL,
   ...
 )
@@ -309,6 +324,7 @@ getElements.default <- function(
   filters = list(),
   default = NULL,
   fileType = c("txt", "json"),
+  quiet = FALSE,
   libraries = NULL,
   ...
 )
@@ -323,6 +339,7 @@ getElements.onStudy <- function(
   filters = list(),
   default = NULL,
   fileType = c("txt", "json"),
+  quiet = FALSE,
   libraries = NULL,
   ...
 )
@@ -330,7 +347,8 @@ getElements.onStudy <- function(
   elementsList <- study[[elements]]
 
   if (isEmpty(elementsList)) {
-    message(sprintf("No %s available for study \"%s\"", elements, study[["name"]]))
+    if (!quiet) message(sprintf("No %s available for study \"%s\"",
+                                elements, study[["name"]]))
     return(list())
   }
 
@@ -343,12 +361,12 @@ getElements.onStudy <- function(
     if (filterValue %in% namesCurrent) {
       elementsList <- elementsList[[filterValue]]
     } else if (!is.null(default) && default %in% namesCurrent) {
-      message(sprintf("Returning \"%s\" %s for %s \"%s\"",
-                      default, elements, filterName, filterValue))
+      if (!quiet) message(sprintf("Returning \"%s\" %s for %s \"%s\"",
+                                  default, elements, filterName, filterValue))
       elementsList <- elementsList[[default]]
     } else {
-      message(sprintf("No %s available for %s \"%s\"",
-                      elements, filterName, filterValue))
+      if (!quiet) message(sprintf("No %s available for %s \"%s\"",
+                                  elements, filterName, filterValue))
       return(list())
     }
   }
@@ -363,6 +381,7 @@ getElements.character <- function(
   filters = list(),
   default = NULL,
   fileType = c("txt", "json"),
+  quiet = FALSE,
   libraries = NULL,
   ...
 )
@@ -375,16 +394,16 @@ getElements.character <- function(
 
   elementsDirectory <- file.path(oaDirectory, elements)
   if (!dir.exists(elementsDirectory)) {
-    message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
-                 study, elements))
+    if (!quiet) message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
+                                study, elements))
     return(list())
   }
   fileType <- match.arg(fileType, c("txt", "json"))
   elementsFiles <- getFiles(elementsDirectory, fileType = fileType)
 
   if (isEmpty(elementsFiles)) {
-    message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
-                    study, elements))
+    if (!quiet) message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
+                                study, elements))
     return(list())
   }
 
@@ -397,12 +416,12 @@ getElements.character <- function(
     if (filterValue %in% namesCurrent) {
       elementsFiles <- elementsFiles[[filterValue]]
     } else if (!is.null(default) && default %in% namesCurrent) {
-      message(sprintf("Returning \"%s\" %s for %s \"%s\"",
-                      default, elements, filterName, filterValue))
+      if (!quiet) message(sprintf("Returning \"%s\" %s for %s \"%s\"",
+                                  default, elements, filterName, filterValue))
       elementsFiles <- elementsFiles[[default]]
     } else {
-      message(sprintf("No %s available for %s \"%s\"",
-                      elements, filterName, filterValue))
+      if (!quiet) message(sprintf("No %s available for %s \"%s\"",
+                                  elements, filterName, filterValue))
       return(list())
     }
   }
@@ -417,7 +436,7 @@ getElements.character <- function(
   return(object)
 }
 
-getDirectory <- function(study, libraries = NULL) {
+getDirectory <- function(study, quiet = FALSE, libraries = NULL) {
   system.file("OmicNavigator/",
               package = paste0(getPrefix(), study),
               lib.loc = libraries)

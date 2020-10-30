@@ -18,6 +18,8 @@ or the name of an installed study package.}
 \item{featureID}{Filter by featureID}
 
 \item{plotID}{Filter by plotID}
+
+\item{quiet}{Suppress messages (default: \code{FALSE})}
 }
 \value{
 The object returned depends on the data available and any filters

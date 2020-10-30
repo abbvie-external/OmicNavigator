@@ -70,7 +70,7 @@ listStudies <- function(libraries = NULL) {
 #' @export
 getResultsTable <- function(study, modelID, testID, libraries = NULL) {
   results <- getResults(study, modelID, testID)
-  features <- getFeatures(study, modelID)
+  features <- getFeatures(study, modelID, quiet = TRUE)
 
   if (isEmpty(results)) return(data.frame())
   if (isEmpty(features)) return(results)

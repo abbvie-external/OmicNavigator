@@ -11,6 +11,12 @@ export the study package as a source package tarball, which is ready to be
 installed directly with `install.packages()`. The option `"package"` remains; it
 exports the study as a package directory.
 
+## New feature
+
+* The "get" functions have a new argument `quiet`. Setting `quiet = TRUE` will
+suppress any messages, such as reporting unavailable data or the use of the
+"default" data.
+
 # 0.19.0
 
 * Most package functions now consistenly return empty data structures (e.g.
