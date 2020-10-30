@@ -1,47 +1,59 @@
 #' Export a study
 #'
 #' @param study An OmicNavigator study
-#' @param type Export to a RDS file ("rds"), text files ("text"), or an
-#'   R package ("package")
+#' @param type Export study as a package tarball ("tarball") or as a package
+#'   directory ("package")
 #' @param path Optional file path to save the object
 #' @param requireValid Require that study is valid before exporting
+#'
+#' @return Invisibly returns the name of the tarball file ("tarball") or the
+#'   path to the package directory ("package")
 #'
 #' @seealso \code{\link{validateStudy}}
 #'
 #' @export
 exportStudy <- function(
   study,
-  type = c("rds", "text", "package"),
+  type = c("tarball", "package"),
   path = NULL,
   requireValid = TRUE
 )
 {
   if (requireValid) validateStudy(study) else checkStudy(study)
-
   type <- match.arg(type)
 
-  if (type == "rds") {
-    message(sprintf("Exporting study \"%s\" to an RDS file", study[["name"]]))
-    filename <- paste0(study[["name"]], ".rds")
-    if (!is.null(path)) filename <- file.path(path, filename)
-    saveRDS(object = study, file = filename)
-    message(sprintf("Exported study to %s", filename))
-    return(invisible(filename))
-  } else if (type == "text") {
-    message(sprintf("Exporting study \"%s\" to directory of text files", study[["name"]]))
-    directoryname <- paste0(study[["name"]])
-    if (!is.null(path)) directoryname <- file.path(path, directoryname)
-    createTextFiles(study, directoryname)
+  message(sprintf("Exporting study \"%s\" as an R package", study[["name"]]))
+  directoryname <- paste0(getPrefix(), study[["name"]])
+  if (!is.null(path)) directoryname <- file.path(path, directoryname)
+  # If anything goes wrong, clean up everything
+  on.exit(unlink(directoryname, recursive = TRUE, force = TRUE) , add = TRUE)
+  createPackage(study, directoryname)
+
+  if (type == "package") {
     message(sprintf("Exported study to %s", directoryname))
-    return(invisible(directoryname))
-  } else if (type == "package") {
-    message(sprintf("Exporting study \"%s\" to an R package", study[["name"]]))
-    directoryname <- paste0(getPrefix(), study[["name"]])
-    if (!is.null(path)) directoryname <- file.path(path, directoryname)
-    createPackage(study, directoryname)
-    message(sprintf("Exported study to %s", directoryname))
+    on.exit() # Don't delete the package directory
     return(invisible(directoryname))
   }
+
+  # Build package tarball
+  message("Converting study package to a package tarball")
+  tarball <- buildPkg(directoryname)
+  if (!is.null(path)) {
+    tarballOriginal <- tarball
+    tarball <- file.path(path, tarballOriginal)
+    file.rename(tarballOriginal, tarball)
+  }
+  message(sprintf("Exported study to %s", tarball))
+  return(invisible(tarball))
+}
+
+buildPkg <- function(pkgDir) {
+  r <- file.path(R.home("bin"), "R")
+  stdout <- system2(r, args = c("CMD", "build", pkgDir), stdout = TRUE, stderr = NULL)
+  regex <- sprintf("%s.*\\.tar\\.gz", getPrefix())
+  regexMatch <- regexpr(regex, stdout[length(stdout)])
+  tarball <- regmatches(stdout[length(stdout)], regexMatch)
+  return(invisible(tarball))
 }
 
 createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {

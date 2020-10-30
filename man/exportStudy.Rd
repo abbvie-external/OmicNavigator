@@ -6,7 +6,7 @@
 \usage{
 exportStudy(
   study,
-  type = c("rds", "text", "package"),
+  type = c("tarball", "package"),
   path = NULL,
   requireValid = TRUE
 )
@@ -14,12 +14,16 @@ exportStudy(
 \arguments{
 \item{study}{An OmicNavigator study}
 
-\item{type}{Export to a RDS file ("rds"), text files ("text"), or an
-R package ("package")}
+\item{type}{Export study as a package tarball ("tarball") or as a package
+directory ("package")}
 
 \item{path}{Optional file path to save the object}
 
 \item{requireValid}{Require that study is valid before exporting}
+}
+\value{
+Invisibly returns the name of the tarball file ("tarball") or the
+  path to the package directory ("package")
 }
 \description{
 Export a study

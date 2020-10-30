@@ -703,11 +703,21 @@ installStudy(study)
 @
 
 If I needed to transfer the study package to a different machine, instead of
-directly installing it, I could export it to a directory with
+directly installing it, I could export it as a package tarball with
 \texttt{exportStudy()}.
 
 <<export, eval=FALSE>>=
-exportStudy(study, type = "package")
+exportStudy(study)
+@
+
+Then after I moved the study package tarball to another machine (or shared it
+with a colleague), the study package could be installed with
+\texttt{install.packages()}. For example, the example study from this vignette
+could be installed with the following command.
+
+<<install-tarball, eval=FALSE>>=
+install.packages("ONstudyvignetteExample_0.0.0.9000.tar.gz",
+                 repos = NULL)
 @
 
 \subsection{Run the app locally}

@@ -1,5 +1,15 @@
 # 0.19.0.9000
 
+## Breaking change
+
+* `exportStudy()` - The argument `type` has changed. Studies can no longer be
+exported as RDS (`type = "rds")` or text files (`type = "text"`). This is
+because these were no longer able to capture all of the information that can
+potentially be included in a study package (e.g. custom plotting functions,
+report files). Instead, the default is now the new option `"tarball"`. This will
+export the study package as a source package tarball, which is ready to be
+installed directly with `install.packages()`. The option `"package"` remains; it
+exports the study as a package directory.
 
 # 0.19.0
 
