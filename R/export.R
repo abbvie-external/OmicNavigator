@@ -41,7 +41,7 @@ exportStudy <- function(
   if (!is.null(path)) {
     tarballOriginal <- tarball
     tarball <- file.path(path, tarballOriginal)
-    file.rename(tarballOriginal, tarball)
+    renameFile(tarballOriginal, tarball)
   }
   message(sprintf("Exported study to %s", tarball))
   return(invisible(tarball))

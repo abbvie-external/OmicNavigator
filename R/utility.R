@@ -146,6 +146,29 @@ capitalize <- function(x) {
   return(final)
 }
 
+# Filesystem -------------------------------------------------------------------
+
+# Rename file by first copying and then deleting original
+#
+# This is a workaround for file.rename() limitations. From ?files:
+#
+# > most platforms will not rename files from one file system to another. NB:
+# This means that renaming a file from a temporary directory to the user's
+# filespace or during package installation will often fail.
+#
+# file.rename() worked fine on my local Ubuntu, but failed on Jenkins.
+#
+# The workaround is to instead copy the file:
+# https://github.com/wch/vtest/issues/14
+#
+renameFile <- function(fileOriginal, fileNew) {
+  stopifnot(file.exists(fileOriginal))
+  file.copy(fileOriginal, fileNew)
+  stopifnot(file.exists(fileNew))
+  file.remove(fileOriginal)
+  return(invisible(fileNew))
+}
+
 # Miscellaneous ----------------------------------------------------------------
 
 # Returns TRUE if matches URL pattern, else FALSE
