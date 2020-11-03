@@ -375,7 +375,8 @@ createPackage <- function(study, directoryname) {
   # Data
   datadir <- file.path(directoryname, "inst", "OmicNavigator")
   dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
-  createTextFiles(study, datadir, calcOverlaps = TRUE)
+  annotations <- study[["annotations"]]
+  createTextFiles(study, datadir, calcOverlaps = !isEmpty(annotations))
 
   # Plots
   if (!isEmpty(study[["plots"]])) {

@@ -19,7 +19,7 @@ study <- createStudy(name = "test")
 results <- OmicNavigator:::testResults()
 study <- addResults(study, results = results)
 
-suppressWarnings(suppressMessages(installStudy(study)))
+suppressMessages(installStudy(study))
 
 testModelName <- names(study[["results"]])[1]
 testTestName <- names(study[["results"]][[1]])[1]
@@ -97,10 +97,8 @@ study <- addModels(study, models = models)
 tests <- OmicNavigator:::testTests()
 study <- addTests(study, tests = tests)
 
-suppressWarnings(
-  suppressMessages(
-    exportStudy(study, type = "package", path = tmplib)
-  )
+suppressMessages(
+  exportStudy(study, type = "package", path = tmplib)
 )
 
 # Test features, samples, and assays -------------------------------------------
@@ -114,10 +112,8 @@ study <- addSamples(study, samples = samples)
 assays <- OmicNavigator:::testAssays()
 study <- addAssays(study, assays = assays)
 
-suppressWarnings(
-  suppressMessages(
-    exportStudy(study, type = "package", path = tmplib)
-  )
+suppressMessages(
+  exportStudy(study, type = "package", path = tmplib)
 )
 
 # Test enrichments -------------------------------------------------------------
@@ -125,7 +121,7 @@ suppressWarnings(
 enrichments <- OmicNavigator:::testEnrichments()
 study <- addEnrichments(study, enrichments = enrichments)
 
-suppressWarnings(suppressMessages(installStudy(study)))
+suppressMessages(installStudy(study))
 
 testAnnotationName <- names(study[["enrichments"]][[1]])[1]
 
@@ -162,6 +158,11 @@ expect_true_xl(nrow(enrichmentsIntersection) > 0)
 expect_true_xl(ncol(enrichmentsIntersection) > 0)
 
 # Test annotations -------------------------------------------------------------
+
+expect_warning_xl(
+  addOverlaps(study),
+  "Cannot calculate overlaps without annotations"
+)
 
 annotations <- OmicNavigator:::testAnnotations()
 study <- addAnnotations(study, annotations = annotations)
