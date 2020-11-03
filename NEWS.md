@@ -1,4 +1,4 @@
-# 0.19.0.9000
+# 0.20.0
 
 ## Breaking change
 
@@ -16,6 +16,13 @@ exports the study as a package directory.
 * The "get" functions have a new argument `quiet`. Setting `quiet = TRUE` will
 suppress any messages, such as reporting unavailable data or the use of the
 "default" data.
+
+## Miscellaneous
+
+* Improved the messages from `installStudy()` and `exportStudy()`
+
+* `validateStudy()` now performs more in-depth check to validate that the
+featureIDs are consistent between the results, features, and assays tables
 
 # 0.19.0
 
