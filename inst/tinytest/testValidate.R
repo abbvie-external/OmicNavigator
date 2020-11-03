@@ -14,28 +14,72 @@ testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
 
 expect_true(validateStudy(testStudyObj))
 
+# Invalid column name for featureID
 invalidResults <- testStudyObj
 colnames(invalidResults[["results"]][[1]][[1]])[1] <- "wrongFeatureID"
 
 expect_error_xl(
   validateStudy(invalidResults),
-  "Name of features column doesn't match between results and features tables"
+  "Name of featureID column doesn't match between results and features tables"
+)
+
+# The features are completely wrong
+invalidResultsFeatures <- testStudyObj
+invalidResultsFeatures[["results"]][[1]][[1]][, 1] <- paste0("wrong", invalidResultsFeatures[["results"]][[1]][[1]][, 1])
+
+expect_error_xl(
+  validateStudy(invalidResultsFeatures),
+  "The features in the results table do not match the featureID column in the features table"
+)
+
+# Some of the features are missing. Add an extra feature to results table that
+# isn't present in features table.
+missingFeatures <- testStudyObj
+missingFeatures[["results"]][[1]][[1]] <- rbind(
+  missingFeatures[["results"]][[1]][[1]][1, ],
+  missingFeatures[["results"]][[1]][[1]]
+)
+missingFeatures[["results"]][[1]][[1]][1, 1] <- "missingInFeaturesTable"
+
+expect_error_xl(
+  validateStudy(missingFeatures),
+  "Some of the features in the assays table are missing from the featureID column in the features table"
 )
 
 # Assays -----------------------------------------------------------------------
 
+# The row names are completely wrong
 invalidAssaysRow <- testStudyObj
-row.names(invalidAssaysRow[["assays"]][[1]])[3] <- "wrongFeatureID"
+row.names(invalidAssaysRow[["assays"]][[1]]) <- NULL
 
 expect_error_xl(
   validateStudy(invalidAssaysRow),
-  "Row names of assays do not match featureID in features table"
+  "The row names of the assays table do not match the featureID column in the features table"
 )
 
+# Some of the row names are missing from the features table
+invalidAssaysRowMissing <- testStudyObj
+row.names(invalidAssaysRowMissing[["assays"]][[1]])[3] <- "wrongFeatureID"
+
+expect_error_xl(
+  validateStudy(invalidAssaysRowMissing),
+  "Some of the row names of the assays table are missing from the featureID column in the features table"
+)
+
+# The column names are completely wrong
 invalidAssaysCol <- testStudyObj
-colnames(invalidAssaysCol[["assays"]][[1]])[3] <- "wrongSampleID"
+colnames(invalidAssaysCol[["assays"]][[1]]) <- paste0("wrong", colnames(invalidAssaysCol[["assays"]][[1]]))
 
 expect_error_xl(
   validateStudy(invalidAssaysCol),
-  "Column names of assays do not match sampleID in samples table"
+  "The column names of the assays table do not match the sampleID column in the samples table"
+)
+
+# Some of the column names are missing from the samples table
+invalidAssaysColMissing <- testStudyObj
+colnames(invalidAssaysColMissing[["assays"]][[1]])[3] <- "wrongSampleID"
+
+expect_error_xl(
+  validateStudy(invalidAssaysColMissing),
+  "Some of the column names of the assays table are missing from the sampleID column in the samples table"
 )

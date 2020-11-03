@@ -15,8 +15,8 @@ validateStudy <- function(study) {
     checkFunction(study[[e]])
   }
 
-  validateResults(study)
   validateAssays(study)
+  validateResults(study)
 
   return(invisible(TRUE))
 }
@@ -29,17 +29,38 @@ validateResults <- function(study) {
   for (i in seq_along(results)) {
     modelID <- names(results)[i]
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
+    assays <- getAssays(study, modelID = modelID, quiet = TRUE)
     for (j in seq_along(results[[i]])) {
       testID <- names(results[[i]])[j]
       dataFrame <- results[[i]][[j]]
+
       if (!isEmpty(features)) {
         if (colnames(dataFrame)[1] != colnames(features)[1]) {
-          stop("Name of features column doesn't match between results and features tables")
+          stop("Name of featureID column doesn't match between results and features tables")
         }
-        if (!all(dataFrame[, 1] %in% features[, 1])) {
-          stop("Features in results table do not match features table")
+        resultsInFeatures <- dataFrame[, 1] %in% features[, 1]
+        if (sum(resultsInFeatures) == 0) {
+          stop("The features in the results table do not match the featureID column in the features table\n",
+               sprintf("modelID: %s, testID: %s", modelID, testID))
+        }
+        if (!all(resultsInFeatures)) {
+          stop("Some of the features in the assays table are missing from the featureID column in the features table\n",
+               sprintf("modelID: %s, testID: %s", modelID, testID))
         }
       }
+
+      if (!isEmpty(assays)) {
+        resultsInAssays <- dataFrame[, 1] %in% rownames(assays)
+        if (sum(resultsInAssays) == 0) {
+          stop("The features in the results table do not match the row names of the assays table\n",
+               sprintf("modelID: %s, testID: %s", modelID, testID))
+        }
+        if (!all(resultsInAssays)) {
+          stop("Some of the features in the results table are missing from the row names of the assays table\n",
+               sprintf("modelID: %s, testID: %s", modelID, testID))
+        }
+      }
+
     }
   }
 
@@ -58,8 +79,13 @@ validateAssays <- function(study) {
     rows <- row.names(assays[[i]])
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
     if (!isEmpty(features)) {
-      if (!all(rows %in% features[, 1])) {
-        stop("Row names of assays do not match featureID in features table\n",
+      rowsInFeatures <- rows %in% features[, 1]
+      if (sum(rowsInFeatures) == 0) {
+        stop("The row names of the assays table do not match the featureID column in the features table\n",
+             sprintf("modelID: %s", modelID))
+      }
+      if (!all(rowsInFeatures)) {
+        stop("Some of the row names of the assays table are missing from the featureID column in the features table\n",
              sprintf("modelID: %s", modelID))
       }
     }
@@ -68,8 +94,13 @@ validateAssays <- function(study) {
     cols <- colnames(assays[[i]])
     samples <- getSamples(study, modelID = modelID, quiet = TRUE)
     if (!isEmpty(samples)) {
-      if (!all(cols %in% samples[, 1])) {
-        stop("Column names of assays do not match sampleID in samples table\n",
+      colsInSamples <- cols %in% samples[, 1]
+      if (sum(colsInSamples) == 0) {
+        stop("The column names of the assays table do not match the sampleID column in the samples table\n",
+             sprintf("modelID: %s", modelID))
+      }
+      if (!all(colsInSamples)) {
+        stop("Some of the column names of the assays table are missing from the sampleID column in the samples table\n",
              sprintf("modelID: %s", modelID))
       }
     }
