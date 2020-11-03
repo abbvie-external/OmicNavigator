@@ -23,7 +23,6 @@ cam.BasalvsML
 A subset of the object \code{cam.BasalvsML} from Bioconductor workflow RNAseq123.
 }
 \examples{
-  data("RNAseq123", package = "OmicNavigator")
   head(cam.BasalvsML)
   str(cam.BasalvsML)
 

@@ -27,7 +27,6 @@ basal.vs.ml
 A subset of the object \code{basal.vs.ml} from Bioconductor workflow RNAseq123.
 }
 \examples{
-  data("RNAseq123", package = "OmicNavigator")
   head(basal.vs.ml)
   str(basal.vs.ml)
 

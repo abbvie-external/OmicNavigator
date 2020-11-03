@@ -22,7 +22,6 @@ group
 A subset of the object \code{group} from Bioconductor workflow RNAseq123.
 }
 \examples{
-  data("RNAseq123", package = "OmicNavigator")
   table(group)
   str(group)
 

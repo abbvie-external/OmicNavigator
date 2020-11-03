@@ -40,7 +40,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(basal.vs.lp)
 #'   str(basal.vs.lp)
 #'
@@ -65,7 +64,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(basal.vs.ml)
 #'   str(basal.vs.ml)
 #'
@@ -86,7 +84,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(cam.BasalvsLP)
 #'   str(cam.BasalvsLP)
 #'
@@ -107,7 +104,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(cam.BasalvsML)
 #'   str(cam.BasalvsML)
 #'
@@ -127,7 +123,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   table(group)
 #'   str(group)
 #'
@@ -147,7 +142,6 @@ NULL
 #' }
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   table(lane)
 #'   str(lane)
 #'
@@ -162,7 +156,6 @@ NULL
 #' @format A matrix with 24 rows and 9 columns
 #'
 #' @examples
-#'   data("RNAseq123", package = "OmicNavigator")
 #'   head(lcpm)
 #'   str(lcpm)
 #'
@@ -177,9 +170,8 @@ NULL
 #' @format A list of 4 character vectors
 #'
 #' @examples
-#'  data("RNAseq123", package = "OmicNavigator")
-#'  Mm.c2[[1]]
-#'  str(Mm.c2)
+#'   Mm.c2[[1]]
+#'   str(Mm.c2)
 #'
 #' @inherit shared-data source
 #' @inherit shared-data references
@@ -192,9 +184,8 @@ NULL
 #' @format A character vector containing the unique sample identifiers
 #'
 #' @examples
-#'  data("RNAseq123", package = "OmicNavigator")
-#'  head(samplenames)
-#'  str(samplenames)
+#'   head(samplenames)
+#'   str(samplenames)
 #'
 #' @inherit shared-data source
 #' @inherit shared-data references

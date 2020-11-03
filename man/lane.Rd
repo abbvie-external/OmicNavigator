@@ -22,7 +22,6 @@ lane
 A subset of the object \code{lane} from Bioconductor workflow RNAseq123.
 }
 \examples{
-  data("RNAseq123", package = "OmicNavigator")
   table(lane)
   str(lane)
 

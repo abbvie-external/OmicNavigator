@@ -27,7 +27,6 @@ basal.vs.lp
 A subset of the object \code{basal.vs.lp} from Bioconductor workflow RNAseq123.
 }
 \examples{
-  data("RNAseq123", package = "OmicNavigator")
   head(basal.vs.lp)
   str(basal.vs.lp)
 
