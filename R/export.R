@@ -442,6 +442,7 @@ createPackage <- function(study, directoryname) {
 #' @export
 installStudy <- function(study, library = .libPaths()[1]) {
   stopifnot(inherits(study, "onStudy"), dir.exists(library))
+  message(sprintf("Installing study \"%s\" in %s", study[["name"]], library))
 
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
   tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
@@ -458,5 +459,6 @@ installStudy <- function(study, library = .libPaths()[1]) {
     quiet = TRUE
   )
 
+  message("Success!")
   return(invisible(study))
 }
