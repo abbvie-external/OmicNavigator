@@ -1,5 +1,8 @@
 # 0.20.0.9000
 
+* `validateStudy()` now throws a warning if the results tables for the tests of
+a model have no common columns. The lack of common columns will disable the
+UpSet filtering in the app for that model.
 
 # 0.20.0
 

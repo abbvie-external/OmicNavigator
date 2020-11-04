@@ -30,6 +30,17 @@ validateResults <- function(study) {
     modelID <- names(results)[i]
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
     assays <- getAssays(study, modelID = modelID, quiet = TRUE)
+
+    # Throw warning if no common columns across tests. This will disable UpSet
+    # filtering in app.
+    upsetCols <- getUpsetCols(study, modelID)
+    if (isEmpty(upsetCols)) {
+      warning(
+        sprintf("The results tables for the tests of modelID \"%s\" do not have any columns in common. ", modelID),
+        "You will not be able to use the UpSet filtering in the app. ",
+        "If it makes sense for your study, please consider using shared column names."
+      )
+    }
     for (j in seq_along(results[[i]])) {
       testID <- names(results[[i]])[j]
       dataFrame <- results[[i]][[j]]

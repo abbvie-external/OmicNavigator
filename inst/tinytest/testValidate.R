@@ -14,6 +14,15 @@ testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
 
 expect_true(validateStudy(testStudyObj))
 
+# Throw warning if no common columns across tests of a model
+noCommonCols <- testStudyObj
+colnames(noCommonCols[["results"]][[1]][[1]])[2:4] <- c("B0", "B1", "P")
+
+expect_warning_xl(
+  validateStudy(noCommonCols),
+  "The results tables for the tests of modelID"
+)
+
 # Invalid column name for featureID
 invalidResults <- testStudyObj
 colnames(invalidResults[["results"]][[1]][[1]])[1] <- "wrongFeatureID"
