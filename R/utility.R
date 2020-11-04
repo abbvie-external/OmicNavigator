@@ -121,10 +121,18 @@ warnIfNonCharacterCols <- function(x) {
   characterColsFilter <- vapply(x, is.character, logical(1))
   nonCharacterCols <- colnames(x)[!characterColsFilter]
   if (!isEmpty(nonCharacterCols)) {
+    nonCharacterColsPreview <- utils::capture.output(
+      utils::head(x[, nonCharacterCols, drop = FALSE])
+    )
+    if (nrow(x) > 6) {
+      nonCharacterColsPreview <- c(nonCharacterColsPreview, "...")
+    }
     warning(
       "Detected non-character columns. ",
       "The following columns were automatically coerced to character strings: ",
       paste(nonCharacterCols, collapse = ", "),
+      "\n\n",
+      paste(nonCharacterColsPreview, collapse = "\n"),
       call. = FALSE
     )
   }
