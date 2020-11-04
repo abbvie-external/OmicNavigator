@@ -37,7 +37,7 @@ validateResults <- function(study) {
     if (isEmpty(upsetCols)) {
       warning(
         sprintf("The results tables for the tests of modelID \"%s\" do not have any columns in common. ", modelID),
-        "You will not be able to use the UpSet filtering in the app. ",
+        "You will not be able to perform set analysis in the app. ",
         "If it makes sense for your study, please consider using shared column names."
       )
     }
