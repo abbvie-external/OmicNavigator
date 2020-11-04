@@ -1,4 +1,8 @@
-# 0.20.0.9000
+# 0.20.1
+
+* The release tarball includes [version 0.2.5 of the web app][app-v0.2.5]
+
+[app-v0.2.5]: ***REMOVED***/releases/tag/v0.2.5
 
 * `validateStudy()` now throws a warning if the results tables for the tests of
 a model have no common columns. The lack of common columns will disable the
