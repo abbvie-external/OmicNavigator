@@ -42,7 +42,7 @@ getInstalledStudies <- function(libraries = NULL) {
 #'
 #' If one or more filters are applied, then only a subset of the original nested
 #' list is returned. Technically, each filter applied is used to subset the
-#' original nested list using \code{\link[base]{[[}}.
+#' original nested list using \code{\link[base:Extract]{[[}}.
 #'
 #' If no data is available, an empty list is returned (\code{list()}).
 #'
