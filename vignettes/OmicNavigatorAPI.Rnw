@@ -327,6 +327,7 @@ toJSON(barcodeData, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Reports}
+\label{sec:reports}
 
 Given a study and model, \texttt{getReportLink()} returns a link to a report file. This
 can either be a URL or a path to a file installed in a study package.
@@ -347,6 +348,23 @@ reportLink <- getReportLink(
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
 @
 
+\section{Linkouts in results table (experimental)}
+\label{sec:results-linkouts}
+
+Given a study and model, \texttt{getResultsLinkouts()} returns one or more URL
+patterns that provide linkouts to external resources. The variables in the URL
+patterns refer to columns in the results table returned by
+\texttt{getResultsTable()} (Section \ref{sec:results-table}).
+
+<<getResultsLinkouts>>=
+resultsLinkouts <- getResultsLinkouts(
+  study = "ABC",
+  modelID = "model_01"
+)
+toJSON(resultsLinkouts, auto_unbox = TRUE, pretty = 2)
+@
+
+
 \section{Unavailable data}
 \label{sec:unavailable-data}
 
@@ -363,9 +381,13 @@ toJSON(getUpsetCols(study = "ABC", modelID = "?"))
 toJSON(getMetaFeaturesTable(study = "ABC", modelID = "?", featureID = "?"))
 toJSON(getBarcodeData(study = "ABC", modelID = "?", testID = "?",
                       annotationID = "?", termID = "?"))
-# The study "ABC" has a default report that is returned for any modelID.
-# Otherwise an empty array would have been returned.
-toJSON(getReportLink(study = "ABC", modelID = "?"))
+# Elements that have a value defined for the special modelID "default" will
+# return this value if the modelID cannot be found. Otherwise an empty array
+# would have been returned.
+toJSON(getReportLink(study = "ABC", modelID = "?"),
+       auto_unbox = TRUE, pretty = TRUE)
+toJSON(getResultsLinkouts(study = "ABC", modelID = "?"),
+       auto_unbox = TRUE, pretty = 2)
 @
 
 \end{document}
