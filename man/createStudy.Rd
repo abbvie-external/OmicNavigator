@@ -19,6 +19,7 @@ createStudy(
   plots = list(),
   barcodes = list(),
   reports = list(),
+  resultsLinkouts = list(),
   version = NULL
 )
 }
@@ -125,6 +126,11 @@ If it is a path to a file, this file will be included in the exported study
 package. To share a report across multiple models, use the modelID
 "default".}
 
+\item{resultsLinkouts}{The URL patterns that describe linkouts to external
+resources (see Details below). The input object is a list of character
+vectors (one per model). To share linkouts across multiple models, use the
+modelID "default".}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -151,6 +157,7 @@ study <- createStudy(name = "ABC",
   \code{\link{addPlots}},
   \code{\link{addBarcodes}},
   \code{\link{addReports}},
+  \code{\link{addResultsLinkouts}},
   \code{\link{exportStudy}},
   \code{\link{installStudy}}
 }

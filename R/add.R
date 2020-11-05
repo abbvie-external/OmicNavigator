@@ -17,6 +17,7 @@
 #' @inheritParams addPlots
 #' @inheritParams addBarcodes
 #' @inheritParams addReports
+#' @inheritParams addResultsLinkouts
 #'
 #' @seealso
 #'   \code{\link{addSamples}},
@@ -31,6 +32,7 @@
 #'   \code{\link{addPlots}},
 #'   \code{\link{addBarcodes}},
 #'   \code{\link{addReports}},
+#'   \code{\link{addResultsLinkouts}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -54,6 +56,7 @@ createStudy <- function(name,
                         plots = list(),
                         barcodes = list(),
                         reports = list(),
+                        resultsLinkouts = list(),
                         version = NULL)
 {
   checkName(name)
@@ -74,6 +77,7 @@ createStudy <- function(name,
                 plots = list(),
                 barcodes = list(),
                 reports = list(),
+                resultsLinkouts = list(),
                 overlaps = list(),
                 version = version)
   class(study) <- "onStudy"
@@ -90,6 +94,7 @@ createStudy <- function(name,
   study <- addPlots(study, plots = plots)
   study <- addBarcodes(study, barcodes = barcodes)
   study <- addReports(study, reports = reports)
+  study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
 
   return(study)
 }
@@ -397,6 +402,53 @@ addReports <- function(study, reports) {
   checkReports(reports)
 
   study[["reports"]] <- utils::modifyList(study[["reports"]], reports)
+
+  return(study)
+}
+
+#' Add linkouts to external resources in the results table
+#'
+#' You can provide additional information on the features in your study by
+#' providing linkouts to external resources. These will be embedded directly in
+#' the results table.
+#'
+#' To construct a valid URL pattern to describe a linkout, you can include any
+#' of the column names in the features table by enclosing them in \code{${}}. As
+#' an example, if your features table included a column named \code{"ensembl"}
+#' that contained the Ensembl Gene ID for each feature, you could create a
+#' linkout to Ensembl using the following pattern:
+#'
+#' \preformatted{"https://ensembl.org/Homo_sapiens/Gene/Summary?g=${ensembl}"}
+#'
+#' As another example, if you had a column named \code{"entrez"} that contained
+#' the Entrez Gene ID  for each feature, you could create a linkout to Entrez
+#' using the following pattern:
+#'
+#' \preformatted{"https://www.ncbi.nlm.nih.gov/gene/${entrez}"}
+#'
+#' @param resultsLinkouts The URL patterns that describe linkouts to external
+#'   resources (see Details below). The input object is a list of character
+#'   vectors (one per model). To share linkouts across multiple models, use the
+#'   modelID "default".
+#' @inheritParams shared-add
+#'
+#' @examples
+#'   study <- createStudy("example")
+#'   resultsLinkouts <- list(
+#'     default = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=${ensembl}",
+#'                 "https://www.ncbi.nlm.nih.gov/gene/${entrez}")
+#'   )
+#'   study <- addResultsLinkouts(study, resultsLinkouts)
+#'
+#' @seealso \code{\link{addFeatures}}
+#'
+#' @export
+addResultsLinkouts <- function(study, resultsLinkouts) {
+  checkStudy(study)
+  checkResultsLinkouts(resultsLinkouts)
+
+  study[["resultsLinkouts"]] <- utils::modifyList(study[["resultsLinkouts"]],
+                                                  resultsLinkouts)
 
   return(study)
 }

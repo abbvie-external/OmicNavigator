@@ -319,3 +319,7 @@ checkOverlaps <- function(overlaps) {
     )
   }
 }
+
+checkResultsLinkouts <- function(resultsLinkouts) {
+  return(TRUE)
+}
