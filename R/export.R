@@ -71,6 +71,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportPlots(study, directoryname)
   exportBarcodes(study, directoryname)
   exportReports(study, directoryname)
+  exportResultsLinkouts(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
@@ -235,6 +236,15 @@ exportReports <- function(study, path = ".") {
   exportElements(
     study,
     elements = "reports",
+    path = path,
+    fileType = "json"
+  )
+}
+
+exportResultsLinkouts <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "resultsLinkouts",
     path = path,
     fileType = "json"
   )

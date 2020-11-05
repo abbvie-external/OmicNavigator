@@ -321,5 +321,11 @@ checkOverlaps <- function(overlaps) {
 }
 
 checkResultsLinkouts <- function(resultsLinkouts) {
-  return(TRUE)
+  checkList(resultsLinkouts)
+
+  for (i in seq_along(resultsLinkouts)) {
+    stopifnot(is.character(resultsLinkouts[[i]]))
+  }
+
+  return(NULL)
 }

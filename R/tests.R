@@ -20,6 +20,7 @@ testStudy <- function(name,
                        plots = list(),
                        barcodes = testBarcodes(),
                        reports = testReports(),
+                       resultsLinkouts = testResultsLinkouts(),
                        version = version)
 
   return(study)
@@ -222,6 +223,15 @@ testReports <- function(n = 3) {
     model_03 = "https://www.domain.com/model_03.html"
   )
   return(reports)
+}
+
+testResultsLinkouts <- function(n = 3) {
+  resultsLinkouts <- list(
+    default = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=${customID}",
+                "https://www.ncbi.nlm.nih.gov/gene/${featureVar01}"),
+    model_03 = "https://www.ncbi.nlm.nih.gov/nuccore?term=${featureVar02}"
+  )
+  return(resultsLinkouts)
 }
 
 testStudyMinimal <- function() {

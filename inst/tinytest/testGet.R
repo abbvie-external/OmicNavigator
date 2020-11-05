@@ -674,7 +674,7 @@ expect_error(
 
 expect_identical_xl(
   getReports(testStudyName, modelID = testModelName),
-  "https://www.domain.com/default.html"
+  testStudyObj[["reports"]][["default"]]
 )
 
 expect_identical_xl(
@@ -683,6 +683,44 @@ expect_identical_xl(
   info = "Confirm model-specific report data returned"
 )
 
+# getResultsLinkouts ---------------------------------------------------------------------
+
+expect_identical_xl(
+  getResultsLinkouts(testStudyObj),
+  testStudyObj[["resultsLinkouts"]]
+)
+
+expect_identical_xl(
+  getResultsLinkouts(testStudyObj, modelID = testModelName),
+  testStudyObj[["resultsLinkouts"]][["default"]]
+)
+
+expect_identical_xl(
+  getResultsLinkouts(testStudyObj, modelID = "model_03"),
+  testStudyObj[["resultsLinkouts"]][["model_03"]],
+  info = "Confirm model-specific results table linkouts returned"
+)
+
+expect_message(
+  getResultsLinkouts(emptyStudy),
+  "No resultsLinkouts available"
+)
+
+expect_error(
+  getResultsLinkouts(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical_xl(
+  getResultsLinkouts(testStudyName, modelID = testModelName),
+  testStudyObj[["resultsLinkouts"]][["default"]]
+)
+
+expect_identical_xl(
+  getResultsLinkouts(testStudyName, modelID = "model_03"),
+  testStudyObj[["resultsLinkouts"]][["model_03"]],
+  info = "Confirm model-specific results table linkouts returned"
+)
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

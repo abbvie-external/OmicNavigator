@@ -47,6 +47,9 @@ study <- addBarcodes(study, barcodes = barcodes)
 reports <- OmicNavigator:::testReports()
 study <- addReports(study, reports = reports)
 
+resultsLinkouts <- OmicNavigator:::testResultsLinkouts()
+study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
+
 expect_identical(
   study,
   OmicNavigator:::testStudy(name = "test")

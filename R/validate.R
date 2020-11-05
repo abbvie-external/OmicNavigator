@@ -15,8 +15,24 @@ validateStudy <- function(study) {
     checkFunction(study[[e]])
   }
 
+  validateResultsLinkouts(study)
   validateAssays(study)
   validateResults(study)
+
+  return(invisible(TRUE))
+}
+
+# To do: Confirm that variable in URL patterns only include columns in
+# corresponding features table.
+validateResultsLinkouts <- function(study) {
+  resultsLinkouts <- study[["resultsLinkouts"]]
+
+  if (isEmpty(resultsLinkouts)) return(invisible(NA))
+
+  for (i in seq_along(resultsLinkouts)) {
+    modelID <- names(resultsLinkouts)[i]
+    features <- getFeatures(study, modelID = modelID, quiet = TRUE)
+  }
 
   return(invisible(TRUE))
 }

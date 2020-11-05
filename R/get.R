@@ -296,6 +296,24 @@ getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   )
 }
 
+#' Get results table linkouts from a study
+#'
+#' @inherit shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
+  getElements(
+    study,
+    elements = "resultsLinkouts",
+    filters = list(modelID = modelID),
+    default = "default",
+    fileType = "json",
+    quiet = quiet,
+    libraries = libraries
+  )
+}
+
 # ... Arguments passed to either data.table::fread() or jsonlite::read_json()
 getElements <- function(
   study,
