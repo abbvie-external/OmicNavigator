@@ -721,6 +721,7 @@ expect_identical_xl(
   testStudyObj[["resultsLinkouts"]][["model_03"]],
   info = "Confirm model-specific results table linkouts returned"
 )
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

@@ -324,7 +324,10 @@ checkResultsLinkouts <- function(resultsLinkouts) {
   checkList(resultsLinkouts)
 
   for (i in seq_along(resultsLinkouts)) {
-    stopifnot(is.character(resultsLinkouts[[i]]))
+    checkList(resultsLinkouts[[i]])
+    for (j in seq_along(resultsLinkouts[[i]])) {
+      stopifnot(is.character(resultsLinkouts[[i]][[j]]))
+    }
   }
 
   return(NULL)

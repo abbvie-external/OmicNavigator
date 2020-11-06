@@ -127,9 +127,11 @@ package. To share a report across multiple models, use the modelID
 "default".}
 
 \item{resultsLinkouts}{The URL patterns that describe linkouts to external
-resources (see Details below). The input object is a list of character
-vectors (one per model). To share linkouts across multiple models, use the
-modelID "default".}
+resources (see Details below). The input object is a nested named list. The
+names of the list correspond to the model names. Each element of the list
+is a named list of character vectors. The names of this nested list must
+correspond to the column names of the matching features table. To share
+linkouts across multiple models, use the modelID "default".}
 
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is

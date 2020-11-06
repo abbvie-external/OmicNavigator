@@ -412,31 +412,38 @@ addReports <- function(study, reports) {
 #' providing linkouts to external resources. These will be embedded directly in
 #' the results table.
 #'
-#' To construct a valid URL pattern to describe a linkout, you can include any
-#' of the column names in the features table by enclosing them in \code{${}}. As
-#' an example, if your features table included a column named \code{"ensembl"}
-#' that contained the Ensembl Gene ID for each feature, you could create a
-#' linkout to Ensembl using the following pattern:
+#' For each linkout, the URL pattern you provide will be concatenated with the
+#' value of that column for each row. As an example, if your features table
+#' included a column named \code{"ensembl"} that contained the Ensembl Gene ID
+#' for each feature, you could create a linkout to Ensembl using the following
+#' pattern:
 #'
-#' \preformatted{"https://ensembl.org/Homo_sapiens/Gene/Summary?g=${ensembl}"}
+#' \preformatted{ensembl = "https://ensembl.org/Homo_sapiens/Gene/Summary?g="}
 #'
 #' As another example, if you had a column named \code{"entrez"} that contained
 #' the Entrez Gene ID  for each feature, you could create a linkout to Entrez
 #' using the following pattern:
 #'
-#' \preformatted{"https://www.ncbi.nlm.nih.gov/gene/${entrez}"}
+#' \preformatted{entrez = "https://www.ncbi.nlm.nih.gov/gene/"}
+#'
+#' Note that you can provide more than one linkout per column.
 #'
 #' @param resultsLinkouts The URL patterns that describe linkouts to external
-#'   resources (see Details below). The input object is a list of character
-#'   vectors (one per model). To share linkouts across multiple models, use the
-#'   modelID "default".
+#'   resources (see Details below). The input object is a nested named list. The
+#'   names of the list correspond to the model names. Each element of the list
+#'   is a named list of character vectors. The names of this nested list must
+#'   correspond to the column names of the matching features table. To share
+#'   linkouts across multiple models, use the modelID "default".
 #' @inheritParams shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")
 #'   resultsLinkouts <- list(
-#'     default = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=${ensembl}",
-#'                 "https://www.ncbi.nlm.nih.gov/gene/${entrez}")
+#'     default = list(
+#'       ensembl = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+#'                   "https://www.genome.ucsc.edu/cgi-bin/hgGene?hgg_gene="),
+#'       entrez = "https://www.ncbi.nlm.nih.gov/gene/"
+#'     )
 #'   )
 #'   study <- addResultsLinkouts(study, resultsLinkouts)
 #'

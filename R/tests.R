@@ -227,9 +227,13 @@ testReports <- function(n = 3) {
 
 testResultsLinkouts <- function(n = 3) {
   resultsLinkouts <- list(
-    default = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=${customID}",
-                "https://www.ncbi.nlm.nih.gov/gene/${featureVar01}"),
-    model_03 = "https://www.ncbi.nlm.nih.gov/nuccore?term=${featureVar02}"
+    default = list(
+      customID = "https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+      featureVar01 = "https://www.ncbi.nlm.nih.gov/gene/"
+    ),
+    model_03 = list(
+      featureVar02 = "https://www.ncbi.nlm.nih.gov/nuccore?term="
+    )
   )
   return(resultsLinkouts)
 }

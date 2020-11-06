@@ -352,9 +352,10 @@ toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
 \label{sec:results-linkouts}
 
 Given a study and model, \texttt{getResultsLinkouts()} returns one or more URL
-patterns that provide linkouts to external resources. The variables in the URL
-patterns refer to columns in the results table returned by
-\texttt{getResultsTable()} (Section \ref{sec:results-table}).
+patterns that provide linkouts to external resources. The fields refer to
+columns in the results table returned by \texttt{getResultsTable()} (Section
+\ref{sec:results-table}). The value of the column in each row should be
+concatenated to the end of the URL pattern to form each linkout.
 
 <<getResultsLinkouts>>=
 resultsLinkouts <- getResultsLinkouts(
@@ -363,7 +364,6 @@ resultsLinkouts <- getResultsLinkouts(
 )
 toJSON(resultsLinkouts, auto_unbox = TRUE, pretty = 2)
 @
-
 
 \section{Unavailable data}
 \label{sec:unavailable-data}

@@ -22,8 +22,8 @@ validateStudy <- function(study) {
   return(invisible(TRUE))
 }
 
-# To do: Confirm that variable in URL patterns only include columns in
-# corresponding features table.
+# Validate that results table linkouts only include columns in corresponding
+# features table.
 validateResultsLinkouts <- function(study) {
   resultsLinkouts <- study[["resultsLinkouts"]]
 
@@ -32,6 +32,13 @@ validateResultsLinkouts <- function(study) {
   for (i in seq_along(resultsLinkouts)) {
     modelID <- names(resultsLinkouts)[i]
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
+    for (j in seq_along(resultsLinkouts[[i]])) {
+      featureColumnName <- names(resultsLinkouts[[i]])[j]
+      if (!featureColumnName %in% colnames(features)) {
+        stop(sprintf("Invalid results table linkout for modelID \"%s\"\n"),
+             sprintf("\"%s\" is not the name of a column in the features table"))
+      }
+    }
   }
 
   return(invisible(TRUE))
