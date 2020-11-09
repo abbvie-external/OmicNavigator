@@ -365,6 +365,10 @@ resultsLinkouts <- getResultsLinkouts(
 toJSON(resultsLinkouts, auto_unbox = TRUE, pretty = 2)
 @
 
+Note that if you automatically unbox single strings in the JSON response, then
+the results for each column may be a string or an array of strings depending
+on whether there are one or more linkouts.
+
 \section{Unavailable data}
 \label{sec:unavailable-data}
 

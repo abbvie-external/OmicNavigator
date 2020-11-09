@@ -228,7 +228,8 @@ testReports <- function(n = 3) {
 testResultsLinkouts <- function(n = 3) {
   resultsLinkouts <- list(
     default = list(
-      customID = "https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+      customID = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+                   "https://www.targetvalidation.org/target/"),
       featureVar01 = "https://www.ncbi.nlm.nih.gov/gene/"
     ),
     model_03 = list(
