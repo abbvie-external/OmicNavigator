@@ -722,6 +722,46 @@ expect_identical_xl(
   info = "Confirm model-specific results table linkouts returned"
 )
 
+
+# getEnrichmentsLinkouts ---------------------------------------------------------------------
+
+expect_identical_xl(
+  getEnrichmentsLinkouts(testStudyObj),
+  testStudyObj[["enrichmentsLinkouts"]]
+)
+
+expect_identical_xl(
+  getEnrichmentsLinkouts(testStudyObj, annotationID = testAnnotationName),
+  testStudyObj[["enrichmentsLinkouts"]][[testAnnotationName]]
+)
+
+expect_identical_xl(
+  getEnrichmentsLinkouts(testStudyObj, annotationID = "annotation_03"),
+  testStudyObj[["enrichmentsLinkouts"]][["annotation_03"]],
+  info = "Confirm annotation-specific enrichments table linkouts returned"
+)
+
+expect_message(
+  getEnrichmentsLinkouts(emptyStudy),
+  "No enrichmentsLinkouts available"
+)
+
+expect_error(
+  getEnrichmentsLinkouts(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical_xl(
+  getEnrichmentsLinkouts(testStudyName, annotationID = testAnnotationName),
+  testStudyObj[["enrichmentsLinkouts"]][[testAnnotationName]]
+)
+
+expect_identical_xl(
+  getEnrichmentsLinkouts(testStudyName, annotationID = "annotation_03"),
+  testStudyObj[["enrichmentsLinkouts"]][["annotation_03"]],
+  info = "Confirm annotation-specific enrichments table linkouts returned"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

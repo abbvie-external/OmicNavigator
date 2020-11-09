@@ -332,3 +332,13 @@ checkResultsLinkouts <- function(resultsLinkouts) {
 
   return(NULL)
 }
+
+checkEnrichmentsLinkouts <- function(enrichmentsLinkouts) {
+  checkList(enrichmentsLinkouts)
+
+  for (i in seq_along(enrichmentsLinkouts)) {
+    stopifnot(is.character(enrichmentsLinkouts[[i]]))
+  }
+
+  return(NULL)
+}

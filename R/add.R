@@ -18,6 +18,7 @@
 #' @inheritParams addBarcodes
 #' @inheritParams addReports
 #' @inheritParams addResultsLinkouts
+#' @inheritParams addEnrichmentsLinkouts
 #'
 #' @seealso
 #'   \code{\link{addSamples}},
@@ -33,6 +34,7 @@
 #'   \code{\link{addBarcodes}},
 #'   \code{\link{addReports}},
 #'   \code{\link{addResultsLinkouts}},
+#'   \code{\link{addEnrichmentsLinkouts}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -57,6 +59,7 @@ createStudy <- function(name,
                         barcodes = list(),
                         reports = list(),
                         resultsLinkouts = list(),
+                        enrichmentsLinkouts = list(),
                         version = NULL)
 {
   checkName(name)
@@ -78,6 +81,7 @@ createStudy <- function(name,
                 barcodes = list(),
                 reports = list(),
                 resultsLinkouts = list(),
+                enrichmentsLinkouts = list(),
                 overlaps = list(),
                 version = version)
   class(study) <- "onStudy"
@@ -95,6 +99,7 @@ createStudy <- function(name,
   study <- addBarcodes(study, barcodes = barcodes)
   study <- addReports(study, reports = reports)
   study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
+  study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts)
 
   return(study)
 }
@@ -456,6 +461,56 @@ addResultsLinkouts <- function(study, resultsLinkouts) {
 
   study[["resultsLinkouts"]] <- utils::modifyList(study[["resultsLinkouts"]],
                                                   resultsLinkouts)
+
+  return(study)
+}
+
+#' Add linkouts to external resources in the enrichments table
+#'
+#' You can provide additional information on the annotation terms in your study
+#' by providing linkouts to external resources. These will be embedded directly
+#' in the enrichments table.
+#'
+#' For each linkout, the URL pattern you provide will be concatenated with the
+#' value of the termID column. As an example, if you used the annotation
+#' database \href{http://amigo.geneontology.org/}{AmiGO 2} for your enrichments
+#' analysis, you can provide a linkout for each termID using the following
+#' pattern:
+#'
+#' \preformatted{go = "http://amigo.geneontology.org/amigo/term/"}
+#'
+#' As another example, if you used the annotation database
+#' \href{https://reactome.org/}{Reactome} for your enrichments analysis, you can
+#' provide a linkout for each termID using the following pattern:
+#'
+#' \preformatted{reactome = "https://reactome.org/content/detail/"}
+#'
+#' Note that you can provide more than one linkout per termID.
+#'
+#' @param enrichmentsLinkouts The URL patterns that describe linkouts to
+#'   external resources (see Details below). The input object is a named list.
+#'   The names of the list correspond to the annotation names. Each element of
+#'   the list is a character vector of linkouts for that annotationID.
+#' @inheritParams shared-add
+#'
+#' @examples
+#'   study <- createStudy("example")
+#'   enrichmentsLinkouts <- list(
+#'     gobp = c("http://amigo.geneontology.org/amigo/term/",
+#'              "https://www.ebi.ac.uk/QuickGO/term/"),
+#'     reactome = "https://reactome.org/content/detail/"
+#'   )
+#'   study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts)
+#'
+#' @seealso \code{\link{addAnnotations}}, \code{\link{addEnrichments}}
+#'
+#' @export
+addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts) {
+  checkStudy(study)
+  checkEnrichmentsLinkouts(enrichmentsLinkouts)
+
+  study[["enrichmentsLinkouts"]] <- utils::modifyList(study[["enrichmentsLinkouts"]],
+                                                      enrichmentsLinkouts)
 
   return(study)
 }

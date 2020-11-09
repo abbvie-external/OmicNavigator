@@ -21,6 +21,7 @@ testStudy <- function(name,
                        barcodes = testBarcodes(),
                        reports = testReports(),
                        resultsLinkouts = testResultsLinkouts(),
+                       enrichmentsLinkouts = testEnrichmentsLinkouts(),
                        version = version)
 
   return(study)
@@ -237,6 +238,15 @@ testResultsLinkouts <- function(n = 3) {
     )
   )
   return(resultsLinkouts)
+}
+
+testEnrichmentsLinkouts <- function(n = 3) {
+  enrichmentsLinkouts <- list(
+    annotation_01 = c("http://amigo.geneontology.org/amigo/term/",
+                      "https://www.ebi.ac.uk/QuickGO/term/"),
+    annotation_03 = "https://reactome.org/content/detail/"
+  )
+  return(enrichmentsLinkouts)
 }
 
 testStudyMinimal <- function() {

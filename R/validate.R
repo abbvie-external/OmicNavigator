@@ -16,6 +16,7 @@ validateStudy <- function(study) {
   }
 
   validateResultsLinkouts(study)
+  validateEnrichmentsLinkouts(study)
   validateAssays(study)
   validateResults(study)
 
@@ -35,9 +36,29 @@ validateResultsLinkouts <- function(study) {
     for (j in seq_along(resultsLinkouts[[i]])) {
       featureColumnName <- names(resultsLinkouts[[i]])[j]
       if (!featureColumnName %in% colnames(features)) {
-        stop(sprintf("Invalid results table linkout for modelID \"%s\"\n"),
-             sprintf("\"%s\" is not the name of a column in the features table"))
+        stop(sprintf("Invalid results table linkout for modelID \"%s\"\n", modelID),
+             sprintf("\"%s\" is not the name of a column in the features table", featureColumnName))
       }
+    }
+  }
+
+  return(invisible(TRUE))
+}
+
+# Validate that enrichments table linkouts only include available annotationIDs
+validateEnrichmentsLinkouts <- function(study) {
+  enrichmentsLinkouts <- study[["enrichmentsLinkouts"]]
+
+  if (isEmpty(enrichmentsLinkouts)) return(invisible(NA))
+
+  annotations <- getAnnotations(study, quiet = TRUE)
+
+  for (i in seq_along(enrichmentsLinkouts)) {
+    annotationID <- names(enrichmentsLinkouts)[i]
+    if (!annotationID %in% names(annotations)) {
+      stop("Invalid enrichments table linkout\n",
+           sprintf("The annotationID \"%s\" is not an available annotation\n", annotationID),
+           "Add it with addAnnotations()")
     }
   }
 

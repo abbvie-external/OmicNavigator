@@ -186,3 +186,11 @@ expect_error(
   addReports(study, reports = list(modelID = "C:/path/to/non-existent/file")),
   "Report must be a URL or a path to an existing file"
 )
+
+expect_error(
+  addResultsLinkouts(study, resultsLinkouts = NULL)
+)
+
+expect_error(
+  addEnrichmentsLinkouts(study, enrichmentsLinkouts = NULL)
+)

@@ -50,7 +50,10 @@ study <- addReports(study, reports = reports)
 resultsLinkouts <- OmicNavigator:::testResultsLinkouts()
 study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
 
-expect_identical(
+enrichmentsLinkouts <- OmicNavigator:::testEnrichmentsLinkouts()
+study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts)
+
+expect_identical_xl(
   study,
   OmicNavigator:::testStudy(name = "test")
 )
