@@ -92,3 +92,30 @@ expect_error_xl(
   validateStudy(invalidAssaysColMissing),
   "Some of the column names of the assays table are missing from the sampleID column in the samples table"
 )
+
+# Results Linkouts -------------------------------------------------------------
+
+# A results linkout refers to a non-existing column in the features table
+invalidResultsLinkouts <- testStudyObj
+names(invalidResultsLinkouts[["resultsLinkouts"]][["model_03"]]) <- "non-existent-column"
+
+expect_error_xl(
+  validateStudy(invalidResultsLinkouts),
+  "Invalid results table linkout for modelID \"model_03\""
+)
+
+expect_error_xl(
+  validateStudy(invalidResultsLinkouts),
+  "\"non-existent-column\" is not the name of a column in the features table"
+)
+
+# Enrichments Linkouts ---------------------------------------------------------
+
+# An enrichments linkout refers to a non-existing annotationID
+invalidEnrichmentsLinkouts <- testStudyObj
+names(invalidEnrichmentsLinkouts[["enrichmentsLinkouts"]])[1] <- "non-existent-annotationID"
+
+expect_error_xl(
+  validateStudy(invalidEnrichmentsLinkouts),
+  "The annotationID \"non-existent-annotationID\" is not an available annotation\n"
+)
