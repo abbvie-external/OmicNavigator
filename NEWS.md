@@ -2,6 +2,9 @@
 
 * Support for linkouts to external resources in results and enrichments tables
 
+* New function `getPackageVersion()` for the app to conveniently query the
+current installed version of the R package
+
 # 0.20.1
 
 * The release tarball includes [version 0.2.5 of the web app][app-v0.2.5]

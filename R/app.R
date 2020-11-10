@@ -389,3 +389,10 @@ getReportLink <- function(study, modelID) {
 
   return(report)
 }
+
+#' Get version of OmicNavigator package
+#'
+#' @export
+getPackageVersion <- function() {
+  as.character(utils::packageVersion("OmicNavigator"))
+}

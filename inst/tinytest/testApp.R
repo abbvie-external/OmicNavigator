@@ -302,6 +302,13 @@ expect_identical(
                  annotation[["terms"]][["term_03"]]))
 )
 
+# getPackageVersion ------------------------------------------------------------
+
+expect_identical_xl(
+  class(getPackageVersion()),
+  "character"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

@@ -423,4 +423,14 @@ toJSON(getResultsLinkouts(study = "ABC", modelID = "?"),
 toJSON(getEnrichmentsLinkouts(study = "ABC", annotationID = "?"))
 @
 
+\section{Package version}
+\label{sec:package-version}
+
+To obtain the current installed version of the OmicNavigator R package, call the
+function \texttt{getPackageVersion()} with no arguments.
+
+<<getPackageVersion>>=
+toJSON(getPackageVersion(), auto_unbox = TRUE)
+@
+
 \end{document}
