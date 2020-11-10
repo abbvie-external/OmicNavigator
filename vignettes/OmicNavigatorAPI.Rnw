@@ -369,6 +369,34 @@ Note that if you automatically unbox single strings in the JSON response, then
 the results for each column may be a string or an array of strings depending
 on whether there are one or more linkouts.
 
+\section{Linkouts in enrichments table (experimental)}
+\label{sec:enrichments-linkouts}
+
+Given a study and annotationID, \texttt{getEnrichmentsLinkouts()} returns one
+or more URL patterns that provide linkouts to external resources. The value of
+the column \texttt{termID} in each row should be concatenated to the end of
+the URL pattern to form each linkout.
+
+<<getEnrichmentsLinkouts>>=
+enrichmentsLinkouts <- getEnrichmentsLinkouts(
+  study = "ABC",
+  annotationID = "annotation_01"
+)
+toJSON(enrichmentsLinkouts, auto_unbox = TRUE, pretty = 2)
+@
+
+Note that if you automatically unbox single strings in the JSON response, then
+the results for each annotationID may be a string or an array of strings
+depending on whether there are one or more linkouts.
+
+<<getEnrichmentsLinkouts-2>>=
+enrichmentsLinkouts <- getEnrichmentsLinkouts(
+  study = "ABC",
+  annotationID = "annotation_03"
+)
+toJSON(enrichmentsLinkouts, auto_unbox = TRUE, pretty = TRUE)
+@
+
 \section{Unavailable data}
 \label{sec:unavailable-data}
 
@@ -392,6 +420,7 @@ toJSON(getReportLink(study = "ABC", modelID = "?"),
        auto_unbox = TRUE, pretty = TRUE)
 toJSON(getResultsLinkouts(study = "ABC", modelID = "?"),
        auto_unbox = TRUE, pretty = 2)
+toJSON(getEnrichmentsLinkouts(study = "ABC", annotationID = "?"))
 @
 
 \end{document}
