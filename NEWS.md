@@ -1,3 +1,9 @@
+# 0.21.1
+
+* The release tarball includes [version 0.2.6.1 of the web app][app-v0.2.6.1]
+
+[app-v0.2.6.1]: ***REMOVED***/releases/tag/v0.2.6.1
+
 # 0.21.0
 
 * Support for linkouts to external resources in results and enrichments tables
