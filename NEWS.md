@@ -1,3 +1,9 @@
+# 0.21.2
+
+* The release tarball includes [version 0.2.7 of the web app][app-v0.2.7]
+
+[app-v0.2.7]: ***REMOVED***/releases/tag/v0.2.7
+
 # 0.21.1
 
 * The release tarball includes [version 0.2.6.1 of the web app][app-v0.2.6.1]
