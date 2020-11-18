@@ -1,5 +1,8 @@
 # 0.21.2.9000
 
+* `validateStudy()` now throws an error if there are any featureIDs in the
+metaFeatures table that are not included in the features table (reported by Paul
+Nordlund)
 
 # 0.21.2
 

@@ -93,6 +93,21 @@ expect_error_xl(
   "Some of the column names of the assays table are missing from the sampleID column in the samples table"
 )
 
+# metaFeatures -----------------------------------------------------------------
+
+# metaFeatures table contains a row with a featureID not in features table
+invalidMetaFeatures <- testStudyObj
+invalidMetaFeatures[["metaFeatures"]][[1]] <- rbind(
+  invalidMetaFeatures[["metaFeatures"]][[1]][1, ],
+  invalidMetaFeatures[["metaFeatures"]][[1]]
+)
+invalidMetaFeatures[["metaFeatures"]][[1]][1, 1] <- "missingInFeaturesTable"
+
+expect_error_xl(
+  validateStudy(invalidMetaFeatures),
+  "It contains 1 row where the featureID is not available in the corresponding features table"
+)
+
 # Results Linkouts -------------------------------------------------------------
 
 # A results linkout refers to a non-existing column in the features table

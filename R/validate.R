@@ -17,6 +17,7 @@ validateStudy <- function(study) {
 
   validateResultsLinkouts(study)
   validateEnrichmentsLinkouts(study)
+  validateMetaFeatures(study)
   validateAssays(study)
   validateResults(study)
 
@@ -59,6 +60,28 @@ validateEnrichmentsLinkouts <- function(study) {
       stop("Invalid enrichments table linkout\n",
            sprintf("The annotationID \"%s\" is not an available annotation\n", annotationID),
            "Add it with addAnnotations()")
+    }
+  }
+
+  return(invisible(TRUE))
+}
+
+# Validate that featureIDs in metaFeatures table are included in corresponding
+# features table.
+validateMetaFeatures <- function(study) {
+  metaFeatures <- study[["metaFeatures"]]
+
+  if (isEmpty(metaFeatures)) return(invisible(NA))
+
+  for (i in seq_along(metaFeatures)) {
+    modelID <- names(metaFeatures)[i]
+    features <- getFeatures(study, modelID = modelID, quiet = TRUE)
+    invalid <- !metaFeatures[[i]][[1]] %in% features[[1]]
+    if (any(invalid)) {
+      invalidTotal <- sum(invalid)
+      stop(sprintf("Invalid metaFeatures table for modelID \"%s\"\n", modelID),
+           sprintf("It contains %d row%s where the featureID is not available in the corresponding features table",
+                   invalidTotal, if (invalidTotal > 1) "s" else ""))
     }
   }
 
