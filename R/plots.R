@@ -3,14 +3,16 @@
 #' @inheritParams shared-get
 #'
 #' @export
-plotStudy <- function(study, modelID, featureID, plotID) {
+plotStudy <- function(study, modelID, testID, featureID, plotID, libraries = NULL) {
   stopifnot(
     is.character(modelID),
+    is.character(testID),
     is.character(featureID),
-    is.character(plotID)
+    is.character(plotID),
+    is.null(libraries) || is.character(libraries)
   )
 
-  plots <- getPlots(study, modelID = modelID)
+  plots <- getPlots(study, modelID = modelID, libraries = libraries)
   plotsAvailable <- names(plots)
   if(!plotID %in% plotsAvailable) {
     stop(sprintf("The plot \"%s\" is not available.\n", plotID),
@@ -24,7 +26,8 @@ plotStudy <- function(study, modelID, featureID, plotID) {
     f <- getPlotFunction(plotID, study = study)
   }
 
-  plottingData <- getPlottingData(study, modelID, featureID)
+  plottingData <- getPlottingData(study, modelID, testID, featureID,
+                                  libraries = libraries)
 
   # Setup for the plot and ensure everything is properly reset after the
   # function returns.
@@ -44,7 +47,7 @@ plotStudy <- function(study, modelID, featureID, plotID) {
     }
   }
 
-  returned <- f(x = plottingData, featureID = featureID)
+  returned <- f(plottingData)
   if (inherits(returned, "ggplot")) print(returned)
 
   return(invisible(study))
@@ -87,19 +90,48 @@ resetSearch <- function(pkgNamespaces) {
 #' @inheritParams shared-get
 #'
 #' @export
-getPlottingData <- function(study, modelID, featureID) {
-  assays <- getAssays(study, modelID = modelID)
+getPlottingData <- function(study, modelID, testID, featureID, libraries = NULL) {
+  assays <- getAssays(study, modelID = modelID, quiet = TRUE,
+                      libraries = libraries)
+  if (isEmpty(assays)) {
+    stop(sprintf("No assays available for modelID \"%s\"\n", modelID),
+         "Add assays data with addAssays()")
+  }
   if (!featureID %in% rownames(assays)) {
-    stop(sprintf("The feature \"%s\" is not available for model \"%s\"",
+    stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
                  featureID, modelID))
   }
+  assaysPlotting <- assays[featureID, , drop = FALSE]
 
-  assaysFeature <- t(assays[featureID, , drop = FALSE])
-  colnames(assaysFeature) <- "feature"
+  samples <- getSamples(study, modelID = modelID, quiet = TRUE,
+                        libraries = libraries)
+  if (isEmpty(samples)) {
+    samplesPlotting <- samples
+  } else {
+    samplesPlotting <- samples[match(samples[[1]], colnames(assaysPlotting)), ]
+  }
 
-  samples <- getSamples(study, modelID = modelID)
+  features <- getFeatures(study, modelID = modelID, quiet = TRUE,
+                          libraries = libraries)
+  if (isEmpty(features)) {
+    featuresPlotting <- features
+  } else {
+    featuresPlotting <- features[features[[1]] == featureID, , drop = FALSE]
+  }
 
-  plottingData <- merge(samples, assaysFeature,
-                        by.x = 1, by.y = "row.names")
+  results <- getResults(study, modelID = modelID, testID = testID, quiet = TRUE,
+                        libraries = libraries)
+  if (isEmpty(results)) {
+    resultsPlotting <- results
+  } else {
+    resultsPlotting <- results[results[[1]] == featureID, , drop = FALSE]
+  }
+
+  plottingData <- list(
+    assays = assaysPlotting,
+    samples = samplesPlotting,
+    features = featuresPlotting,
+    results = resultsPlotting
+  )
   return(plottingData)
 }

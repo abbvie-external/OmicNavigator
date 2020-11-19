@@ -205,15 +205,29 @@ testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L,
 }
 
 testPlots <- function() {
-  plotBase <- function(x, featureID) {
+  plotBase <- function(x) {
+    plotPoints <- as.numeric(x[["assays"]][1, ])
+    plotTitle <- sprintf("Feature %s (ID: %s)",
+                         x[["features"]][1, "featureVar01"],
+                         x[["features"]][1, "customID"])
+    plotSubtitle <- sprintf("p-value: %.2f", x[["results"]][1, "p_val"])
+    plotLabels <- x[["samples"]][["sampleVar01"]]
     graphics::par(cex.main = 2)
-    graphics::plot(x[, "feature"], main = featureID)
+    graphics::plot(x = plotPoints,
+                   main = plotTitle,
+                   sub = plotSubtitle,
+                   xlab = "Samples",
+                   ylab = "Expression level")
+    graphics::text(x = plotPoints, labels = plotLabels, pos = 4)
   }
   assign("plotBase", plotBase, envir = parent.frame())
-  plotGg <- function(x, featureID) {
-    featureMedian <- stats::median(x[, "feature"])
-    plotTitle <- sprintf("%s, median: %0.2f", featureID, featureMedian)
-    ggplot2::qplot(seq_len(nrow(x)), x[, "feature"], main = plotTitle)
+  plotGg <- function(x) {
+    plotPoints <- as.numeric(x[["assays"]][1, ])
+    featureMedian <- stats::median(plotPoints)
+    plotTitle <- sprintf("%s, median: %0.2f", x[["features"]][["customID"]],
+                         featureMedian)
+    ggplot2::qplot(seq_along(plotPoints), plotPoints, main = plotTitle,
+                   xlab = "Samples", ylab = "Expression level")
   }
   assign("plotGg", plotGg, envir = parent.frame())
   plots <- list(

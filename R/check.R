@@ -250,15 +250,15 @@ checkPlots <- function(plots) {
       if (!is.function(plotFunction)) {
         stop(sprintf("Unable to find function \"%s\"", plotID))
       }
-      argsObserved <- names(formals(plotFunction))
-      argsExpected <- c("x", "featureID")
-      if (!identical(argsObserved, argsExpected)) {
-        stop(
-          sprintf("%s has an incorrect function signature\n", plotID),
-          sprintf("Expected arguments: %s\n", paste(argsExpected, collapse = ", ")),
-          sprintf("Observed arguments: %s\n", paste(argsObserved, collapse = ", "))
-        )
-      }
+      # argsObserved <- names(formals(plotFunction))
+      # argsExpected <- c("x", "featureID")
+      # if (!identical(argsObserved, argsExpected)) {
+      #   stop(
+      #     sprintf("%s has an incorrect function signature\n", plotID),
+      #     sprintf("Expected arguments: %s\n", paste(argsExpected, collapse = ", ")),
+      #     sprintf("Observed arguments: %s\n", paste(argsObserved, collapse = ", "))
+      #   )
+      # }
       if (is.null(plotEntry[["displayName"]])) {
         stop(sprintf("Must define displayName for plot \"%s\"", plotID))
       }
