@@ -1,4 +1,8 @@
-# 0.21.2.9000
+# 0.21.3
+
+* The release tarball includes [version 0.2.8 of the web app][app-v0.2.8]
+
+[app-v0.2.8]: ***REMOVED***/releases/tag/v0.2.8
 
 * `validateStudy()` now throws an error if there are any featureIDs in the
 metaFeatures table that are not included in the features table (reported by Paul
