@@ -15,33 +15,10 @@ validateStudy <- function(study) {
     checkFunction(study[[e]])
   }
 
-  validateResultsLinkouts(study)
   validateEnrichmentsLinkouts(study)
   validateMetaFeatures(study)
   validateAssays(study)
   validateResults(study)
-
-  return(invisible(TRUE))
-}
-
-# Validate that results table linkouts only include columns in corresponding
-# features table.
-validateResultsLinkouts <- function(study) {
-  resultsLinkouts <- study[["resultsLinkouts"]]
-
-  if (isEmpty(resultsLinkouts)) return(invisible(NA))
-
-  for (i in seq_along(resultsLinkouts)) {
-    modelID <- names(resultsLinkouts)[i]
-    features <- getFeatures(study, modelID = modelID, quiet = TRUE)
-    for (j in seq_along(resultsLinkouts[[i]])) {
-      featureColumnName <- names(resultsLinkouts[[i]])[j]
-      if (!featureColumnName %in% colnames(features)) {
-        stop(sprintf("Invalid results table linkout for modelID \"%s\"\n", modelID),
-             sprintf("\"%s\" is not the name of a column in the features table", featureColumnName))
-      }
-    }
-  }
 
   return(invisible(TRUE))
 }
@@ -97,6 +74,7 @@ validateResults <- function(study) {
     modelID <- names(results)[i]
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
     assays <- getAssays(study, modelID = modelID, quiet = TRUE)
+    resultsLinkouts <- getResultsLinkouts(study, modelID = modelID, quiet = TRUE)
 
     # Throw warning if no common columns across tests. This will disable UpSet
     # filtering in app.
@@ -136,6 +114,17 @@ validateResults <- function(study) {
         if (!all(resultsInAssays)) {
           stop("Some of the features in the results table are missing from the row names of the assays table\n",
                sprintf("modelID: %s, testID: %s", modelID, testID))
+        }
+      }
+
+      if (!isEmpty(resultsLinkouts)) {
+        resultsTable <- getResultsTable(study, modelID, testID)
+        for (k in seq_along(resultsLinkouts)) {
+          columnName <- names(resultsLinkouts)[k]
+          if (!columnName %in% colnames(resultsTable)) {
+            stop(sprintf("Invalid results table linkout for modelID \"%s\"\n", modelID),
+                 sprintf("\"%s\" is not the name of an available feature", columnName))
+          }
         }
       }
 

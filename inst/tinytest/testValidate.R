@@ -121,8 +121,19 @@ expect_error_xl(
 
 expect_error_xl(
   validateStudy(invalidResultsLinkouts),
-  "\"non-existent-column\" is not the name of a column in the features table"
+  "\"non-existent-column\" is not the name of an available feature"
 )
+
+# There is no features table, but the results linkouts only refer to featureID
+# column, so this is fine.
+resultsLinkoutsNoFeatures <- OmicNavigator:::testStudyMinimal()
+resultsLinkouts <- list(
+  model_01 = list(
+    customID = "https://www.ncbi.nlm.nih.gov/gene/"
+  )
+)
+resultsLinkoutsNoFeatures <- addResultsLinkouts(resultsLinkoutsNoFeatures, resultsLinkouts)
+expect_true(validateStudy(resultsLinkoutsNoFeatures))
 
 # Enrichments Linkouts ---------------------------------------------------------
 
