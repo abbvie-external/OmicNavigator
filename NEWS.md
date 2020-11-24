@@ -4,6 +4,11 @@
 linkouts to external resources in the results table, as long as the linkouts
 only refer to the featureID column.
 
+* `validateStudy()` now throws an error if the results and features table for a
+given modelID share any column names in addition to the featureID column. In
+other words, it validates that the only column name in common between the two
+tables is the first column.
+
 # 0.21.3
 
 * The release tarball includes [version 0.2.8 of the web app][app-v0.2.8]

@@ -55,6 +55,28 @@ expect_error_xl(
   "Some of the features in the assays table are missing from the featureID column in the features table"
 )
 
+# The features table shares multiple column names with the results table. It
+# should only have the featureID column in common.
+sharedColumnNames <- testStudyObj
+sharedColumnNames[["features"]][[1]] <- cbind(
+  sharedColumnNames[["features"]][[1]],
+  beta = "a", p_val = "b")
+
+expect_error_xl(
+  validateStudy(sharedColumnNames),
+  "The results and features tables can only have one shared column name"
+)
+
+expect_error_xl(
+  validateStudy(sharedColumnNames),
+  "modelID: model_01, testID: test_01\n"
+)
+
+expect_error_xl(
+  validateStudy(sharedColumnNames),
+  "Shared columns: beta, p_val"
+)
+
 # Assays -----------------------------------------------------------------------
 
 # The row names are completely wrong

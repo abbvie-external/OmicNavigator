@@ -103,6 +103,14 @@ validateResults <- function(study) {
           stop("Some of the features in the assays table are missing from the featureID column in the features table\n",
                sprintf("modelID: %s, testID: %s", modelID, testID))
         }
+        # The features and results table can only share one column name, the
+        # feature ID column. Otherwise the merge will fail
+        sharedColumns <- intersect(colnames(dataFrame)[-1], colnames(features)[-1])
+        if (!isEmpty(sharedColumns)) {
+          stop("The results and features tables can only have one shared column name, the featureID column\n",
+               sprintf("modelID: %s, testID: %s\n", modelID, testID),
+               sprintf("Shared columns: %s", paste(sharedColumns, collapse = ", ")))
+        }
       }
 
       if (!isEmpty(assays)) {
