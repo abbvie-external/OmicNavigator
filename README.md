@@ -17,10 +17,18 @@ repository, you will only obtain the R code without the app.
 
 1. Install dependencies:
 
-    ```
-    install.packages("opencpu")
-    remotes::install_deps("OmicNavigator_x.x.x.tar.gz")
-    ```
+    a. Full installation. This is required if you want to run the app from R.
+
+        ```
+        remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)
+        ```
+
+    a. Minimal installation. If you only need to create an OmicNavigator study,
+       you can install many fewer dependencies.
+
+        ```
+        remotes::install_deps("OmicNavigator_x.x.x.tar.gz")
+        ```
 
 1. Install OmicNavigator:
 
@@ -32,10 +40,18 @@ repository, you will only obtain the R code without the app.
 
 1. Install dependencies:
 
-    ```
-    Rscript -e 'install.packages("opencpu")'
-    Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz")'
-    ```
+    a. Full installation. This is required if you want to run the app from R.
+
+        ```
+        Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)'
+        ```
+
+    a. Minimal installation. If you only need to create an OmicNavigator study,
+       you can install many fewer dependencies.
+
+        ```
+        Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz")'
+        ```
 
 1. Install OmicNavigator:
 
@@ -47,7 +63,7 @@ repository, you will only obtain the R code without the app.
 
 Some of the R package dependencies require external software libraries to
 already be installed on your machine (e.g. the R package curl requires the
-system library libcurl). Unfortunately R is unable to these for you
+system library libcurl). Unfortunately R is unable to install these for you
 automatically. If you are using Linux/macOS, you will need to install these
 system libraries yourself first.
 

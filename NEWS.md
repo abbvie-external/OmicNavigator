@@ -1,5 +1,8 @@
 # 0.21.4.9000
 
+* Moved UpSetR to a suggested dependency. This allows for a light-weight
+installation when you only need to create a study and not run the app. As an
+example, a continuous integration job that builds a study package tarball.
 
 # 0.21.4
 

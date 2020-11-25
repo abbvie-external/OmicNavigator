@@ -35,11 +35,11 @@ Imports:
   jsonlite,
   stats,
   tools,
-  UpSetR,
   utils
 Suggests:
   ggplot2,
   opencpu,
   tinytest (>= 1.2.3),
-  ttdo (>= 0.0.6)
+  ttdo (>= 0.0.6),
+  UpSetR
 RoxygenNote: 7.1.1

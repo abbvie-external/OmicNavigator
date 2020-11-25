@@ -18,6 +18,9 @@ startApp <- function(...) {
   if (!requireNamespace("opencpu", quietly = TRUE)) {
     stop("Install the package \"opencpu\" to run the app locally")
   }
+  if (!requireNamespace("UpSetR", quietly = TRUE)) {
+    stop("Install the package \"UpSetR\" to run the app locally")
+  }
 
   www <- system.file("www/", package = "OmicNavigator")
   if (identical(www, "") || !dir.exists(www)) {

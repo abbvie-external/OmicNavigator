@@ -250,6 +250,10 @@ getResultsUpset <- function(
   column
 )
 {
+  if (!requireNamespace("UpSetR", quietly = TRUE)) {
+    stop("Install the package \"UpSetR\" to run getResultsUpset()")
+  }
+
   results <- getResults(study, modelID = modelID)
   results <- list(results)
   names(results) <- modelID
@@ -350,6 +354,10 @@ getEnrichmentsUpset <- function(
   tests = NULL
 )
 {
+  if (!requireNamespace("UpSetR", quietly = TRUE)) {
+    stop("Install the package \"UpSetR\" to run getEnrichmentsUpset()")
+  }
+
   if (type == "nominal") {
     Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type)
     Enrichment.Results.Adjusted <- NULL
