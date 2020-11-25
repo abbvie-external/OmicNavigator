@@ -9,6 +9,7 @@ library(OmicNavigator)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 
 # Results ----------------------------------------------------------------------
 
@@ -50,9 +51,10 @@ missingFeatures[["results"]][[1]][[1]] <- rbind(
 )
 missingFeatures[["results"]][[1]][[1]][1, 1] <- "missingInFeaturesTable"
 
-expect_error_xl(
+# This now throws a warning instead of an error
+expect_warning_xl(
   validateStudy(missingFeatures),
-  "Some of the features in the assays table are missing from the featureID column in the features table"
+  "Some of the features in the results table are missing from the featureID column in the features table"
 )
 
 # The features table shares multiple column names with the results table. It
@@ -85,7 +87,7 @@ row.names(invalidAssaysRow[["assays"]][[1]]) <- NULL
 
 expect_error_xl(
   validateStudy(invalidAssaysRow),
-  "The row names of the assays table do not match the featureID column in the features table"
+  "The featureID column in the results table does not match the row names of the assays table"
 )
 
 # Some of the row names are missing from the features table
@@ -94,7 +96,7 @@ row.names(invalidAssaysRowMissing[["assays"]][[1]])[3] <- "wrongFeatureID"
 
 expect_error_xl(
   validateStudy(invalidAssaysRowMissing),
-  "Some of the row names of the assays table are missing from the featureID column in the features table"
+  "Some of the featureIDs in the results table are missing from the row names of the assays table"
 )
 
 # The column names are completely wrong
@@ -125,9 +127,10 @@ invalidMetaFeatures[["metaFeatures"]][[1]] <- rbind(
 )
 invalidMetaFeatures[["metaFeatures"]][[1]][1, 1] <- "missingInFeaturesTable"
 
-expect_error_xl(
-  validateStudy(invalidMetaFeatures),
-  "It contains 1 row where the featureID is not available in the corresponding features table"
+# This is ok now. Extra rows in the metaFeatures table won't affect anything in
+# the app
+expect_true(
+  validateStudy(invalidMetaFeatures)
 )
 
 # Results Linkouts -------------------------------------------------------------

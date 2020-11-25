@@ -4,6 +4,9 @@
 installation when you only need to create a study and not run the app. As an
 example, a continuous integration job that builds a study package tarball.
 
+* Relax some of the validation requirements. Not all the featureIDs in the
+results tables must be in the features or metaFeatures tables.
+
 # 0.21.4
 
 * If a study has no features table for a modelID, a study can still have
