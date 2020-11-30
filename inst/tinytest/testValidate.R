@@ -19,7 +19,7 @@ expect_true(validateStudy(testStudyObj))
 noCommonCols <- testStudyObj
 colnames(noCommonCols[["results"]][[1]][[1]])[2:4] <- c("B0", "B1", "P")
 
-expect_warning_xl(
+expect_message_xl(
   validateStudy(noCommonCols),
   "The results tables for the tests of modelID"
 )
@@ -51,8 +51,8 @@ missingFeatures[["results"]][[1]][[1]] <- rbind(
 )
 missingFeatures[["results"]][[1]][[1]][1, 1] <- "missingInFeaturesTable"
 
-# This now throws a warning instead of an error
-expect_warning_xl(
+# This now sends a message instead of an error
+expect_message_xl(
   validateStudy(missingFeatures),
   "Some of the features in the results table are missing from the featureID column in the features table"
 )

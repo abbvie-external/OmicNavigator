@@ -34,11 +34,12 @@ validateResults <- function(study) {
     metaFeatures <- getMetaFeatures(study, modelID = modelID, quiet = TRUE)
     resultsLinkouts <- getResultsLinkouts(study, modelID = modelID, quiet = TRUE)
 
-    # Throw warning if no common columns across tests. This will disable UpSet
+    # Send message if no common columns across tests. This will disable UpSet
     # filtering in app.
     upsetCols <- getUpsetCols(study, modelID)
     if (isEmpty(upsetCols)) {
-      warning(
+      message(
+        "Validation: ",
         sprintf("The results tables for the tests of modelID \"%s\" do not have any columns in common. ", modelID),
         "You will not be able to perform set analysis in the app. ",
         "If it makes sense for your study, please consider using shared column names."
@@ -55,7 +56,7 @@ validateResults <- function(study) {
           stop("Name of featureID column doesn't match between results and features tables")
         }
         # The featureIDs in the results table should match the featureIDs in the
-        # features table. Throw error if zero agreement. Throw warning if some
+        # features table. Throw error if zero agreement. Send message if some
         # featureIDs in results are missing from features table.
         resultsInFeatures <- dataFrame[, 1] %in% features[, 1]
         if (sum(resultsInFeatures) == 0) {
@@ -63,7 +64,8 @@ validateResults <- function(study) {
                sprintf("modelID: %s, testID: %s", modelID, testID))
         }
         if (!all(resultsInFeatures)) {
-          warning("Some of the features in the results table are missing from the featureID column in the features table\n",
+          message("Validation: ",
+                  "Some of the features in the results table are missing from the featureID column in the features table\n",
                   sprintf("modelID: %s, testID: %s", modelID, testID))
         }
         # The features and results table can only share one column name, the
@@ -79,7 +81,7 @@ validateResults <- function(study) {
       # Validate agreement between results and metaFeatures tables
       if (!isEmpty(metaFeatures)) {
         # The featureIDs in the results table should match the featureIDs in the
-        # metaFeatures table. Throw error if zero agreement. Throw warning if
+        # metaFeatures table. Throw error if zero agreement. Send message if
         # some featureIDs in results are missing from metaFeatures table.
         resultsInMetaFeatures <- dataFrame[, 1] %in% metaFeatures[, 1]
         if (sum(resultsInMetaFeatures) == 0) {
@@ -87,7 +89,8 @@ validateResults <- function(study) {
                sprintf("modelID: %s, testID: %s", modelID, testID))
         }
         if (!all(resultsInMetaFeatures)) {
-          warning("Some of the features in the results table are missing from the featureID column in the metaFeatures table\n",
+          message("Validation: ",
+                  "Some of the features in the results table are missing from the featureID column in the metaFeatures table\n",
                   sprintf("modelID: %s, testID: %s", modelID, testID))
         }
       }
@@ -117,21 +120,26 @@ validateEnrichments <- function(study) {
   if (isEmpty(enrichments)) return(invisible(NA))
 
   results <- getResults(study)
-  annotations <- getAnnotations(study)
+  annotations <- getAnnotations(study, quiet = TRUE)
+  if (isEmpty(annotations)) {
+    message("Validation: The network view will be disabled in the app because the study has no annotations.",
+            " Use addAnnotations() to add them.")
+  }
   for (i in seq_along(enrichments)) {
     modelID <- names(enrichments)[i]
 
-    # Throw warning if modelID isn't present in results
+    # Send message if modelID isn't present in results
     if (!modelID %in% names(results)) {
-      warning(sprintf("The modelID \"%s\" has enrichments but no results. ", modelID),
+      message("Validation: ",
+              sprintf("The modelID \"%s\" has enrichments but no results. ", modelID),
               "The barcode view in the app will be disabled. Use addResults() to add them.")
     }
 
     for (j in seq_along(enrichments[[i]])) {
       annotationID <- names(enrichments[[i]])[j]
       # The network view requires annotation data
-      if (!annotationID %in% names(annotations)) {
-        warning(sprintf("The modelID \"%s\" has enrichments for the annotationID \"%s\" but not the annotation terms. ",
+      if (!isEmpty(annotations) && !annotationID %in% names(annotations)) {
+        message(sprintf("The modelID \"%s\" has enrichments for the annotationID \"%s\" but not the annotation terms. ",
                         modelID, annotationID),
                 "The network view will be disabled in the app. Use addAnnotations() to add them.")
       }
