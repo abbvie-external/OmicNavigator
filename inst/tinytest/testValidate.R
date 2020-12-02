@@ -10,10 +10,26 @@ library(OmicNavigator)
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
 testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
+minimalStudyObj <- OmicNavigator:::testStudyMinimal()
+emptyStudy <- createStudy(name = "empty", description = "An empty study")
 
 # Results ----------------------------------------------------------------------
 
-expect_true(validateStudy(testStudyObj))
+expect_true_xl(
+  validateStudy(testStudyObj),
+  info = "A valid study should pass"
+)
+
+expect_true_xl(
+  validateStudy(minimalStudyObj),
+  info = "A minimal study should pass"
+)
+
+expect_error_xl(
+  validateStudy(emptyStudy),
+  "No results",
+  info = "A valid study requires at least one results table"
+)
 
 # Throw warning if no common columns across tests of a model
 noCommonCols <- testStudyObj

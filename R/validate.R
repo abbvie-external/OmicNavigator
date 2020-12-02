@@ -26,7 +26,9 @@ validateStudy <- function(study) {
 validateResults <- function(study) {
   results <- study[["results"]]
 
-  if (isEmpty(results)) stop("No results")
+  if (isEmpty(results)) {
+    stop("No results. A valid study requires at least one results table. Use addResults() to add one.")
+  }
 
   for (i in seq_along(results)) {
     modelID <- names(results)[i]
