@@ -350,9 +350,9 @@ in Section \ref{sec:features}.
 
 <<>>=
 # Remove columns 2 and 3
-basal.vs.lp.oa <- basal.vs.lp[, -2:-3]
-basal.vs.ml.oa <- basal.vs.ml[, -2:-3]
-head(basal.vs.ml.oa)
+basal.vs.lp.on <- basal.vs.lp[, -2:-3]
+basal.vs.ml.on <- basal.vs.ml[, -2:-3]
+head(basal.vs.ml.on)
 @
 
 \textbf{Tip:} Order the results table by statistical significance. The initial
@@ -363,7 +363,7 @@ statistically significant features. I omitted this ordering step above because
 \texttt{topTreat()} automatically sorts the features by statistical
 significance.
 
-Next I combine these two results table. Recall from Figure
+Next I combine these two results tables. Recall from Figure
 \ref{fig:results-rna} that the results are defined for a given model and test
 combination. To represent this hierarchical relationship, OmicNavigator uses
 nested lists. Below I create a new list named \texttt{results}. Its first
@@ -375,8 +375,8 @@ element contains the result table for that test.
 <<>>=
 results <- list(
   main = list(
-    basal.vs.lp = basal.vs.lp.oa,
-    basal.vs.ml = basal.vs.ml.oa
+    basal.vs.lp = basal.vs.lp.on,
+    basal.vs.ml = basal.vs.ml.on
   )
 )
 @
@@ -431,7 +431,7 @@ this column.
 
 <<>>=
 # LP
-cam.BasalvsLP.oa <- data.frame(
+cam.BasalvsLP.on <- data.frame(
   termID = row.names(cam.BasalvsLP),
   description = gsub("_", " ", tolower(row.names(cam.BasalvsLP))),
   nominal = cam.BasalvsLP$PValue,
@@ -439,14 +439,14 @@ cam.BasalvsLP.oa <- data.frame(
   stringsAsFactors = FALSE
 )
 # ML
-cam.BasalvsML.oa <- data.frame(
+cam.BasalvsML.on <- data.frame(
   termID = row.names(cam.BasalvsML),
   description = gsub("_", " ", tolower(row.names(cam.BasalvsML))),
   nominal = cam.BasalvsML$PValue,
   adjusted = cam.BasalvsML$FDR,
   stringsAsFactors = FALSE
 )
-head(cam.BasalvsML.oa)
+head(cam.BasalvsML.on)
 @
 
 Lastly I need to combine these two enrichments table. Recall from Figure
@@ -460,8 +460,8 @@ testID.
 enrichments <- list(
   main = list(
     c2 = list(
-       basal.vs.lp = cam.BasalvsLP.oa,
-       basal.vs.ml = cam.BasalvsML.oa
+       basal.vs.lp = cam.BasalvsLP.on,
+       basal.vs.ml = cam.BasalvsML.on
     )
   )
 )
@@ -636,7 +636,7 @@ doesn't know which column to use.
 In the RNAseq123 example, the test statistic is in the column \texttt{t}.
 
 <<>>=
-head(basal.vs.lp.oa)
+head(basal.vs.lp.on)
 @
 
 In addition to specifying which column to use for the statistic in the barcode
@@ -793,10 +793,10 @@ the following requirements:
 
 \begin{itemize}
 
-  \item The row names should match the featureID's in the first column of the
+  \item The row names should match the featureIDs in the first column of the
   features table (order doesn't matter)
 
-  \item The column names should match the sampleID's in the first column of
+  \item The column names should match the sampleIDs in the first column of
   the samples table (order doesn't matter)
 
   \item The columns should all be numeric
@@ -921,7 +921,7 @@ cellTypeBoxGg <- function(x, featureID) {
 
 Now that I've created two custom plots for use in the app, I compile them into
 a nested list and add them to the OmicNavigator study. The nested list has three
-levels. The first is the modelID's, in this case \texttt{main}. The second is
+levels. The first is the modelIDs, in this case \texttt{main}. The second is
 the name of the custom plotting functions as they were defined in the current
 R session, \texttt{cellTypeBox} and \texttt{cellTypeBoxGg}. The third is information
 about the custom plot function. The only required element is \texttt{displayName},
@@ -994,7 +994,7 @@ The metaFeatures table has the following requirements:
   \item The first column must contain the featureID. Each featureID must also
   be included in the corresponding features table. Not every featureID has to
   be included, the order does not matter, and it is expected that the
-  featureID's will be repeated.
+  featureIDs will be repeated.
 
   \item The remaining columns must be character vectors.
 
