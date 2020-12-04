@@ -1,4 +1,8 @@
-# 0.21.4.9000
+# 0.21.5
+
+* The release tarball includes [version 0.3.1 of the web app][app-v0.3.1]
+
+[app-v0.3.1]: ***REMOVED***/releases/tag/v0.3.1
 
 * User's Guide:
     * Document minimal valid study
