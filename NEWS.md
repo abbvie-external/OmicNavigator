@@ -3,6 +3,7 @@
 * User's Guide:
     * Document minimal valid study
     * New section: Mapping between data elements and app features
+    * Add linkouts to results and enrichments tables
 
 * Moved UpSetR to a suggested dependency. This allows for a light-weight
 installation when you only need to create a study and not run the app. As an

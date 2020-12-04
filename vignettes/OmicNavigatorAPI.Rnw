@@ -348,7 +348,7 @@ reportLink <- getReportLink(
 toJSON(reportLink, auto_unbox = TRUE, pretty = TRUE)
 @
 
-\section{Linkouts in results table (experimental)}
+\section{Linkouts in results table}
 \label{sec:results-linkouts}
 
 Given a study and model, \texttt{getResultsLinkouts()} returns one or more URL
@@ -369,7 +369,7 @@ Note that if you automatically unbox single strings in the JSON response, then
 the results for each column may be a string or an array of strings depending
 on whether there are one or more linkouts.
 
-\section{Linkouts in enrichments table (experimental)}
+\section{Linkouts in enrichments table}
 \label{sec:enrichments-linkouts}
 
 Given a study and annotationID, \texttt{getEnrichmentsLinkouts()} returns one

@@ -1059,6 +1059,67 @@ study <- addReports(study, reports)
 
 For more details, run \texttt{?addReports}.
 
+\subsection{Results table linkouts}
+\label{sec:resultsLinkouts}
+
+You can provide linkouts to external resources for the features in your study.
+These linkouts are embedded directly into the results table (Section
+\ref{sec:results}). The linkout URLs can use the featureID or any of the
+columns in the optional features table (Section \ref{sec:features}).
+
+For example, to provide a linkout for each Entrez ID in the RNAseq123 study, I
+can use the linkout pattern \url{https://www.ncbi.nlm.nih.gov/gene/}. The
+Entrez ID in each row will be appended to the linkout pattern to create the
+valid URL, e.g. \url{https://www.ncbi.nlm.nih.gov/gene/242505}. Below I create
+a list with this linkout. I use the special modelID ``default'' so that the
+linkouts are added to the results table for every modelID. The name of the
+nested list is \texttt{ENTREZID} because that is the name of the column.
+
+<<resultsLinkouts>>=
+resultsLinkouts <- list(
+  default = list(
+    ENTREZID = "https://www.ncbi.nlm.nih.gov/gene/"
+  )
+)
+@
+
+Then I add the results linkouts to the study.
+
+<<addResultsLinkouts>>=
+study <- addResultsLinkouts(study, resultsLinkouts)
+@
+
+For more details, run \texttt{?addResultsLinkouts}.
+
+\subsection{Enrichments table linkouts}
+\label{sec:enrichmentsLinkouts}
+
+You can provide linkouts to external resources for the annotation terms used
+for your enrichment analyses. These linkouts are embedded directly into the
+termID column of the enrichments table (Section \ref{sec:enrichments}).
+
+For example, to provide a linkout for each termID for the annotation c2 in the
+RNAseq123 study, I can use the linkout pattern
+\url{https://www.gsea-msigdb.org/gsea/msigdb/cards/}. The termID in each row
+will be appended to the linkout pattern to create the valid URL, e.g.
+\url{https://www.gsea-msigdb.org/gsea/msigdb/cards/REACTOME_OPSINS}. Below I
+create a list with this linkout. The name of the list corresponds to the name
+of the annotationID.
+
+<<enrichmentsLinkouts>>=
+enrichmentsLinkouts <- list(
+  c2 = "https://www.gsea-msigdb.org/gsea/msigdb/cards/"
+)
+@
+
+Then I add the enrichments linkouts to the study.
+
+<<addEnrichmentsLinkouts>>=
+study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts)
+@
+
+For more details, run \texttt{?addEnrichmentsLinkouts}.
+
 \section{More information}
 
 This section contains more information about OmicNavigator studies.
@@ -1164,13 +1225,13 @@ the results. To enable more interactive features, you can add more data. The
 table below maps the app features to the required and optional data elements.
 Click on the links to be taken to the relevant section.
 
-\begin{tabular}[c]{| c | c | c |}
+\begin{tabular}{| p{1in} | p{2in} | p{2in} |}
   \hline
   \textbf{App feature} & \textbf{Required} & \textbf{Optional} \\
   \hline
-  Results table & Results (\ref{sec:results}) & Features (\ref{sec:features}) \\
+  Results table & Results (\ref{sec:results}) & Features (\ref{sec:features}), resultsLinkouts (\ref{sec:resultsLinkouts}) \\
   \hline
-  Enrichments table & Enrichments (\ref{sec:enrichments}) &   \\
+  Enrichments table & Enrichments (\ref{sec:enrichments}) & enrichmentsLinkouts (\ref{sec:enrichmentsLinkouts}) \\
   \hline
   Enrichments network & Enrichments (\ref{sec:enrichments}), Annotations (\ref{sec:annotations}) &   \\
   \hline
