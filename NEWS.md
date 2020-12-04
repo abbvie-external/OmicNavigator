@@ -1,5 +1,9 @@
 # 0.21.4.9000
 
+* User's Guide:
+    * Document minimal valid study
+    * New section: Mapping between data elements and app features
+
 * Moved UpSetR to a suggested dependency. This allows for a light-weight
 installation when you only need to create a study and not run the app. As an
 example, a continuous integration job that builds a study package tarball.
