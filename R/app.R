@@ -82,8 +82,6 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
   columnsOrder <- c(colnames(features),
                     setdiff(colnames(results), colnames(features)))
   resultsTable <- resultsTable[, columnsOrder]
-  # featureID column must be character
-  resultsTable[, 1] <- as.character(resultsTable[, 1])
 
   return(resultsTable)
 }

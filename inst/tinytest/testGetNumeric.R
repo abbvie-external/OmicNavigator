@@ -32,6 +32,12 @@ expect_identical_xl(
   testStudyObj[["features"]]
 )
 
+expect_true_xl(
+  is.character(
+    getFeatures(testStudyName, modelID = testModelName)[, 1]
+  )
+)
+
 # getAssays --------------------------------------------------------------------
 
 expect_identical_xl(
@@ -42,6 +48,12 @@ expect_identical_xl(
 expect_equal_xl(
   getAssays(testStudyName),
   testStudyObj[["assays"]]
+)
+
+expect_true_xl(
+  is.character(
+    row.names(getAssays(testStudyName, modelID = testModelName))
+  )
 )
 
 # getAnnotations ---------------------------------------------------------------
@@ -68,15 +80,20 @@ expect_identical_xl(
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
 
-
-expect_identical_xl(
+expect_equal_xl(
   getResults(testStudyName),
   testStudyObj[["results"]]
 )
 
-expect_identical_xl(
+expect_equal_xl(
   getResults(testStudyName, modelID = testModelName, testID = testTestName),
   testStudyObj[["results"]][[testModelName]][[testTestName]]
+)
+
+expect_true_xl(
+  is.character(
+    getResults(testStudyName, modelID = testModelName, testID = testTestName)[, 1]
+  )
 )
 
 # getMetaFeatures --------------------------------------------------------------
@@ -101,14 +118,32 @@ expect_identical_xl(
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
+expect_true_xl(
+  is.character(
+    getMetaFeatures(testStudyName, modelID = testModelName)[, 1]
+  )
+)
+
+expect_true_xl(
+  is.character(
+    getMetaFeatures(testStudyName, modelID = testModelName)[, 2]
+  )
+)
+
 # getResultsTable --------------------------------------------------------------
 
 resultsTableFromR <- getResultsTable(testStudyObj, testModelName, testTestName)
 resultsTableFromFile <- getResultsTable(testStudyName, testModelName, testTestName)
 
-expect_identical_xl(
+expect_equal_xl(
   resultsTableFromFile,
   resultsTableFromR
+)
+
+expect_true_xl(
+  is.character(
+    getResultsTable(testStudyName, modelID = testModelName, testID = testTestName)[, 1]
+  )
 )
 
 # getBarcodeData ---------------------------------------------------------------
@@ -129,9 +164,27 @@ barcodeDataFromFile <- getBarcodeData(
   testTermName
 )
 
-expect_identical_xl(
+expect_equal_xl(
   barcodeDataFromFile,
   barcodeDataFromR
+)
+
+expect_true_xl(
+  is.character(
+    barcodeDataFromFile[["data"]][["featureID"]]
+  )
+)
+
+expect_true_xl(
+  is.character(
+    barcodeDataFromFile[["data"]][["featureEnrichment"]]
+  )
+)
+
+expect_true_xl(
+  is.character(
+    barcodeDataFromFile[["data"]][["featureDisplay"]]
+  )
 )
 
 # Teardown ---------------------------------------------------------------------

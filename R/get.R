@@ -194,7 +194,8 @@ getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libr
     elements = "results",
     filters = list(modelID = modelID, testID = testID),
     quiet = quiet,
-    libraries = libraries
+    libraries = libraries,
+    colClasses = list(character = 1)
   )
 }
 
