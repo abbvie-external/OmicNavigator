@@ -89,7 +89,7 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-# getFeatures -------------------------------------------------------------------
+# getFeatures ------------------------------------------------------------------
 
 expect_identical_xl(
   getFeatures(testStudyObj),
@@ -141,7 +141,7 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-# getAssays -------------------------------------------------------------------
+# getAssays --------------------------------------------------------------------
 
 expect_identical_xl(
   getAssays(testStudyObj),
@@ -351,17 +351,14 @@ expect_error(
   "No method for object of class \"numeric\""
 )
 
-# The sorting can get funky when retrieving from the database. Thus for now
-# confirm the dimensions are correct. This should resolve itself if we move away
-# from the database setup.
-expect_identical_xl(
-  lapply(getResults(testStudyName), function(x) lapply(x, dim)),
-  lapply(testStudyObj[["results"]], function(x) lapply(x, dim))
+expect_equal_xl(
+  getResults(testStudyName),
+  testStudyObj[["results"]]
 )
 
-expect_identical_xl(
-  lapply(getResults(testStudyName, modelID = testModelName), dim),
-  lapply(testStudyObj[["results"]][[testModelName]], dim)
+expect_equal_xl(
+  getResults(testStudyName, modelID = testModelName),
+  testStudyObj[["results"]][[testModelName]]
 )
 
 expect_message(
@@ -600,7 +597,7 @@ expect_identical_xl(
   testStudyObj[["plots"]][["model_03"]]
 )
 
-# getBarcodes ---------------------------------------------------------------------
+# getBarcodes ------------------------------------------------------------------
 
 expect_identical_xl(
   getBarcodes(testStudyObj),
@@ -644,7 +641,7 @@ expect_identical_xl(
   info = "Confirm model-specific barcode data returned"
 )
 
-# getReports ---------------------------------------------------------------------
+# getReports -------------------------------------------------------------------
 
 expect_identical_xl(
   getReports(testStudyObj),
@@ -683,8 +680,7 @@ expect_identical_xl(
   info = "Confirm model-specific report data returned"
 )
 
-# getResultsLinkouts ---------------------------------------------------------------------
-
+# getResultsLinkouts -----------------------------------------------------------
 expect_identical_xl(
   getResultsLinkouts(testStudyObj),
   testStudyObj[["resultsLinkouts"]]
@@ -723,7 +719,7 @@ expect_identical_xl(
 )
 
 
-# getEnrichmentsLinkouts ---------------------------------------------------------------------
+# getEnrichmentsLinkouts -------------------------------------------------------
 
 expect_identical_xl(
   getEnrichmentsLinkouts(testStudyObj),

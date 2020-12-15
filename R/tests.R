@@ -2,21 +2,27 @@
 testStudy <- function(name,
                       description = name,
                       version = NULL,
-                      seed = 12345L)
+                      seed = 12345L,
+                      numericFeatureID = FALSE)
 {
   stopifnot(is.character(name), is.character(description), is.integer(seed))
 
   study <- createStudy(name = name,
                        description = description,
                        samples = testSamples(seed = seed),
-                       features = testFeatures(seed = seed),
+                       features = testFeatures(seed = seed,
+                                               numericFeatureID = numericFeatureID),
                        models = testModels(),
-                       assays = testAssays(seed = seed),
+                       assays = testAssays(seed = seed,
+                                           numericFeatureID = numericFeatureID),
                        tests = testTests(),
-                       annotations = testAnnotations(seed = seed),
-                       results = testResults(seed = seed),
+                       annotations = testAnnotations(seed = seed,
+                                                     numericFeatureID = numericFeatureID),
+                       results = testResults(seed = seed,
+                                             numericFeatureID = numericFeatureID),
                        enrichments = testEnrichments(seed = seed),
-                       metaFeatures = testMetaFeatures(seed = seed),
+                       metaFeatures = testMetaFeatures(seed = seed,
+                                                       numericFeatureID = numericFeatureID),
                        plots = list(),
                        barcodes = testBarcodes(),
                        reports = testReports(),
@@ -39,14 +45,18 @@ testSamples <- function(rows = 10, cols = 5, seed = 12345L) {
   return(samples)
 }
 
-testFeatures <- function(rows = 100, cols = 5, seed = 12345L) {
+testFeatures <- function(rows = 100, cols = 5, seed = 12345L, numericFeatureID = FALSE) {
   set.seed(seed)
   features <- matrix(sample(letters, size = rows * (cols - 2), replace = TRUE),
                     nrow = rows, ncol = cols - 2)
   colnames(features) <- sprintf("featureVar%02d", seq_len(cols - 2))
   featureVarNumeric <- sample(1:100, size = rows, replace = TRUE)
   features <- cbind(featureVarNumeric, features)
-  featureID <- sprintf("feature_%04d", seq_len(rows))
+  if (numericFeatureID) {
+    featureID <- sprintf("%04d", seq_len(rows))
+  } else {
+    featureID <- sprintf("feature_%04d", seq_len(rows))
+  }
   features <- cbind(customID = featureID, features)
   features <- as.data.frame(features, stringsAsFactors = FALSE)
   features <- list(default = features)
@@ -63,16 +73,22 @@ testModels <- function(n = 3) {
   return(models)
 }
 
-testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
+testAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L, numericFeatureID = FALSE) {
   set.seed(seed)
   assays <- vector(mode = "list", length = n)
   names(assays) <- sprintf("model_%02d", seq_len(n))
+  if (numericFeatureID) {
+    featureID <- sprintf("%04d", seq_len(rows))
+  } else {
+    featureID <- sprintf("feature_%04d", seq_len(rows))
+  }
+  sampleID <- sprintf("sample_%04d", seq_len(cols))
   for (i in seq_len(n)) {
     assays[[i]] <- matrix(sample(seq(-2, 2, by = 0.0001), size = rows * cols,
                                  replace = TRUE),
                           nrow = rows, ncol = cols)
-    rownames(assays[[i]]) <- sprintf("feature_%04d", seq_len(rows))
-    colnames(assays[[i]]) <- sprintf("sample_%04d", seq_len(cols))
+    rownames(assays[[i]]) <- featureID
+    colnames(assays[[i]]) <- sampleID
     assays[[i]] <- as.data.frame(assays[[i]])
   }
   return(assays)
@@ -86,11 +102,16 @@ testTests <- function(n = 2) {
   return(tests)
 }
 
-testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12345L) {
+testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12345L,
+                            numericFeatureID = FALSE) {
   set.seed(12345)
   annotations <- vector(mode = "list", length = n)
   names(annotations) <- sprintf("annotation_%02d", seq_len(n))
-  universe <- sprintf("feature_%04d", seq_len(100))
+  if (numericFeatureID) {
+    universe <- sprintf("%04d", seq_len(100))
+  } else {
+    universe <- sprintf("feature_%04d", seq_len(100))
+  }
   for (i in seq_len(n)) {
     terms_list <- replicate(terms,
                             sample(universe, size = sample(5:25, size = 1, replace = TRUE)),
@@ -105,16 +126,22 @@ testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12
   return(annotations)
 }
 
-testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 12345L) {
+testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 12345L,
+                        numericFeatureID = FALSE) {
   set.seed(seed)
   results <- vector(mode = "list", length = n_models)
   names(results) <- sprintf("model_%02d", seq_len(n_models))
+  if (numericFeatureID) {
+    featureID <- sprintf("%04d", seq_len(n_features))
+  } else {
+    featureID <- sprintf("feature_%04d", seq_len(n_features))
+  }
   for (i in seq_len(n_models)) {
     results[[i]] <- vector(mode = "list", length = n_tests)
     names(results[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
     for (j in seq_len(n_tests)) {
       tmpResults <- data.frame(
-        customID = sprintf("feature_%04d", seq_len(n_features)),
+        customID = featureID,
         beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         beta_x = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
         p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
@@ -157,14 +184,19 @@ testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, terms 
 }
 
 # Assigns 3 metaFeatures to each feature
-testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L) {
+testMetaFeatures <- function(rows = 100, cols = 3, seed = 12345L,
+                             numericFeatureID = FALSE) {
   set.seed(seed)
   metaFeatures <- matrix(sample(letters, size = 3 * rows * cols, replace = TRUE),
                      nrow = 3 * rows, ncol = cols)
   colnames(metaFeatures) <- sprintf("metaFeatureVar%02d", seq_len(cols))
   metaFeatureVarNumeric <- sample(seq(3 * rows), size = rows, replace = TRUE)
   metaFeatures <- cbind(metaFeatureVarNumeric, metaFeatures)
-  featureID <- rep(sprintf("feature_%04d", seq_len(rows)), times = 3)
+  if (numericFeatureID) {
+    featureID <- rep(sprintf("%04d", seq_len(rows)), times = 3)
+  } else {
+    featureID <- rep(sprintf("feature_%04d", seq_len(rows)), times = 3)
+  }
   metaFeatureID <- sprintf("metaFeature_%04d", seq_len(3 * rows))
   metaFeatures <- cbind(customID = featureID, metaFeatureID, metaFeatures)
   metaFeatures <- as.data.frame(metaFeatures, stringsAsFactors = FALSE)
@@ -255,5 +287,13 @@ testStudyMinimal <- function() {
     description = "A minimal study for testing",
     results = testResults(),
     enrichments = testEnrichments()
+  )
+}
+
+testStudyNumeric <- function() {
+  testStudy(
+    name = "numeric",
+    description = "A study with numeric feature IDs.",
+    numericFeatureID = TRUE
   )
 }
