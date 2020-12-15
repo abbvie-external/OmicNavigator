@@ -24,12 +24,21 @@ pkgToStudy <- function(pkg) {
 
 ## I/O -------------------------------------------------------------------------
 
-readTable <- function(x, hasRowNames = FALSE, sep = "\t", header = TRUE, data.table = FALSE, ...) {
+readTable <- function(
+  x,
+  hasRowNames = FALSE,
+  sep = "\t",
+  header = TRUE,
+  data.table = FALSE,
+  keepLeadingZeros = TRUE,
+  ...
+) {
   d <- data.table::fread(
     file = x,
     sep = sep,
     header = header,
     data.table = data.table,
+    keepLeadingZeros = keepLeadingZeros,
     ...
   )
   if (hasRowNames) {

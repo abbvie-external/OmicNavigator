@@ -1,5 +1,9 @@
 # 0.21.7.9000
 
+* Improved support for numeric-looking featureIDs, e.g. `1234` or `0001`
+
+# 0.21.7
+
 * The release tarball includes [version 0.3.2.1 of the web app][app-v0.3.2.1]
 
 [app-v0.3.2.1]: ***REMOVED***/releases/tag/v0.3.2.1
