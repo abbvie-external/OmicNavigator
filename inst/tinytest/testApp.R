@@ -24,7 +24,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicNavigator::installStudy(testStudyObj))
+suppressMessages(installStudy(testStudyObj))
 
 # listStudies ------------------------------------------------------------------
 

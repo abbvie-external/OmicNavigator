@@ -18,7 +18,7 @@ tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
-suppressMessages(OmicNavigator::installStudy(testStudyObj))
+suppressMessages(installStudy(testStudyObj))
 
 # getFeatures ------------------------------------------------------------------
 
@@ -203,6 +203,38 @@ expect_true_xl(
   is.character(
     barcodeDataFromFile[["data"]][["featureDisplay"]]
   )
+)
+
+# Minimal study ----------------------------------------------------------------
+
+# Inspired by Brett's example
+
+de <- data.frame(
+  id = c("1111", "2222", "3333", "4444", "5555"),
+  p = c(0.03, 0.01, 0.99, 0.55, 0.15),
+  stringsAsFactors = FALSE
+)
+
+study <- createStudy(
+  name = "awesomeness",
+  description = "This is an awesome study"
+)
+study <- addResults(study, list(main = list(contrast = de)))
+suppressMessages(installStudy(study))
+
+resultsTable <- getResultsTable("awesomeness", "main", "contrast")
+
+expect_true_xl(
+  is.character(resultsTable[, 1])
+)
+
+expect_true_xl(
+  is.numeric(resultsTable[, 2])
+)
+
+expect_equal_xl(
+  resultsTable,
+  de
 )
 
 # Teardown ---------------------------------------------------------------------

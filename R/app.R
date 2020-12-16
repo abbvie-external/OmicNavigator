@@ -356,6 +356,8 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   # Sort the barcode results by "statistic"
   rowsOrdered <- order(barcodeDataTable[, "statistic"], decreasing = TRUE)
   barcodeDataTable <- barcodeDataTable[rowsOrdered, ]
+  # No point in keeping the original row names prior to re-ordering
+  row.names(barcodeDataTable) <- NULL
 
   newList <- list(
     data = barcodeDataTable,
