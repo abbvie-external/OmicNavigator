@@ -1,0 +1,3 @@
+#!/bin/sh
+
+"${R_HOME}/bin/Rscript" inst/install-app.R "$R_PACKAGE_DIR"
