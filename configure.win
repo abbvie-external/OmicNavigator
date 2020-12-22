@@ -1,2 +1,2 @@
 
-"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" inst/install-app.R "$R_PACKAGE_DIR"
+"${R_HOME}/bin${R_ARCH_BIN}/Rscript.exe" tools/install-app.R "$R_PACKAGE_DIR"
