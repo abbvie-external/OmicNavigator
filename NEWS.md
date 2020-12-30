@@ -1,3 +1,9 @@
+# 0.22.0
+
+* New function `getFavicons()` to obtain URLs to favicons to display table
+linkouts. Currently just a wrapper around Google's favicon service, but in the
+future will be more sophisticated.
+
 # 0.21.8
 
 * The release tarball includes [version 0.3.3 of the web app][app-v0.3.3]

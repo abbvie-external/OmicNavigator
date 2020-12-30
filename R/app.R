@@ -396,3 +396,49 @@ getReportLink <- function(study, modelID) {
 getPackageVersion <- function() {
   as.character(utils::packageVersion("OmicNavigator"))
 }
+
+#' Get favicon URLs for table linkouts
+#'
+#' To enhance the display of the linkouts in the app's tables, it can fetch the
+#' favicon URL for each website.
+#'
+#' @param linkouts Character vector or (potentially nested) list of character
+#'   vectors containing the URLs for the table linkouts.
+#'
+#' @return The URLs to the favicons for each linkout. The output returned will
+#'   always be the same class and structure as the input.
+#'
+#' @examples
+#'   getFavicons("https://reactome.org/content/detail/")
+#'
+#' @seealso \code{\link{getResultsLinkouts}},
+#'          \code{\link{getEnrichmentsLinkouts}}
+#'
+#' @export
+getFavicons <- function(linkouts) {
+  if (is.list(linkouts)) {
+    favicons <- rapply(linkouts, faviconFunction, how = "replace")
+  } else {
+    favicons <- faviconFunction(linkouts)
+  }
+
+  return(favicons)
+}
+
+faviconFunction <- function(x) {
+  if (!is.character(x)) {
+    warning("faviconFunction requires character vector as input")
+    return("")
+  }
+
+  # Remove scheme
+  y <- sub("^https?://", "", x)
+  # Split by /
+  y <- strsplit(y, "/")
+  # Extract server
+  y <- vapply(y, function(item) item[1], character(1))
+  # Use Google's favicon service
+  favicons <- sprintf("https://www.google.com/s2/favicons?domain_url=%s", y)
+
+  return(favicons)
+}

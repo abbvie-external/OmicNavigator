@@ -397,6 +397,20 @@ enrichmentsLinkouts <- getEnrichmentsLinkouts(
 toJSON(enrichmentsLinkouts, auto_unbox = TRUE, pretty = TRUE)
 @
 
+\section{Favicons for table linkouts (experimental)}
+\label{sec:favicons}
+
+To enhance the display of the table linkouts, \texttt{getFavicons()} returns
+the URL to the favicon for each linkout. You can pass the result from
+\texttt{getResultsLinkouts()} or \texttt{getEnrichmentsLinkouts()}.
+
+<<getFavicons>>=
+resultsFavicons <- getFavicons(resultsLinkouts)
+toJSON(resultsFavicons, auto_unbox = TRUE, pretty = 2)
+enrichmentsFavicons <- getFavicons(enrichmentsLinkouts)
+toJSON(enrichmentsFavicons, auto_unbox = TRUE, pretty = 2)
+@
+
 \section{Unavailable data}
 \label{sec:unavailable-data}
 

@@ -309,6 +309,51 @@ expect_identical_xl(
   "character"
 )
 
+# getFavicons ------------------------------------------------------------------
+
+expect_identical_xl(
+  getFavicons(getResultsLinkouts(testStudyName)),
+  list(
+    default = list(
+      customID = c(
+        "https://www.google.com/s2/favicons?domain_url=ensembl.org",
+        "https://www.google.com/s2/favicons?domain_url=www.targetvalidation.org"
+      ),
+      featureVar01 = c(
+        "https://www.google.com/s2/favicons?domain_url=www.ncbi.nlm.nih.gov"
+      )
+    ),
+    model_03 = list(
+      featureVar02 = c(
+        "https://www.google.com/s2/favicons?domain_url=www.ncbi.nlm.nih.gov"
+      )
+    )
+  )
+)
+
+expect_identical_xl(
+  getFavicons(getEnrichmentsLinkouts(testStudyName)),
+  list(
+    annotation_01 = c(
+      "https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org",
+      "https://www.google.com/s2/favicons?domain_url=www.ebi.ac.uk"
+    ),
+    annotation_03 = c(
+      "https://www.google.com/s2/favicons?domain_url=reactome.org"
+    )
+  )
+)
+
+expect_identical_xl(
+  getFavicons("https://reactome.org/content/detail/"),
+  "https://www.google.com/s2/favicons?domain_url=reactome.org"
+)
+
+expect_identical_xl(
+  getFavicons(list()),
+  list()
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
