@@ -1,3 +1,9 @@
+# 0.22.1
+
+* The release tarball includes [version 0.3.4 of the web app][app-v0.3.4]
+
+[app-v0.3.4]: ***REMOVED***/releases/tag/v0.3.4
+
 # 0.22.0
 
 * New function `getFavicons()` to obtain URLs to favicons to display table
