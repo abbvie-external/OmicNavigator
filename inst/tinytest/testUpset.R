@@ -261,9 +261,19 @@ resultsUpsetLegacy <- getResultsUpset(
   legacy = TRUE
 )
 
+# Should have the same intersection sizes. The legacy data has the featureID in
+# the first column.
 expect_equal_xl(
-  resultsUpset[["New_data"]],
-  resultsUpsetLegacy[["New_data"]]
+  sum(resultsUpset[["New_data"]][, 1]),
+  sum(resultsUpsetLegacy[["New_data"]][, 2])
+)
+expect_equal_xl(
+  sum(resultsUpset[["New_data"]][, 2]),
+  sum(resultsUpsetLegacy[["New_data"]][, 3])
+)
+expect_equal_xl(
+  sum(resultsUpset[["New_data"]][, 1] & resultsUpset[["New_data"]][, 2]),
+  sum(resultsUpsetLegacy[["New_data"]][, 2] & resultsUpsetLegacy[["New_data"]][, 3])
 )
 
 # getEnrichmentsUpset ----------------------------------------------------------

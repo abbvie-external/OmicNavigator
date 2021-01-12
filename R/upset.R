@@ -255,18 +255,66 @@ getResultsUpset <- function(
   }
 
   results <- getResults(study, modelID = modelID)
-  results <- list(results)
-  names(results) <- modelID
 
-  resultsUpset <- InferenceUpsetPlot(
-    Inference.Results = results,
-    testCategory = modelID,
-    sigValue = sigValue,
-    operator = operator,
-    column = column
+  if (legacy) {
+    results <- list(results)
+    names(results) <- modelID
+    resultsUpset <- InferenceUpsetPlot(
+      Inference.Results = results,
+      testCategory = modelID,
+      sigValue = sigValue,
+      operator = operator,
+      column = column
+    )
+
+    return(resultsUpset)
+  }
+
+  stopifnot(
+    is.numeric(sigValue),
+    is.character(operator),
+    is.character(column),
+    length(sigValue) == length(operator),
+    length(operator) == length(column),
+    operator %in% c(">", "<", ">=", "<=")
   )
 
-  return(resultsUpset)
+  # Only keep results which have the required columns
+  resultsHasColumns <- function(x) all(column %in% colnames(x))
+  results <- Filter(resultsHasColumns, results)
+  # Exit early with warning if none of the results tables has the columns
+  if (isEmpty(results)) {
+    warning(
+      sprintf("None of the results table for modelID \"%s\" had the column(s): %s",
+      modelID, paste(column, collapse = ", "))
+    )
+    return(NULL)
+  }
+
+  # Convert to keyed data tables
+  toDataTable <- function(x) data.table::setDT(x, key = column)
+  resultsDt <- Map(toDataTable, results)
+  # Filter
+  filterExpression <- paste(
+    paste0("x$", column),
+    operator,
+    sigValue,
+    collapse = " & "
+  )
+  applyFilterExpression <- function(x) x[eval(str2expression(filterExpression)), 1]
+  listOfSets <- Map(applyFilterExpression, resultsDt)
+
+  # UpSet plot
+  upsetInput <- UpSetR::fromList(listOfSets)
+  upsetOutput <- UpSetR::upset(
+    upsetInput,
+    nsets = length(listOfSets),
+    sets.bar.color = "#56B4E9",
+    order.by = "freq",
+    empty.intersections = "on"
+  )
+  print(upsetOutput, newpage = FALSE)
+  return(invisible(upsetOutput))
 }
 
 #' Creates a static Upset plot
