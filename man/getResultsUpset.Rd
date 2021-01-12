@@ -4,7 +4,7 @@
 \alias{getResultsUpset}
 \title{getResultsUpset}
 \usage{
-getResultsUpset(study, modelID, sigValue, operator, column)
+getResultsUpset(study, modelID, sigValue, operator, column, legacy = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -17,6 +17,11 @@ or the name of an installed study package.}
 \item{operator}{The operators for each column.}
 
 \item{column}{The columns to be thresheld.}
+
+\item{legacy}{Use legacy code (for testing purposes only)}
+}
+\value{
+Invisibly returns the output from \code{\link[UpSetR]{upset}}
 }
 \description{
 getResultsUpset

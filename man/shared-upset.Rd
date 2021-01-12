@@ -19,6 +19,8 @@
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
 
 \item{tests}{Restrict UpSet plot to these tests}
+
+\item{legacy}{Use legacy code (for testing purposes only)}
 }
 \description{
 Shared parameters for upset functions

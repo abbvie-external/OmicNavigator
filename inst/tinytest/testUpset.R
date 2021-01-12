@@ -2,8 +2,10 @@
 
 # Setup ------------------------------------------------------------------------
 
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicNavigator)
-library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
@@ -248,6 +250,20 @@ resultsUpset <- getResultsUpset(
   sigValue = .5,
   operator = "<",
   column = "p_val"
+)
+
+resultsUpsetLegacy <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = .5,
+  operator = "<",
+  column = "p_val",
+  legacy = TRUE
+)
+
+expect_equal_xl(
+  resultsUpset[["New_data"]],
+  resultsUpsetLegacy[["New_data"]]
 )
 
 # getEnrichmentsUpset ----------------------------------------------------------

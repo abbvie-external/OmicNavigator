@@ -10,6 +10,7 @@
 #' @param column The columns to be thresheld.
 #' @param type Type of p-value (\code{"nominal"} or \code{"adjusted"})
 #' @param tests Restrict UpSet plot to these tests
+#' @param legacy Use legacy code (for testing purposes only)
 #'
 #' @keywords internal
 NULL
@@ -237,13 +238,16 @@ getEnrichmentIntersection <- function(Enrichment.Results, Enrichment.Results.Adj
 #' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
+#' @return Invisibly returns the output from \code{\link[UpSetR]{upset}}
+#'
 #' @export
 getResultsUpset <- function(
   study,
   modelID,
   sigValue,
   operator,
-  column
+  column,
+  legacy = FALSE
 )
 {
   if (!requireNamespace("UpSetR", quietly = TRUE)) {
@@ -282,6 +286,7 @@ getResultsUpset <- function(
 #'   * Changed `id` to be set to the name of the first column
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'   * Set `newpage = FALSE` when printing to avoid blank page
+#'   * Invisibly return the output from UpSetR::upset()
 #'
 #' @noRd
 InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operator=c("<"), column= c("adj_P_Val")) {
@@ -329,7 +334,7 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
   rv <- UpSetR::upset(data,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
   #rv <- upset(data,point.size=1.1, line.size=0.4,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
   print(rv, newpage = FALSE)
-  invisible();
+  return(invisible(rv))
 }
 
 #' getEnrichmentsUpset
