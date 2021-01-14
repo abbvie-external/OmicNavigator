@@ -431,14 +431,7 @@ faviconFunction <- function(x) {
     return("")
   }
 
-  # Remove scheme
-  y <- sub("^https?://", "", x)
-  # Split by /
-  y <- strsplit(y, "/")
-  # Extract server
-  y <- vapply(y, function(item) item[1], character(1))
-  # Use Google's favicon service
-  favicons <- sprintf("https://www.google.com/s2/favicons?domain_url=%s", y)
+  favicons <- faviconPlease::faviconPlease(x)
 
   return(favicons)
 }

@@ -316,16 +316,16 @@ expect_identical_xl(
   list(
     default = list(
       customID = c(
-        "https://www.google.com/s2/favicons?domain_url=ensembl.org",
-        "https://www.google.com/s2/favicons?domain_url=www.targetvalidation.org"
+        "https://ensembl.org/i/ensembl-favicon.png",
+        "https://www.targetvalidation.org/imgs/favicons/OT_favicon.png"
       ),
       featureVar01 = c(
-        "https://www.google.com/s2/favicons?domain_url=www.ncbi.nlm.nih.gov"
+        "https://www.ncbi.nlm.nih.gov/favicon.ico"
       )
     ),
     model_03 = list(
       featureVar02 = c(
-        "https://www.google.com/s2/favicons?domain_url=www.ncbi.nlm.nih.gov"
+        "https://www.ncbi.nlm.nih.gov/favicon.ico"
       )
     )
   )
@@ -335,18 +335,18 @@ expect_identical_xl(
   getFavicons(getEnrichmentsLinkouts(testStudyName)),
   list(
     annotation_01 = c(
-      "https://www.google.com/s2/favicons?domain_url=amigo.geneontology.org",
-      "https://www.google.com/s2/favicons?domain_url=www.ebi.ac.uk"
+      "http://amigo.geneontology.org/static/images/go-logo-favicon.ico",
+      "https://www.ebi.ac.uk/favicon.ico"
     ),
     annotation_03 = c(
-      "https://www.google.com/s2/favicons?domain_url=reactome.org"
+      "https://reactome.org//templates/favourite/favicon.ico"
     )
   )
 )
 
 expect_identical_xl(
   getFavicons("https://reactome.org/content/detail/"),
-  "https://www.google.com/s2/favicons?domain_url=reactome.org"
+  "https://reactome.org//templates/favourite/favicon.ico"
 )
 
 expect_identical_xl(

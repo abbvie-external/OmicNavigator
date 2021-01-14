@@ -1,5 +1,8 @@
 # 0.22.5.9000
 
+* Use [faviconPlease][] to find URLs to favicons for table linkouts
+
+[faviconPlease]: https://cran.r-project.org/package=faviconPlease
 
 # 0.22.5
 

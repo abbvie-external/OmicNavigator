@@ -21,4 +21,13 @@ console and pressing the Esc key (Windows) or Ctrl-C (Linux, macOS).
 }
 \details{
 Note that the app can't be run from within RStudio Server.
+
+The app requires some additional R packages to run. If you receive an error
+about a missing package, please install it with
+\code{\link[utils]{install.packages}}. To ensure you have all the extra
+packages installed, you can run the command below:
+
+\preformatted{
+install.packages(c("faviconPlease", "opencpu", "UpSetR"))
+}
 }

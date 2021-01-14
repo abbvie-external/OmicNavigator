@@ -37,6 +37,7 @@ Imports:
   tools,
   utils
 Suggests:
+  faviconPlease,
   ggplot2,
   opencpu,
   tinytest (>= 1.2.3),

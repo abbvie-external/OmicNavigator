@@ -11,15 +11,25 @@
 #'
 #' Note that the app can't be run from within RStudio Server.
 #'
+#' The app requires some additional R packages to run. If you receive an error
+#' about a missing package, please install it with
+#' \code{\link[utils]{install.packages}}. To ensure you have all the extra
+#' packages installed, you can run the command below:
+#'
+#' \preformatted{
+#' install.packages(c("faviconPlease", "opencpu", "UpSetR"))
+#' }
+#'
 #' @inheritParams opencpu::ocpu_start_app
 #'
 #' @export
 startApp <- function(...) {
-  if (!requireNamespace("opencpu", quietly = TRUE)) {
-    stop("Install the package \"opencpu\" to run the app locally")
-  }
-  if (!requireNamespace("UpSetR", quietly = TRUE)) {
-    stop("Install the package \"UpSetR\" to run the app locally")
+  for (appPkg in appPackages) {
+    if (!requireNamespace(appPkg, quietly = TRUE)) {
+      stop(
+        sprintf("Install the package \"%s\" to run the app locally", appPkg)
+      )
+    }
   }
 
   www <- system.file("www/", package = "OmicNavigator")

@@ -8,6 +8,13 @@ minVersionCompatible <- "0.18.0"
 # the package option OmicNavigator.prefix.
 OmicNavigatorPrefix <- "ONstudy"
 
+# The extra packages required to run the app
+appPackages <- c(
+  "faviconPlease",
+  "opencpu",
+  "UpSetR"
+)
+
 # Configure OmicNavigator options when package is loaded
 .onLoad <- function(libname, pkgname) {
   # Default options
