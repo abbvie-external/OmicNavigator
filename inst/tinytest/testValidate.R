@@ -78,7 +78,8 @@ expect_message_xl(
 sharedColumnNames <- testStudyObj
 sharedColumnNames[["features"]][[1]] <- cbind(
   sharedColumnNames[["features"]][[1]],
-  beta = "a", p_val = "b")
+  beta = "a", p_val = "b",
+  stringsAsFactors = FALSE)
 
 expect_error_xl(
   validateStudy(sharedColumnNames),
