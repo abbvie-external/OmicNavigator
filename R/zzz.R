@@ -8,7 +8,7 @@ minVersionCompatible <- "0.18.0"
 # the package option OmicNavigator.prefix.
 OmicNavigatorPrefix <- "ONstudy"
 
-# Configure OmicAnalzyer options when package is loaded
+# Configure OmicNavigator options when package is loaded
 .onLoad <- function(libname, pkgname) {
   # Default options
   oaOptions <- list(

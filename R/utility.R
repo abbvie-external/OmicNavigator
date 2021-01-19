@@ -1,4 +1,4 @@
-## OmicAnalzyer ----------------------------------------------------------------
+## OmicNavigator ---------------------------------------------------------------
 
 # Get the prefix used to label OmicNavigator study packages.
 #
