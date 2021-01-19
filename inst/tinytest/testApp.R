@@ -311,38 +311,45 @@ expect_identical_xl(
 
 # getFavicons ------------------------------------------------------------------
 
-expect_identical_xl(
-  getFavicons(getResultsLinkouts(testStudyName)),
-  list(
-    default = list(
-      customID = c(
-        "https://ensembl.org/i/ensembl-favicon.png",
-        "https://www.targetvalidation.org/imgs/favicons/OT_favicon.png"
-      ),
-      featureVar01 = c(
-        "https://www.ncbi.nlm.nih.gov/favicon.ico"
-      )
-    ),
-    model_03 = list(
-      featureVar02 = c(
-        "https://www.ncbi.nlm.nih.gov/favicon.ico"
-      )
-    )
-  )
-)
+if (at_home()) {
+  # Only run these tests locally with tinytest::test_all(). Skip when running
+  # tinytest::test_package() (called by R CMD check). faviconPlease is unable to
+  # obtain the favicons from the EBI sites when run on Jenkins.
 
-expect_identical_xl(
-  getFavicons(getEnrichmentsLinkouts(testStudyName)),
-  list(
-    annotation_01 = c(
-      "http://amigo.geneontology.org/static/images/go-logo-favicon.ico",
-      "https://www.ebi.ac.uk/favicon.ico"
-    ),
-    annotation_03 = c(
-      "https://reactome.org//templates/favourite/favicon.ico"
+  expect_identical_xl(
+    getFavicons(getResultsLinkouts(testStudyName)),
+    list(
+      default = list(
+        customID = c(
+          "https://ensembl.org/i/ensembl-favicon.png",
+          "https://www.targetvalidation.org/imgs/favicons/OT_favicon.png"
+        ),
+        featureVar01 = c(
+          "https://www.ncbi.nlm.nih.gov/favicon.ico"
+        )
+      ),
+      model_03 = list(
+        featureVar02 = c(
+          "https://www.ncbi.nlm.nih.gov/favicon.ico"
+        )
+      )
     )
   )
-)
+
+  expect_identical_xl(
+    getFavicons(getEnrichmentsLinkouts(testStudyName)),
+    list(
+      annotation_01 = c(
+        "http://amigo.geneontology.org/static/images/go-logo-favicon.ico",
+        "https://www.ebi.ac.uk/favicon.ico"
+      ),
+      annotation_03 = c(
+        "https://reactome.org//templates/favourite/favicon.ico"
+      )
+    )
+  )
+
+}
 
 expect_identical_xl(
   getFavicons("https://reactome.org/content/detail/"),
