@@ -13,16 +13,22 @@ Description:
   fine-grained filtering based on statistical significance.
 Version: 0.22.5.9000
 Authors@R: c(
+  person("Terrence", "Ernst", role = c("aut"),
+         comment = "Web application"),
   person("John", "Blischak", role = c("aut", "cre"),
          email = "john.blischak@abbvie.com"),
+  person("Paul", "Nordlund", role = c("aut"),
+         comment = "Web application"),
+  person("Justin", "Moore", role = c("aut"),
+         comment = "UpSet-related functions and web application"),
+  person("Joe", "Dalen", role = c("aut"),
+         comment = "Barcode functionality and web application"),
+  person("Akshay", "Bhamidipati", role = c("aut"),
+         comment = "Web application"),
   person("Brett", "Engelmann", role = c("aut"),
-         email = "brett.engelmann@abbvie.com"),
-  person("Justin", "Moore", role = c("ctb"),
-         comment = "UpSet-related functions"),
-  person("Joe", "Dalen", role = c("ctb"),
-         comment = "Barcode")
+         email = "brett.engelmann@abbvie.com")
   )
-License: file LICENSE
+License: MIT + file LICENSE
 License_restricts_use: yes
 Copyright: AbbVie Inc.
 Encoding: UTF-8
