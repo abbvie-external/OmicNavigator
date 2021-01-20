@@ -311,7 +311,15 @@ getResultsUpset <- function(
     nsets = length(listOfSets),
     sets.bar.color = "#56B4E9",
     order.by = "freq",
-    empty.intersections = "on"
+    empty.intersections = "on",
+    text.scale = c( # see ?upset
+      2.0, # intersection size title
+      2.0, # intersection size tick labels
+      2.0, # set size title
+      2.0, # set size tick labels
+      1.5, # set names
+      1.2  # numbers above bars
+    )
   )
   print(upsetOutput, newpage = FALSE)
   return(invisible(upsetOutput))
