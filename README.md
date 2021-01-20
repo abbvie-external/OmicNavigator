@@ -30,13 +30,13 @@ repository, you will only obtain the R code without the app.
 
 1. Install dependencies:
 
-    a. Full installation. This is required if you want to run the app from R.
+    1) Full installation. This is required if you want to run the app from R.
 
         ```
         remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)
         ```
 
-    a. Minimal installation. If you only need to create an OmicNavigator study,
+    1) Minimal installation. If you only need to create an OmicNavigator study,
        you can install many fewer dependencies.
 
         ```
@@ -53,13 +53,13 @@ repository, you will only obtain the R code without the app.
 
 1. Install dependencies:
 
-    a. Full installation. This is required if you want to run the app from R.
+    1) Full installation. This is required if you want to run the app from R.
 
         ```
         Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)'
         ```
 
-    a. Minimal installation. If you only need to create an OmicNavigator study,
+    1) Minimal installation. If you only need to create an OmicNavigator study,
        you can install many fewer dependencies.
 
         ```
