@@ -77,9 +77,7 @@ getResultsIntersection <- function(
 #' @examples
 #'  getInferenceIntersection(testCategory = "No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05,.01), notTests=c(), anchor = "IKE", mustTests = c("FIN56"), operator = c("<",">"), column = c("adj_P_Val","adj_P_Val"))
 #'
-#' Notes:
-#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getInferenceIntersection.R
-#' Changes made:
+#' Changes made to original function:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
@@ -192,9 +190,7 @@ getEnrichmentsIntersection <- function(
 #' @examples
 #'  getEnrichmentIntersection("No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05),notTests=c(),annotation="GOSLIM",mustTests = c("IKE","FIN56"))
 #'
-#' Notes:
-#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getEnrichmentIntersection.R
-#' Changes made:
+#' Changes made to original function:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'
@@ -281,9 +277,7 @@ getResultsUpset <- function(
 #' @examples
 #'  InferenceUpsetPlot(testCategory = "No Pretreatment Timecourse Differential Phosphorylation", sigValue = c(.05), operator = c("<"), column = c("adj_P_Val"))
 #'
-#' Notes:
-#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/InferenceUpsetPlot.R
-#' Changes made:
+#' Changes made to original function:
 #'   * Added Inference.Results as first argument
 #'   * Changed `id` to be set to the name of the first column
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
@@ -397,9 +391,7 @@ getEnrichmentsUpset <- function(
 #' @examples
 #'  EnrichmentUpsetPlot("No Pretreatment Timecourse Differential Phosphorylation", annotation="GOSLIM",c(.05))
 #'
-#' Notes:
-#'   * Source: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/EnrichmentUpsetPlot.R
-#' Changes made:
+#' Changes made to original function:
 #'   * Added arguments Enrichment.Results and Enrichment.Results.Adjusted
 #'   * Passed `na.rm = TRUE` to sum() to handle missing values
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI

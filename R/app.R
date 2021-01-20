@@ -258,7 +258,6 @@ getMetaFeaturesTable <- function(study, modelID, featureID) {
 #'
 #' @export
 getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
-  # Adapted from: ***REMOVED***/blob/7560460792780289eb45eb18567d8904a0f0d40d/R/getBarcodeData.R
 
   resultsTable <- getResultsTable(study, modelID = modelID, testID = testID)
   if (isEmpty(resultsTable)) return(list())

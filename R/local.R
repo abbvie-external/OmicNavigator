@@ -34,10 +34,10 @@ startApp <- function(...) {
 
   www <- system.file("www/", package = "OmicNavigator")
   if (identical(www, "") || !dir.exists(www)) {
-    if (interactive()) on.exit(openReleasesPage(), add = TRUE)
+    # if (interactive()) on.exit(openReleasesPage(), add = TRUE)
     stop("The app is not installed with the OmicNavigator package.\n",
          "Make sure you install the release tarball of OmicNavigator.\n",
-         "Go to ***REMOVED***/releases/\n",
+         "Go to the Releases page on GitHub\n",
          "and download the asset named OmicNavigator_x.x.x.tar.gz\n",
          "where x.x.x is the package version.\n")
   }
@@ -46,7 +46,7 @@ startApp <- function(...) {
 }
 
 openReleasesPage <- function() {
-  url <- "***REMOVED***/releases/"
+  url <- "https://github.com/"
   answer <- readline(
     "Would you like R to open the releases page in your browser? (y/N) "
   )

@@ -7,7 +7,7 @@ Thanks for your interest in contributing to OmicNavigator!
 Branch        | Purpose
 ------------- | -------------
 stable        | Contains latest stable version (**default**)
-release       | Matches the latest [release](***REMOVED***/releases)
+release       | Matches the latest release version
 dev           | Contains experimental new features
 feature-\<x\> | Implements feature \<x\>
 bugfix-\<x\>  | Fixes bug \<x\>
@@ -31,7 +31,7 @@ feature-<x>
 Work on the dev branch.
 
 ```
-git clone https://***REMOVED***/<fork>/OmicNavigator.git
+git clone https://github.com/<fork>/OmicNavigator.git
 git checkout dev
 git checkout -b feature-<x>
 # implement feature, add, commit
@@ -45,7 +45,7 @@ Submit a pull request to the dev branch.
 Work on the stable branch.
 
 ```
-git clone https://***REMOVED***/<fork>/OmicNavigator.git
+git clone https://github.com/<fork>/OmicNavigator.git
 git checkout stable
 git checkout -b bugfix-<x>
 # fix bug, add, commit

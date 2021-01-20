@@ -6,33 +6,23 @@
 
 # 0.22.5
 
-* The release tarball includes [version 0.3.5.3 of the web app][app-v0.3.5.3]
-
-[app-v0.3.5.3]: ***REMOVED***/releases/tag/v0.3.5.3
+* The release tarball includes version 0.3.5.3 of the web app
 
 # 0.22.4
 
-* The release tarball includes [version 0.3.5.2 of the web app][app-v0.3.5.2]
-
-[app-v0.3.5.2]: ***REMOVED***/releases/tag/v0.3.5.2
+* The release tarball includes version 0.3.5.2 of the web app
 
 # 0.22.3
 
-* The release tarball includes [version 0.3.5.1 of the web app][app-v0.3.5.1]
-
-[app-v0.3.5.1]: ***REMOVED***/releases/tag/v0.3.5.1
+* The release tarball includes version 0.3.5.1 of the web app
 
 # 0.22.2
 
-* The release tarball includes [version 0.3.5 of the web app][app-v0.3.5]
-
-[app-v0.3.5]: ***REMOVED***/releases/tag/v0.3.5
+* The release tarball includes version 0.3.5 of the web app
 
 # 0.22.1
 
-* The release tarball includes [version 0.3.4 of the web app][app-v0.3.4]
-
-[app-v0.3.4]: ***REMOVED***/releases/tag/v0.3.4
+* The release tarball includes version 0.3.4 of the web app
 
 # 0.22.0
 
@@ -42,29 +32,21 @@ future will be more sophisticated.
 
 # 0.21.8
 
-* The release tarball includes [version 0.3.3 of the web app][app-v0.3.3]
-
-[app-v0.3.3]: ***REMOVED***/releases/tag/v0.3.3
+* The release tarball includes version 0.3.3 of the web app
 
 * Improved support for numeric-looking featureIDs, e.g. `1234` or `0001`
 
 # 0.21.7
 
-* The release tarball includes [version 0.3.2.1 of the web app][app-v0.3.2.1]
-
-[app-v0.3.2.1]: ***REMOVED***/releases/tag/v0.3.2.1
+* The release tarball includes version 0.3.2.1 of the web app
 
 # 0.21.6
 
-* The release tarball includes [version 0.3.2 of the web app][app-v0.3.2]
-
-[app-v0.3.2]: ***REMOVED***/releases/tag/v0.3.2
+* The release tarball includes version 0.3.2 of the web app
 
 # 0.21.5
 
-* The release tarball includes [version 0.3.1 of the web app][app-v0.3.1]
-
-[app-v0.3.1]: ***REMOVED***/releases/tag/v0.3.1
+* The release tarball includes version 0.3.1 of the web app
 
 * User's Guide:
     * Document minimal valid study
@@ -91,9 +73,7 @@ tables is the first column.
 
 # 0.21.3
 
-* The release tarball includes [version 0.2.8 of the web app][app-v0.2.8]
-
-[app-v0.2.8]: ***REMOVED***/releases/tag/v0.2.8
+* The release tarball includes version 0.2.8 of the web app
 
 * `validateStudy()` now throws an error if there are any featureIDs in the
 metaFeatures table that are not included in the features table (reported by Paul
@@ -101,15 +81,11 @@ Nordlund)
 
 # 0.21.2
 
-* The release tarball includes [version 0.2.7 of the web app][app-v0.2.7]
-
-[app-v0.2.7]: ***REMOVED***/releases/tag/v0.2.7
+* The release tarball includes version 0.2.7 of the web app
 
 # 0.21.1
 
-* The release tarball includes [version 0.2.6.1 of the web app][app-v0.2.6.1]
-
-[app-v0.2.6.1]: ***REMOVED***/releases/tag/v0.2.6.1
+* The release tarball includes version 0.2.6.1 of the web app
 
 # 0.21.0
 
@@ -120,9 +96,7 @@ current installed version of the R package
 
 # 0.20.1
 
-* The release tarball includes [version 0.2.5 of the web app][app-v0.2.5]
-
-[app-v0.2.5]: ***REMOVED***/releases/tag/v0.2.5
+* The release tarball includes version 0.2.5 of the web app
 
 * `validateStudy()` now throws a warning if the results tables for the tests of
 a model have no common columns. The lack of common columns will disable the
@@ -167,15 +141,11 @@ table.
 
 # 0.18.2
 
-* The release tarball includes [version 0.2.4.1 of the web app][app-v0.2.4.1]
-
-[app-v0.2.4.1]: ***REMOVED***/releases/tag/v0.2.4.1
+* The release tarball includes version 0.2.4.1 of the web app
 
 # 0.18.1
 
-* The release tarball includes [version 0.2.4 of the web app][app-v0.2.4]
-
-[app-v0.2.4]: ***REMOVED***/releases/tag/v0.2.4
+* The release tarball includes version 0.2.4 of the web app
 
 # 0.18.0
 
@@ -188,9 +158,7 @@ has changed from "OAstudy" to "ONstudy".
 
 ## Other changes
 
-* The release tarball includes [version 0.2.3 of the web app][app-v0.2.3]
-
-[app-v0.2.3]: ***REMOVED***/releases/tag/v0.2.3
+* The release tarball includes version 0.2.3 of the web app
 
 # 0.17.0
 
@@ -208,15 +176,11 @@ for more information on OmicNavigator package options.
 
 # 0.16.2
 
-* The release tarball includes [version 0.2.2 of the web app][app-v0.2.2]
-
-[app-v0.2.2]: ***REMOVED***/releases/tag/v0.2.2
+* The release tarball includes version 0.2.2 of the web app
 
 # 0.16.1
 
-* The release tarball includes [version 0.2.1 of the web app][app-v0.2.1]
-
-[app-v0.2.1]: ***REMOVED***/releases/tag/v0.2.1
+* The release tarball includes version 0.2.1 of the web app
 
 # 0.16.0
 
@@ -229,9 +193,7 @@ specific directory
 
 # 0.15.0
 
-* The release tarball includes [version 0.1.9.1 of the web app][app-v0.1.9.1]
-
-[app-v0.1.9.1]: ***REMOVED***/releases/tag/v0.1.9.1
+* The release tarball includes version 0.1.9.1 of the web app
 
 * Remove the argument `overwrite` for the add functions, e.g. `addSamples()`.
 Instead subsequent calls to the same add function will update the existing data
@@ -248,9 +210,7 @@ the features table as character strings, even if they appear numeric.
 
 # 0.14.1
 
-* The release tarball includes [version 0.1.8 of the web app][app-v0.1.8]
-
-[app-v0.1.8]: ***REMOVED***/releases/tag/v0.1.8
+* The release tarball includes version 0.1.8 of the web app
 
 # 0.14.0
 
@@ -278,9 +238,7 @@ identified by Brett Engelmann.
 
 # 0.13.2
 
-* The release tarball includes [version 0.1.7 of the web app][app-v0.1.7]
-
-[app-v0.1.7]: ***REMOVED***/releases/tag/v0.1.7
+* The release tarball includes version 0.1.7 of the web app
 
 # 0.13.1
 
@@ -302,24 +260,18 @@ version. Furthermore, the dependencies have changed, so you may have to re-run
 
 # 0.12.1
 
-* The release tarball includes [version 0.1.6 of the web app][app-v0.1.6]
-
-[app-v0.1.6]: ***REMOVED***/releases/tag/v0.1.6
+* The release tarball includes version 0.1.6 of the web app
 
 # 0.12.0
 
-* The release tarball includes [version 0.1.5 of the web app][app-v0.1.5]
-
-[app-v0.1.5]: ***REMOVED***/releases/tag/v0.1.5
+* The release tarball includes version 0.1.5 of the web app
 
 * `getEnrichmentsUpset()` has a new argument `tests`, which restricts the UpSet
 plot to only include the desired tests (#1, @MOOREJX3)
 
 # 0.11.0
 
-* The release tarball includes [version 0.1.4 of the web app][app-v0.1.4]
-
-[app-v0.1.4]: ***REMOVED***/releases/tag/v0.1.4
+* The release tarball includes version 0.1.4 of the web app
 
 * If `startApp()` is unable to run because the package was installed without the
 bundled web app, provide the URL for the releases page to download the tarball.
@@ -333,34 +285,23 @@ Also offer to open the page in the browser.
 
 # 0.9.3
 
-* The release tarball includes [version 0.1.3 of the web app][app-v0.1.3]
-
-[app-v0.1.3]: ***REMOVED***/releases/tag/v0.1.3
+* The release tarball includes version 0.1.3 of the web app
 
 # 0.9.2
 
-* Fix bug in `getResultsIntersection()` introduced in commit [ff1ac89][] and
-released in version [0.7.0][pkg-v0.7.0]
+* Fix bug in `getResultsIntersection()` introduced in commit ff1ac89 and
+released in version 0.7.0
 
-[ff1ac89]: ***REMOVED***/commit/ff1ac89226b245072effbc5e8a7074c005360a4f
-[pkg-v0.7.0]: ***REMOVED***/releases/tag/v0.7.0
-
-* The release tarball includes [version 0.1.2 of the web app][app-v0.1.2]
-
-[app-v0.1.2]: ***REMOVED***/releases/tag/v0.1.2
+* The release tarball includes version 0.1.2 of the web app
 
 # 0.9.1
 
-* The release tarball includes [version 0.1.1 of the web app][app-v0.1.1]
-
-[app-v0.1.1]: ***REMOVED***/releases/tag/v0.1.1
+* The release tarball includes version 0.1.1 of the web app
 
 # 0.9.0
 
-* The release tarball includes [version 0.1.0 of the web app][app-v0.1.0]. Run
+* The release tarball includes version 0.1.0 of the web app. Run
 `startApp()` to run it locally.
-
-[app-v0.1.0]: ***REMOVED***/releases/tag/v0.1.0
 
 * New function `getUpsetCols()` to get the columns common across all tests of a
 model, and thus are available for filtering with UpSet.
