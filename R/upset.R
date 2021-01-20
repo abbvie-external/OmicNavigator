@@ -294,14 +294,18 @@ getResultsUpset <- function(
   # Convert to keyed data tables
   toDataTable <- function(x) data.table::setDT(x, key = column)
   resultsDt <- Map(toDataTable, results)
-  # Filter
+
+  # Filter rows. First construct the filtering expression as a character, and
+  # then evaluate it inside of the data table.
   filterExpression <- paste(
     paste0("x$", column),
     operator,
     sigValue,
     collapse = " & "
   )
-  applyFilterExpression <- function(x) x[eval(str2expression(filterExpression)), 1]
+  applyFilterExpression <- function(x) {
+    x[eval(parse(text = filterExpression, keep.source = FALSE)), 1]
+  }
   listOfSets <- Map(applyFilterExpression, resultsDt)
 
   # UpSet plot
