@@ -292,7 +292,7 @@ getResultsUpset <- function(
   }
 
   # Convert to keyed data tables
-  toDataTable <- function(x) data.table::setDT(x, key = column)
+  toDataTable <- function(x) data.table::as.data.table(x, key = column)
   resultsDt <- Map(toDataTable, results)
 
   # Filter rows. First construct the filtering expression as a character, and

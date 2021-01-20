@@ -236,12 +236,20 @@ expect_error(
 
 # getResultsUpset --------------------------------------------------------------
 
+# getResultsUpset() uses data.table internally. Confirm it doesn't modify the
+# existing object.
 resultsUpset <- getResultsUpset(
   study = testStudyObj,
   modelID = testModelName,
   sigValue = .5,
   operator = "<",
   column = "p_val"
+)
+
+expect_identical_xl(
+  class(testStudyObj[["results"]][[1]][[1]]),
+  "data.frame",
+  info = "Internal data.table use should not modify existing object"
 )
 
 resultsUpset <- getResultsUpset(
