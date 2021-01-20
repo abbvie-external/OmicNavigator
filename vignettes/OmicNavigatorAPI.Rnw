@@ -4,6 +4,7 @@
 \documentclass[10pt, letterpaper]{article}
 
 \usepackage{fancyvrb}
+\usepackage{framed}
 \usepackage[textwidth=6in]{geometry}
 \usepackage[colorlinks=true,urlcolor=blue,breaklinks]{hyperref}
 \usepackage[utf8]{inputenc}
@@ -405,11 +406,18 @@ the URL to the favicon for each linkout. You can pass the result from
 \texttt{getResultsLinkouts()} or \texttt{getEnrichmentsLinkouts()}.
 
 <<getFavicons>>=
-resultsFavicons <- getFavicons(resultsLinkouts)
+resultsFavicons <- getFavicons(linkouts = resultsLinkouts)
 toJSON(resultsFavicons, auto_unbox = TRUE, pretty = 2)
-enrichmentsFavicons <- getFavicons(enrichmentsLinkouts)
+enrichmentsFavicons <- getFavicons(linkouts = enrichmentsLinkouts)
 toJSON(enrichmentsFavicons, auto_unbox = TRUE, pretty = 2)
 @
+
+\begin{framed}
+\textbf{Troubleshooting:} If you receive an error message from R about
+``unused arguments'', this is likely because you passed the object directly to
+the OpenCPU call. Instead the entire object needs to be wrapped inside of an
+outer object and named \texttt{linkouts}.
+\end{framed}
 
 \section{Unavailable data}
 \label{sec:unavailable-data}
