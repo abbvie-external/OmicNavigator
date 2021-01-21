@@ -14,6 +14,9 @@ increased.
 The "Set_Membership" column was returned in the first column instead of after
 the featureID column (reported by Joe Dalen and Paul Nordlund)
 
+* Fix bug in `getResultsUpset()` when the results tables have differing
+number of features
+
 # 0.22.5
 
 * The release tarball includes version 0.3.5.3 of the web app

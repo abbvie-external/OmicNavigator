@@ -331,6 +331,30 @@ expect_warning_xl(
   "There were no features remaining after applying the filters."
 )
 
+# Results table with differing number of features
+testStudyObjDiffFeatures <- testStudyObj
+testStudyObjDiffFeatures[["results"]][[1]][[1]] <-
+  testStudyObjDiffFeatures[["results"]][[1]][[1]][-1, ]
+
+resultsUpsetDiffFeatures <- getResultsUpset(
+  study = testStudyObjDiffFeatures,
+  modelID = testModelName,
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
+expect_error_xl(
+  getResultsUpset(
+    study = testStudyObjDiffFeatures,
+    modelID = testModelName,
+    sigValue = .5,
+    operator = "<",
+    column = "p_val",
+    legacy = TRUE
+  )
+)
+
 # getEnrichmentsUpset ----------------------------------------------------------
 
 enrichmentsUpset <- getEnrichmentsUpset(
