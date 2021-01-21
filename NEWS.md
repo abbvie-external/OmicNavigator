@@ -4,6 +4,10 @@
 
 [faviconPlease]: https://cran.r-project.org/package=faviconPlease
 
+* Optimize `getResultsUpset()` for speed. Input remains unchanged. The plotting
+data is now returned invisibly. The default font size for the UpSet plot was
+increased.
+
 * Apply MIT license
 
 # 0.22.5
