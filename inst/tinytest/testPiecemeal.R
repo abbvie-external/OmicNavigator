@@ -64,6 +64,11 @@ expect_true_xl(nrow(resultsIntersection) > 0)
 expect_true_xl(ncol(resultsIntersection) > 0)
 
 expect_identical_xl(
+  colnames(resultsIntersection)[2],
+  "Set_Membership"
+)
+
+expect_identical_xl(
   getMetaFeaturesTable(study$name, testModelName, "non-existent-feature"),
   data.frame()
 )

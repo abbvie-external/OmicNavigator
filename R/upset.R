@@ -47,14 +47,19 @@ getResultsIntersection <- function(
     column = column
   )
 
+  # The column Set_Membership needs to go between the feature and result columns
   features <- getFeatures(study, modelID = modelID)
   if (isEmpty(features)) {
     intersectionTable <- intersection
+    columns <- colnames(intersectionTable)
+    nColumns <- length(columns)
+    stopifnot(identical(columns[nColumns], "Set_Membership"))
+    columnsOrder <- c(columns[1], columns[nColumns], columns[2:(nColumns - 1)])
   } else {
     intersectionTable <- merge(features, intersection, by = 1)
+    columnsOrder <- union(c(colnames(features), "Set_Membership"),
+                          colnames(intersection))
   }
-  columnsOrder <- union(c(colnames(features), "Set_Membership"),
-                        colnames(intersection))
   intersectionTable <- intersectionTable[, columnsOrder]
 
   return(intersectionTable)
