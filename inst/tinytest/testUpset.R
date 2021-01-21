@@ -270,18 +270,53 @@ resultsUpsetLegacy <- getResultsUpset(
 )
 
 # Should have the same intersection sizes. The legacy data has the featureID in
-# the first column.
+# the first column, but not the new data, so refer to the columns by name.
 expect_equal_xl(
-  sum(resultsUpset[["New_data"]][, 1]),
-  sum(resultsUpsetLegacy[["New_data"]][, 2])
+  sum(resultsUpset[["New_data"]][["test_01"]]),
+  sum(resultsUpsetLegacy[["New_data"]][["test_01"]])
 )
+
 expect_equal_xl(
-  sum(resultsUpset[["New_data"]][, 2]),
-  sum(resultsUpsetLegacy[["New_data"]][, 3])
+  sum(resultsUpset[["New_data"]][["test_02"]]),
+  sum(resultsUpsetLegacy[["New_data"]][["test_02"]])
 )
+
 expect_equal_xl(
-  sum(resultsUpset[["New_data"]][, 1] & resultsUpset[["New_data"]][, 2]),
-  sum(resultsUpsetLegacy[["New_data"]][, 2] & resultsUpsetLegacy[["New_data"]][, 3])
+  sum(resultsUpset[["New_data"]][["test_01"]] & resultsUpset[["New_data"]][["test_02"]]),
+  sum(resultsUpsetLegacy[["New_data"]][["test_01"]] & resultsUpsetLegacy[["New_data"]][["test_02"]])
+)
+
+# More than one filter
+resultsUpsetTwo <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5, 1),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+resultsUpsetTwoLegacy <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5, 1),
+  operator = c("<", ">"),
+  column = c("p_val", "beta"),
+  legacy = TRUE
+)
+
+expect_equal_xl(
+  sum(resultsUpsetTwo[["New_data"]][["test_01"]]),
+  sum(resultsUpsetTwoLegacy[["New_data"]][["test_01"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetTwo[["New_data"]][["test_02"]]),
+  sum(resultsUpsetTwoLegacy[["New_data"]][["test_02"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetTwo[["New_data"]][["test_01"]] & resultsUpsetTwo[["New_data"]][["test_01"]]),
+  sum(resultsUpsetTwoLegacy[["New_data"]][["test_01"]] & resultsUpsetTwoLegacy[["New_data"]][["test_01"]])
 )
 
 # getEnrichmentsUpset ----------------------------------------------------------
