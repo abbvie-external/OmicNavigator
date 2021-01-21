@@ -319,6 +319,18 @@ expect_equal_xl(
   sum(resultsUpsetTwoLegacy[["New_data"]][["test_01"]] & resultsUpsetTwoLegacy[["New_data"]][["test_01"]])
 )
 
+# Expect warning when filters remove all features
+expect_warning_xl(
+  getResultsUpset(
+    study = testStudyName,
+    modelID = testModelName,
+    sigValue = c(0, 0),
+    operator = c("<", ">"),
+    column = c("beta", "beta")
+  ),
+  "There were no features remaining after applying the filters."
+)
+
 # getEnrichmentsUpset ----------------------------------------------------------
 
 enrichmentsUpset <- getEnrichmentsUpset(

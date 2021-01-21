@@ -307,6 +307,11 @@ getResultsUpset <- function(
     x[eval(parse(text = filterExpression, keep.source = FALSE)), 1]
   }
   listOfSets <- Map(applyFilterExpression, resultsDt)
+  allEmpty <- all(vapply(listOfSets, isEmpty, logical(1)))
+  if (allEmpty) {
+    warning("There were no features remaining after applying the filters.")
+    return(NULL)
+  }
 
   # UpSet plot
   upsetInput <- UpSetR::fromList(listOfSets)
