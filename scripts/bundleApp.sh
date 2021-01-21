@@ -11,7 +11,7 @@ set -e
 input="$1"
 if [ -z "$input" ]
 then
-  input="build.zip"
+  input="/tmp/build.zip"
 fi
 appPath=`dirname "$input"`
 appName=`basename "${input%.zip}"`
