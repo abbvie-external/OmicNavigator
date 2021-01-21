@@ -1,4 +1,6 @@
-# 0.22.5.9000
+# 0.23.0
+
+* The release tarball includes version 0.3.6 of the web app
 
 * Use [faviconPlease][] to find URLs to favicons for table linkouts
 
