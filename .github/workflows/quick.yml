@@ -1,0 +1,52 @@
+name: Quick test
+
+on: [push, pull_request]
+
+jobs:
+  check:
+    runs-on: ubuntu-18.04
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Install system dependencies
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update
+        sudo apt-get install --yes --no-install-recommends \
+          graphviz \
+          libcurl4-openssl-dev \
+          libssl-dev \
+          libprotobuf-dev \
+          protobuf-compiler \
+          libxml2-dev \
+          wget
+    - name: Create diagrams for vignettes
+      run: make diagrams
+    - name: Install R
+      run: |
+        sudo apt-get install --yes --no-install-recommends \
+          r-base \
+          r-base-dev
+    - name: Install R packages
+      run: |
+        # Use RSPM to install package binaries
+        options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))
+        options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"))
+
+        install.packages("remotes")
+        remotes::install_deps(dependencies = TRUE)
+      shell: sudo Rscript {0}
+    - name: Install TinyTeX
+      run: |
+        # https://yihui.name/tinytex/faq/
+        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh -s - --admin --no-path
+        wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-yihui.txt" | xargs ~/.TinyTeX/bin/*/tlmgr install
+        sudo ~/.TinyTeX/bin/*/tlmgr path add
+        chmod 755 ~/.TinyTeX/
+    - name: Session information
+      run: sessionInfo()
+      shell: Rscript {0}
+    - name: Build
+      run: R CMD build --no-manual .
+    - name: Check
+      run: R CMD check --no-manual OmicNavigator_*.tar.gz

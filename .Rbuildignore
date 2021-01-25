@@ -8,3 +8,4 @@
 ^Makefile$
 ^LICENSE\.md$
 ^build\.zip$
+^\.github$
