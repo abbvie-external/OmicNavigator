@@ -4,7 +4,7 @@
 \alias{plotStudy}
 \title{Plot a feature using a custom plotting function}
 \usage{
-plotStudy(study, modelID, featureID, plotID)
+plotStudy(study, modelID, featureID, plotID, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},

@@ -210,12 +210,10 @@ testPlots <- function() {
     plotTitle <- sprintf("Feature %s (ID: %s)",
                          x[["features"]][1, "featureVar01"],
                          x[["features"]][1, "customID"])
-    plotSubtitle <- sprintf("p-value: %.2f", x[["results"]][1, "p_val"])
     plotLabels <- x[["samples"]][["sampleVar01"]]
     graphics::par(cex.main = 2)
     graphics::plot(x = plotPoints,
                    main = plotTitle,
-                   sub = plotSubtitle,
                    xlab = "Samples",
                    ylab = "Expression level")
     graphics::text(x = plotPoints, labels = plotLabels, pos = 4)

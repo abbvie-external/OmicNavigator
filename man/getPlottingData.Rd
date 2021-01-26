@@ -4,7 +4,7 @@
 \alias{getPlottingData}
 \title{Get plotting data}
 \usage{
-getPlottingData(study, modelID, featureID)
+getPlottingData(study, modelID, featureID, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},

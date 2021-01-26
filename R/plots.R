@@ -3,10 +3,9 @@
 #' @inheritParams shared-get
 #'
 #' @export
-plotStudy <- function(study, modelID, testID, featureID, plotID, libraries = NULL) {
+plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
   stopifnot(
     is.character(modelID),
-    is.character(testID),
     is.character(featureID),
     is.character(plotID),
     is.null(libraries) || is.character(libraries)
@@ -26,7 +25,7 @@ plotStudy <- function(study, modelID, testID, featureID, plotID, libraries = NUL
     f <- getPlotFunction(plotID, study = study)
   }
 
-  plottingData <- getPlottingData(study, modelID, testID, featureID,
+  plottingData <- getPlottingData(study, modelID, featureID,
                                   libraries = libraries)
 
   # Setup for the plot and ensure everything is properly reset after the
@@ -90,7 +89,7 @@ resetSearch <- function(pkgNamespaces) {
 #' @inheritParams shared-get
 #'
 #' @export
-getPlottingData <- function(study, modelID, testID, featureID, libraries = NULL) {
+getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
   assays <- getAssays(study, modelID = modelID, quiet = TRUE,
                       libraries = libraries)
   if (isEmpty(assays)) {
@@ -119,19 +118,10 @@ getPlottingData <- function(study, modelID, testID, featureID, libraries = NULL)
     featuresPlotting <- features[features[[1]] == featureID, , drop = FALSE]
   }
 
-  results <- getResults(study, modelID = modelID, testID = testID, quiet = TRUE,
-                        libraries = libraries)
-  if (isEmpty(results)) {
-    resultsPlotting <- results
-  } else {
-    resultsPlotting <- results[results[[1]] == featureID, , drop = FALSE]
-  }
-
   plottingData <- list(
     assays = assaysPlotting,
     samples = samplesPlotting,
-    features = featuresPlotting,
-    results = resultsPlotting
+    features = featuresPlotting
   )
   return(plottingData)
 }

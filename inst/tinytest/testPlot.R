@@ -10,7 +10,6 @@ testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
 plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
 testModelName <- names(testStudyObj[["models"]])[1]
-testTestName <- names(testStudyObj[["tests"]][["default"]])[1]
 
 tmplib <- tempfile()
 dir.create(tmplib)
@@ -46,36 +45,36 @@ pkgsAttachedPre <- search()
 parSettingsPre <- graphics::par(no.readonly = TRUE)
 
 expect_silent(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_silent(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_error(
-  plotStudy(testStudyObj, modelID = "model_03", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_error(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_silent(
-  plotStudy(testStudyObj, modelID = "model_03", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "non-existent"),
+  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
 expect_error(
-  plotStudy(testStudyObj, modelID = "model_01", testID = "test_01", feature = "non-existent", plotID = "plotBase"),
+  plotStudy(testStudyObj, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
 
@@ -85,36 +84,36 @@ expect_error(
 rm(list = plotsAll)
 
 expect_silent(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_silent(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_error(
-  plotStudy(testStudyName, modelID = "model_03", testID = "test_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
 )
 
 expect_error(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_silent(
-  plotStudy(testStudyName, modelID = "model_03", testID = "test_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
 expect_error(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "feature_0001", plotID = "non-existent"),
+  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
 expect_error(
-  plotStudy(testStudyName, modelID = "model_01", testID = "test_01", feature = "non-existent", plotID = "plotBase"),
+  plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
 
@@ -135,7 +134,6 @@ expect_identical(
 plottingData <- getPlottingData(
   testStudyObj,
   modelID = testModelName,
-  testID = testTestName,
   feature = "feature_0001"
 )
 
@@ -158,14 +156,9 @@ expect_true(
   inherits(plottingData[["features"]], "data.frame")
 )
 
-expect_true(
-  inherits(plottingData[["results"]], "data.frame")
-)
-
 plottingData <- getPlottingData(
   testStudyName,
   modelID = testModelName,
-  testID = testTestName,
   feature = "feature_0001"
 )
 
@@ -186,10 +179,6 @@ expect_true(
 
 expect_true(
   inherits(plottingData[["features"]], "data.frame")
-)
-
-expect_true(
-  inherits(plottingData[["results"]], "data.frame")
 )
 
 # Teardown ---------------------------------------------------------------------
