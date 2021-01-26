@@ -250,15 +250,23 @@ checkPlots <- function(plots) {
       if (!is.function(plotFunction)) {
         stop(sprintf("Unable to find function \"%s\"", plotID))
       }
-      # argsObserved <- names(formals(plotFunction))
-      # argsExpected <- c("x", "featureID")
-      # if (!identical(argsObserved, argsExpected)) {
-      #   stop(
-      #     sprintf("%s has an incorrect function signature\n", plotID),
-      #     sprintf("Expected arguments: %s\n", paste(argsExpected, collapse = ", ")),
-      #     sprintf("Observed arguments: %s\n", paste(argsObserved, collapse = ", "))
-      #   )
-      # }
+      # The custom plotting function will be passed an object to its first
+      # argument. Thus none of the arguments can be required
+      argsObserved <- formals(plotFunction)
+      if (isEmpty(argsObserved)) {
+        stop(
+          sprintf("The custom plotting function \"%s\" has no arguments.\n", plotID),
+          "There must be an argument for plotStudy() to pass the data to your function.\n"
+        )
+      }
+      argsObservedRequired <- vapply(argsObserved, is.symbol, logical(1))
+      if (any(argsObservedRequired[-1])) {
+        stop(
+          sprintf("The custom plotting function \"%s\" has invalid arguments.\n", plotID),
+          "Only the first argument can be a required argument.",
+          " The remaining arguments must have default values specified.\n"
+        )
+      }
       if (is.null(plotEntry[["displayName"]])) {
         stop(sprintf("Must define displayName for plot \"%s\"", plotID))
       }

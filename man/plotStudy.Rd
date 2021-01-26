@@ -15,7 +15,15 @@ or the name of an installed study package.}
 \item{featureID}{Filter by featureID}
 
 \item{plotID}{Filter by plotID}
+
+\item{libraries}{The directories to search for installed study packages. If
+left as \code{NULL} (the default), then
+\code{\link[utils]{installed.packages}} will use the result of
+\code{\link{.libPaths}}.}
 }
 \description{
 Plot a feature using a custom plotting function
+}
+\seealso{
+\code{\link{addPlots}}, \code{\link{getPlottingData}}
 }

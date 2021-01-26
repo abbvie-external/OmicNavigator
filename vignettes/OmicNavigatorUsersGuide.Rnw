@@ -843,77 +843,83 @@ For more details, run \texttt{?addAssays}.
 \subsection{Plots}
 \label{sec:plots}
 
-The app will call all custom plotting functions with the same arguments, so the
-function arguments will always be the same. An example is below.
+The app will call all custom plotting functions by passing a list with the
+filtered data to the first argument. The name of the argument can be whatever
+you like. An example is below.
 
 <<eval=FALSE>>=
-nameOfPlot <- function(x, featureID) {
+nameOfPlot <- function(x) {
   # Your custom plotting code
 }
 @
 
-The two arguments are:
+The input list that will be passed to your custom plotting function has the
+following elements:
 
 \begin{enumerate}
 
-  \item \texttt{x} - a data frame that combines the sample metadata with a
-  column containing the assay measurements for a specific featureID. That column
-  will always be named \texttt{feature}.
+  \item \texttt{assays} - a data frame that contains the assay measurements,
+  filtered to only include the row(s) corresponding to the input featureID(s)
 
-  \item \texttt{featureID} - the unique ID of the feature. This is for
-  labeling the plot. Note: Future versions of OmicNavigator may expand this
-  argument to include other metadata in the features table.
+  \item \texttt{samples} - a data frame that contains the sample metadata for
+  the given modelID
+
+  \item \texttt{features} - a data frame that contains the feature metadata,
+  filtered to only include the row(s) corresponding to the input featureID(s)
 
 \end{enumerate}
 
-When creating your custom plotting function, you don't need to create the data
-frame \texttt{x} manually. Instead, you can use the same function that
+When creating your custom plotting function, you don't need to create this list of data
+frames manually. Instead, you can use the same function that
 OmicNavigator uses internally, \texttt{getPlottingData()}. The code below
-obtains the input data frame that will be passed to the custom plotting
-functions when an app user selects the featureID \texttt{"12767"}. It contains
-the columns from the samples table plus the assay measurements in the column
-\texttt{feature}.
+obtains the input list that will be passed to the custom plotting
+functions when an app user selects the featureID \texttt{"12767"}. Note how
+both the assays and features data frames only contain one row each.
 
 <<>>=
 plottingData <- getPlottingData(study, modelID = "main", featureID = "12767")
-head(plottingData)
+plottingData
 @
 
-Using this data frame, I create a boxplot to visualize the gene expression
+Using this object, I create a boxplot to visualize the gene expression
 levels per cell type.
 
 <<cellTypeBox, fig=TRUE>>=
-boxplot(feature ~ group, data = plottingData,
+boxplot(as.numeric(plottingData$assays[1, ]) ~ plottingData$samples$group,
         col = c("pink", "purple", "gold"),
         xlab = "Cell type", ylab = "Gene expression",
-        main = "12767")
+        main = plottingData$features$SYMBOL)
 @
 
 Once I am satisfied with the appearance of the plot, I can convert it to a
-function that uses the arguments \texttt{x} and \texttt{featureID}. I replace
-the variable \texttt{plottingData} with \texttt{x} and \texttt{"12767"} with
-\texttt{featureID}.
+function that accepts one argument \texttt{plottingData} (reminder: you can
+name the argument however you like, as long as you refer to it consistently in
+the body of your function).
 
 <<>>=
-cellTypeBox <- function(x, featureID) {
-  boxplot(feature ~ group, data = x,
+cellTypeBox <- function(plottingData) {
+  boxplot(as.numeric(plottingData$assays[1, ]) ~ plottingData$samples$group,
           col = c("pink", "purple", "gold"),
           xlab = "Cell type", ylab = "Gene expression",
-          main = featureID)
+          main = plottingData$features$SYMBOL)
 }
 @
 
 The process is similar for creating a plot with the package ggplot2. However,
-since these custom plotting functions will be added to an R package, you have to
-be slightly more careful. Below I create a similar boxplot with ggplot2.
+since these custom plotting functions will be added to an R package, you have
+to be slightly more careful. Also note that I have to combine the assays and
+samples tables to create the input data frame required by ggplot2.
 
 <<cellTypeBoxGg, fig=TRUE>>=
 library(ggplot2)
-ggplot(plottingData, aes(x = group, y = feature, fill = group)) +
+ggDataFrame <- cbind(plottingData$samples,
+                     feature = as.numeric(plottingData$assays))
+head(ggDataFrame, 3)
+ggplot(ggDataFrame, aes(x = group, y = feature, fill = group)) +
   geom_boxplot() +
   scale_fill_manual("Cell type", values = c("pink", "purple", "gold")) +
   labs(x = "Cell type", y = "Gene expression",
-       title = "12767")
+       title = plottingData$features$SYMBOL)
 @
 
 When I convert my ggplot2 plot to a function, in addition to renaming the
@@ -927,25 +933,28 @@ ggplot2 package inside the function. You will declare the required package
 dependencies when you add the custom plots to the OmicNavigator study.
 
 <<>>=
-cellTypeBoxGg <- function(x, featureID) {
-  ggplot(x, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
+cellTypeBoxGg <- function(plottingData) {
+  ggDataFrame <- cbind(plottingData$samples,
+                       feature = as.numeric(plottingData$assays))
+
+  ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
     geom_boxplot() +
     scale_fill_manual("Cell type", values = c("pink", "purple", "gold")) +
     labs(x = "Cell type", y = "Gene expression",
-         title = featureID)
+         title = plottingData$features$SYMBOL)
 }
 @
 
 Now that I've created two custom plots for use in the app, I compile them into
-a nested list and add them to the OmicNavigator study. The nested list has three
-levels. The first is the modelIDs, in this case \texttt{main}. The second is
-the name of the custom plotting functions as they were defined in the current
-R session, \texttt{cellTypeBox} and \texttt{cellTypeBoxGg}. The third is information
-about the custom plot function. The only required element is \texttt{displayName},
-which is the text that will be displayed in the app. An optional element is
-\texttt{packages}, in which you list any R packages that are required for the plotting
-function to work. OmicNavigator uses this information to properly construct the
-study package it creates.
+a nested list and add them to the OmicNavigator study. The nested list has
+three levels. The first is the modelIDs, in this case \texttt{main}. The
+second is the name of the custom plotting functions as they were defined in
+the current R session, \texttt{cellTypeBox} and \texttt{cellTypeBoxGg}. The
+third is information about the custom plotting function. The only required
+element is \texttt{displayName}, which is the text that will be displayed in
+the app. An optional element is \texttt{packages}, in which you list any R
+packages that are required for the plotting function to work. OmicNavigator
+uses this information to properly construct the study package it creates.
 
 <<>>=
 plots <- list(

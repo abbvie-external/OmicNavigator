@@ -97,12 +97,14 @@ use the modelID "default". All columns will be coerced to character
 strings.}
 
 \item{plots}{Custom plotting functions for the study. The input object is a
-named list of lists (one per model). The names of the sublists should
-correspond to functions defined in the current R session. Each sublist must
-define a \code{displayName} to control how the plot will be named in the
-app. Optionally, if the plottting function requires external packages,
-these can be defined in the element \code{packages}. To share plots across
-multiple models, use the modelID "default".}
+nested list. The first list corresponds to the modelID(s). The second list
+corresponds to the name(s) of the function(s) defined in the current R
+session. The third list provides metadata to describe each plot. The only
+required metadata element is \code{displayName}, which controls how the
+plot will be named in the app. Optionally, if the plottting function
+requires external packages, these can be defined in the element
+\code{packages}. To share plots across multiple models, use the modelID
+"default".}
 
 \item{barcodes}{The metadata variables that describe the barcode plot.
 The input object is a list of lists (one per model). Each sublist must

@@ -13,7 +13,31 @@ or the name of an installed study package.}
 \item{modelID}{Filter by modelID}
 
 \item{featureID}{Filter by featureID}
+
+\item{libraries}{The directories to search for installed study packages. If
+left as \code{NULL} (the default), then
+\code{\link[utils]{installed.packages}} will use the result of
+\code{\link{.libPaths}}.}
+}
+\value{
+Returns a list of 3 data frames:
+
+\item{\code{assays}}{a data frame that contains the assay measurements,
+filtered to only include the row(s) corresponding to the input featureID(s)
+(see \code{\link{getAssays}})}
+
+\item{\code{samples}}{a data frame that contains the sample metadata for
+the given modelID (see \code{\link{getSamples}})}
+
+\item{\code{features}}{a data frame that contains the feature metadata,
+filtered to only include the row(s) corresponding to the input featureID(s)
+(see \code{\link{getFeatures}})}
 }
 \description{
-Get plotting data
+This function creates the input data that \code{\link{plotStudy}} passes to
+custom plotting functions added with \code{\link{addPlots}}. You can use it
+directly when you are interactively creating your custom plotting functions.
+}
+\seealso{
+\code{\link{addPlots}}, \code{\link{plotStudy}}
 }

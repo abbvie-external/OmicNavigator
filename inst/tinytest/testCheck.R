@@ -163,6 +163,52 @@ expect_error(
   addPlots(study, plots = NULL)
 )
 
+functionWithNoArgs <- function() {}
+plots = list(
+  default = list(
+    functionWithNoArgs = list(
+      displayName = "error"
+    )
+  )
+)
+expect_error(
+  addPlots(study, plots = plots),
+  "has no arguments",
+  info = "Custom plotting functions are required to have at least one argument"
+)
+rm(functionWithNoArgs)
+
+functionWithNonDefaultArgs <- function(w, x = 1, y, z = 2) {}
+plots = list(
+  default = list(
+    functionWithNonDefaultArgs = list(
+      displayName = "error"
+    )
+  )
+)
+expect_error(
+  addPlots(study, plots = plots),
+  "Only the first argument can be a required argument",
+  info = "Custom plotting functions can only have the first argument be required"
+)
+rm(functionWithNonDefaultArgs)
+
+# While not encouraged, as long as plotStudy() can pass the data to the first
+# argument, custom plotting functions can have other arguments with default
+# values, even the first one.
+functionUnusualButValid <- function(w = 1, x = 2, y = 3, z = 4) {}
+plots = list(
+  default = list(
+    functionUnusualButValid = list(
+      displayName = "error"
+    )
+  )
+)
+expect_silent(
+  addPlots(study, plots = plots)
+)
+rm(functionUnusualButValid)
+
 expect_error(
   addBarcodes(study, barcodes = NULL)
 )

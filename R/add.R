@@ -320,12 +320,14 @@ addMetaFeatures <- function(study, metaFeatures) {
 #' Include custom plots that the app will display when a feature is selected by
 #' the user.
 #'
-#' All custom plotting functions are required to have the same function
-#' signature. The first argument is always \code{x}, which will be a data frame
-#' that combines the sample metadata with a column containing the assay
-#' measurements for a specific featureID. That column will always be named
-#' \code{feature}. The second argument, \code{featureID}, is the unique ID of
-#' the feature. This is for labeling the plot.
+#' Custom plotting functions are passed a list of data frames: \code{assays}
+#' with the measurements, \code{features} with the feature data, and
+#' \code{samples} with the sample data. Both \code{assays} and \code{features}
+#' are subset to only include data for the specified featureID(s). Thus your
+#' custom plotting function must have at least one argument. It can have
+#' additional arguments if you wish, but these must be provided with default
+#' values, because \code{plotStudy} only passes the plotting data to the first
+#' argument.
 #'
 #' Note that any ggplot2 plots will require extra care. This is because the
 #' plotting code will be inserted into a study package, and thus must follow the
@@ -337,13 +339,17 @@ addMetaFeatures <- function(study, metaFeatures) {
 #' the function.
 #'
 #' @param plots Custom plotting functions for the study. The input object is a
-#'   named list of lists (one per model). The names of the sublists should
-#'   correspond to functions defined in the current R session. Each sublist must
-#'   define a \code{displayName} to control how the plot will be named in the
-#'   app. Optionally, if the plottting function requires external packages,
-#'   these can be defined in the element \code{packages}. To share plots across
-#'   multiple models, use the modelID "default".
+#'   nested list. The first list corresponds to the modelID(s). The second list
+#'   corresponds to the name(s) of the function(s) defined in the current R
+#'   session. The third list provides metadata to describe each plot. The only
+#'   required metadata element is \code{displayName}, which controls how the
+#'   plot will be named in the app. Optionally, if the plottting function
+#'   requires external packages, these can be defined in the element
+#'   \code{packages}. To share plots across multiple models, use the modelID
+#'   "default".
 #' @inheritParams shared-add
+#'
+#' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
 #'
 #' @export
 addPlots <- function(study, plots) {

@@ -1,6 +1,9 @@
 #' Plot a feature using a custom plotting function
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
+#'
+#' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
 #'
 #' @export
 plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
@@ -86,7 +89,27 @@ resetSearch <- function(pkgNamespaces) {
 
 #' Get plotting data
 #'
+#' This function creates the input data that \code{\link{plotStudy}} passes to
+#' custom plotting functions added with \code{\link{addPlots}}. You can use it
+#' directly when you are interactively creating your custom plotting functions.
+#'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
+#'
+#' @return Returns a list of 3 data frames:
+#'
+#' \item{\code{assays}}{a data frame that contains the assay measurements,
+#' filtered to only include the row(s) corresponding to the input featureID(s)
+#' (see \code{\link{getAssays}})}
+#'
+#' \item{\code{samples}}{a data frame that contains the sample metadata for
+#' the given modelID (see \code{\link{getSamples}})}
+#'
+#' \item{\code{features}}{a data frame that contains the feature metadata,
+#' filtered to only include the row(s) corresponding to the input featureID(s)
+#' (see \code{\link{getFeatures}})}
+#'
+#' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export
 getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
