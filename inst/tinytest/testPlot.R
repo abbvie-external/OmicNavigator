@@ -2,8 +2,10 @@
 
 # Setup ------------------------------------------------------------------------
 
+source("tinytestSettings.R")
+using(ttdo)
+
 library(OmicNavigator)
-library(tinytest)
 
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
@@ -26,7 +28,7 @@ pkgDependencies <- utils::packageDescription(
   fields = "Imports"
 )
 
-expect_identical(
+expect_identical_xl(
   pkgDependencies,
   "ggplot2, graphics, rlang, stats"
 )
@@ -34,7 +36,7 @@ expect_identical(
 pkgExports <- sort(getNamespaceExports(testPkgName))
 plotsAll <- sort(unlist(lapply(plots, names), use.names = FALSE))
 
-expect_identical(
+expect_identical_xl(
   pkgExports,
   plotsAll
 )
@@ -44,36 +46,36 @@ expect_identical(
 pkgsAttachedPre <- search()
 parSettingsPre <- graphics::par(no.readonly = TRUE)
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
@@ -83,48 +85,48 @@ expect_error(
 # namespace.
 rm(list = plotsAll)
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_silent(
+expect_silent_xl(
   plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
-expect_error(
+expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
 
 pkgsAttachedPost <- search()
-expect_identical(
+expect_identical_xl(
   pkgsAttachedPost,
   pkgsAttachedPre
 )
 
 parSettingsPost <- graphics::par(no.readonly = TRUE)
-expect_identical(
+expect_identical_xl(
   parSettingsPost,
   parSettingsPre
 )
@@ -140,19 +142,19 @@ plottingData <- getPlottingData(
 samples <- getSamples(testStudyObj, modelID = testModelName)
 assays <- getAssays(testStudyObj, modelID = testModelName)
 
-expect_true(
+expect_true_xl(
   inherits(plottingData, "list")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
@@ -165,19 +167,19 @@ plottingData <- getPlottingData(
 samples <- getSamples(testStudyName, modelID = testModelName)
 assays <- getAssays(testStudyName, modelID = testModelName)
 
-expect_true(
+expect_true_xl(
   inherits(plottingData, "list")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
@@ -189,28 +191,28 @@ plottingData <- getPlottingData(
   featureID = c("feature_0001", "feature_0002")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData, "list")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["assays"]]),
   2
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["features"]]),
   2
 )
@@ -221,28 +223,28 @@ plottingData <- getPlottingData(
   featureID = c("feature_0001", "feature_0002")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData, "list")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["assays"]]),
   2
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["features"]]),
   2
 )
@@ -254,28 +256,28 @@ plottingData <- getPlottingData(
   featureID = c("feature_0001", "feature_0001")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData, "list")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["assays"]]),
   1
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
-expect_true(
+expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
-expect_equal(
+expect_equal_xl(
   nrow(plottingData[["features"]]),
   1
 )
