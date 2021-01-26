@@ -113,15 +113,24 @@ resetSearch <- function(pkgNamespaces) {
 #'
 #' @export
 getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
+  stopifnot(
+    is.character(modelID),
+    is.character(featureID),
+    is.null(libraries) || is.character(libraries)
+  )
+  # Deduplicate the featureIDs
+  featureID <- unique(featureID)
+
   assays <- getAssays(study, modelID = modelID, quiet = TRUE,
                       libraries = libraries)
   if (isEmpty(assays)) {
     stop(sprintf("No assays available for modelID \"%s\"\n", modelID),
          "Add assays data with addAssays()")
   }
-  if (!featureID %in% rownames(assays)) {
+  featureIDAvailable <- featureID %in% rownames(assays)
+  if (any(!featureIDAvailable)) {
     stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                 featureID, modelID))
+                 featureID[!featureIDAvailable][1], modelID))
   }
   assaysPlotting <- assays[featureID, , drop = FALSE]
 
@@ -138,7 +147,7 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
   if (isEmpty(features)) {
     featuresPlotting <- features
   } else {
-    featuresPlotting <- features[features[[1]] == featureID, , drop = FALSE]
+    featuresPlotting <- features[features[[1]] %in% featureID, , drop = FALSE]
   }
 
   plottingData <- list(

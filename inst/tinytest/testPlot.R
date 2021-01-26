@@ -134,7 +134,7 @@ expect_identical(
 plottingData <- getPlottingData(
   testStudyObj,
   modelID = testModelName,
-  feature = "feature_0001"
+  featureID = "feature_0001"
 )
 
 samples <- getSamples(testStudyObj, modelID = testModelName)
@@ -159,7 +159,7 @@ expect_true(
 plottingData <- getPlottingData(
   testStudyName,
   modelID = testModelName,
-  feature = "feature_0001"
+  featureID = "feature_0001"
 )
 
 samples <- getSamples(testStudyName, modelID = testModelName)
@@ -179,6 +179,105 @@ expect_true(
 
 expect_true(
   inherits(plottingData[["features"]], "data.frame")
+)
+
+# getPlottingData (multiFeature) -----------------------------------------------
+
+plottingData <- getPlottingData(
+  testStudyObj,
+  modelID = testModelName,
+  featureID = c("feature_0001", "feature_0002")
+)
+
+expect_true(
+  inherits(plottingData, "list")
+)
+
+expect_true(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["assays"]]),
+  2
+)
+
+expect_true(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_true(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["features"]]),
+  2
+)
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  featureID = c("feature_0001", "feature_0002")
+)
+
+expect_true(
+  inherits(plottingData, "list")
+)
+
+expect_true(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["assays"]]),
+  2
+)
+
+expect_true(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_true(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["features"]]),
+  2
+)
+
+# Duplicate featureIDs should be deduplicated
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  featureID = c("feature_0001", "feature_0001")
+)
+
+expect_true(
+  inherits(plottingData, "list")
+)
+
+expect_true(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["assays"]]),
+  1
+)
+
+expect_true(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_true(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_equal(
+  nrow(plottingData[["features"]]),
+  1
 )
 
 # Teardown ---------------------------------------------------------------------
