@@ -146,7 +146,7 @@ invalidMetaFeatures[["metaFeatures"]][[1]][1, 1] <- "missingInFeaturesTable"
 
 # This is ok now. Extra rows in the metaFeatures table won't affect anything in
 # the app
-expect_true(
+expect_true_xl(
   validateStudy(invalidMetaFeatures)
 )
 
@@ -175,7 +175,7 @@ resultsLinkouts <- list(
   )
 )
 resultsLinkoutsNoFeatures <- addResultsLinkouts(resultsLinkoutsNoFeatures, resultsLinkouts)
-expect_true(validateStudy(resultsLinkoutsNoFeatures))
+expect_true_xl(validateStudy(resultsLinkoutsNoFeatures))
 
 # Enrichments Linkouts ---------------------------------------------------------
 

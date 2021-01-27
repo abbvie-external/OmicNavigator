@@ -31,7 +31,7 @@ expect_identical_xl(
 )
 
 # If there are no OmicNavigator study packages installed, return an empty list.
-expect_identical(
+expect_identical_xl(
   listStudies(libraries = tempfile()),
   list()
 )
@@ -43,7 +43,7 @@ expect_identical_xl(
   testStudyObj[["samples"]]
 )
 
-expect_message(
+expect_message_xl(
   getSamples(testStudyObj, modelID = "non-existent-model"),
   "Returning \"default\" samples for modelID \"non-existent-model\""
 )
@@ -69,7 +69,7 @@ expect_identical_xl(
   testStudyObj[["samples"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getSamples(testStudyObj, modelID = "non-existent-model"),
   "Returning \"default\" samples for modelID \"non-existent-model\""
 )
@@ -79,12 +79,12 @@ expect_identical_xl(
   testStudyObj[["samples"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getSamples(emptyStudy),
   "No samples available"
 )
 
-expect_error(
+expect_error_xl(
   getSamples(1),
   "No method for object of class \"numeric\""
 )
@@ -101,7 +101,7 @@ expect_identical_xl(
   testStudyObj[["features"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getFeatures(testStudyObj, modelID = "non-existent-model"),
   "Returning \"default\" features for modelID \"non-existent-model\""
 )
@@ -121,7 +121,7 @@ expect_identical_xl(
   testStudyObj[["features"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getFeatures(testStudyName, modelID = "non-existent-model"),
   "Returning \"default\" features for modelID \"non-existent-model\""
 )
@@ -131,12 +131,12 @@ expect_identical_xl(
   testStudyObj[["features"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getFeatures(emptyStudy),
   "No features available"
 )
 
-expect_error(
+expect_error_xl(
   getFeatures(1),
   "No method for object of class \"numeric\""
 )
@@ -153,7 +153,7 @@ expect_identical_xl(
   testStudyObj[["assays"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getAssays(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -168,17 +168,17 @@ expect_equal_xl(
   testStudyObj[["assays"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getAssays(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
-expect_message(
+expect_message_xl(
   getAssays(emptyStudy),
   "No assays available"
 )
 
-expect_error(
+expect_error_xl(
   getAssays(1),
   "No method for object of class \"numeric\""
 )
@@ -195,7 +195,7 @@ expect_identical_xl(
   testStudyObj[["models"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getModels(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -210,17 +210,17 @@ expect_identical_xl(
   testStudyObj[["models"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getModels(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
 
-expect_message(
+expect_message_xl(
   getModels(emptyStudy),
   "No models available"
 )
 
-expect_error(
+expect_error_xl(
   getModels(1),
   "No method for object of class \"numeric\""
 )
@@ -242,7 +242,7 @@ expect_identical_xl(
   testStudyObj[["tests"]][["default"]][[testTestName]]
 )
 
-expect_error(
+expect_error_xl(
   getTests(testStudyObj, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
@@ -262,17 +262,17 @@ expect_identical_xl(
   testStudyObj[["tests"]][["default"]][[testTestName]]
 )
 
-expect_error(
+expect_error_xl(
   getTests(testStudyName, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
 
-expect_message(
+expect_message_xl(
   getTests(emptyStudy),
   "No tests available"
 )
 
-expect_error(
+expect_error_xl(
   getTests(1),
   "No method for object of class \"numeric\""
 )
@@ -299,12 +299,12 @@ expect_identical_xl(
   testStudyObj[["annotations"]][[testAnnotationName]]
 )
 
-expect_message(
+expect_message_xl(
   getAnnotations(emptyStudy),
   "No annotations available"
 )
 
-expect_error(
+expect_error_xl(
   getAnnotations(1),
   "No method for object of class \"numeric\""
 )
@@ -321,7 +321,7 @@ expect_identical_xl(
   testStudyObj[["results"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getResults(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -331,22 +331,22 @@ expect_identical_xl(
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
 
-expect_message(
+expect_message_xl(
   getResults(testStudyObj, modelID = testModelName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
-expect_error(
+expect_error_xl(
   getResults(testStudyObj, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
 
-expect_message(
+expect_message_xl(
   getResults(emptyStudy),
   "No results available"
 )
 
-expect_error(
+expect_error_xl(
   getResults(1),
   "No method for object of class \"numeric\""
 )
@@ -361,7 +361,7 @@ expect_equal_xl(
   testStudyObj[["results"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getResults(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -371,12 +371,12 @@ expect_equal_xl(
   testStudyObj[["results"]][[testModelName]][[testTestName]]
 )
 
-expect_message(
+expect_message_xl(
   getResults(testStudyName, modelID = testModelName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
-expect_error(
+expect_error_xl(
   getResults(testStudyName, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
@@ -393,7 +393,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyObj, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -403,12 +403,12 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = "non-existent-annotation"),
   "non-existent-annotation"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyObj, annotationID = testAnnotationName),
   "Must specify a model in order to specify an annotation"
 )
@@ -418,32 +418,32 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyObj, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyObj, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyObj, modelID = testModelName, testID = testTestName),
   "Must specify an annotation in order to specify a test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyObj, annotationID = testAnnotationName, testID = testTestName),
   "Must specify a model in order to specify an annotation"
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(emptyStudy),
   "No enrichments available"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(1),
   "No method for object of class \"numeric\""
 )
@@ -458,7 +458,7 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyName, modelID = "non-existent-model"),
   "non-existent-model"
 )
@@ -468,12 +468,12 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = "non-existent-annotation"),
   "non-existent-annotation"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyName, annotationID = testAnnotationName),
   "Must specify a model in order to specify an annotation"
 )
@@ -483,22 +483,22 @@ expect_equal_xl(
   testStudyObj[["enrichments"]][[testModelName]][[testAnnotationName]][[testTestName]]
 )
 
-expect_message(
+expect_message_xl(
   getEnrichments(testStudyName, modelID = testModelName, annotationID = testAnnotationName, testID = "non-existent-test"),
   "non-existent-test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyName, testID = testTestName),
   "Must specify a model in order to specify a test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyName, modelID = testModelName, testID = testTestName),
   "Must specify an annotation in order to specify a test"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichments(testStudyName, annotationID = testAnnotationName, testID = testTestName),
   "Must specify a model in order to specify an annotation"
 )
@@ -515,7 +515,7 @@ expect_identical_xl(
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getMetaFeatures(testStudyObj, modelID = "non-existent-model"),
   "Returning \"default\" metaFeatures for modelID \"non-existent-model\""
 )
@@ -535,7 +535,7 @@ expect_identical_xl(
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getMetaFeatures(testStudyName, modelID = "non-existent-model"),
   "Returning \"default\" metaFeatures for modelID \"non-existent-model\""
 )
@@ -545,12 +545,12 @@ expect_identical_xl(
   testStudyObj[["metaFeatures"]][["default"]]
 )
 
-expect_message(
+expect_message_xl(
   getMetaFeatures(emptyStudy),
   "No metaFeatures available"
 )
 
-expect_error(
+expect_error_xl(
   getMetaFeatures(1),
   "No method for object of class \"numeric\""
 )
@@ -572,12 +572,12 @@ expect_identical_xl(
   testStudyObj[["plots"]][["model_03"]]
 )
 
-expect_message(
+expect_message_xl(
   getPlots(emptyStudy),
   "No plots available"
 )
 
-expect_error(
+expect_error_xl(
   getPlots(1),
   "No method for object of class \"numeric\""
 )
@@ -615,12 +615,12 @@ expect_identical_xl(
   info = "Confirm model-specific barcode data returned"
 )
 
-expect_message(
+expect_message_xl(
   getBarcodes(emptyStudy),
   "No barcodes available"
 )
 
-expect_error(
+expect_error_xl(
   getBarcodes(1),
   "No method for object of class \"numeric\""
 )
@@ -659,12 +659,12 @@ expect_identical_xl(
   info = "Confirm model-specific report data returned"
 )
 
-expect_message(
+expect_message_xl(
   getReports(emptyStudy),
   "No reports available"
 )
 
-expect_error(
+expect_error_xl(
   getReports(1),
   "No method for object of class \"numeric\""
 )
@@ -697,12 +697,12 @@ expect_identical_xl(
   info = "Confirm model-specific results table linkouts returned"
 )
 
-expect_message(
+expect_message_xl(
   getResultsLinkouts(emptyStudy),
   "No resultsLinkouts available"
 )
 
-expect_error(
+expect_error_xl(
   getResultsLinkouts(1),
   "No method for object of class \"numeric\""
 )
@@ -737,12 +737,12 @@ expect_identical_xl(
   info = "Confirm annotation-specific enrichments table linkouts returned"
 )
 
-expect_message(
+expect_message_xl(
   getEnrichmentsLinkouts(emptyStudy),
   "No enrichmentsLinkouts available"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichmentsLinkouts(1),
   "No method for object of class \"numeric\""
 )

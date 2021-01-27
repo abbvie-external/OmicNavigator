@@ -30,54 +30,54 @@ suppressMessages(installStudy(testStudyObj))
 
 studies <- listStudies(libraries = tmplib)
 
-expect_identical(
+expect_identical_xl(
   length(studies),
   1L
 )
 
-expect_identical(
+expect_identical_xl(
   studies[[1]][["name"]],
   testStudyName
 )
 
-expect_identical(
+expect_identical_xl(
   names(studies[[1]]),
   c("name", "package", "results", "enrichments", "plots")
 )
 
-expect_identical(
+expect_identical_xl(
   studies[[1]][["package"]][["OmicNavigatorVersion"]],
   as.character(utils::packageVersion("OmicNavigator"))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["results"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["results"]][[1]][["tests"]],
          function(x) x[["testID"]], character(1)),
   names(getTests(testStudyObj, modelID = testModelName))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["enrichments"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["enrichments"]][[1]][["annotations"]],
          function(x) x[["annotationID"]], character(1)),
   names(getEnrichments(testStudyObj, modelID = testModelName))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["plots"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )
 
-expect_identical(
+expect_identical_xl(
   vapply(studies[[1]][["plots"]][[1]][["plots"]],
          function(x) x[["plotID"]], character(1)),
   names(getPlots(testStudyObj, modelID = testModelName))
@@ -90,7 +90,7 @@ expect_identical_xl(
 )
 
 # If there are no OmicNavigator study packages installed, return an empty list.
-expect_identical(
+expect_identical_xl(
   listStudies(libraries = tempfile()),
   list()
 )
@@ -99,28 +99,28 @@ expect_identical(
 
 resultsTable <- getResultsTable(testStudyName, testModelName, testTestName)
 
-expect_identical(
+expect_identical_xl(
   class(resultsTable),
   "data.frame"
 )
 
 features <- getFeatures(testStudyObj, testModelName)
-expect_true(all(colnames(features) %in% colnames(resultsTable)))
+expect_true_xl(all(colnames(features) %in% colnames(resultsTable)))
 
 results <- getResults(testStudyObj, testModelName, testTestName)
-expect_true(all(colnames(results) %in% colnames(resultsTable)))
+expect_true_xl(all(colnames(results) %in% colnames(resultsTable)))
 
 expect_identical_xl(
   resultsTable[, 1],
   results[, 1]
 )
 
-expect_error(
+expect_error_xl(
   getResultsTable(1),
   "missing"
 )
 
-expect_equal_with_diff(
+expect_equal_xl(
   resultsTable,
   getResultsTable(testStudyObj, testModelName, testTestName)
 )
@@ -134,9 +134,9 @@ expect_identical_xl(
   "data.frame"
 )
 
-expect_true(all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable)))
+expect_true_xl(all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable)))
 
-expect_error(
+expect_error_xl(
   getEnrichmentsTable(1),
   "missing"
 )
@@ -169,12 +169,12 @@ expect_identical_xl(
   names(getTests(testStudyName, testModelName))
 )
 
-expect_message(
+expect_message_xl(
   getEnrichmentsNetwork(testStudyObj, testModelName, testAnnotationName),
   "No overlaps available"
 )
 
-expect_error(
+expect_error_xl(
   getEnrichmentsNetwork(1),
   "missing"
 )
@@ -187,23 +187,23 @@ metaFeaturesTable <- getMetaFeaturesTable(
   "feature_0042"
 )
 
-expect_identical(
+expect_identical_xl(
   class(metaFeaturesTable),
   "data.frame"
 )
 
-expect_identical(
+expect_identical_xl(
   dim(metaFeaturesTable),
   c(3L, 5L)
 )
 
 # Confirm that even numeric-looking columns are returned as character
-expect_identical(
+expect_identical_xl(
   unique(vapply(metaFeaturesTable, class, FUN.VALUE = character(1), USE.NAMES = FALSE)),
   "character"
 )
 
-expect_message(
+expect_message_xl(
   getMetaFeaturesTable(
     testStudyName,
     testModelName,
@@ -222,23 +222,23 @@ barcodeData <- getBarcodeData(
   testTermName
 )
 
-expect_identical(
+expect_identical_xl(
   names(barcodeData),
   c("data", "highest", "labelStat", "labelLow", "labelHigh")
 )
 
-expect_identical(
+expect_identical_xl(
   colnames(barcodeData[["data"]]),
   c("featureID", "featureEnrichment", "featureDisplay", "statistic", "logFoldChange")
 )
 
-expect_identical(
+expect_identical_xl(
   barcodeData[["data"]][["statistic"]],
   sort(barcodeData[["data"]][["statistic"]], decreasing = TRUE),
   info = "Barcode results should be ordered by statistic column"
 )
 
-expect_equal_with_diff(
+expect_equal_xl(
   barcodeData[["highest"]],
   ceiling(max(abs(barcodeData[["data"]][, "statistic"])))
 )
@@ -251,7 +251,7 @@ barcodeData <- getBarcodeData(
   testTermName
 )
 
-expect_identical(
+expect_identical_xl(
   barcodeData[["labelStat"]],
   "Effect size",
   info = "Confirm model-specific barcode data returned"
@@ -259,7 +259,7 @@ expect_identical(
 
 # getReportLink ----------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getReportLink(testStudyName, testModelName),
   getReports(testStudyObj, modelID = testModelName)
 )
@@ -274,35 +274,35 @@ expect_identical_xl(
 
 annotation <- getAnnotations(testStudyName, testAnnotationName)
 
-expect_identical(
+expect_identical_xl(
   getNodeFeatures(testStudyName, testAnnotationName, testTermName),
   sort(annotation[["terms"]][[testTermName]])
 )
 
-expect_identical(
+expect_identical_xl(
   getNodeFeatures(testStudyObj, testAnnotationName, testTermName),
   sort(annotation[["terms"]][[testTermName]])
 )
 
-expect_message(
+expect_message_xl(
   getNodeFeatures(testStudyName, testAnnotationName, "non-existent-term"),
   "non-existent-term"
 )
 
-expect_message(
+expect_message_xl(
   getNodeFeatures(testStudyName, "non-existent-annotation", testTermName),
   "non-existent-annotation"
 )
 
 # getLinkFeatures --------------------------------------------------------------
 
-expect_identical(
+expect_identical_xl(
   getLinkFeatures(testStudyName, testAnnotationName, testTermName, "term_03"),
   sort(intersect(annotation[["terms"]][[testTermName]],
                  annotation[["terms"]][["term_03"]]))
 )
 
-expect_identical(
+expect_identical_xl(
   getLinkFeatures(testStudyObj, testAnnotationName, testTermName, "term_03"),
   sort(intersect(annotation[["terms"]][[testTermName]],
                  annotation[["terms"]][["term_03"]]))

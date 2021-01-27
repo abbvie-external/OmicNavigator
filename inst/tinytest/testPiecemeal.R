@@ -89,7 +89,7 @@ models <- OmicNavigator:::testModels()
 # Confirm a message is emitted and empty list returned when only some models
 # have a description available.
 study <- addModels(study, models = models[1])
-expect_message(
+expect_message_xl(
   modelReturnObject <- getModels(study, modelID = names(models)[2]),
   names(models)[2]
 )

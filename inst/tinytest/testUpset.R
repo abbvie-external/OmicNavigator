@@ -34,11 +34,11 @@ resultsIntersection <- getResultsIntersection(
   column = "p_val"
 )
 
-expect_true(
+expect_true_xl(
   nrow(resultsIntersection) > 0
 )
 
-expect_true(
+expect_true_xl(
   all(resultsIntersection[["p_val"]] < 0.5)
 )
 
@@ -53,11 +53,11 @@ resultsIntersection <- getResultsIntersection(
   column = "beta"
 )
 
-expect_true(
+expect_true_xl(
   nrow(resultsIntersection) > 0
 )
 
-expect_true(
+expect_true_xl(
   all(resultsIntersection[["beta"]] > 1.2)
 )
 
@@ -72,15 +72,15 @@ resultsIntersection <- getResultsIntersection(
   column = c("p_val", "beta")
 )
 
-expect_true(
+expect_true_xl(
   nrow(resultsIntersection) > 0
 )
 
-expect_true(
+expect_true_xl(
   all(resultsIntersection[["p_val"]] < 0.5)
 )
 
-expect_true(
+expect_true_xl(
   all(resultsIntersection[["beta"]] > 1.2)
 )
 
@@ -100,11 +100,11 @@ resultsIntersection <- getResultsIntersection(
   column = "p_val"
 )
 
-expect_true(
+expect_true_xl(
   nrow(resultsIntersection) > 0
 )
 
-expect_identical(
+expect_identical_xl(
   unique(resultsIntersection[, "Set_Membership"]),
   testTestName
 )
@@ -120,11 +120,11 @@ resultsIntersection <- getResultsIntersection(
   column = c("p_val", "beta")
 )
 
-expect_true(
+expect_true_xl(
   nrow(resultsIntersection) > 0
 )
 
-expect_true(
+expect_true_xl(
   inherits(resultsIntersection, "data.frame")
 )
 
@@ -136,7 +136,7 @@ resultsTable <- getResultsTable(
 
 # getResultsIntersection() should add the column Set_Membership between the
 # feature metadata variable columns and the results columns
-expect_identical(
+expect_identical_xl(
   colnames(resultsIntersection),
   c(
     colnames(getFeatures(testStudyName, modelID = testModelName)),
@@ -158,12 +158,12 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   type = "nominal"
 )
 
-expect_true(
+expect_true_xl(
   nrow(enrichmentsIntersection) > 0
 )
 
 for (i in seq_along(testTestsAll)) {
-  expect_true(
+  expect_true_xl(
     all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
 }
@@ -179,15 +179,15 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   type = "nominal"
 )
 
-expect_true(
+expect_true_xl(
   nrow(enrichmentsIntersection) > 0
 )
 
 for (i in seq_along(testTestsAll)) {
-  expect_true(
+  expect_true_xl(
     all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
-  expect_true(
+  expect_true_xl(
     all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
   )
 }
@@ -203,24 +203,24 @@ enrichmentsIntersection <- getEnrichmentsIntersection(
   type = "adjusted"
 )
 
-expect_true(
+expect_true_xl(
   nrow(enrichmentsIntersection) > 0
 )
 
 for (i in seq_along(testTestsAll)) {
-  expect_true(
+  expect_true_xl(
     all(enrichmentsIntersection[[testTestsAll[i]]] < 0.05)
   )
-  expect_true(
+  expect_true_xl(
     all(enrichmentsIntersection[[testTestsAll[i]]] > 0.02)
   )
 }
 
-expect_true(
+expect_true_xl(
   inherits(enrichmentsIntersection, "data.frame")
 )
 
-expect_error(
+expect_error_xl(
   enrichmentsIntersection <- getEnrichmentsIntersection(
     study = testStudyName,
     modelID = testModelName,
@@ -451,7 +451,7 @@ enrichmentsUpset <- getEnrichmentsUpset(
   type = "adjusted"
 )
 
-expect_error(
+expect_error_xl(
   enrichmentsUpset <- getEnrichmentsUpset(
     study = testStudyName,
     modelID = testModelName,
@@ -486,7 +486,7 @@ enrichmentsUpset <- getEnrichmentsUpset(
   tests = testTestsAll
 )
 
-expect_error(
+expect_error_xl(
   enrichmentsUpset <- getEnrichmentsUpset(
     study = testStudyName,
     modelID = testModelName,
@@ -506,7 +506,7 @@ upsetCols <- getUpsetCols(
   modelID = testModelName
 )
 
-expect_identical(
+expect_identical_xl(
   upsetCols,
   c("beta", "p_val")
 )

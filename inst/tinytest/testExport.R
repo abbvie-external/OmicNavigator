@@ -21,30 +21,30 @@ dir.create(tmplib)
 observed <- exportStudy(testStudyObj, type = "package", path = tmplib)
 expected <- file.path(tmplib, OmicNavigator:::studyToPkg(testStudyName))
 expect_identical_xl(observed, expected)
-expect_true(dir.exists(expected))
+expect_true_xl(dir.exists(expected))
 
 suppressWarnings(
   observed <- exportStudy(minimalStudyObj, type = "package", path = tmplib)
 )
 expected <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))
 expect_identical_xl(observed, expected)
-expect_true(dir.exists(expected))
+expect_true_xl(dir.exists(expected))
 
 # Export as package tarball ----------------------------------------------------
 
 tarball <- exportStudy(testStudyObj, type = "tarball", path = tmplib)
-expect_true(file.exists(tarball))
-expect_true(startsWith(tarball, tmplib))
+expect_true_xl(file.exists(tarball))
+expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(testStudyName))
-expect_false(dir.exists(directoryname))
+expect_false_xl(dir.exists(directoryname))
 
 suppressWarnings(
   tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
 )
-expect_true(file.exists(tarball))
-expect_true(startsWith(tarball, tmplib))
+expect_true_xl(file.exists(tarball))
+expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))
-expect_false(dir.exists(directoryname))
+expect_false_xl(dir.exists(directoryname))
 
 # Teardown ---------------------------------------------------------------------
 

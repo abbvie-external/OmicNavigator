@@ -14,7 +14,7 @@ study <- createStudy(name = "test")
 invalidStudy <- list(nameIncorrect = "incorrect")
 class(invalidStudy) <- "onStudy"
 
-expect_error(
+expect_error_xl(
   addFeatures(invalidStudy, features = data.frame()),
   "name"
 )
@@ -104,7 +104,7 @@ expect_error_xl(
 
 # checkX -----------------------------------------------------------------------
 
-expect_error(
+expect_error_xl(
   addFeatures(study, features = NULL)
 )
 
@@ -122,35 +122,35 @@ expect_warning_xl(
   ".+non-character.+x.+z"
 )
 
-expect_error(
+expect_error_xl(
   addSamples(study, samples = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addModels(study, models = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addAssays(study, assays = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addTests(study, tests = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addAnnotations(study, annotations = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addResults(study, results = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addEnrichments(study, enrichments = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addMetaFeatures(study, metaFeatures = NULL)
 )
 
@@ -159,7 +159,7 @@ expect_warning_xl(
   ".+non-character.+x.+z"
 )
 
-expect_error(
+expect_error_xl(
   addPlots(study, plots = NULL)
 )
 
@@ -171,7 +171,7 @@ plots = list(
     )
   )
 )
-expect_error(
+expect_error_xl(
   addPlots(study, plots = plots),
   "has no arguments",
   info = "Custom plotting functions are required to have at least one argument"
@@ -186,7 +186,7 @@ plots = list(
     )
   )
 )
-expect_error(
+expect_error_xl(
   addPlots(study, plots = plots),
   "Only the first argument can be a required argument",
   info = "Custom plotting functions can only have the first argument be required"
@@ -204,39 +204,39 @@ plots = list(
     )
   )
 )
-expect_silent(
+expect_silent_xl(
   addPlots(study, plots = plots)
 )
 rm(functionUnusualButValid)
 
-expect_error(
+expect_error_xl(
   addBarcodes(study, barcodes = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addReports(study, reports = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
   "is.character"
 )
 
-expect_error(
+expect_error_xl(
   addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
                                                "https://www.domain.com/report2.html"))),
   "length"
 )
 
-expect_error(
+expect_error_xl(
   addReports(study, reports = list(modelID = "C:/path/to/non-existent/file")),
   "Report must be a URL or a path to an existing file"
 )
 
-expect_error(
+expect_error_xl(
   addResultsLinkouts(study, resultsLinkouts = NULL)
 )
 
-expect_error(
+expect_error_xl(
   addEnrichmentsLinkouts(study, enrichmentsLinkouts = NULL)
 )
