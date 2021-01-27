@@ -83,6 +83,12 @@ expect_identical(
   names(getPlots(testStudyObj, modelID = testModelName))
 )
 
+expect_identical_xl(
+  vapply(studies[[1]][["plots"]][[1]][["plots"]],
+         function(x) x[["plotType"]], character(1)),
+  c("singleFeature", "multiFeature")
+)
+
 # If there are no OmicNavigator study packages installed, return an empty list.
 expect_identical(
   listStudies(libraries = tempfile()),

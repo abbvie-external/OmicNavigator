@@ -47,36 +47,36 @@ pkgsAttachedPre <- search()
 parSettingsPre <- graphics::par(no.readonly = TRUE)
 
 expect_silent_xl(
-  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_silent_xl(
-  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_02", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyObj, modelID = "model_03", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_02", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_silent_xl(
-  plotStudy(testStudyObj, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyObj, modelID = "model_03", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
 
@@ -86,36 +86,36 @@ expect_error_xl(
 rm(list = plotsAll)
 
 expect_silent_xl(
-  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_silent_xl(
-  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_02", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_error_xl(
-  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotBase")
+  plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotBase")
 )
 
 expect_error_xl(
-  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_error_xl(
-  plotStudy(testStudyName, modelID = "model_02", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_02", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_silent_xl(
-  plotStudy(testStudyName, modelID = "model_03", feature = "feature_0001", plotID = "plotGg")
+  plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotGg")
 )
 
 expect_error_xl(
-  plotStudy(testStudyName, modelID = "model_01", feature = "feature_0001", plotID = "non-existent"),
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001", plotID = "non-existent"),
   "non-existent"
 )
 
 expect_error_xl(
-  plotStudy(testStudyName, modelID = "model_01", feature = "non-existent", plotID = "plotBase"),
+  plotStudy(testStudyName, modelID = "model_01", featureID = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
 
@@ -129,6 +129,39 @@ parSettingsPost <- graphics::par(no.readonly = TRUE)
 expect_identical_xl(
   parSettingsPost,
   parSettingsPre
+)
+
+# plotStudy (multiFeature) -----------------------------------------------------
+
+expect_silent_xl(
+  plotStudy(
+    testStudyName,
+    modelID = "model_01",
+    featureID = c("feature_0026", "feature_0001"),
+    plotID = "plotMultiFeature"
+  )
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = "model_01",
+    featureID = c("feature_0001"),
+    plotID = "plotMultiFeature"
+  ),
+  "Received 1 featureID\\(s\\)",
+  info = "Cannot pass a single featureID to a multiFeature plot"
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = "model_01",
+    featureID = c("feature_0026", "feature_0001"),
+    plotID = "plotBase"
+  ),
+  "Received 2 featureID\\(s\\)",
+  info = "Cannot pass multiple featureIDs to a singleFeature plot"
 )
 
 # getPlottingData --------------------------------------------------------------

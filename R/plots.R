@@ -28,6 +28,23 @@ plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
     f <- getPlotFunction(plotID, study = study)
   }
 
+  # Throw error is mismatch between number of features and plot type
+  nFeatures <- length(featureID)
+  plotType <- p[["type"]]
+  if (isEmpty(plotType)) plotType <- "singleFeature"
+  if (plotType == "singleFeature" && nFeatures != 1) {
+    stop(
+      "Plot type \"singleFeature\" requires 1 featureID\n",
+      sprintf("Received %d featureID(s)", nFeatures)
+    )
+  }
+  if (plotType == "multiFeature" && nFeatures < 2) {
+    stop(
+      "Plot type \"multiFeature\" requires at least 2 featureIDs\n",
+      sprintf("Received %d featureID(s)", nFeatures)
+    )
+  }
+
   plottingData <- getPlottingData(study, modelID, featureID,
                                   libraries = libraries)
 

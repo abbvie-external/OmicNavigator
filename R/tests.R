@@ -228,15 +228,31 @@ testPlots <- function() {
                    xlab = "Samples", ylab = "Expression level")
   }
   assign("plotGg", plotGg, envir = parent.frame())
+  plotMultiFeature <- function(x) {
+    if (nrow(x[["assays"]]) < 2) {
+      stop("This plotting function requires at least 2 features")
+    }
+    pca <- stats::prcomp(t(x[["assays"]]), scale. = TRUE)$x
+    plot(pca[, 1], pca[, 2], col = as.factor(x$samples$sampleVar01),
+         xlab = "PC 1", ylab = "PC 2", main = "PCA")
+  }
+  assign("plotMultiFeature", plotMultiFeature, envir = parent.frame())
   plots <- list(
     default = list(
       plotBase = list(
         displayName = "Custom plot"
+        # purposefully omit the "type", which should default to "singleFeature"
+      ),
+      plotMultiFeature = list(
+        displayName = "PCA",
+        type = "multiFeature",
+        packages = "stats"
       )
     ),
     model_03 = list(
       plotGg = list(
         displayName = "Custom ggplot2 plot",
+        type = "singleFeature",
         packages = c("ggplot2", "stats")
       )
     )

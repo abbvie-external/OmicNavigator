@@ -330,9 +330,12 @@ exportSummary <- function(x, path = ".") {
       plotID <- names(modelPlots)[j]
       plotDisplay = modelPlots[[j]][["displayName"]]
       if (isEmpty(plotDisplay)) plotDisplay <- plotID
+      plotType <- modelPlots[[j]][["type"]]
+      if (isEmpty(plotType)) plotType <- "singleFeature"
       output[["plots"]][[i]][["plots"]][[j]] <- list(
         plotID = plotID,
-        plotDisplay = plotDisplay
+        plotDisplay = plotDisplay,
+        plotType = plotType
       )
     }
   }
