@@ -1,5 +1,16 @@
 # Development
 
+* **Breaking change:** `plotStudy()` and `getPlottingData()` now accept multiple
+featureIDs as input in order to visualize multiple feature in a single plot. The
+object returned by `getPlottingData()` is now a list of three data frames:
+`assays`, `samples`, and `features`. Thus you can annotate your plots with any
+feature metadata. You will need to update your custom plotting functions to
+accept one argument (you can name it whatever you like). Also, when adding plots
+with `addPlots()`, specify the `plotType` as `"singleFeature"` or
+`"multipleFeature"` to accept a single or multiple featureIDs, respectively. The
+app currently only supports singleFeature custom plots, but will soon support
+multiFeature plots as well.
+
 * Fix bug in `getResultsUpset()` that failed when using the absolute value
 filters (`|<|`, `|>|`)
 

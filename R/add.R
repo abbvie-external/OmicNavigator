@@ -323,11 +323,11 @@ addMetaFeatures <- function(study, metaFeatures) {
 #' Custom plotting functions are passed a list of data frames: \code{assays}
 #' with the measurements, \code{features} with the feature data, and
 #' \code{samples} with the sample data. Both \code{assays} and \code{features}
-#' are subset to only include data for the specified featureID(s). Thus your
-#' custom plotting function must have at least one argument. It can have
-#' additional arguments if you wish, but these must be provided with default
-#' values, because \code{plotStudy} only passes the plotting data to the first
-#' argument.
+#' are subset to only include data for the specified featureID(s) (and
+#' re-ordered so their rows match). Thus your custom plotting function must have
+#' at least one argument. It can have additional arguments if you wish, but
+#' these must be provided with default values, because \code{plotStudy} only
+#' passes the plotting data to the first argument.
 #'
 #' Note that any ggplot2 plots will require extra care. This is because the
 #' plotting code will be inserted into a study package, and thus must follow the
@@ -343,10 +343,12 @@ addMetaFeatures <- function(study, metaFeatures) {
 #'   corresponds to the name(s) of the function(s) defined in the current R
 #'   session. The third list provides metadata to describe each plot. The only
 #'   required metadata element is \code{displayName}, which controls how the
-#'   plot will be named in the app. Optionally, if the plottting function
-#'   requires external packages, these can be defined in the element
-#'   \code{packages}. To share plots across multiple models, use the modelID
-#'   "default".
+#'   plot will be named in the app. You are encouraged to also specify the
+#'   \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"}. If you
+#'   do not specify the \code{plotType}, the plot will be assumed to be
+#'   \code{"singleFeature"}. Optionally, if the plotting function requires
+#'   external packages, these can be defined in the element \code{packages}. To
+#'   share plots across multiple models, use the modelID "default".
 #' @inheritParams shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}

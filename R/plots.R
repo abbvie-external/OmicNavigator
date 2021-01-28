@@ -30,7 +30,7 @@ plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
 
   # Throw error is mismatch between number of features and plot type
   nFeatures <- length(featureID)
-  plotType <- p[["type"]]
+  plotType <- p[["plotType"]]
   if (isEmpty(plotType)) plotType <- "singleFeature"
   if (plotType == "singleFeature" && nFeatures != 1) {
     stop(
@@ -80,6 +80,7 @@ getPlotFunction <- function(plotID, study = NULL) {
     f <- utils::getFromNamespace(plotID, ns = pkg)
   }
 
+  stopifnot(is.function(f))
   stopifnot(length(f) == 1)
   return(f)
 }
@@ -166,6 +167,7 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
     if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
       warning("Not all of the sampleIDs have metadata")
     }
+    row.names(samplesPlotting) <- NULL # reset row numbers after filtering
   }
 
   features <- getFeatures(study, modelID = modelID, quiet = TRUE,
@@ -177,6 +179,7 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
     if (!identical(featuresPlotting[[1]], featureID)) {
       warning("Not all of the featureIDs have metadata")
     }
+    row.names(featuresPlotting) <- NULL # reset row numbers after filtering
   }
 
   plottingData <- list(

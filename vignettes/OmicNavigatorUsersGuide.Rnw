@@ -858,23 +858,28 @@ following elements:
 
 \begin{enumerate}
 
-  \item \texttt{assays} - a data frame that contains the assay measurements,
-  filtered to only include the row(s) corresponding to the input featureID(s)
+  \item \texttt{assays} - A data frame that contains the assay measurements,
+  filtered to only include the row(s) corresponding to the input featureID(s).
+  If multiple featureIDs are requested, the rows are reordered to match the
+  order of this input. The column order is unchanged.
 
-  \item \texttt{samples} - a data frame that contains the sample metadata for
-  the given modelID
+  \item \texttt{samples} - A data frame that contains the sample metadata for
+  the given modelID. The rows are reordered to match the columns of the assays
+  data frame.
 
-  \item \texttt{features} - a data frame that contains the feature metadata,
-  filtered to only include the row(s) corresponding to the input featureID(s)
+  \item \texttt{features} - A data frame that contains the feature metadata,
+  filtered to only include the row(s) corresponding to the input featureID(s).
+  If multiple featureIDs are requested, the rows are reordered to match the
+  order of this input (and thus match the order of the assays data frame).
 
 \end{enumerate}
 
-When creating your custom plotting function, you don't need to create this list of data
-frames manually. Instead, you can use the same function that
+When creating your custom plotting function, you don't need to create this
+list of data frames manually. Instead, you can use the same function that
 OmicNavigator uses internally, \texttt{getPlottingData()}. The code below
-obtains the input list that will be passed to the custom plotting
-functions when an app user selects the featureID \texttt{"12767"}. Note how
-both the assays and features data frames only contain one row each.
+obtains the input list that will be passed to the custom plotting functions
+when an app user selects the featureID \texttt{"12767"}. Note how both the
+assays and features data frames only contain one row each.
 
 <<>>=
 plottingData <- getPlottingData(study, modelID = "main", featureID = "12767")
@@ -922,11 +927,11 @@ ggplot(ggDataFrame, aes(x = group, y = feature, fill = group)) +
        title = plottingData$features$SYMBOL)
 @
 
-When I convert my ggplot2 plot to a function, in addition to renaming the
-input variables, I need to preface all the references to the columns of the
-data frame with \texttt{.data\$}. This is required for properly resolving these
-variables when the function is called from within a package. If you're
-interested in learning more, see the ggplot2 vignette
+When I convert my ggplot2 plot to a function, I need to preface all the
+references to the columns of the data frame with \texttt{.data\$}. This is
+required for properly resolving these variables when the function is called
+from within a package. If you're interested in learning more, see the ggplot2
+vignette
 \href{https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function-1}{Using
 ggplot2 in packages}. Also note that you do \textbf{not} need to load the
 ggplot2 package inside the function. You will declare the required package
@@ -945,26 +950,60 @@ cellTypeBoxGg <- function(plottingData) {
 }
 @
 
-Now that I've created two custom plots for use in the app, I compile them into
-a nested list and add them to the OmicNavigator study. The nested list has
-three levels. The first is the modelIDs, in this case \texttt{main}. The
+The above plots visualize one gene at a time. I can also create custom
+plotting functions that accept multiple featureIDs as input, which
+OmicNavigator refers to as ``multiFeature'' plots. An app user can dynamically
+select a subset of featureIDs, and these will be passed to your function.
+Below I create an example plotting function that performs PCA using a subset
+of featureIDs.
+
+<<multiFeature, fig=TRUE>>=
+twoFeatures <- getPlottingData(study, modelID = "main",
+                               featureID = c("12767", "13603"))
+twoFeatures
+plotPca <- function(x) {
+  if (nrow(x[["assays"]]) < 2) {
+    stop("This plotting function requires at least 2 features")
+  }
+  pca <- stats::prcomp(t(x[["assays"]]), scale. = TRUE)$x
+  plot(pca[, 1], pca[, 2], col = as.factor(x$samples$group),
+       xlab = "PC 1", ylab = "PC 2", main = "PCA")
+  text(pca[, 1], pca[, 2], labels = x$samples$group, pos = 2, cex = 0.5)
+}
+plotPca(twoFeatures)
+@
+
+Now that I've created three custom plots for use in the app, I compile them
+into a nested list and add them to the OmicNavigator study. The nested list
+has three levels. The first is the modelIDs, in this case \texttt{main}. The
 second is the name of the custom plotting functions as they were defined in
-the current R session, \texttt{cellTypeBox} and \texttt{cellTypeBoxGg}. The
-third is information about the custom plotting function. The only required
-element is \texttt{displayName}, which is the text that will be displayed in
-the app. An optional element is \texttt{packages}, in which you list any R
-packages that are required for the plotting function to work. OmicNavigator
-uses this information to properly construct the study package it creates.
+the current R session, \texttt{cellTypeBox}, \texttt{cellTypeBoxGg}, and
+\texttt{plotPca}. The third is information about the custom plotting function.
+The only required element is \texttt{displayName}, which is the text that will
+be displayed in the app. You are encouraged to also specify the
+\texttt{plotType}, e.g. \texttt{"singleFeature"}, \texttt{"multiFeature"}. If
+you do not specify the \texttt{plotType}, the plot will be assumed to be
+\texttt{"singleFeature"}. An optional element is \texttt{packages}, in which
+you list any R packages that are required for the plotting function to work.
+OmicNavigator uses this information to properly construct the study package it
+creates.
 
 <<>>=
 plots <- list(
   main = list(
     cellTypeBox = list(
-      displayName = "Expression by cell type"
+      displayName = "Expression by cell type",
+      plotType = "singleFeature"
     ),
     cellTypeBoxGg = list(
       displayName = "Expression by cell type (ggplot2)",
+      plotType = "singleFeature",
       packages = c("ggplot2")
+    ),
+    plotPca = list(
+      displayName = "PCA",
+      plotType = "multiFeature",
+      packages = c("stats")
     )
   )
 )
@@ -975,7 +1014,7 @@ For more details, run \texttt{?addPlots}.
 
 After you add the plotting functions, you can test that they work as you expect
 using the same function called by the app, \texttt{plotStudy()}. Below I call
-both custom functions using featureID 21390.
+both custom ``singleFeature'' functions using featureID 21390.
 
 <<plotStudy1, fig=TRUE>>=
 plotStudy(study, modelID = "main", featureID = "21390",
@@ -985,6 +1024,13 @@ plotStudy(study, modelID = "main", featureID = "21390",
 <<plotStudy2, fig=TRUE>>=
 plotStudy(study, modelID = "main", featureID = "21390",
           plotID = "cellTypeBoxGg")
+@
+
+And I can test the ``multiFeature'' function by passing it multiple featureIDs.
+
+<<plotStudy3, fig=TRUE>>=
+plotStudy(study, modelID = "main", featureID = c("21390", "19216"),
+          plotID = "plotPca")
 @
 
 To make the custom plotting functions available in the app, re-install the study

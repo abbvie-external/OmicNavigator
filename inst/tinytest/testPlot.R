@@ -326,9 +326,9 @@ needsSortingFeatures <- data.frame(featureID = c("f4", "f5", "f1", "f3", "f2"),
                                    stringsAsFactors = FALSE)
 needsSorting <- addFeatures(needsSorting, list(default = needsSortingFeatures))
 needsSortingAssays <- matrix(rnorm(5 * 3), nrow = 5, ncol = 3)
-rownames(needsSortingAssays) <- paste0("f", 1:5)
-colnames(needsSortingAssays) <- c("one", "two", "three")
 needsSortingAssays <- as.data.frame(needsSortingAssays)
+row.names(needsSortingAssays) <- paste0("f", 1:5)
+names(needsSortingAssays) <- c("one", "two", "three")
 needsSorting <- addAssays(needsSorting, list(main = needsSortingAssays))
 
 sortedPlottingData <- getPlottingData(

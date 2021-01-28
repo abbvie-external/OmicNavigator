@@ -241,18 +241,18 @@ testPlots <- function() {
     default = list(
       plotBase = list(
         displayName = "Custom plot"
-        # purposefully omit the "type", which should default to "singleFeature"
+        # purposefully omit "plotType", which should default to "singleFeature"
       ),
       plotMultiFeature = list(
         displayName = "PCA",
-        type = "multiFeature",
+        plotType = "multiFeature",
         packages = "stats"
       )
     ),
     model_03 = list(
       plotGg = list(
         displayName = "Custom ggplot2 plot",
-        type = "singleFeature",
+        plotType = "singleFeature",
         packages = c("ggplot2", "stats")
       )
     )
