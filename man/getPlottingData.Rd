@@ -22,16 +22,21 @@ left as \code{NULL} (the default), then
 \value{
 Returns a list of 3 data frames:
 
-\item{\code{assays}}{a data frame that contains the assay measurements,
+\item{\code{assays}}{A data frame that contains the assay measurements,
 filtered to only include the row(s) corresponding to the input featureID(s)
-(see \code{\link{getAssays}})}
+(see \code{\link{getAssays}}). If multiple featureIDs are requested, the rows
+are reordered to match the order of this input. The column order is
+unchanged.}
 
-\item{\code{samples}}{a data frame that contains the sample metadata for
-the given modelID (see \code{\link{getSamples}})}
+\item{\code{samples}}{A data frame that contains the sample metadata for the
+given modelID (see \code{\link{getSamples}}). The rows are reordered to match
+the columns of the assays data frame.}
 
-\item{\code{features}}{a data frame that contains the feature metadata,
+\item{\code{features}}{A data frame that contains the feature metadata,
 filtered to only include the row(s) corresponding to the input featureID(s)
-(see \code{\link{getFeatures}})}
+(see \code{\link{getFeatures}}). If multiple featureIDs are requested, the
+rows are reordered to match the order of this input (and thus match the order
+of the assays data frame.}
 }
 \description{
 This function creates the input data that \code{\link{plotStudy}} passes to

@@ -315,6 +315,72 @@ expect_equal_xl(
   1
 )
 
+# Ensure that getPlottingData() sorts the 3 data frames to match
+needsSorting <- createStudy("needsSorting")
+needsSortingSamples <- data.frame(sampleID = c("three", "one", "two"),
+                                  sampleVar = letters[1:3],
+                                  stringsAsFactors = FALSE)
+needsSorting <- addSamples(needsSorting, list(default = needsSortingSamples))
+needsSortingFeatures <- data.frame(featureID = c("f4", "f5", "f1", "f3", "f2"),
+                                   featureVar = letters[1:5],
+                                   stringsAsFactors = FALSE)
+needsSorting <- addFeatures(needsSorting, list(default = needsSortingFeatures))
+needsSortingAssays <- matrix(rnorm(5 * 3), nrow = 5, ncol = 3)
+rownames(needsSortingAssays) <- paste0("f", 1:5)
+colnames(needsSortingAssays) <- c("one", "two", "three")
+needsSortingAssays <- as.data.frame(needsSortingAssays)
+needsSorting <- addAssays(needsSorting, list(main = needsSortingAssays))
+
+sortedPlottingData <- getPlottingData(
+  needsSorting,
+  modelID = "main",
+  featureID = c("f2", "f1", "f3")
+)
+
+expect_identical_xl(
+  sortedPlottingData[["samples"]][[1]],
+  colnames(sortedPlottingData[["assays"]]),
+  info = "Samples metadata rows should match assays columns"
+)
+
+expect_identical_xl(
+  sortedPlottingData[["features"]][[1]],
+  c("f2", "f1", "f3"),
+  info = "Features metadata for plotting are sorted according to input featureIDs"
+)
+
+expect_identical_xl(
+  rownames(sortedPlottingData[["assays"]]),
+  c("f2", "f1", "f3"),
+  info = "Assays rows for plotting are sorted according to input featureIDs"
+)
+
+# getPlottingData() should send warning if featureID or sampleID is missing
+# metadata.
+needsSortingAssaysExtra <- cbind(needsSortingAssays, four = rnorm(5))
+needsSortingAssaysExtra <- rbind(needsSortingAssaysExtra, f6 = rnorm(4))
+needsSorting <- addAssays(needsSorting, list(extra = needsSortingAssaysExtra))
+
+expect_warning(
+  getPlottingData(
+    needsSorting,
+    modelID = "extra",
+    featureID = c("f2", "f1", "f3")
+  ),
+  "Not all of the sampleIDs have metadata",
+  info = "Warning when assays has a column that is missing from the samples table"
+)
+
+expect_warning(
+  getPlottingData(
+    needsSorting,
+    modelID = "extra",
+    featureID = c("f2", "f1", "f3", "f6")
+  ),
+  "Not all of the featureIDs have metadata",
+  info = "Warning when assays has a row that is missing from the features table"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unloadNamespace(testPkgName)

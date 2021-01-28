@@ -115,16 +115,21 @@ resetSearch <- function(pkgNamespaces) {
 #'
 #' @return Returns a list of 3 data frames:
 #'
-#' \item{\code{assays}}{a data frame that contains the assay measurements,
+#' \item{\code{assays}}{A data frame that contains the assay measurements,
 #' filtered to only include the row(s) corresponding to the input featureID(s)
-#' (see \code{\link{getAssays}})}
+#' (see \code{\link{getAssays}}). If multiple featureIDs are requested, the rows
+#' are reordered to match the order of this input. The column order is
+#' unchanged.}
 #'
-#' \item{\code{samples}}{a data frame that contains the sample metadata for
-#' the given modelID (see \code{\link{getSamples}})}
+#' \item{\code{samples}}{A data frame that contains the sample metadata for the
+#' given modelID (see \code{\link{getSamples}}). The rows are reordered to match
+#' the columns of the assays data frame.}
 #'
-#' \item{\code{features}}{a data frame that contains the feature metadata,
+#' \item{\code{features}}{A data frame that contains the feature metadata,
 #' filtered to only include the row(s) corresponding to the input featureID(s)
-#' (see \code{\link{getFeatures}})}
+#' (see \code{\link{getFeatures}}). If multiple featureIDs are requested, the
+#' rows are reordered to match the order of this input (and thus match the order
+#' of the assays data frame.}
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
@@ -156,7 +161,11 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
   if (isEmpty(samples)) {
     samplesPlotting <- samples
   } else {
-    samplesPlotting <- samples[match(samples[[1]], colnames(assaysPlotting)), ]
+    samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,
+                               drop = FALSE]
+    if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
+      warning("Not all of the sampleIDs have metadata")
+    }
   }
 
   features <- getFeatures(study, modelID = modelID, quiet = TRUE,
@@ -164,7 +173,10 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
   if (isEmpty(features)) {
     featuresPlotting <- features
   } else {
-    featuresPlotting <- features[features[[1]] %in% featureID, , drop = FALSE]
+    featuresPlotting <- features[match(featureID, features[[1]], nomatch = 0), , drop = FALSE]
+    if (!identical(featuresPlotting[[1]], featureID)) {
+      warning("Not all of the featureIDs have metadata")
+    }
   }
 
   plottingData <- list(
