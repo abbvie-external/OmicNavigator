@@ -252,14 +252,6 @@ expect_identical_xl(
   info = "Internal data.table use should not modify existing object"
 )
 
-resultsUpset <- getResultsUpset(
-  study = testStudyName,
-  modelID = testModelName,
-  sigValue = .5,
-  operator = "<",
-  column = "p_val"
-)
-
 resultsUpsetLegacy <- getResultsUpset(
   study = testStudyName,
   modelID = testModelName,
@@ -354,6 +346,72 @@ expect_error_xl(
     legacy = TRUE
   )
 )
+
+# Filters using absolute values
+resultsUpsetAbs <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5),
+  operator = c("|<|"),
+  column = c("beta")
+)
+
+resultsUpsetAbsLegacy <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5),
+  operator = c("|<|"),
+  column = c("beta"),
+  legacy = TRUE
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbs[["New_data"]][["test_01"]]),
+  sum(resultsUpsetAbsLegacy[["New_data"]][["test_01"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbs[["New_data"]][["test_02"]]),
+  sum(resultsUpsetAbsLegacy[["New_data"]][["test_02"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbs[["New_data"]][["test_01"]] & resultsUpsetAbs[["New_data"]][["test_01"]]),
+  sum(resultsUpsetAbsLegacy[["New_data"]][["test_01"]] & resultsUpsetAbsLegacy[["New_data"]][["test_01"]])
+)
+
+resultsUpsetAbsTwo <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5, 1),
+  operator = c("<", "|>|"),
+  column = c("p_val", "beta")
+)
+
+resultsUpsetAbsTwoLegacy <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(.5, 1),
+  operator = c("<", "|>|"),
+  column = c("p_val", "beta"),
+  legacy = TRUE
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbsTwo[["New_data"]][["test_01"]]),
+  sum(resultsUpsetAbsTwoLegacy[["New_data"]][["test_01"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbsTwo[["New_data"]][["test_02"]]),
+  sum(resultsUpsetAbsTwoLegacy[["New_data"]][["test_02"]])
+)
+
+expect_equal_xl(
+  sum(resultsUpsetAbsTwo[["New_data"]][["test_01"]] & resultsUpsetAbsTwo[["New_data"]][["test_01"]]),
+  sum(resultsUpsetAbsTwoLegacy[["New_data"]][["test_01"]] & resultsUpsetAbsTwoLegacy[["New_data"]][["test_01"]])
+)
+
 
 # getEnrichmentsUpset ----------------------------------------------------------
 

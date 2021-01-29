@@ -281,7 +281,7 @@ getResultsUpset <- function(
     is.character(column),
     length(sigValue) == length(operator),
     length(operator) == length(column),
-    operator %in% c(">", "<", ">=", "<=")
+    operator %in% c(">", "<", "|>|", "|<|")
   )
 
   # Only keep results which have the required columns
@@ -302,12 +302,12 @@ getResultsUpset <- function(
 
   # Filter rows. First construct the filtering expression as a character, and
   # then evaluate it inside of the data table.
-  filterExpression <- paste(
-    paste0("x$", column),
-    operator,
-    sigValue,
-    collapse = " & "
+  filterExpression <- ifelse(
+    operator %in% c("|>|", "|<|"),
+    sprintf("abs(x$%s) %s %f", column, gsub("|", "", operator, fixed = TRUE), sigValue),
+    sprintf("x$%s %s %f", column, operator, sigValue)
   )
+  filterExpression <- paste(filterExpression, collapse = " & ")
   applyFilterExpression <- function(x) {
     x[eval(parse(text = filterExpression, keep.source = FALSE)), 1]
   }
