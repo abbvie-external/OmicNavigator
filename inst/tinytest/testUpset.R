@@ -311,8 +311,9 @@ expect_equal_xl(
   sum(resultsUpsetTwoLegacy[["New_data"]][["test_01"]] & resultsUpsetTwoLegacy[["New_data"]][["test_01"]])
 )
 
-# Expect warning when filters remove all features
-expect_warning_xl(
+# Expect error when filters remove all features. The error message is displayed
+# to the user during an interactive session with the app.
+expect_error_xl(
   getResultsUpset(
     study = testStudyName,
     modelID = testModelName,
