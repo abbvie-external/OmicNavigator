@@ -1,4 +1,4 @@
-# Development
+# 0.24.0
 
 * **Breaking change:** `plotStudy()` and `getPlottingData()` now accept multiple
 featureIDs as input in order to visualize multiple feature in a single plot. The
