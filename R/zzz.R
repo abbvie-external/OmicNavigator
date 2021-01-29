@@ -1,7 +1,7 @@
 # The minimum version of OmicNavigator that is still compatible with the current
 # version. If a study package is created with a version less than this minimum
 # version, then listStudies() will throw a warning.
-minVersionCompatible <- "0.18.0"
+minVersionCompatible <- "0.24.0"
 
 # The default prefix added to OmicNavigator study packages. Used by .onLoad()
 # below and by getPrefix() in utility.R. The default is overriden by setting

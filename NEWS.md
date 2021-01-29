@@ -9,7 +9,8 @@ accept one argument (you can name it whatever you like). Also, when adding plots
 with `addPlots()`, specify the `plotType` as `"singleFeature"` or
 `"multipleFeature"` to accept a single or multiple featureIDs, respectively. The
 app currently only supports singleFeature custom plots, but will soon support
-multiFeature plots as well.
+multiFeature plots as well. **Study packages must be rebuilt with OmicNavigator
+0.24.0.**
 
 * Fix bug in `getResultsUpset()` that failed when using the absolute value
 filters (`|<|`, `|>|`)
