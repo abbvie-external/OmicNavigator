@@ -1,3 +1,7 @@
+# Development
+
+* Report versions of R package and app when first attached
+
 # 0.24.0
 
 * **Breaking change:** `plotStudy()` and `getPlottingData()` now accept multiple

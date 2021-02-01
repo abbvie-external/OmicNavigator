@@ -35,6 +35,31 @@ appPackages <- c(
   return(NULL)
 }
 
+# Report versions of package and app when package is first attached
+.onAttach <- function(libname, pkgname) {
+  versionPackage <- utils::packageVersion("OmicNavigator")
+  versionPackageMessage <- sprintf("OmicNavigator R package version: %s",
+                                   versionPackage)
+  packageStartupMessage(versionPackageMessage)
+
+  versionAppRegex <- "appVersion:[[:space:]]'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+[\\.]*[[:digit:]]*'"
+  appDir <- system.file("www", package = "OmicNavigator")
+  versionAppFile <- Sys.glob(file.path(appDir, "static/js/main.*.chunk.js.map"))
+  if (length(versionAppFile) == 1 && file.exists(versionAppFile)) {
+    versionAppText <- readLines(versionAppFile, n = 1, warn = FALSE)
+    versionAppMatches <- regexpr(versionAppRegex, versionAppText)
+    versionApp <- regmatches(versionAppText, versionAppMatches)
+  } else {
+    versionApp <- NA_character_
+  }
+  if (is.na(versionApp)) {
+    packageStartupMessage("The app is not installed")
+  } else {
+    versionAppMessage <- paste("OmicNavigator", versionApp)
+    packageStartupMessage(versionAppMessage)
+  }
+}
+
 #' OmicNavigator
 #'
 #' Package options to control package-wide behavior are described below.
