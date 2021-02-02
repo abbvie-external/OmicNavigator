@@ -54,6 +54,28 @@ plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
   on.exit(resetPar(originalParSettings), add = TRUE)
   pkgNamespacesToDetach <- character()
   on.exit(resetSearch(pkgNamespacesToDetach), add = TRUE)
+  originalTheme <- thematic::thematic_on(
+    bg = "#ffffff", # white
+    fg = "#2e2e2e", # black
+    accent = "#ff4400", # orange
+    font = thematic::font_spec(
+      families = c("Lato", "Open Sans"),
+      install = TRUE,
+      update = TRUE,
+      quiet = FALSE
+    ),
+    sequential = thematic::sequential_gradient(
+      fg_weight = 0,
+      bg_weight = 0.9,
+      fg_low = FALSE
+    ),
+    qualitative = c(
+      "#ff4400", # orange
+      "#ff7e38", # yellow-orange
+      "#2c3b78"  # blue
+    )
+  )
+  on.exit(thematic::thematic_set_theme(originalTheme), add = TRUE)
   for (pkg in p[["packages"]]) {
     if (!requireNamespace(pkg, quietly = TRUE)) {
       stop(sprintf("Package \"%s\" is not installed", pkg))
