@@ -69,6 +69,7 @@ echo "Copied zipball and extracted to inst/www/"
 rm "$appName.zip"
 rm -r "$appName"/
 
-# Report app version
+# Report app version (requires jq)
 
-grep -o -E "appVersion:[[:space:]]'[[:digit:]]+\.[[:digit:]]+\.[[:digit:]]+[\.]*[[:digit:]]*'" inst/www/static/js/main.*.chunk.js.map
+appVersion=`cat inst/www/manifest.json | jq -r .version`
+echo "App Version ${appVersion}"

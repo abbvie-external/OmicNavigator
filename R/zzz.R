@@ -8,6 +8,10 @@ minVersionCompatible <- "0.24.0"
 # the package option OmicNavigator.prefix.
 OmicNavigatorPrefix <- "ONstudy"
 
+# The R package is meant to be used with a specific version of the app. If a
+# user has an older or newer version installed, send a warning.
+versionAppPinned <- "0.3.8"
+
 # The extra packages required to run the app
 appPackages <- c(
   "faviconPlease",
@@ -42,21 +46,22 @@ appPackages <- c(
                                    versionPackage)
   packageStartupMessage(versionPackageMessage)
 
-  versionAppRegex <- "appVersion:[[:space:]]'[[:digit:]]+\\.[[:digit:]]+\\.[[:digit:]]+[\\.]*[[:digit:]]*'"
   appDir <- system.file("www", package = "OmicNavigator")
-  versionAppFile <- Sys.glob(file.path(appDir, "static/js/main.*.chunk.js.map"))
-  if (length(versionAppFile) == 1 && file.exists(versionAppFile)) {
-    versionAppText <- readLines(versionAppFile, n = 1, warn = FALSE)
-    versionAppMatches <- regexpr(versionAppRegex, versionAppText)
-    versionApp <- regmatches(versionAppText, versionAppMatches)
+  manifestFile <- file.path(appDir, "manifest.json")
+  if (file.exists(manifestFile)) {
+    manifest <- jsonlite::read_json(manifestFile)
+    versionApp <- manifest[["version"]]
   } else {
     versionApp <- NA_character_
   }
   if (is.na(versionApp)) {
     packageStartupMessage("The app is not installed")
   } else {
-    versionAppMessage <- paste("OmicNavigator", versionApp)
+    versionAppMessage <- paste("OmicNavigator app version:", versionApp)
     packageStartupMessage(versionAppMessage)
+    if (versionApp != versionAppPinned) {
+      warning("Expected app version: ", versionAppPinned)
+    }
   }
 }
 

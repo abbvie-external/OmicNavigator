@@ -1,6 +1,9 @@
-# Development
+# 0.24.1
 
+* The release tarball includes version 0.3.8 of the web app
 * Report versions of R package and app when first attached
+* Send warning if the version of the app is not the version pinned to the
+installed version of the R package
 
 # 0.24.0
 
