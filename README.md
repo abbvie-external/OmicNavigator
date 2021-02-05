@@ -8,15 +8,16 @@ enables omic data analysts (typically bioinformaticians) to create customizable
 web applications from the results of their work using only the statistical
 programming language, R. OmicNavigator is bundled as an R package that contains
 web application code, R functions for programmatic access and data deposition,
-and a new container for the storage of statistical analyses (differential
-expression and/or enrichment analysis), metadata, and custom plotting functions.
-Studies created with OmicNavigator are themselves R packages, accessible via a
-JavaScript dashboard that can be interrogated on the user’s local machine or
-deployed online to be explored by collaborators. The dashboard combines the
-user-defined study results and feature plots with performant tables and
-interactive D3 plots such as scatter, network, volcano, and barcode plots. The
-tool also includes dynamic, multi-set filtering across hypothesis tests based on
-user defined thresholds such as statistical significance or effect size.
+and a new container for the storage of measurements (e.g. RNAseq read counts),
+statistical analyses (differential expression and/or enrichment analysis),
+metadata, and custom plotting functions. Studies created with OmicNavigator are
+themselves R packages, accessible via a JavaScript dashboard that can be
+interrogated on the user’s local machine or deployed online to be explored by
+collaborators. The dashboard combines user-defined study results and feature
+plots with performant tables and interactive graphics common to bioinformatic
+analyses such as scatter, network, volcano, and barcode plots. The tool also
+includes dynamic, multi-set filtering across hypothesis tests based on
+user-defined thresholds such as statistical significance or effect size.
 
 ## Download
 
