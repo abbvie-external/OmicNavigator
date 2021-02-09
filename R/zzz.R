@@ -10,7 +10,7 @@ OmicNavigatorPrefix <- "ONstudy"
 
 # The R package is meant to be used with a specific version of the app. If a
 # user has an older or newer version installed, send a warning.
-versionAppPinned <- "0.3.8"
+versionAppPinned <- "1.0.0"
 
 # The extra packages required to run the app
 appPackages <- c(
@@ -60,7 +60,7 @@ appPackages <- c(
     versionAppMessage <- paste("OmicNavigator app version:", versionApp)
     packageStartupMessage(versionAppMessage)
     if (versionApp != versionAppPinned) {
-      warning("Expected app version: ", versionAppPinned)
+      warning("Expected app version: ", versionAppPinned, call. = FALSE)
     }
   }
 }
