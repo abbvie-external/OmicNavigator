@@ -313,7 +313,7 @@ version. Furthermore, the dependencies have changed, so you may have to re-run
 * The release tarball includes version 0.1.5 of the web app
 
 * `getEnrichmentsUpset()` has a new argument `tests`, which restricts the UpSet
-plot to only include the desired tests (#1, @MOOREJX3)
+plot to only include the desired tests (#1, Justin Moore)
 
 # 0.11.0
 
