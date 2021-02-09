@@ -1,3 +1,8 @@
+# Development
+
+* UpSet plots now display a maximum of 30 intersections (previously was 40)
+* UpSet plots now no longer display empty intersections
+
 # 0.24.1
 
 * The release tarball includes version 0.3.8 of the web app

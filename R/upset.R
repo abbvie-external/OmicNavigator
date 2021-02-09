@@ -322,9 +322,12 @@ getResultsUpset <- function(
   upsetOutput <- UpSetR::upset(
     upsetInput,
     nsets = length(listOfSets),
+    nintersects = 30,
     sets.bar.color = "#56B4E9",
     order.by = "freq",
-    empty.intersections = "on",
+    # To enable empty intersections, set it to any non-NULL value. The
+    # documentation uses "on", so that is the safest option.
+    empty.intersections = NULL,
     text.scale = c( # see ?upset
       2.0, # intersection size title
       2.0, # intersection size tick labels
@@ -356,6 +359,8 @@ getResultsUpset <- function(
 #'   * Changed `<=` and `>=` to `<` and `>`, respectively, to match app UI
 #'   * Set `newpage = FALSE` when printing to avoid blank page
 #'   * Invisibly return the output from UpSetR::upset()
+#'   * Reduce nintersects from default of 40 to 30
+#'   * Stop displaying empty intersections (due to poor performance with many sets)
 #'
 #' @noRd
 InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operator=c("<"), column= c("adj_P_Val")) {
@@ -400,7 +405,14 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
   if(length(testsUsed) <= 1){return (NULL)}
 
   #Create the upset plot.
-  rv <- UpSetR::upset(data,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+  rv <- UpSetR::upset(
+    data,
+    nintersects = 30,
+    sets = testsUsed,
+    sets.bar.color = "#56B4E9",
+    order.by = "freq",
+    empty.intersections = NULL
+  )
   #rv <- upset(data,point.size=1.1, line.size=0.4,sets = testsUsed, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
   print(rv, newpage = FALSE)
   return(invisible(rv))
@@ -472,6 +484,8 @@ getEnrichmentsUpset <- function(
 #'   * Added tests parameter and respective subset functionality
 #'   * Removed colsUsed variable and replaced with tests
 #'   * Set `newpage = FALSE` when printing to avoid blank page
+#'   * Reduce nintersects from default of 40 to 30
+#'   * Stop displaying empty intersections (due to poor performance with many sets)
 #'
 #' @noRd
 EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted, testCategory, annotation, sigValue, operator=c("<"), pValType="nominal", tests=NULL) {
@@ -517,7 +531,14 @@ EnrichmentUpsetPlot <- function(Enrichment.Results, Enrichment.Results.Adjusted,
   data <- cbind(Identifier, data)
 
   #Create the upset plot.
-  rv <- UpSetR::upset(data, sets = tests, sets.bar.color = "#56B4E9",order.by = "freq", empty.intersections = "on")
+  rv <- UpSetR::upset(
+    data,
+    nintersects = 30,
+    sets = tests,
+    sets.bar.color = "#56B4E9",
+    order.by = "freq",
+    empty.intersections = NULL
+  )
 
   print(rv, newpage = FALSE)
   invisible();
