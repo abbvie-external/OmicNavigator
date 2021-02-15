@@ -11,4 +11,10 @@ unlink(zipfile)
 # Change name to www/
 dirBuild <- file.path(installDir, "build")
 dirWww <- file.path(installDir, "www")
-file.rename(dirBuild, dirWww)
+success <- file.rename(dirBuild, dirWww)
+if (!success) {
+  # Copy instead
+  dir.create(dirWww, showWarnings = FALSE)
+  file.copy(from = file.path(dirBuild, "."), to = dirWww, recursive = TRUE)
+  unlink(dirBuild, recursive = TRUE, force = TRUE)
+}
