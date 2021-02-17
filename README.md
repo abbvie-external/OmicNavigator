@@ -21,8 +21,11 @@ user-defined thresholds such as statistical significance or effect size.
 
 ## Download
 
-Download the tarball from the GitHub Releases page. It will look
-like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the version.
+Download the tarball from the [latest GitHub Release][release-latest]. It will
+look like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the
+version.
+
+[release-latest]: https://github.com/AbbVie-External/OmicNavigator/releases/latest
 
 You need to download the tarball in order to run the app. If you clone the Git
 repository, you will only obtain the R code without the app.
