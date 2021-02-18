@@ -34,21 +34,71 @@ startApp <- function(...) {
 
   www <- system.file("www/", package = "OmicNavigator")
   if (identical(www, "") || !dir.exists(www)) {
-    # if (interactive()) on.exit(openReleasesPage(), add = TRUE)
     stop("The app is not installed with the OmicNavigator package.\n",
-         "Make sure you install the release tarball of OmicNavigator.\n",
-         "Go to the Releases page on GitHub\n",
-         "and download the asset named OmicNavigator_x.x.x.tar.gz\n",
-         "where x.x.x is the package version.\n")
+         "Install it with installApp()\n")
   }
 
   opencpu::ocpu_start_app("OmicNavigator", ...)
 }
 
-openReleasesPage <- function() {
-  url <- "https://github.com/"
-  answer <- readline(
-    "Would you like R to open the releases page in your browser? (y/N) "
+#' Install the OmicNavigator web app
+#'
+#' In order to run the OmicNavigator web app on your local machine, the app
+#' must be installed in the \code{www/} subdirectory of the R package. By default,
+#' the app is downloaded automatically during installation of the R package. If
+#' this download failed, or if you want to use a different version of the app,
+#' you can manually download and install the app.
+#'
+#' @param version Version of the web app to install, e.g. \code{"1.0.0"}
+#' @param overwrite Should an existing installation of the app be overwritten?
+#' @param ... Passed to \code{\link[utils]{download.file}}. If the download
+#'   fails, you may need to adjust the download settings for your operating
+#'   system. For example, to download with \code{wget}, pass the argument
+#'   \code{method = "wget"}.
+#' @inheritParams base::system.file
+#'
+#' @export
+installApp <- function(version = NULL, overwrite = FALSE, lib.loc = NULL, ...) {
+
+  if (is.null(version)) {
+    version <- versionAppPinned
+  }
+
+  installDir <- system.file(package = "OmicNavigator", lib.loc = TRUE)
+  if (!dir.exists(installDir)) {
+    stop("Unable to find installation directory. Was the OmicNavigator R package installed?")
+  }
+
+  dirAppFinal <- file.path(installDir, "www")
+  if (dir.exists(dirAppFinal) && !overwrite) {
+    stop("The app is already installed. Set overwrite=TRUE to replace it.")
+  }
+
+  zipurl <- paste0(
+    "https://github.com/",
+    "AbbVie-External/",
+    "OmicNavigatorWebApp",
+    "/releases/download/v",
+    version,
+    "/build.zip"
   )
-  if (tolower(answer) == "y") utils::browseURL(url)
+  zipfile <- file.path(installDir, "build.zip")
+
+  message("Installation plan:")
+  message("  Version: ", version)
+  message("  URL: ", zipurl)
+  message("  Installing to ", dirAppFinal)
+
+  utils::download.file(url = zipurl, destfile = zipfile, quiet = TRUE, ...)
+  utils::unzip(zipfile, exdir = installDir)
+  unlink(zipfile)
+
+  dirAppTmp <- file.path(installDir, "build")
+  if (overwrite) unlink(dirAppFinal, recursive = TRUE, force = TRUE)
+  dir.create(dirAppFinal, showWarnings = FALSE)
+  file.copy(from = file.path(dirAppTmp, "."), to = dirAppFinal, recursive = TRUE)
+  unlink(dirAppTmp, recursive = TRUE, force = TRUE)
+
+  message("Success!")
+  return(invisible(dirAppFinal))
 }

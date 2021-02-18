@@ -1,3 +1,7 @@
+# Development
+
+* The web app is automatically downloaded during R package installation
+
 # 1.0.0
 
 * The release tarball includes version 1.0.0 of the web app

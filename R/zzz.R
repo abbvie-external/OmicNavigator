@@ -55,7 +55,7 @@ appPackages <- c(
     versionApp <- NA_character_
   }
   if (is.na(versionApp)) {
-    packageStartupMessage("The app is not installed")
+    packageStartupMessage("The app is not installed. Install it with installApp()")
   } else {
     versionAppMessage <- paste("OmicNavigator app version:", versionApp)
     packageStartupMessage(versionAppMessage)
