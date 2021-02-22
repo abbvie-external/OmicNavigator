@@ -19,61 +19,71 @@ analyses such as scatter, network, volcano, and barcode plots. The tool also
 includes dynamic, multi-set filtering across hypothesis tests based on
 user-defined thresholds such as statistical significance or effect size.
 
-## Download
+## Installation
 
-Download the tarball from the [latest GitHub Release][release-latest]. It will
-look like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the
+You have multiple options for installing OmicNavigator.
+
+### Full installation in 2 steps (recommended)
+
+This is the quickest and easiest method for you to be able to install
+OmicNavigator and run the web app on your local machine.
+
+1. Install the OmicNavigator R package directly from GitHub:
+
+    ```
+    remotes::install_github("AbbVie-External/Omicnavigator", dependencies = TRUE)
+    ```
+
+1. Install the web app:
+
+    ```
+    library(OmicNavigator)
+    installApp()
+    ```
+
+### Full installation from release tarball
+
+Alternatively, you can install the OmicNavigator release tarball, which already
+includes the web app bundled with the R package.
+
+1. Download the tarball from the [latest GitHub Release][release-latest]. It
+will look like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the
 version.
 
-[release-latest]: https://github.com/AbbVie-External/OmicNavigator/releases/latest
+    [release-latest]: https://github.com/AbbVie-External/OmicNavigator/releases/latest
 
-You need to download the tarball in order to run the app. If you clone the Git
-repository, you will only obtain the R code without the app.
-
-## Installation from the R console
-
-1. Install dependencies:
-
-    1) Full installation. This is required if you want to run the app from R.
-
-        ```
-        remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)
-        ```
-
-    1) Minimal installation. If you only need to create an OmicNavigator study,
-       you can install many fewer dependencies.
-
-        ```
-        remotes::install_deps("OmicNavigator_x.x.x.tar.gz")
-        ```
-
-1. Install OmicNavigator:
+1. Install the dependencies:
 
     ```
-    install.packages("OmicNavigator_x.x.x.tar.gz", repos = NULL)
+    remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)
     ```
 
-## Installation from the terminal
+1. Install OmicNavigator from the release tarball:
 
-1. Install dependencies:
-
-    1) Full installation. This is required if you want to run the app from R.
+    1) In the R console:
 
         ```
-        Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)'
+        install.packages("OmicNavigator_x.x.x.tar.gz", repos = NULL)
         ```
 
-    1) Minimal installation. If you only need to create an OmicNavigator study,
-       you can install many fewer dependencies.
+    1) In the terminal:
 
         ```
-        Rscript -e 'remotes::install_deps("OmicNavigator_x.x.x.tar.gz")'
+        R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_x.x.x.tar.gz
         ```
 
-1. Install OmicNavigator:
+### Minimal installation
+
+If you are only using the R pacakge functions, and don't need to run the app,
+you can perform a minimal installation. This is useful if you are using
+OmicNavigator in a data engineering pipeline or as part of a continuous
+integration build.
+
+1. Install the OmicNavigator R package directly from GitHub, without the extra
+dependencies required to run the app:
 
     ```
-    R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_x.x.x.tar.gz
+    remotes::install_github("AbbVie-External/Omicnavigator")
     ```
 
 ## Installation troubleshooting

@@ -1,6 +1,7 @@
 # Development
 
-* The web app is automatically downloaded during R package installation
+* New function `installApp()` to download the web app after installing the R
+package
 
 # 1.0.0
 
