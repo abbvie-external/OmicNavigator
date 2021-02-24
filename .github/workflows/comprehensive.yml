@@ -1,13 +1,16 @@
-name: Quick test
+name: Comprehensive test
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+      - stable
+  pull_request:
+    branches:
+      - stable
 
 jobs:
   check:
     runs-on: ubuntu-18.04
-
-    env:
-      R_COMPILE_AND_INSTALL_PACKAGES: never
 
     steps:
     - uses: actions/checkout@v2
@@ -16,11 +19,15 @@ jobs:
         export DEBIAN_FRONTEND=noninteractive
         sudo apt-get update
         sudo apt-get install --yes --no-install-recommends \
+          graphviz \
           libcurl4-openssl-dev \
           libssl-dev \
           libprotobuf-dev \
           protobuf-compiler \
-          libxml2-dev
+          libxml2-dev \
+          wget
+    - name: Create diagrams for vignettes
+      run: make diagrams
     - name: Install R
       run: |
         sudo apt-get install --yes --no-install-recommends \
@@ -35,22 +42,17 @@ jobs:
         install.packages("remotes")
         remotes::install_deps(dependencies = TRUE)
       shell: sudo Rscript {0}
+    - name: Install TinyTeX
+      run: |
+        # https://yihui.name/tinytex/faq/
+        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh -s - --admin --no-path
+        wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-yihui.txt" | xargs ~/.TinyTeX/bin/*/tlmgr install
+        sudo ~/.TinyTeX/bin/*/tlmgr path add
+        chmod 755 ~/.TinyTeX/
     - name: Session information
       run: sessionInfo()
       shell: Rscript {0}
-    - name: Build and install
-      run: |
-        R CMD build --no-manual --no-build-vignettes .
-        R CMD INSTALL --no-docs --no-multiarch --no-staged-install OmicNavigator_*.tar.gz
-    - name: Test
-      run: tinytest::test_package("OmicNavigator")
-      shell: Rscript {0}
-    - name: Run vignettes
-      run: |
-        vignettes <- Sys.glob("vignettes/*.Rnw")
-        tangled <- sub("nw$", "", basename(vignettes))
-        for (i in seq_along(vignettes)) {
-          utils::Stangle(vignettes[i])
-          source(tangled[i], local = new.env())
-        }
-      shell: Rscript {0}
+    - name: Build
+      run: R CMD build --no-manual .
+    - name: Check
+      run: R CMD check --no-manual OmicNavigator_*.tar.gz
