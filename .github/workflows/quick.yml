@@ -12,26 +12,15 @@ jobs:
 
     steps:
     - uses: actions/checkout@v2
-    - name: Install system dependencies
-      run: |
-        export DEBIAN_FRONTEND=noninteractive
-        sudo apt-get update
-        sudo apt-get install --yes --no-install-recommends \
-          libcurl4-openssl-dev \
-          libssl-dev \
-          libprotobuf-dev \
-          protobuf-compiler \
-          libxml2-dev
     - name: Cache R packages
       uses: actions/cache@v2
       with:
         path: ${{ env.R_LIBS_USER }}
         key: ${{ runner.os }}-packages
-    - name: Install R
+    - name: Setup R
       run: |
-        sudo apt-get install --yes --no-install-recommends \
-          r-base \
-          r-base-dev
+        # R is already installed on GitHub's Ubuntu image
+        Rscript --version
         # Create user library directory
         mkdir -p ${{ env.R_LIBS_USER }}
         echo 'R_LIBS_USER=${{ env.R_LIBS_USER }}' > $HOME/.Renviron
@@ -41,7 +30,9 @@ jobs:
         options(HTTPUserAgent = sprintf("R/%s R (%s)", getRversion(), paste(getRversion(), R.version$platform, R.version$arch, R.version$os)))
         options(repos = c(CRAN = "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"))
 
-        install.packages("remotes")
+        if (!requireNamespace("remotes", quietly = TRUE)) {
+          install.packages("remotes")
+        }
         remotes::install_deps(dependencies = TRUE)
       shell: sudo Rscript {0}
     - name: Session information
