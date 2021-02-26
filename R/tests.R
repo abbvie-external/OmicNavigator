@@ -152,6 +152,10 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
       results[[i]][[j]] <- tmpResults
       # Give beta_x a test-specific name
       colnames(results[[i]][[j]])[3] <- paste0("beta_", j)
+      # For a very thorough testing of tibble input:
+      # class(results[[i]][[j]]) <- c("tbl_df", "tbl", "data.frame")
+      # For a very thorough testing of data.table input:
+      # class(results[[i]][[j]]) <- c("data.table", "data.frame")
     }
   }
   return(results)
@@ -177,6 +181,10 @@ testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, terms 
         tmp[["adjusted"]] <- tmp[["nominal"]] + 0.02
         tmp <- tmp[, c("termID", "description", "nominal", "adjusted")]
         enrichments[[i]][[j]][[k]] <- tmp
+        # For a very thorough testing of tibble input:
+        # class(enrichments[[i]][[j]][[k]]) <- c("tbl_df", "tbl", "data.frame")
+        # For a very thorough testing of data.table input:
+        # class(enrichments[[i]][[j]][[k]]) <- c("data.table", "data.frame")
       }
     }
   }

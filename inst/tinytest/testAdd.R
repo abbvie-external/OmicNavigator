@@ -75,6 +75,40 @@ suppressMessages(
   OmicNavigator::exportStudy(study, type = "package", path = tmplib)
 )
 
+# Test tibble and data.table input ---------------------------------------------
+
+studyWithTibbleInput <- createStudy("tibble")
+resultsTibble <- OmicNavigator:::testResults()
+class(resultsTibble[[1]][[1]]) <- c("tbl_df", "tbl", "data.frame")
+studyWithTibbleInput <- addResults(studyWithTibbleInput, resultsTibble)
+expect_identical_xl(
+  class(studyWithTibbleInput[["results"]][[1]][[1]]),
+  "data.frame"
+)
+enrichmentsTibble <- OmicNavigator:::testEnrichments()
+class(enrichmentsTibble[[1]][[1]][[1]]) <- c("tbl_df", "tbl", "data.frame")
+studyWithTibbleInput <- addEnrichments(studyWithTibbleInput, enrichmentsTibble)
+expect_identical_xl(
+  class(studyWithTibbleInput[["enrichments"]][[1]][[1]][[1]]),
+  "data.frame"
+)
+
+studyWithDataTableInput <- createStudy("data.table")
+resultsDataTable <- OmicNavigator:::testResults()
+class(resultsDataTable[[1]][[1]]) <- c("data.table", "data.frame")
+studyWithDataTableInput <- addResults(studyWithDataTableInput, resultsDataTable)
+expect_identical_xl(
+  class(studyWithDataTableInput[["results"]][[1]][[1]]),
+  "data.frame"
+)
+enrichmentsDataTable <- OmicNavigator:::testEnrichments()
+class(enrichmentsDataTable[[1]][[1]][[1]]) <- c("data.table", "data.frame")
+studyWithTibbleInput <- addEnrichments(studyWithTibbleInput, enrichmentsDataTable)
+expect_identical_xl(
+  class(studyWithTibbleInput[["enrichments"]][[1]][[1]][[1]]),
+  "data.frame"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

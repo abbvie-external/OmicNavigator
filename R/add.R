@@ -126,6 +126,7 @@ NULL
 addSamples <- function(study, samples) {
   checkStudy(study)
   checkSamples(samples)
+  samples <- sanitizeSamples(samples)
 
   study[["samples"]] <- utils::modifyList(study[["samples"]], samples)
 
@@ -145,8 +146,7 @@ addSamples <- function(study, samples) {
 addFeatures <- function(study, features) {
   checkStudy(study)
   checkFeatures(features)
-
-  features <- lapply(features, coerceColsToCharacter)
+  features <- sanitizeFeatures(features)
 
   study[["features"]] <- utils::modifyList(study[["features"]], features)
 
@@ -164,6 +164,7 @@ addFeatures <- function(study, features) {
 addModels <- function(study, models) {
   checkStudy(study)
   checkModels(models)
+  models <- sanitizeModels(models)
 
   study[["models"]] <- utils::modifyList(study[["models"]], models)
 
@@ -184,6 +185,7 @@ addModels <- function(study, models) {
 addAssays <- function(study, assays) {
   checkStudy(study)
   checkAssays(assays)
+  assays <- sanitizeAssays(assays)
 
   study[["assays"]] <- utils::modifyList(study[["assays"]], assays)
 
@@ -214,6 +216,7 @@ addAssays <- function(study, assays) {
 addTests <- function(study, tests) {
   checkStudy(study)
   checkTests(tests)
+  tests <- sanitizeTests(tests)
 
   study[["tests"]] <- utils::modifyList(study[["tests"]], tests)
 
@@ -239,6 +242,7 @@ addTests <- function(study, tests) {
 addAnnotations <- function(study, annotations) {
   checkStudy(study)
   checkAnnotations(annotations)
+  annotations <- sanitizeAnnotations(annotations)
 
   study[["annotations"]] <- utils::modifyList(study[["annotations"]], annotations)
 
@@ -258,6 +262,7 @@ addAnnotations <- function(study, annotations) {
 addResults <- function(study, results) {
   checkStudy(study)
   checkResults(results)
+  results <- sanitizeResults(results)
 
   study[["results"]] <- utils::modifyList(study[["results"]], results)
 
@@ -282,6 +287,7 @@ addResults <- function(study, results) {
 addEnrichments <- function(study, enrichments) {
   checkStudy(study)
   checkEnrichments(enrichments)
+  enrichments <- sanitizeEnrichments(enrichments)
 
   study[["enrichments"]] <- utils::modifyList(study[["enrichments"]], enrichments)
 
@@ -307,8 +313,7 @@ addEnrichments <- function(study, enrichments) {
 addMetaFeatures <- function(study, metaFeatures) {
   checkStudy(study)
   checkMetaFeatures(metaFeatures)
-
-  metaFeatures <- lapply(metaFeatures, coerceColsToCharacter)
+  metaFeatures <- sanitizeMetaFeatures(metaFeatures)
 
   study[["metaFeatures"]] <- utils::modifyList(study[["metaFeatures"]], metaFeatures)
 
@@ -357,6 +362,7 @@ addMetaFeatures <- function(study, metaFeatures) {
 addPlots <- function(study, plots) {
   checkStudy(study)
   checkPlots(plots)
+  plots <- sanitizePlots(plots)
 
   study[["plots"]] <- utils::modifyList(study[["plots"]], plots)
 
@@ -390,6 +396,7 @@ addPlots <- function(study, plots) {
 addBarcodes <- function(study, barcodes) {
   checkStudy(study)
   checkBarcodes(barcodes)
+  barcodes <- sanitizeBarcodes(barcodes)
 
   study[["barcodes"]] <- utils::modifyList(study[["barcodes"]], barcodes)
 
@@ -413,6 +420,7 @@ addBarcodes <- function(study, barcodes) {
 addReports <- function(study, reports) {
   checkStudy(study)
   checkReports(reports)
+  reports <- sanitizeReports(reports)
 
   study[["reports"]] <- utils::modifyList(study[["reports"]], reports)
 
@@ -466,6 +474,7 @@ addReports <- function(study, reports) {
 addResultsLinkouts <- function(study, resultsLinkouts) {
   checkStudy(study)
   checkResultsLinkouts(resultsLinkouts)
+  resultsLinkouts <- sanitizeResultsLinkouts(resultsLinkouts)
 
   study[["resultsLinkouts"]] <- utils::modifyList(study[["resultsLinkouts"]],
                                                   resultsLinkouts)
@@ -516,6 +525,7 @@ addResultsLinkouts <- function(study, resultsLinkouts) {
 addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts) {
   checkStudy(study)
   checkEnrichmentsLinkouts(enrichmentsLinkouts)
+  enrichmentsLinkouts <- sanitizeEnrichmentsLinkouts(enrichmentsLinkouts)
 
   study[["enrichmentsLinkouts"]] <- utils::modifyList(study[["enrichmentsLinkouts"]],
                                                       enrichmentsLinkouts)

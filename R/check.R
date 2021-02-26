@@ -185,7 +185,7 @@ checkResults <- function(results) {
       dataFrame <- results[[i]][[j]]
       stopifnot(
         is.data.frame(dataFrame),
-        is.character(dataFrame[, 1]),
+        is.character(dataFrame[[1]]),
         vapply(dataFrame[, -1], is.numeric, logical(1))
       )
       hasUniqueIdColumn(dataFrame)

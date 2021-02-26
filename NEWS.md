@@ -3,6 +3,9 @@
 * New function `installApp()` to download the web app after installing the R
 package
 
+* Support for tibble and data.table input. For consistentcy, they will be be
+automatically converted to pure data frame objects internally.
+
 # 1.0.0
 
 * The release tarball includes version 1.0.0 of the web app
