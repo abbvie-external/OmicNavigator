@@ -38,6 +38,15 @@ expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(testStudyName))
 expect_false_xl(dir.exists(directoryname))
 
+# Confirm tarball is overwritten when re-exported
+modtimeOriginal <- file.mtime(tarball)
+tarball <- exportStudy(testStudyObj, type = "tarball", path = tmplib)
+modtimeReexport <- file.mtime(tarball)
+expect_true_xl(
+  modtimeReexport > modtimeOriginal,
+  info = "Confirm tarball is overwritten when re-exported"
+)
+
 suppressWarnings(
   tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
 )

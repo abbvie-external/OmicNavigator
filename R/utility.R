@@ -180,7 +180,7 @@ capitalize <- function(x) {
 #
 renameFile <- function(fileOriginal, fileNew) {
   stopifnot(file.exists(fileOriginal))
-  file.copy(fileOriginal, fileNew)
+  file.copy(fileOriginal, fileNew, overwrite = TRUE)
   stopifnot(file.exists(fileNew))
   file.remove(fileOriginal)
   return(invisible(fileNew))

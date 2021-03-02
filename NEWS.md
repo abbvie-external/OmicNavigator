@@ -6,6 +6,9 @@ package
 * Support for tibble and data.table input. For consistentcy, they will be be
 automatically converted to pure data frame objects internally.
 
+* Bug fix: `exportStudy()` now properly overwrites an existing tarball when the
+argument `path` is used (reported by Brett Engelmann)
+
 # 1.0.0
 
 * The release tarball includes version 1.0.0 of the web app
