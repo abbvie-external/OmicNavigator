@@ -1,4 +1,4 @@
-# Development
+# 1.1.0
 
 * New function `installApp()` to download the web app after installing the R
 package
