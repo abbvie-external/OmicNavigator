@@ -9,6 +9,9 @@ automatically converted to pure data frame objects internally.
 * Bug fix: `exportStudy()` now properly overwrites an existing tarball when the
 argument `path` is used (reported by Brett Engelmann)
 
+* Bug fix: `getResultsIntersection()` now properly returns the filtered table
+in the original order from `getResultsTable()` (reported by Paul Nordlund)
+
 # 1.0.0
 
 * The release tarball includes version 1.0.0 of the web app

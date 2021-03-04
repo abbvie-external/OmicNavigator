@@ -56,7 +56,7 @@ getResultsIntersection <- function(
     stopifnot(identical(columns[nColumns], "Set_Membership"))
     columnsOrder <- c(columns[1], columns[nColumns], columns[2:(nColumns - 1)])
   } else {
-    intersectionTable <- merge(features, intersection, by = 1)
+    intersectionTable <- merge(intersection, features, by = 1, sort = FALSE)
     columnsOrder <- union(c(colnames(features), "Set_Membership"),
                           colnames(intersection))
   }

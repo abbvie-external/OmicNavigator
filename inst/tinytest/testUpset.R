@@ -145,6 +145,32 @@ expect_identical_xl(
   )
 )
 
+# getResultsIntersection() should return filtered data in the same order that it
+# is received.
+resultsIntersection <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = c(),
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
+resultsTable <- getResultsTable(
+  study = testStudyName,
+  modelID = testModelName,
+  testID = testTestName
+)
+resultsFiltered <- resultsTable[resultsTable[["p_val"]] < 0.5, ]
+
+expect_identical_xl(
+  resultsIntersection[[1]],
+  resultsFiltered[[1]],
+  info = "getResultsIntersection() should not reorder the featureIDs"
+)
+
 # getEnrichmentsIntersection ---------------------------------------------------
 
 enrichmentsIntersection <- getEnrichmentsIntersection(
@@ -232,6 +258,33 @@ expect_error_xl(
     type = "wrong"
   ),
   "wrong"
+)
+
+# getEnrichmentsIntersection() should return filtered data in the same order
+# that it is received.
+enrichmentsIntersection <- getEnrichmentsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  mustTests = testTestName,
+  notTests = c(),
+  sigValue = c(.05),
+  operator = c("<"),
+  type = "nominal"
+)
+
+enrichmentsTable <- getEnrichmentsTable(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName
+)
+
+enrichmentsFiltered <- enrichmentsTable[enrichmentsTable[[testTestName]] < 0.05, ]
+
+expect_identical_xl(
+  enrichmentsIntersection[, 1],
+  enrichmentsFiltered[, 1],
+  info = "getEnrichmentsIntersection() should not reorder the termIDs"
 )
 
 # getResultsUpset --------------------------------------------------------------

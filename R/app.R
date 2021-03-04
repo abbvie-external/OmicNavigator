@@ -325,7 +325,7 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
   colnames(termFeaturesTable) <- featureEnrichment
 
   barcodeDataTableAll <- merge(termFeaturesTable, resultsTable,
-                               by = annotations[["featureID"]])
+                               by = annotations[["featureID"]], sort = FALSE)
 
   barcodeDataTable <- data.frame(
     barcodeDataTableAll[[featureID]],

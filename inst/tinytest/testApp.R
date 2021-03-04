@@ -112,7 +112,8 @@ expect_true_xl(all(colnames(results) %in% colnames(resultsTable)))
 
 expect_identical_xl(
   resultsTable[, 1],
-  results[, 1]
+  results[, 1],
+  info = "getResultsTable() doesn't change order of featureIDs"
 )
 
 expect_error_xl(
