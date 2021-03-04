@@ -76,7 +76,7 @@ installApp <- function(version = NULL, overwrite = FALSE, lib.loc = NULL, ...) {
 
   zipurl <- paste0(
     "https://github.com/",
-    "AbbVie-External/",
+    "abbvie-external/",
     "OmicNavigatorWebApp",
     "/releases/download/v",
     version,

@@ -31,7 +31,7 @@ OmicNavigator and run the web app on your local machine.
 1. Install the OmicNavigator R package directly from GitHub:
 
     ```
-    remotes::install_github("AbbVie-External/Omicnavigator", dependencies = TRUE)
+    remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
     ```
 
 1. Install the web app:
@@ -50,7 +50,7 @@ includes the web app bundled with the R package.
 will look like `OmicNavigator_x.x.x.tar.gz`, where `x.x.x` corresponds to the
 version.
 
-    [release-latest]: https://github.com/AbbVie-External/OmicNavigator/releases/latest
+    [release-latest]: https://github.com/abbvie-external/OmicNavigator/releases/latest
 
 1. Install the dependencies:
 
@@ -83,7 +83,7 @@ integration build.
 dependencies required to run the app:
 
     ```
-    remotes::install_github("AbbVie-External/Omicnavigator")
+    remotes::install_github("abbvie-external/OmicNavigator")
     ```
 
 ## Installation troubleshooting
