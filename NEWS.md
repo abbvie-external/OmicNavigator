@@ -1,3 +1,7 @@
+# 1.1.1
+
+* The release tarball includes version 1.1.0 of the web app
+
 # 1.1.0
 
 * New function `installApp()` to download the web app after installing the R
