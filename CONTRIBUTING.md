@@ -151,6 +151,28 @@ devtools::load_all()
 installApp()
 ```
 
+## Run OmicNavigator with Docker
+
+The repository includes a `Dockerfile` to install and run OmicNavigator. This is
+convenient if you want to test changes you've made to the R package without
+installing the dependencies on your local machine.
+
+```
+# Build the image
+docker build -t omicnavigator .
+# Run the image
+docker run --name onapp -t -p 8004:8004 omicnavigator
+```
+
+Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator/
+
+When you're finished, stop and delete the container:
+
+```
+docker stop onapp
+docker rm onapp
+```
+
 ## Files and directories
 
 * `R/` - R source code files
