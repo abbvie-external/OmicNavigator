@@ -64,7 +64,7 @@ installApp <- function(version = NULL, overwrite = FALSE, lib.loc = NULL, ...) {
     version <- versionAppPinned
   }
 
-  installDir <- system.file(package = "OmicNavigator", lib.loc = TRUE)
+  installDir <- system.file(package = "OmicNavigator", lib.loc = lib.loc)
   if (!dir.exists(installDir)) {
     stop("Unable to find installation directory. Was the OmicNavigator R package installed?")
   }
