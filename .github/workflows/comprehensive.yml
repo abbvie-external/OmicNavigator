@@ -34,7 +34,7 @@ jobs:
           r-base \
           r-base-dev
     - name: Install R packages
-      run: Rscript scripts/install-dependencies.R
+      run: sudo Rscript scripts/install-dependencies.R
     - name: Install TinyTeX
       run: |
         # https://yihui.name/tinytex/faq/
