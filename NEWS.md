@@ -1,4 +1,6 @@
-# 1.1.1.1
+# 1.1.2
+
+* The release tarball includes version 1.1.1 of the web app
 
 * Bug fix: `installApp()` now properly searches for the installed OmicNavigator
 package. It usually worked before, but now it should always work.
