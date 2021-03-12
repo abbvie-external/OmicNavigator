@@ -6,58 +6,41 @@ Thanks for your interest in contributing to OmicNavigator!
 
 Branch        | Purpose
 ------------- | -------------
-stable        | Contains latest stable version (**default**)
-release       | Matches the latest release version
-dev           | Contains experimental new features
+main          | Main development (**default**)
 feature-\<x\> | Implements feature \<x\>
 bugfix-\<x\>  | Fixes bug \<x\>
 
-Lifecycle of branches:
-
-```
-feature-<x>
-           \
-            \
-             dev ---> stable ---> release
-                     /
-                    /
-          bugfix-<x>
-```
-
 ## How to contribute
 
-> I want to implement a new feature
+1. Fork the repository to your personal account
 
-Work on the dev branch.
+1. Clone your fork to your local machine
 
-```
-git clone https://github.com/<fork>/OmicNavigator.git
-git checkout dev
-git checkout -b feature-<x>
-# implement feature, add, commit
-git push origin feature-<x>
-```
+    ```
+    git clone https://github.com/<fork>/OmicNavigator.git
+    cd OmicNavigator
+    ```
 
-Submit a pull request to the dev branch.
+1. Create a new branch. We recommend prefixing the branch name with `feature-`
+or `bugfix-` to help classify it, but don't worry about this too much.
 
-> I want to fix a bug, typo, etc
+    ```
+    git checkout -b feature-<x>
+    ```
 
-Work on the stable branch.
+1. Make your edits. See the section below on setting up your development
+environment.
 
-```
-git clone https://github.com/<fork>/OmicNavigator.git
-git checkout stable
-git checkout -b bugfix-<x>
-# fix bug, add, commit
-git push origin bugfix-<x>
-```
+1. Add, commit, push, and open a Pull Request against the "main" branch.
 
-Submit a pull request to the stable branch.
+    ```
+    git push origin feature-<x>
+    ```
 
 ## Updating NEWS.md
 
 If your pull request affects the end user experience, please add a bullet to
-`NEWS.md`. At minimum include a reference to your pull request. Additionally
+`NEWS.md`. At minimum include a reference to your pull request. Additional
 useful information is your GitHub account and any related Issues.
 
 For example:

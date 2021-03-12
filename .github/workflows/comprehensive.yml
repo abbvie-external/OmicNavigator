@@ -3,10 +3,10 @@ name: Comprehensive test
 on:
   push:
     branches:
-      - stable
+      - main
   pull_request:
     branches:
-      - stable
+      - main
 
 jobs:
   check:
