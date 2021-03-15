@@ -43,10 +43,11 @@ startApp <- function(...) {
 
 #' Install the OmicNavigator web app
 #'
-#' In order to run the OmicNavigator web app on your local machine, the app
-#' must be installed in the \code{www/} subdirectory of the R package. By default,
-#' the app is downloaded automatically during installation of the R package. If
-#' this download failed, or if you want to use a different version of the app,
+#' In order to run the OmicNavigator web app on your local machine, the app must
+#' be installed in the \code{www/} subdirectory of the R package. If you
+#' installed the release tarball from the GitHub Releases page, then you already
+#' have the app installed. If you installed directly from GitHub with
+#' \code{install_github}, or if you want to use a different version of the app,
 #' you can manually download and install the app.
 #'
 #' @param version Version of the web app to install, e.g. \code{"1.0.0"}
