@@ -15,6 +15,8 @@ minimalStudyName <- minimalStudyObj[["name"]]
 
 tmplib <- tempfile()
 dir.create(tmplib)
+tmplibSpace <- file.path(tempdir(), "a space")
+dir.create(tmplibSpace)
 
 # Export as package directory --------------------------------------------------
 
@@ -23,6 +25,13 @@ expected <- file.path(tmplib, OmicNavigator:::studyToPkg(testStudyName))
 expect_identical_xl(observed, expected)
 expect_true_xl(dir.exists(expected))
 
+# Export to a directory with a space
+observed <- exportStudy(testStudyObj, type = "package", path = tmplibSpace)
+expected <- file.path(tmplibSpace, OmicNavigator:::studyToPkg(testStudyName))
+expect_identical_xl(observed, expected)
+expect_true_xl(dir.exists(expected))
+
+# Export minimal study
 suppressWarnings(
   observed <- exportStudy(minimalStudyObj, type = "package", path = tmplib)
 )
@@ -47,6 +56,14 @@ expect_true_xl(
   info = "Confirm tarball is overwritten when re-exported"
 )
 
+# Export to a directory with a space
+tarball <- exportStudy(testStudyObj, type = "tarball", path = tmplibSpace)
+expect_true_xl(file.exists(tarball))
+expect_true_xl(startsWith(tarball, tmplibSpace))
+directoryname <- file.path(tmplibSpace, OmicNavigator:::studyToPkg(testStudyName))
+expect_false_xl(dir.exists(directoryname))
+
+# Export minimal study
 suppressWarnings(
   tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
 )
@@ -57,4 +74,4 @@ expect_false_xl(dir.exists(directoryname))
 
 # Teardown ---------------------------------------------------------------------
 
-unlink(tmplib, recursive = TRUE, force = TRUE)
+unlink(c(tmplib, tmplibSpace), recursive = TRUE, force = TRUE)

@@ -49,7 +49,12 @@ exportStudy <- function(
 
 buildPkg <- function(pkgDir) {
   r <- file.path(R.home("bin"), "R")
-  stdout <- system2(r, args = c("CMD", "build", pkgDir), stdout = TRUE, stderr = NULL)
+  stdout <- system2(
+    command = r,
+    args = c("CMD", "build", shQuote(pkgDir)),
+    stdout = TRUE,
+    stderr = NULL
+  )
   regex <- sprintf("%s.*\\.tar\\.gz", getPrefix())
   regexMatch <- regexpr(regex, stdout[length(stdout)])
   tarball <- regmatches(stdout[length(stdout)], regexMatch)

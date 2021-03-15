@@ -1,3 +1,6 @@
+* Bug fix: `exportStudy()` can now export a study as a package tarball to a path
+that contains spaces (reported by Naim Mahi and Brett Engelmann)
+
 # 1.1.2
 
 * The release tarball includes version 1.1.1 of the web app
