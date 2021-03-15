@@ -1,5 +1,5 @@
 * Bug fix: `exportStudy()` can now export a study as a package tarball to a path
-that contains spaces (reported by Naim Mahi and Brett Engelmann)
+that contains spaces or quotes (reported by Naim Mahi and Brett Engelmann)
 
 # 1.1.2
 
