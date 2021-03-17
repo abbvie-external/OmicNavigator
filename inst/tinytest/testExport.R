@@ -90,6 +90,51 @@ expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))
 expect_false_xl(dir.exists(directoryname))
 
+# Check package metadata -------------------------------------------------------
+
+suppressMessages(installStudy(testStudyObj, library = tmplib))
+studyMetadata <- listStudies(libraries = tmplib)
+
+expect_identical_xl(
+  studyMetadata[[1]][["name"]],
+  testStudyObj[["name"]]
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["description"]],
+  sprintf("The OmicNavigator data package for the study \"%s\"",
+          testStudyObj[["description"]]),
+  info = "Default package description when description==name"
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["version"]],
+  "0.0.0.9000",
+  info = "Default package version used when version=NULL"
+)
+
+updatedStudyObj <- testStudyObj
+updatedStudyObj[["description"]] <- "A custom description"
+updatedStudyObj[["version"]] <- "1.0.0"
+
+suppressMessages(installStudy(updatedStudyObj, library = tmplib))
+studyMetadata <- listStudies(libraries = tmplib)
+
+expect_identical_xl(
+  studyMetadata[[1]][["name"]],
+  updatedStudyObj[["name"]]
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["description"]],
+  updatedStudyObj[["description"]]
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["version"]],
+  updatedStudyObj[["version"]]
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(c(tmplib, tmplibSpace, tmplibQuote), recursive = TRUE, force = TRUE)
