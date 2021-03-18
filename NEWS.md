@@ -1,3 +1,7 @@
+# 1.1.3
+
+* The release tarball includes version 1.1.2 of the web app
+
 * Bug fix: `exportStudy()` can now export a study as a package tarball to a path
 that contains spaces or quotes (reported by Naim Mahi and Brett Engelmann)
 
