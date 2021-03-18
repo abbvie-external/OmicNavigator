@@ -100,7 +100,7 @@ jobs:
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
       with:
         tag_name: ${{ github.ref }}
-        release_name: Version ${{ env.version }}
+        release_name: OmicNavigator ${{ env.version }}
         body_path: RELEASE-NOTES.html
         draft: false
         prerelease: false
