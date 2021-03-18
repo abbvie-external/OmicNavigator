@@ -1,0 +1,139 @@
+name: Create a release from a tag
+
+# https://github.com/actions/create-release
+# https://github.com/actions/upload-release-asset
+
+on:
+  push:
+    tags:
+      - 'v*'
+
+jobs:
+  release:
+    runs-on: ubuntu-18.04
+
+    steps:
+
+    - name: Extract package version from tag reference
+      run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+
+    - uses: actions/checkout@v2
+
+    - name: Install system dependencies
+      run: |
+        export DEBIAN_FRONTEND=noninteractive
+        sudo apt-get update
+        sudo apt-get install --yes --no-install-recommends \
+          graphviz \
+          libcurl4-openssl-dev \
+          libssl-dev \
+          libprotobuf-dev \
+          protobuf-compiler \
+          libxml2-dev \
+          wget
+
+    - name: Create diagrams for vignettes
+      run: make diagrams
+
+    - name: Install R
+      run: |
+        sudo apt-get install --yes --no-install-recommends \
+          r-base \
+          r-base-dev
+
+    - name: Install R packages
+      run: |
+        source("scripts/install-dependencies.R")
+        source("scripts/install-dependencies-dev.R")
+      shell: sudo Rscript {0}
+
+    - name: Install TinyTeX
+      run: |
+        # https://yihui.name/tinytex/faq/
+        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh -s - --admin --no-path
+        wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-yihui.txt" | xargs ~/.TinyTeX/bin/*/tlmgr install
+        sudo ~/.TinyTeX/bin/*/tlmgr path add
+        chmod 755 ~/.TinyTeX/
+
+    - name: Session information
+      run: sessionInfo()
+      shell: Rscript {0}
+
+    - name: Download app
+      run: |
+        devtools::load_all()
+        installApp()
+      shell: Rscript {0}
+
+    - name: Build
+      run: R CMD build .
+
+    - name: Install
+      run: sudo R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
+
+    - name: Build User's Guide vignette
+      run: |
+        setwd("vignettes")
+        utils::Sweave("OmicNavigatorUsersGuide.Rnw")
+        tools::texi2pdf("OmicNavigatorUsersGuide.tex")
+        file.copy("OmicNavigatorUsersGuide.pdf", "../OmicNavigatorUsersGuide_${{ env.version }}.pdf")
+      shell: Rscript {0}
+
+    - name: Build API vignette
+      run: |
+        setwd("vignettes")
+        utils::Sweave("OmicNavigatorAPI.Rnw")
+        tools::texi2pdf("OmicNavigatorAPI.tex")
+        file.copy("OmicNavigatorAPI.pdf", "../OmicNavigatorAPI_${{ env.version }}.pdf")
+      shell: Rscript {0}
+
+    - name: Release notes
+      run: |
+        releaseNotes <- utils::news(query = Version=="${{ env.version }}", package = "OmicNavigator")
+        writeLines(releaseNotes[["HTML"]], con = "RELEASE-NOTES.html")
+      shell: Rscript {0}
+
+    - name: Create Release
+      id: create_release
+      uses: actions/create-release@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
+      with:
+        tag_name: ${{ github.ref }}
+        release_name: Version ${{ env.version }}
+        body_path: RELEASE-NOTES.html
+        draft: false
+        prerelease: false
+
+    - name: Upload package tarball as release asset
+      id: upload-release-asset-tarball
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./OmicNavigator_${{ env.version }}.tar.gz
+          asset_name: OmicNavigator_${{ env.version }}.tar.gz
+          asset_content_type: application/gzip
+
+    - name: Upload User's Guide PDF as release asset
+      id: upload-release-asset-users-guide
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./OmicNavigatorUsersGuide_${{ env.version }}.pdf
+          asset_name: OmicNavigatorUsersGuide_${{ env.version }}.pdf
+          asset_content_type: application/pdf
+
+    - name: Upload API PDF as release asset
+      id: upload-release-asset-api
+      uses: actions/upload-release-asset@v1
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }} # This pulls from the CREATE RELEASE step above, referencing it's ID to get its outputs object, which include a `upload_url`. See this blog post for more info: https://jasonet.co/posts/new-features-of-github-actions/#passing-data-to-future-steps
+          asset_path: ./OmicNavigatorAPI_${{ env.version }}.pdf
+          asset_name: OmicNavigatorAPI_${{ env.version }}.pdf
+          asset_content_type: application/pdf
