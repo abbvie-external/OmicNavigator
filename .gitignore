@@ -12,7 +12,6 @@ vignettes/*aux
 vignettes/*bbl
 vignettes/*blg
 vignettes/*gz
-vignettes/images
 vignettes/*log
 vignettes/*out
 vignettes/*pdf
