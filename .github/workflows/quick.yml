@@ -7,6 +7,17 @@ on:
       - '**skip**'
     tags-ignore:
       - '**'
+    paths:
+      - '.github/workflows/quick.yml'
+      - '.Rbuildignore'
+      - 'data/**'
+      - 'DESCRIPTION'
+      - 'inst/tinytest/**'
+      - 'man/**'
+      - 'NAMESPACE'
+      - 'R/**'
+      - 'tests/**'
+      - 'vignettes/**'
 
 jobs:
   check:

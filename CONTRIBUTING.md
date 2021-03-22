@@ -181,5 +181,7 @@ Designed for quick feedback. It is triggered by a push to any branch other than
 the "main" branch.
 
 If you wish to skip all automated CI, e.g. you are trying something experimental
-that you know will break the tests or you are pushing lots of non-code changes,
-you can put "skip" anywhere in the branch name.
+that you know will break the tests, you can put "skip" anywhere in the branch
+name. Also note that the continuous integrations jobs are only triggered if a
+file that affects the behavior of the package has been modified. For example, if
+you only edit documentation files like `README.md`, the tests won't be run.
