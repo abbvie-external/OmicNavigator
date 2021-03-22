@@ -241,8 +241,8 @@ testPlots <- function() {
       stop("This plotting function requires at least 2 features")
     }
     pca <- stats::prcomp(t(x[["assays"]]), scale. = TRUE)$x
-    plot(pca[, 1], pca[, 2], col = as.factor(x$samples$sampleVar01),
-         xlab = "PC 1", ylab = "PC 2", main = "PCA")
+    graphics::plot(pca[, 1], pca[, 2], col = as.factor(x$samples$sampleVar01),
+                   xlab = "PC 1", ylab = "PC 2", main = "PCA")
   }
   assign("plotMultiFeature", plotMultiFeature, envir = parent.frame())
   plots <- list(

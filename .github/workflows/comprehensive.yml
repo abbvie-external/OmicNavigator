@@ -1,5 +1,7 @@
 name: Comprehensive test
 
+# Adapted from usethis::use_github_action_check_standard()
+
 on:
   push:
     branches:
@@ -32,42 +34,81 @@ on:
 
 jobs:
   check:
-    runs-on: ubuntu-18.04
+    runs-on: ${{ matrix.config.os }}
+
+    name: ${{ matrix.config.os }} (${{ matrix.config.r }})
+
+    strategy:
+      fail-fast: false
+      matrix:
+        config:
+          - {os: windows-latest, r: 'release'}
+          - {os: macOS-latest, r: 'release'}
+          - {os: ubuntu-18.04, r: '3.4.4', rspm: "https://packagemanager.rstudio.com/cran/__linux__/bionic/latest"}
+
+    env:
+      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+      RSPM: ${{ matrix.config.rspm }}
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
 
     steps:
-    - uses: actions/checkout@v2
-    - name: Install system dependencies
-      run: |
-        export DEBIAN_FRONTEND=noninteractive
-        sudo apt-get update
-        sudo apt-get install --yes --no-install-recommends \
-          graphviz \
-          libcurl4-openssl-dev \
-          libssl-dev \
-          libprotobuf-dev \
-          protobuf-compiler \
-          libxml2-dev \
-          wget
-    - name: Create diagrams for vignettes
-      run: make diagrams
-    - name: Install R
-      run: |
-        sudo apt-get install --yes --no-install-recommends \
-          r-base \
-          r-base-dev
-    - name: Install R packages
-      run: sudo Rscript scripts/install-dependencies.R
-    - name: Install TinyTeX
-      run: |
-        # https://yihui.name/tinytex/faq/
-        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh -s - --admin --no-path
-        wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-yihui.txt" | xargs ~/.TinyTeX/bin/*/tlmgr install
-        sudo ~/.TinyTeX/bin/*/tlmgr path add
-        chmod 755 ~/.TinyTeX/
-    - name: Session information
-      run: sessionInfo()
-      shell: Rscript {0}
-    - name: Build
-      run: R CMD build --no-manual .
-    - name: Check
-      run: R CMD check --no-manual OmicNavigator_*.tar.gz
+      - uses: actions/checkout@v2
+
+      - uses: r-lib/actions/setup-r@v1
+        with:
+          r-version: ${{ matrix.config.r }}
+
+      - uses: r-lib/actions/setup-pandoc@v1
+
+      - uses: r-lib/actions/setup-tinytex@v1
+
+      - name: Install extra LaTeX dependencies to build vignettes
+        run: tlmgr install ae parskip
+
+      - name: Query dependencies
+        run: |
+          install.packages('remotes')
+          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
+          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
+        shell: Rscript {0}
+
+      - name: Restore R package cache
+        if: runner.os != 'Windows'
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.R_LIBS_USER }}
+          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
+          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
+
+      - name: Install system dependencies
+        if: runner.os == 'Linux'
+        run: |
+          while read -r cmd
+          do
+            eval sudo $cmd
+          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "18.04"))')
+
+      - name: Install dependencies
+        run: |
+          remotes::install_deps(dependencies = TRUE)
+          remotes::install_cran("rcmdcheck")
+        shell: Rscript {0}
+
+      - name: Session information
+        run: sessionInfo()
+        shell: Rscript {0}
+
+      - name: Check
+        env:
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+        run: |
+          options(crayon.enabled = TRUE)
+          rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "error", check_dir = "check")
+        shell: Rscript {0}
+
+      - name: Upload check results
+        if: failure()
+        uses: actions/upload-artifact@main
+        with:
+          name: ${{ runner.os }}-r${{ matrix.config.r }}-results
+          path: check
