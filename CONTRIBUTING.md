@@ -168,9 +168,9 @@ docker rm onapp
 We use [GitHub Actions](https://github.com/features/actions) for CI/CD. The
 configuration scripts are in `.github/workflows/`.
 
-* `comprehensive.yml` - Runs `R CMD check` on the R package. It is triggered by
-a push to the "main" branch or a Pull Request submitted against the "main"
-branch.
+* `comprehensive.yml` - Runs `R CMD check` on the R package on Windows, macOS,
+and Linux. It is triggered by a push to the "main" branch or a Pull Request
+submitted against the "main" branch.
 
 * `release.yml` - Creates a new release. It is triggered by a new tag. It
 downloads the app, builds a package tarball, builds the vignettes PDFs, and
