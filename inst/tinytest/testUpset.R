@@ -84,6 +84,72 @@ expect_true_xl(
   all(resultsIntersection[["beta"]] > 1.2)
 )
 
+# notTests with a single filter
+resultsIntersection <- getResultsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = .5,
+  operator = "<",
+  column = "p_val"
+)
+
+expect_true_xl(
+  nrow(resultsIntersection) > 0
+)
+
+expect_true_xl(
+  all(resultsIntersection[["p_val"]] < 0.5)
+)
+
+notTestsTable <- testStudyObj[["results"]][[testModelName]][[testTestsAll[2]]]
+notTestsTableIntersected <- notTestsTable[notTestsTable[["customID"]] %in%
+                                            resultsIntersection[["customID"]], ]
+expect_true_xl(
+  all(notTestsTableIntersected[["p_val"]] >= 0.5),
+  info = "notTests features have the opposite of the applied filter"
+)
+
+# notTests with multiple filters
+resultsIntersection <- getResultsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = c(.5, 1.2),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+expect_true_xl(
+  nrow(resultsIntersection) > 0
+)
+
+expect_true_xl(
+  all(resultsIntersection[["p_val"]] < 0.5)
+)
+
+expect_true_xl(
+  all(resultsIntersection[["beta"]] > 1.2)
+)
+
+notTestsTable <- testStudyObj[["results"]][[testModelName]][[testTestsAll[2]]]
+notTestsTableIntersected <- notTestsTable[notTestsTable[["customID"]] %in%
+                                            resultsIntersection[["customID"]], ]
+
+expect_true_xl(
+  all(notTestsTableIntersected[["p_val"]] >= 0.5),
+  info = "notTests features have the opposite of the applied filter"
+)
+
+expect_true_xl(
+  all(notTestsTableIntersected[["beta"]] <= 1.2),
+  info = "notTests features have the opposite of the applied filter"
+)
+
 # Confirm it works when there is only one test per model
 testStudyObjSingle <- testStudyObj
 testStudyObjSingle[["results"]][["model_03"]] <-
@@ -169,6 +235,133 @@ expect_identical_xl(
   resultsIntersection[[1]],
   resultsFiltered[[1]],
   info = "getResultsIntersection() should not reorder the featureIDs"
+)
+
+# Multiple filters should be combined as AND gates. The tests below compare the
+# results of an intersection with 2 filters with the results from the 2 filters
+# applied separately.
+
+# Multiple filters, only anchor testID
+resultsIntersectionMultiple <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = c(),
+  sigValue = c(.5, 1.2),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+resultsIntersectionFilter1 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = c(),
+  sigValue = c(.5),
+  operator = c("<"),
+  column = c("p_val")
+)
+
+resultsIntersectionFilter2 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = c(),
+  sigValue = c(1.2),
+  operator = c(">"),
+  column = c("beta")
+)
+
+expect_identical_xl(
+  sort(resultsIntersectionMultiple[["customID"]]),
+  sort(intersect(resultsIntersectionFilter1[["customID"]],
+                 resultsIntersectionFilter2[["customID"]])),
+  info = "Multiple filters with only anchor testID"
+)
+
+# Multiple filters, mustTests
+resultsIntersectionMultiple <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = testTestsAll[2],
+  notTests = c(),
+  sigValue = c(.5, 1.2),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+resultsIntersectionFilter1 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = testTestsAll[2],
+  notTests = c(),
+  sigValue = c(.5),
+  operator = c("<"),
+  column = c("p_val")
+)
+
+resultsIntersectionFilter2 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = testTestsAll[2],
+  notTests = c(),
+  sigValue = c(1.2),
+  operator = c(">"),
+  column = c("beta")
+)
+
+expect_identical_xl(
+  sort(resultsIntersectionMultiple[["customID"]]),
+  sort(intersect(resultsIntersectionFilter1[["customID"]],
+                 resultsIntersectionFilter2[["customID"]])),
+  info = "Multiple filters with mustTests"
+)
+
+# Multiple filters, notTests
+resultsIntersectionMultiple <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = c(.5, 1.2),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+resultsIntersectionFilter1 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = c(.5),
+  operator = c("<"),
+  column = c("p_val")
+)
+
+resultsIntersectionFilter2 <- getResultsIntersection(
+  study = testStudyName,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = c(1.2),
+  operator = c(">"),
+  column = c("beta")
+)
+
+expect_identical_xl(
+  sort(resultsIntersectionMultiple[["customID"]]),
+  sort(intersect(resultsIntersectionFilter1[["customID"]],
+                 resultsIntersectionFilter2[["customID"]])),
+  info = "Multiple filters with notTests"
 )
 
 # getEnrichmentsIntersection ---------------------------------------------------
