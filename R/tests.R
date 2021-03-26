@@ -145,7 +145,7 @@ testResults <- function(nModels = 3, nTests = 2, nFeatures = 100, seed = 12345L,
       beta_x <- stats::rnorm(n = nFeatures, sd = 1.5)
       # Calculate the p-value from the beta so that they are concordant,
       # otherwise UpSet filters often don't make sense.
-      beta_se <- runif(nFeatures, min = 0.90, max = 1.10)
+      beta_se <- stats::runif(nFeatures, min = 0.90, max = 1.10)
       z <- beta / beta_se
       p_val <- stats::pnorm(-abs(z)) * 2
       tmpResults <- data.frame(

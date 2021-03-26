@@ -8,7 +8,11 @@ using(ttdo)
 library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- OmicNavigator:::testStudy(
+  name = testStudyName,
+  version = "0.3",
+  nFeatures = 1000
+)
 testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestsAll <- names(testStudyObj[["tests"]][[1]])
@@ -91,7 +95,7 @@ resultsIntersection <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = testTestsAll[2],
-  sigValue = .5,
+  sigValue = .05,
   operator = "<",
   column = "p_val"
 )
@@ -101,14 +105,14 @@ expect_true_xl(
 )
 
 expect_true_xl(
-  all(resultsIntersection[["p_val"]] < 0.5)
+  all(resultsIntersection[["p_val"]] < 0.05)
 )
 
 notTestsTable <- testStudyObj[["results"]][[testModelName]][[testTestsAll[2]]]
 notTestsTableIntersected <- notTestsTable[notTestsTable[["customID"]] %in%
                                             resultsIntersection[["customID"]], ]
 expect_true_xl(
-  all(notTestsTableIntersected[["p_val"]] >= 0.5),
+  all(notTestsTableIntersected[["p_val"]] >= 0.05),
   info = "notTests features have the opposite of the applied filter"
 )
 
@@ -119,7 +123,7 @@ resultsIntersection <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = testTestsAll[2],
-  sigValue = c(.5, 1.2),
+  sigValue = c(0.05, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
 )
@@ -129,7 +133,7 @@ expect_true_xl(
 )
 
 expect_true_xl(
-  all(resultsIntersection[["p_val"]] < 0.5)
+  all(resultsIntersection[["p_val"]] < 0.05)
 )
 
 expect_true_xl(
@@ -141,13 +145,81 @@ notTestsTableIntersected <- notTestsTable[notTestsTable[["customID"]] %in%
                                             resultsIntersection[["customID"]], ]
 
 expect_true_xl(
-  all(notTestsTableIntersected[["p_val"]] >= 0.5),
-  info = "notTests features have the opposite of the applied filter"
+  all(notTestsTableIntersected[["p_val"]] >= 0.05),
+  info = "notTests features included in the intersection results have the opposite of all the applied filters"
 )
 
 expect_true_xl(
   all(notTestsTableIntersected[["beta"]] <= 1.2),
-  info = "notTests features have the opposite of the applied filter"
+  info = "notTests features included in the intersection results have the opposite of all the applied filters"
+)
+
+# notTests with multiple filters - edge case where notTest passes one but not
+# both filters. In order to be test this very explicitly, I artificially create
+# the situation. Have to make sure the edge case feature passes the anchor and
+# then only passes one of the two filters in the notTest.
+testStudyObjEdge <- testStudyObj
+# Sort the results table first to be able to select by index
+t1order <- order(testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][[1]])
+t2order <- order(testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][[1]])
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]] <-
+  testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][t1order, ]
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]] <-
+  testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][t2order, ]
+stopifnot(identical(
+  testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][, 1],
+  testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][, 1]
+))
+featuresToRemove <- testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][1:2, 1]
+# They both have to pass the filters in the anchor test
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][1:2, "p_val"] <- 0.01
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[1]]][1:2, "beta"] <- 2
+# In notTest, first feature passes p_val but not beta
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][1, "p_val"] <- 0.049
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][1, "beta"] <- 1.1
+# # In notTest, second feature passes beta but not p_val
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][2, "p_val"] <- 0.051
+testStudyObjEdge[["results"]][[testModelName]][[testTestsAll[2]]][2, "beta"] <- 1.3
+
+resultsIntersection <- getResultsIntersection(
+  study = testStudyObjEdge,
+  modelID = testModelName,
+  anchor = testTestName,
+  mustTests = c(),
+  notTests = testTestsAll[2],
+  sigValue = c(0.05, 1.2),
+  operator = c("<", ">"),
+  column = c("p_val", "beta")
+)
+
+expect_true_xl(
+  nrow(resultsIntersection) > 0
+)
+
+expect_true_xl(
+  all(resultsIntersection[["p_val"]] < 0.05)
+)
+
+expect_true_xl(
+  all(resultsIntersection[["beta"]] > 1.2)
+)
+
+notTestsTable <- testStudyObj[["results"]][[testModelName]][[testTestsAll[2]]]
+notTestsTableIntersected <- notTestsTable[notTestsTable[["customID"]] %in%
+                                            resultsIntersection[["customID"]], ]
+
+expect_true_xl(
+  all(notTestsTableIntersected[["p_val"]] >= 0.05),
+  info = "notTests features included in the intersection results have the opposite of all the applied filters"
+)
+
+expect_true_xl(
+  all(notTestsTableIntersected[["beta"]] <= 1.2),
+  info = "notTests features included in the intersection results have the opposite of all the applied filters"
+)
+
+expect_false_xl(
+  any(featuresToRemove %in% resultsIntersection[["customID"]])
 )
 
 # Confirm it works when there is only one test per model
@@ -248,7 +320,7 @@ resultsIntersectionMultiple <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = c(),
-  sigValue = c(.5, 1.2),
+  sigValue = c(.05, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
 )
@@ -259,7 +331,7 @@ resultsIntersectionFilter1 <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = c(),
-  sigValue = c(.5),
+  sigValue = c(.05),
   operator = c("<"),
   column = c("p_val")
 )
@@ -289,7 +361,7 @@ resultsIntersectionMultiple <- getResultsIntersection(
   anchor = testTestName,
   mustTests = testTestsAll[2],
   notTests = c(),
-  sigValue = c(.5, 1.2),
+  sigValue = c(.05, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
 )
@@ -300,7 +372,7 @@ resultsIntersectionFilter1 <- getResultsIntersection(
   anchor = testTestName,
   mustTests = testTestsAll[2],
   notTests = c(),
-  sigValue = c(.5),
+  sigValue = c(.05),
   operator = c("<"),
   column = c("p_val")
 )
@@ -330,7 +402,7 @@ resultsIntersectionMultiple <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = testTestsAll[2],
-  sigValue = c(.5, 1.2),
+  sigValue = c(.05, 1.2),
   operator = c("<", ">"),
   column = c("p_val", "beta")
 )
@@ -341,7 +413,7 @@ resultsIntersectionFilter1 <- getResultsIntersection(
   anchor = testTestName,
   mustTests = c(),
   notTests = testTestsAll[2],
-  sigValue = c(.5),
+  sigValue = c(.05),
   operator = c("<"),
   column = c("p_val")
 )

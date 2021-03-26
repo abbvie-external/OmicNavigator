@@ -106,20 +106,29 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
 
   #Calculate Intersection
   for(i in 1:length(tests)){
+    isNotTest <- tests[i] %in% notTests
     temp = Inference.Results[[testCategory]][[tests[i]]]
-    # if("id" %in%  colnames(temp)){id = "id"}
-    # else{id = "id_mult"}
     id <- colnames(temp)[1]
     fTemp = data.frame(temp[,id])
-    fTemp = cbind(fTemp, 1)
-    fTemp[,2] = as.numeric(fTemp[,2])
+    if (isNotTest) {
+      fTemp = cbind(fTemp, 0)
+    } else {
+      fTemp = cbind(fTemp, 1)
+    }
     for(k in 1:length(operator)){
       sigCol = c(temp[,column[k]])
       if(operator[k] == "<"){sigCol <- as.numeric(sigCol < sigValue[k])}
       else if(operator[k] == ">"){sigCol <- as.numeric(sigCol > sigValue[k])}
       else if(operator[k] == "|>|"){sigCol <- as.numeric(abs(sigCol) > sigValue[k])}
       else if(operator[k] == "|<|"){sigCol <- as.numeric(abs(sigCol) < sigValue[k])}
-      fTemp[,2] = as.integer(fTemp[,2] & sigCol)
+      if(isNotTest) {
+        # notTests should "pass" if they meet any of the filters. That way when
+        # they are filtered out below, any featureID that meets any of the
+        # filters is removed from the final results.
+        fTemp[,2] = as.integer(fTemp[,2] | sigCol)
+      } else {
+        fTemp[,2] = as.integer(fTemp[,2] & sigCol)
+      }
     }
     fTemp = fTemp[fTemp[,2] == 1,]
     temp = temp[temp[,id] %in% fTemp[,1],]
