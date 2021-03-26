@@ -3,25 +3,26 @@ testStudy <- function(name,
                       description = name,
                       version = NULL,
                       seed = 12345L,
-                      numericFeatureID = FALSE)
+                      numericFeatureID = FALSE,
+                      nFeatures = 100)
 {
   stopifnot(is.character(name), is.character(description), is.integer(seed))
 
   study <- createStudy(name = name,
                        description = description,
                        samples = testSamples(seed = seed),
-                       features = testFeatures(seed = seed,
+                       features = testFeatures(seed = seed, rows = nFeatures,
                                                numericFeatureID = numericFeatureID),
                        models = testModels(),
-                       assays = testAssays(seed = seed,
+                       assays = testAssays(seed = seed, rows = nFeatures,
                                            numericFeatureID = numericFeatureID),
                        tests = testTests(),
-                       annotations = testAnnotations(seed = seed,
+                       annotations = testAnnotations(seed = seed, nFeatures = nFeatures,
                                                      numericFeatureID = numericFeatureID),
-                       results = testResults(seed = seed,
+                       results = testResults(seed = seed, nFeatures = nFeatures,
                                              numericFeatureID = numericFeatureID),
                        enrichments = testEnrichments(seed = seed),
-                       metaFeatures = testMetaFeatures(seed = seed,
+                       metaFeatures = testMetaFeatures(seed = seed, rows = nFeatures,
                                                        numericFeatureID = numericFeatureID),
                        plots = list(),
                        barcodes = testBarcodes(),
@@ -103,14 +104,14 @@ testTests <- function(n = 2) {
 }
 
 testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12345L,
-                            numericFeatureID = FALSE) {
+                            numericFeatureID = FALSE, nFeatures = 100) {
   set.seed(12345)
   annotations <- vector(mode = "list", length = n)
   names(annotations) <- sprintf("annotation_%02d", seq_len(n))
   if (numericFeatureID) {
-    universe <- sprintf("%04d", seq_len(100))
+    universe <- sprintf("%04d", seq_len(nFeatures))
   } else {
-    universe <- sprintf("feature_%04d", seq_len(100))
+    universe <- sprintf("feature_%04d", seq_len(nFeatures))
   }
   for (i in seq_len(n)) {
     terms_list <- replicate(terms,
@@ -126,15 +127,15 @@ testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12
   return(annotations)
 }
 
-testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 12345L,
+testResults <- function(n_models = 3, n_tests = 2, nFeatures = 100, seed = 12345L,
                         numericFeatureID = FALSE) {
   set.seed(seed)
   results <- vector(mode = "list", length = n_models)
   names(results) <- sprintf("model_%02d", seq_len(n_models))
   if (numericFeatureID) {
-    featureID <- sprintf("%04d", seq_len(n_features))
+    featureID <- sprintf("%04d", seq_len(nFeatures))
   } else {
-    featureID <- sprintf("feature_%04d", seq_len(n_features))
+    featureID <- sprintf("feature_%04d", seq_len(nFeatures))
   }
   for (i in seq_len(n_models)) {
     results[[i]] <- vector(mode = "list", length = n_tests)
@@ -142,9 +143,9 @@ testResults <- function(n_models = 3, n_tests = 2, n_features = 100, seed = 1234
     for (j in seq_len(n_tests)) {
       tmpResults <- data.frame(
         customID = featureID,
-        beta = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
-        beta_x = sample(seq(-3, 3, by = 0.1), n_features, replace = TRUE),
-        p_val = sample(seq(0.01, 0.99, by = 0.01), n_features, replace = TRUE),
+        beta = sample(seq(-3, 3, by = 0.1), nFeatures, replace = TRUE),
+        beta_x = sample(seq(-3, 3, by = 0.1), nFeatures, replace = TRUE),
+        p_val = sample(seq(0.01, 0.99, by = 0.01), nFeatures, replace = TRUE),
         stringsAsFactors = FALSE
       )
       tmpResults <- tmpResults[order(tmpResults[["p_val"]]), ]
