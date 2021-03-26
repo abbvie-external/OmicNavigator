@@ -127,20 +127,20 @@ testAnnotations <- function(n = 3, terms = 50, featureID = "customID", seed = 12
   return(annotations)
 }
 
-testResults <- function(n_models = 3, n_tests = 2, nFeatures = 100, seed = 12345L,
+testResults <- function(nModels = 3, nTests = 2, nFeatures = 100, seed = 12345L,
                         numericFeatureID = FALSE) {
   set.seed(seed)
-  results <- vector(mode = "list", length = n_models)
-  names(results) <- sprintf("model_%02d", seq_len(n_models))
+  results <- vector(mode = "list", length = nModels)
+  names(results) <- sprintf("model_%02d", seq_len(nModels))
   if (numericFeatureID) {
     featureID <- sprintf("%04d", seq_len(nFeatures))
   } else {
     featureID <- sprintf("feature_%04d", seq_len(nFeatures))
   }
-  for (i in seq_len(n_models)) {
-    results[[i]] <- vector(mode = "list", length = n_tests)
-    names(results[[i]]) <- sprintf("test_%02d", seq_len(n_tests))
-    for (j in seq_len(n_tests)) {
+  for (i in seq_len(nModels)) {
+    results[[i]] <- vector(mode = "list", length = nTests)
+    names(results[[i]]) <- sprintf("test_%02d", seq_len(nTests))
+    for (j in seq_len(nTests)) {
       tmpResults <- data.frame(
         customID = featureID,
         beta = sample(seq(-3, 3, by = 0.1), nFeatures, replace = TRUE),
@@ -162,17 +162,17 @@ testResults <- function(n_models = 3, n_tests = 2, nFeatures = 100, seed = 12345
   return(results)
 }
 
-testEnrichments <- function(n_models = 3, n_annotations = 3, n_tests = 2, terms = 50, seed = 12345L) {
+testEnrichments <- function(nModels = 3, nAnnotations = 3, nTests = 2, terms = 50, seed = 12345L) {
   set.seed(seed)
-  enrichments <- vector(mode = "list", length = n_models)
-  names(enrichments) <- sprintf("model_%02d", seq_len(n_models))
-  for (i in seq_len(n_models)) {
-    enrichments[[i]] <- vector(mode = "list", length = n_annotations)
-    names(enrichments[[i]]) <- sprintf("annotation_%02d", seq_len(n_annotations))
-    for (j in seq_len(n_annotations)) {
-      enrichments[[i]][[j]] <- vector(mode = "list", length = n_tests)
-      names(enrichments[[i]][[j]]) <- sprintf("test_%02d", seq_len(n_tests))
-      for (k in seq_len(n_tests)) {
+  enrichments <- vector(mode = "list", length = nModels)
+  names(enrichments) <- sprintf("model_%02d", seq_len(nModels))
+  for (i in seq_len(nModels)) {
+    enrichments[[i]] <- vector(mode = "list", length = nAnnotations)
+    names(enrichments[[i]]) <- sprintf("annotation_%02d", seq_len(nAnnotations))
+    for (j in seq_len(nAnnotations)) {
+      enrichments[[i]][[j]] <- vector(mode = "list", length = nTests)
+      names(enrichments[[i]][[j]]) <- sprintf("test_%02d", seq_len(nTests))
+      for (k in seq_len(nTests)) {
         tmp <- data.frame(
           termID = sprintf("term_%02d", seq_len(terms)),
           nominal = sample(seq(0.01, 0.1, by = 0.01), terms, replace = TRUE),
