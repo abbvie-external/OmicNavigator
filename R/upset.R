@@ -313,8 +313,8 @@ getResultsUpset <- function(
   # then evaluate it inside of the data table.
   filterExpression <- ifelse(
     operator %in% c("|>|", "|<|"),
-    sprintf("abs(x$%s) %s %f", column, gsub("|", "", operator, fixed = TRUE), sigValue),
-    sprintf("x$%s %s %f", column, operator, sigValue)
+    sprintf("abs(%s) %s %f", column, gsub("|", "", operator, fixed = TRUE), sigValue),
+    sprintf("%s %s %f", column, operator, sigValue)
   )
   filterExpression <- paste(filterExpression, collapse = " & ")
   applyFilterExpression <- function(x) {
