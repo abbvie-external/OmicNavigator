@@ -166,8 +166,67 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  class(enrichmentsNetwork[["tests"]]),
+  "character"
+)
+
+expect_identical_xl(
+  class(enrichmentsNetwork[["nodes"]]),
+  "data.frame"
+)
+
+expect_identical_xl(
+  class(enrichmentsNetwork[["links"]]),
+  "data.frame"
+)
+
+expect_identical_xl(
   enrichmentsNetwork[["tests"]],
   names(getTests(testStudyName, testModelName))
+)
+
+expect_identical_xl(
+  dim(enrichmentsNetwork[["nodes"]]),
+  as.integer(c(50, 6))
+)
+
+node1 <- structure(
+  list(
+    id = 1L,
+    termID = "term_01",
+    description = "Description of term_01",
+    geneSetSize = 18L,
+    nominal = list(c(0.03, 0.03)),
+    adjusted = list(c(0.05, 0.05))),
+  row.names = 1L,
+  class = "data.frame"
+)
+
+expect_identical_xl(
+  enrichmentsNetwork[["nodes"]][1, ],
+  node1
+)
+
+expect_identical_xl(
+  dim(enrichmentsNetwork[["links"]]),
+  as.integer(c(1020, 6))
+)
+
+link1 <- structure(
+  list(
+    id = 1L,
+    source = 1L,
+    target = 3L,
+    overlapSize = 6L,
+    overlap = 0.333333333333333,
+    jaccard = 0.166666666666667),
+  row.names = 1L,
+  class = "data.frame"
+)
+
+expect_equal_xl(
+  enrichmentsNetwork[["links"]][1, ],
+  link1
 )
 
 expect_message_xl(

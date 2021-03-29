@@ -117,6 +117,7 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
+#' @importFrom data.table ":=" "%chin%" .N
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
 
@@ -132,28 +133,36 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     message(sprintf("No terms available for annotationID \"%s\"", annotationID))
     return(list())
   }
-  terms <- data.frame(
+  terms <- data.table::data.table(
     termID = names(termsVec),
-    geneSetSize = lengths(termsVec),
-    stringsAsFactors = FALSE
+    geneSetSize = lengths(termsVec)
   )
 
   enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
   if (isEmpty(enrichments)) return(list())
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
+  data.table::setDT(enrichmentsTable)
 
-  nodesLong <- merge(enrichmentsTable, terms, by = "termID",
-                     all.x = TRUE, all.y = FALSE, sort = FALSE)
-  nodesLong <- nodesLong[order(nodesLong[["testID"]]), ]
+  nodesLong <- data.table::merge.data.table(
+    x = enrichmentsTable,
+    y = terms,
+    by = "termID",
+    all.x = TRUE,
+    all.y = FALSE,
+    sort = FALSE
+  )
+  data.table::setorderv(nodesLong, cols = "testID")
 
   tests <- unique(nodesLong[["testID"]])
 
-  nodes <- stats::aggregate(
-    cbind(nominal, adjusted) ~ termID + description + geneSetSize,
-    data = nodesLong,
-    FUN = list
-  )
-  nodes <- cbind(id = seq_len(nrow(nodes)), nodes)
+  adjusted <- id <- nominal <- NULL # for R CMD check
+  nodes <- nodesLong[
+    ,
+    list(nominal = list(nominal), adjusted = list(adjusted)),
+    by = c("termID", "description", "geneSetSize")
+  ]
+  nodes[, id := seq_len(.N)]
+  data.table::setcolorder(nodes, "id")
 
   overlaps <- getOverlaps(
     study,
@@ -162,17 +171,26 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
   )
   if (isEmpty(overlaps)) return(list())
 
-  links <- overlaps
-  colnames(links)[1:2] <- c("source", "target")
-  links <- links[links[["source"]] %in% nodes[["termID"]] &
-                   links[["target"]] %in% nodes[["termID"]], ]
-  links <- cbind(id = seq_len(nrow(links)), links)
+  links <- data.table::setDT(overlaps)
+  data.table::setnames(
+    links,
+    old = c("term1", "term2"),
+    new = c("source", "target")
+  )
+  links <- links[links[["source"]] %chin% nodes[["termID"]] &
+                   links[["target"]] %chin% nodes[["termID"]], ]
+  links[, id := seq_len(.N)]
+  data.table::setcolorder(links, "id")
 
   # Use node IDs with links
-  links[["source"]] <- match(links[["source"]], nodes[["termID"]])
-  links[["target"]] <- match(links[["target"]], nodes[["termID"]])
+  links[["source"]] <- data.table::chmatch(links[["source"]], nodes[["termID"]])
+  links[["target"]] <- data.table::chmatch(links[["target"]], nodes[["termID"]])
 
-  enrichmentsNetwork <- list(tests = tests, nodes = nodes, links = links)
+  enrichmentsNetwork <- list(
+    tests = tests,
+    nodes = data.table::setDF(nodes),
+    links = data.table::setDF(links)
+  )
 
   return(enrichmentsNetwork)
 }
