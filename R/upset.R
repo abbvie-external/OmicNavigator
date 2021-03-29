@@ -320,7 +320,11 @@ getResultsUpset <- function(
   applyFilterExpression <- function(x) {
     x[eval(parse(text = filterExpression, keep.source = FALSE)), 1]
   }
-  listOfSets <- Map(applyFilterExpression, resultsDt)
+  # [.data.table returns a 1-column dt, not a vector like [.data.frame
+  # https://rdatatable.gitlab.io/data.table/articles/datatable-faq.html#j-num
+  listOfDts <- Map(applyFilterExpression, resultsDt)
+  # Convert to character vectors
+  listOfSets <- Map(function(x) as.character(x[[1]]), listOfDts)
   allEmpty <- all(vapply(listOfSets, isEmpty, logical(1)))
   if (allEmpty) {
     stop("There were no features remaining after applying the filters.")

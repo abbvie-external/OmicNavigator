@@ -81,3 +81,7 @@ appPackages <- c(
 #' @docType package
 #' @name OmicNavigator
 NULL
+
+# Make the internal package functions "data.table aware"
+# https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
+.datatable.aware = TRUE
