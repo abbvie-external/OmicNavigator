@@ -7,8 +7,8 @@ Thanks for your interest in contributing to OmicNavigator!
 Branch        | Purpose
 ------------- | -------------
 main          | Main development (**default**)
-feature-\<x\> | Implements feature \<x\>
-bugfix-\<x\>  | Fixes bug \<x\>
+feature/\<x\> | Implements feature \<x\>
+bugfix/\<x\>  | Fixes bug \<x\>
 
 ## How to contribute
 
@@ -21,11 +21,11 @@ bugfix-\<x\>  | Fixes bug \<x\>
     cd OmicNavigator
     ```
 
-1. Create a new branch. We recommend prefixing the branch name with `feature-`
-or `bugfix-` to help classify it, but don't worry about this too much.
+1. Create a new branch. We recommend prefixing the branch name with `feature/`
+or `bugfix/` to help classify it, but don't worry about this too much.
 
     ```
-    git checkout -b feature-<x>
+    git checkout -b feature/<x>
     ```
 
 1. Make your edits. See the section below on setting up your development
@@ -34,7 +34,7 @@ environment.
 1. Add, commit, push, and open a Pull Request against the "main" branch.
 
     ```
-    git push origin feature-<x>
+    git push origin feature/<x>
     ```
 
 ## Updating NEWS.md
