@@ -1,3 +1,7 @@
+# 1.1.5
+
+* The release tarball includes version 1.1.5 of the web app
+
 * Fix bug in `getResultsIntersection()` where adding additional filters resulted
 in more results when `notTests` were specified, instead of fewer (reported by
 Terry Ernst, Brett Engelmann, and Wendy Waegell)
