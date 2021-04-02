@@ -10,3 +10,4 @@
 ^build\.zip$
 ^\.github$
 ^Dockerfile$
+^inst/OmicNavigator\.gif$
