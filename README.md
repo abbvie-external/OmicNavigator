@@ -1,4 +1,6 @@
-# OmicNavigator: Open-Source Software for Omic Data Analysis and Visualization
+<img src="man/figures/omicnavigator-dark-text.png"/>
+
+# OmicNavigator: Open-Source Software for Omic Data Analysis and Visualization 
 
 Exploring the results of omic analyses via interactive web applications
 facilitates cross-disciplinary collaboration and biological discovery.
@@ -6,7 +8,7 @@ OmicNavigator is open-source software for the archival and interactive
 exploration of results from high-throughput biology experiments. The software
 enables omic data analysts (typically bioinformaticians) to create customizable
 web applications from the results of their work using only the statistical
-programming language, R. OmicNavigator is bundled as an R package that contains
+programming language, R. OmicNavigator is an R package that contains
 web application code, R functions for programmatic access and data deposition,
 and a new container for the storage of measurements (e.g. RNAseq read counts),
 statistical analyses (differential expression and/or enrichment analysis),
@@ -19,9 +21,24 @@ analyses such as scatter, network, volcano, and barcode plots. The tool also
 includes dynamic, multi-set filtering across hypothesis tests based on
 user-defined thresholds such as statistical significance or effect size.
 
+## Features
+
+* Simple, yet flexible **study-model-test** data model for differential and/or enrichment analyses
+* Well documented data-in functions and a novel data container
+* _User-defined_ results and feature plots
+* Richly featured tables
+* Interactive scatter/volcano plots
+* Interactive barcode plots for enrichment results
+* Dynamic network views of enriched terms
+* Multi-set filtering across hypothesis tests
+
+![](./inst/OmicNavigator.gif "GIF of OmicNavigator WebApp Features")
+
+
+
 ## Installation
 
-You have multiple options for installing OmicNavigator.
+OmicNavigator is a [web app](https://github.com/abbvie-external/OmicNavigatorWebApp) and R code bundled together as an R package. You can install OmicNavigator multiple ways.
 
 ### Full installation in 2 steps (recommended)
 
@@ -86,7 +103,7 @@ dependencies required to run the app:
     remotes::install_github("abbvie-external/OmicNavigator")
     ```
 
-## Installation troubleshooting
+### Installation troubleshooting
 
 Some of the R package dependencies require external software libraries to
 already be installed on your machine (e.g. the R package curl requires the
@@ -127,3 +144,9 @@ protolite | protobuf-compiler | Fedora/CentOS/RHEL | protobuf-compiler
 xml2 | libxml-2.0 | Debian/Ubuntu | libxml2-dev
 xml2 | libxml-2.0 | Fedora/CentOS/RHEL | libxml2-devel
 xml2 | libxml-2.0 | Solaris | libxml2_dev
+
+## Acknowledgements
+
+OmicNavigator is deployed as an [OpenCPU](https://www.opencpu.org/ "OpenCPU") app. The OpenCPU system enables embedded scientific computing with R.
+
+OmicNavigator development is influenced by many existing bioinformatics and data visualization tools, including the set analysis visualization tool [UpSet](https://github.com/VCG/upset "UpSet") and the enrichment analysis network visualization tool [EnrichmentMap](https://github.com/BaderLab/EnrichmentMapApp "EnrichmentMap")
