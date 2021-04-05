@@ -190,44 +190,51 @@ expect_identical_xl(
   as.integer(c(50, 6))
 )
 
-node1 <- structure(
-  list(
-    id = 1L,
-    termID = "term_01",
-    description = "Description of term_01",
-    geneSetSize = 18L,
-    nominal = list(c(0.03, 0.03)),
-    adjusted = list(c(0.05, 0.05))),
-  row.names = 1L,
-  class = "data.frame"
-)
+# These tests require the use of set.seed() for the randomly-generated numbers
+# to match. The default algorithm for random number generation was changed in R
+# 3.6.0, so the tests below only pass for R >= 3.6.0
+if (getRversion() >= "3.6.0") {
 
-expect_identical_xl(
-  enrichmentsNetwork[["nodes"]][1, ],
-  node1
-)
+  node1 <- structure(
+    list(
+      id = 1L,
+      termID = "term_01",
+      description = "Description of term_01",
+      geneSetSize = 18L,
+      nominal = list(c(0.03, 0.03)),
+      adjusted = list(c(0.05, 0.05))),
+    row.names = 1L,
+    class = "data.frame"
+  )
 
-expect_identical_xl(
-  dim(enrichmentsNetwork[["links"]]),
-  as.integer(c(1020, 6))
-)
+  expect_identical_xl(
+    enrichmentsNetwork[["nodes"]][1, ],
+    node1
+  )
 
-link1 <- structure(
-  list(
-    id = 1L,
-    source = 1L,
-    target = 3L,
-    overlapSize = 6L,
-    overlap = 0.333333333333333,
-    jaccard = 0.166666666666667),
-  row.names = 1L,
-  class = "data.frame"
-)
+  expect_identical_xl(
+    dim(enrichmentsNetwork[["links"]]),
+    as.integer(c(1020, 6))
+  )
 
-expect_equal_xl(
-  enrichmentsNetwork[["links"]][1, ],
-  link1
-)
+  link1 <- structure(
+    list(
+      id = 1L,
+      source = 1L,
+      target = 3L,
+      overlapSize = 6L,
+      overlap = 0.333333333333333,
+      jaccard = 0.166666666666667),
+    row.names = 1L,
+    class = "data.frame"
+  )
+
+  expect_equal_xl(
+    enrichmentsNetwork[["links"]][1, ],
+    link1
+  )
+
+}
 
 expect_message_xl(
   getEnrichmentsNetwork(testStudyObj, testModelName, testAnnotationName),
