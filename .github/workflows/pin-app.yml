@@ -1,0 +1,35 @@
+name: Pin the app to the latest release version
+
+# This Action is run every time abbvie-external/OmicNavigatorWebApp creates a
+# new release.
+#
+# https://github.com/abbvie-external/OmicNavigatorWebApp/releases
+# https://github.com/peter-evans/repository-dispatch
+
+on:
+  repository_dispatch:
+    types: [app-release]
+
+jobs:
+  dev:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+
+      - name: Extract app version from event payload
+        env:
+          appRef: ${{ github.event.client_payload.ref }}
+        run: echo "appVersion=${appRef#refs/tags/v}" >> $GITHUB_ENV
+
+      - name: Configure Git
+        run: |
+          git config --local user.name 'GitHub Actions'
+          # I purposefully want to simply use auto-generated email for now
+
+      - name: Bump pinned app version in R package
+        run: Rscript scripts/bump-app-version.R ${{ env.appVersion }}
+
+      - name: Commit, tag, and push
+        run: bash scripts/commit-tag-push.sh

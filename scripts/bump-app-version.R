@@ -52,8 +52,17 @@ writeLines(news, "NEWS.md")
 
 # Commit and tag ---------------------------------------------------------------
 
-message("Run the following:")
-message("git add DESCRIPTION NEWS.md R/zzz.R")
-message(sprintf("git commit -m \"Bump to %s and pin version %s of the web app.\"",
-                pkgVersionNew, appVersionNew))
-message(sprintf("git tag -a v%s -m \"v%s\"", pkgVersionNew, pkgVersionNew))
+git <- c(
+  "git add DESCRIPTION NEWS.md R/zzz.R",
+  sprintf("git commit -m \"Bump to %s and pin version %s of the web app.\"",
+          pkgVersionNew, appVersionNew),
+  sprintf("git tag -a v%s -m \"v%s\"", pkgVersionNew, pkgVersionNew),
+  "git push",
+  "git push --tags"
+)
+gitScript <- "scripts/commit-tag-push.sh"
+writeLines(git, gitScript)
+
+message("\nRun the following Git commands:\n")
+message(paste(git, collapse = "\n"))
+message(sprintf("\nOr run: bash %s", gitScript))

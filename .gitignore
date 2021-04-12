@@ -17,3 +17,4 @@ vignettes/*out
 vignettes/*pdf
 vignettes/*tex
 vignettes/*toc
+scripts/commit-tag-push.sh
