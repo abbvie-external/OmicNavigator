@@ -115,7 +115,7 @@ jobs:
 
   install-on-dev:
     needs: check
-    if: ${{ github.repository == 'abbvie-external/OmicNavigator' }}
+    if: ${{ github.repository == 'abbvie-external/OmicNavigator' && github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
       - name: Repository Dispatch
