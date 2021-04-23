@@ -137,3 +137,16 @@ jobs:
           asset_path: ./OmicNavigatorAPI_${{ env.version }}.pdf
           asset_name: OmicNavigatorAPI_${{ env.version }}.pdf
           asset_content_type: application/pdf
+
+  deploy-release:
+    needs: release
+    if: ${{ github.repository == 'abbvie-external/OmicNavigator' && github.event_name != 'pull_request' }}
+    runs-on: ubuntu-latest
+    steps:
+      - name: Deploy release dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          repository: abbvie-internal/OmicNavigatorCD
+          event-type: deploy-release
+          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
