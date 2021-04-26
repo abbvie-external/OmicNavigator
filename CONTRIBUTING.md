@@ -9,6 +9,7 @@ Branch        | Purpose
 main          | Main development (**default**)
 feature/\<x\> | Implements feature \<x\>
 bugfix/\<x\>  | Fixes bug \<x\>
+dev           | (Maintainer use only) Deploy to dev server to test experimental changes
 
 ## How to contribute
 
