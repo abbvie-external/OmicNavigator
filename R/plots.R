@@ -130,7 +130,7 @@ resetSearch <- function(pkgNamespaces) {
 #' filtered to only include the row(s) corresponding to the input featureID(s)
 #' (see \code{\link{getFeatures}}). If multiple featureIDs are requested, the
 #' rows are reordered to match the order of this input (and thus match the order
-#' of the assays data frame.}
+#' of the assays data frame).}
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'

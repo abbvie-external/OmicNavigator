@@ -36,7 +36,7 @@ the columns of the assays data frame.}
 filtered to only include the row(s) corresponding to the input featureID(s)
 (see \code{\link{getFeatures}}). If multiple featureIDs are requested, the
 rows are reordered to match the order of this input (and thus match the order
-of the assays data frame.}
+of the assays data frame).}
 }
 \description{
 This function creates the input data that \code{\link{plotStudy}} passes to
