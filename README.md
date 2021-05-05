@@ -1,5 +1,7 @@
 <img src="man/figures/omicnavigator-dark-text.png"/>
 
+[![GitHub Actions](https://github.com/abbvie-external/OmicNavigator/workflows/Comprehensive%20test/badge.svg)](https://github.com/abbvie-external/OmicNavigator/actions)
+
 # OmicNavigator: Open-Source Software for Omic Data Analysis and Visualization 
 
 Exploring the results of omic analyses via interactive web applications
