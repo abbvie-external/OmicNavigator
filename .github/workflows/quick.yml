@@ -75,4 +75,12 @@ jobs:
           token: ${{ secrets.REPO_ACCESS_TOKEN }}
           repository: abbvie-internal/OmicNavigatorCD
           event-type: deploy-dev
-          client-payload: '{"ref": "${{ github.ref }}", "sha": "${{ github.sha }}"}'
+          # https://docs.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions#github-context
+          client-payload: '{
+            "repository": "${{ github.repository }}",
+            "ref": "${{ github.ref }}",
+            "sha": "${{ github.sha }}",
+            "workflow": "${{ github.workflow }}",
+            "run_id": "${{ github.run_id }}",
+            "run_number": "${{ github.run_number }}"
+          }'
