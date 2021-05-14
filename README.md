@@ -36,7 +36,36 @@ user-defined thresholds such as statistical significance or effect size.
 
 ![](./inst/OmicNavigator.gif "GIF of OmicNavigator WebApp Features")
 
+## Quick start
 
+To get a quick sense of how the app works, the quick start instructions below
+install the package, create a very minimal study, and then starts the app. It
+should automatically open a new tab in your browser. When you're done, press
+ctrl+c or Esc to stop running the app.
+
+```R
+# Install and load the package
+install.packages("remotes")
+remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
+library(OmicNavigator)
+
+# Create a very minimal study with a single results table
+quickstart <- createStudy("quickstart")
+data("RNAseq123")
+head(basal.vs.lp)
+resultsTable <- basal.vs.lp[, -2:-3]
+quickstart <- addResults(quickstart, list(model = list(test = resultsTable)))
+installStudy(quickstart)
+
+# Install and start the web app
+installApp()
+startApp()
+```
+
+To learn how to add your own data to the app, please read the User's Guide
+attached to the [latest GitHub Release][release-latest]. The more data you add,
+the more features are automatically enabled in the app (e.g. the Enrichment
+Analysis tab is available once you add the results of an enrichment analysis).
 
 ## Installation
 
