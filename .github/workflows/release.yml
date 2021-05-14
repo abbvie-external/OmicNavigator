@@ -12,6 +12,9 @@ jobs:
   release:
     runs-on: ubuntu-18.04
 
+    env:
+      R_COMPILE_AND_INSTALL_PACKAGES: never
+
     steps:
 
     - name: Extract package version from tag reference
