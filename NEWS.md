@@ -2,10 +2,10 @@
 
 * The release tarball includes version 1.1.6 of the web app
 
+[dt-aware]: https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
+
 * Package functions are now "[data.table aware][dt-aware]". This is an internal
 change only. The output is unaffected, and functions are potentially faster.
-
-[dt-aware]: https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
 
 # 1.1.5
 
