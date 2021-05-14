@@ -1,3 +1,7 @@
+# 1.1.6
+
+* The release tarball includes version 1.1.6 of the web app
+
 * Package functions are now "[data.table aware][dt-aware]". This is an internal
 change only. The output is unaffected, and functions are potentially faster.
 
