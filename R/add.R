@@ -124,13 +124,7 @@ NULL
 #'
 #' @export
 addSamples <- function(study, samples) {
-  checkStudy(study)
-  checkSamples(samples)
-  samples <- sanitizeSamples(samples)
-
-  study[["samples"]] <- utils::modifyList(study[["samples"]], samples)
-
-  return(study)
+  addElements(study, samples)
 }
 
 #' Add feature metadata
@@ -144,13 +138,7 @@ addSamples <- function(study, samples) {
 #'
 #' @export
 addFeatures <- function(study, features) {
-  checkStudy(study)
-  checkFeatures(features)
-  features <- sanitizeFeatures(features)
-
-  study[["features"]] <- utils::modifyList(study[["features"]], features)
-
-  return(study)
+  addElements(study, features)
 }
 
 #' Add models
@@ -162,13 +150,7 @@ addFeatures <- function(study, features) {
 #'
 #' @export
 addModels <- function(study, models) {
-  checkStudy(study)
-  checkModels(models)
-  models <- sanitizeModels(models)
-
-  study[["models"]] <- utils::modifyList(study[["models"]], models)
-
-  return(study)
+  addElements(study, models)
 }
 
 #' Add assays
@@ -183,13 +165,7 @@ addModels <- function(study, models) {
 #'
 #' @export
 addAssays <- function(study, assays) {
-  checkStudy(study)
-  checkAssays(assays)
-  assays <- sanitizeAssays(assays)
-
-  study[["assays"]] <- utils::modifyList(study[["assays"]], assays)
-
-  return(study)
+  addElements(study, assays)
 }
 
 #' Add tests
@@ -214,13 +190,7 @@ addAssays <- function(study, assays) {
 #'
 #' @export
 addTests <- function(study, tests) {
-  checkStudy(study)
-  checkTests(tests)
-  tests <- sanitizeTests(tests)
-
-  study[["tests"]] <- utils::modifyList(study[["tests"]], tests)
-
-  return(study)
+  addElements(study, tests)
 }
 
 #' Add annotations
@@ -240,13 +210,7 @@ addTests <- function(study, tests) {
 #'
 #' @export
 addAnnotations <- function(study, annotations) {
-  checkStudy(study)
-  checkAnnotations(annotations)
-  annotations <- sanitizeAnnotations(annotations)
-
-  study[["annotations"]] <- utils::modifyList(study[["annotations"]], annotations)
-
-  return(study)
+  addElements(study, annotations)
 }
 
 #' Add inference results
@@ -260,13 +224,7 @@ addAnnotations <- function(study, annotations) {
 #'
 #' @export
 addResults <- function(study, results) {
-  checkStudy(study)
-  checkResults(results)
-  results <- sanitizeResults(results)
-
-  study[["results"]] <- utils::modifyList(study[["results"]], results)
-
-  return(study)
+  addElements(study, results)
 }
 
 #' Add enrichment results
@@ -285,13 +243,7 @@ addResults <- function(study, results) {
 #'
 #' @export
 addEnrichments <- function(study, enrichments) {
-  checkStudy(study)
-  checkEnrichments(enrichments)
-  enrichments <- sanitizeEnrichments(enrichments)
-
-  study[["enrichments"]] <- utils::modifyList(study[["enrichments"]], enrichments)
-
-  return(study)
+  addElements(study, enrichments)
 }
 
 #' Add meta-feature metadata
@@ -311,13 +263,7 @@ addEnrichments <- function(study, enrichments) {
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures) {
-  checkStudy(study)
-  checkMetaFeatures(metaFeatures)
-  metaFeatures <- sanitizeMetaFeatures(metaFeatures)
-
-  study[["metaFeatures"]] <- utils::modifyList(study[["metaFeatures"]], metaFeatures)
-
-  return(study)
+  addElements(study, metaFeatures)
 }
 
 #' Add custom plotting functions
@@ -360,13 +306,7 @@ addMetaFeatures <- function(study, metaFeatures) {
 #'
 #' @export
 addPlots <- function(study, plots) {
-  checkStudy(study)
-  checkPlots(plots)
-  plots <- sanitizePlots(plots)
-
-  study[["plots"]] <- utils::modifyList(study[["plots"]], plots)
-
-  return(study)
+  addElements(study, plots)
 }
 
 #' Add barcode plot metadata
@@ -394,13 +334,7 @@ addPlots <- function(study, plots) {
 #'
 #' @export
 addBarcodes <- function(study, barcodes) {
-  checkStudy(study)
-  checkBarcodes(barcodes)
-  barcodes <- sanitizeBarcodes(barcodes)
-
-  study[["barcodes"]] <- utils::modifyList(study[["barcodes"]], barcodes)
-
-  return(study)
+  addElements(study, barcodes)
 }
 
 #' Add reports
@@ -418,13 +352,7 @@ addBarcodes <- function(study, barcodes) {
 #'
 #' @export
 addReports <- function(study, reports) {
-  checkStudy(study)
-  checkReports(reports)
-  reports <- sanitizeReports(reports)
-
-  study[["reports"]] <- utils::modifyList(study[["reports"]], reports)
-
-  return(study)
+  addElements(study, reports)
 }
 
 #' Add linkouts to external resources in the results table
@@ -472,14 +400,7 @@ addReports <- function(study, reports) {
 #'
 #' @export
 addResultsLinkouts <- function(study, resultsLinkouts) {
-  checkStudy(study)
-  checkResultsLinkouts(resultsLinkouts)
-  resultsLinkouts <- sanitizeResultsLinkouts(resultsLinkouts)
-
-  study[["resultsLinkouts"]] <- utils::modifyList(study[["resultsLinkouts"]],
-                                                  resultsLinkouts)
-
-  return(study)
+  addElements(study, resultsLinkouts)
 }
 
 #' Add linkouts to external resources in the enrichments table
@@ -523,12 +444,20 @@ addResultsLinkouts <- function(study, resultsLinkouts) {
 #'
 #' @export
 addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts) {
-  checkStudy(study)
-  checkEnrichmentsLinkouts(enrichmentsLinkouts)
-  enrichmentsLinkouts <- sanitizeEnrichmentsLinkouts(enrichmentsLinkouts)
+  addElements(study, enrichmentsLinkouts)
+}
 
-  study[["enrichmentsLinkouts"]] <- utils::modifyList(study[["enrichmentsLinkouts"]],
-                                                      enrichmentsLinkouts)
+addElements <- function(study, elements) {
+  elementsName <- deparse(substitute(elements))
+  checkStudy(study)
+  checkFunctionName <- paste0("check", capitalize(elementsName))
+  checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicNavigator")
+  checkFunction(elements)
+  sanitizeFunctionName <- paste0("sanitize", capitalize(elementsName))
+  sanitizeFunction <- utils::getFromNamespace(sanitizeFunctionName, ns = "OmicNavigator")
+  elements <- sanitizeFunction(elements)
+
+  study[[elementsName]] <- utils::modifyList(study[[elementsName]], elements)
 
   return(study)
 }
