@@ -395,7 +395,7 @@ if (at_home()) {
       default = list(
         customID = c(
           "https://ensembl.org/i/ensembl-favicon.png",
-          "https://www.targetvalidation.org/imgs/favicons/OT_favicon.png"
+          "https://www.targetvalidation.org/favicon.png"
         ),
         featureVar01 = c(
           "https://www.ncbi.nlm.nih.gov/favicon.ico"
