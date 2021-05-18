@@ -5,6 +5,11 @@
 \title{Shared parameters for add functions}
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Shared parameters for add functions

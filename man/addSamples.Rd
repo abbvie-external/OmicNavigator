@@ -4,7 +4,7 @@
 \alias{addSamples}
 \title{Add sample metadata}
 \usage{
-addSamples(study, samples)
+addSamples(study, samples, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -14,6 +14,11 @@ The input object is a named list of data frames (one per model). The first
 column of each data frame is used as the sampleID, so it must contain
 unique values. To share a data frame across multiple models, use the
 modelID "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add sample metadata

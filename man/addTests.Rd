@@ -4,7 +4,7 @@
 \alias{addTests}
 \title{Add tests}
 \usage{
-addTests(study, tests)
+addTests(study, tests, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -15,6 +15,11 @@ modelIDs. For each modelID, each element of the nested list is a test. The
 names should be the testIDs. The value should be a single character string
 describing the testID. To share tests across multiple models, use the
 modelID "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add tests

@@ -4,7 +4,7 @@
 \alias{addMetaFeatures}
 \title{Add meta-feature metadata}
 \usage{
-addMetaFeatures(study, metaFeatures)
+addMetaFeatures(study, metaFeatures, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -16,6 +16,11 @@ contain the same IDs as the corresponding features data frame
 (\code{\link{addFeatures}}). To share a data frame across multiple models,
 use the modelID "default". All columns will be coerced to character
 strings.}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 The meta-features table is useful anytime there are metadata variables that

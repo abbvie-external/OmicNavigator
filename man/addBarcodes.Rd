@@ -4,7 +4,7 @@
 \alias{addBarcodes}
 \title{Add barcode plot metadata}
 \usage{
-addBarcodes(study, barcodes)
+addBarcodes(study, barcodes, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -24,6 +24,11 @@ the log fold change values.
 6) \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
 To share metadata across multiple models, use the modelID "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 The app can display a barcode plot of the enrichment results for a given

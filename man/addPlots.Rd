@@ -4,7 +4,7 @@
 \alias{addPlots}
 \title{Add custom plotting functions}
 \usage{
-addPlots(study, plots)
+addPlots(study, plots, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -20,6 +20,11 @@ do not specify the \code{plotType}, the plot will be assumed to be
 \code{"singleFeature"}. Optionally, if the plotting function requires
 external packages, these can be defined in the element \code{packages}. To
 share plots across multiple models, use the modelID "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Include custom plots that the app will display when a feature is selected by

@@ -4,7 +4,7 @@
 \alias{addResults}
 \title{Add inference results}
 \usage{
-addResults(study, results)
+addResults(study, results, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -14,6 +14,11 @@ nested named list. The names of the list correspond to the model names.
 Each element in the list should be a list of data frames with inference
 results, one for each test. In each data frame, the featureID must be in
 the first column, and all other columns must be numeric.}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add inference results

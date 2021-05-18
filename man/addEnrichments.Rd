@@ -4,7 +4,7 @@
 \alias{addEnrichments}
 \title{Add enrichment results}
 \usage{
-addEnrichments(study, enrichments)
+addEnrichments(study, enrichments, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -19,6 +19,11 @@ of these elements should be a data frame with enrichment results. Each
 table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
 adjusting for multiple testing). Any additional columns are ignored.}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add enrichment results

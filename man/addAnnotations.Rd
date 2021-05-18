@@ -4,7 +4,7 @@
 \alias{addAnnotations}
 \title{Add annotations}
 \usage{
-addAnnotations(study, annotations)
+addAnnotations(study, annotations, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -20,6 +20,11 @@ features table that was used for the enrichment analysis, and 3) \code{terms},
 a list of annotation terms. The names of \code{terms} sublist correspond to
 the name of the annotation terms. Each of the annotation terms should be a
 character vector of featureIDs.}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add annotations

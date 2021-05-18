@@ -4,7 +4,7 @@
 \alias{addModels}
 \title{Add models}
 \usage{
-addModels(study, models)
+addModels(study, models, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -12,6 +12,11 @@ addModels(study, models)
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
 the descriptions of the models.}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 Add models

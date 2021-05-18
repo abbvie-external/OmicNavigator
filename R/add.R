@@ -109,6 +109,10 @@ createStudy <- function(name,
 #' @name shared-add
 #'
 #' @param study An OmicNavigator study created with \code{\link{createStudy}}
+#' @param reset Reset the data prior to adding the new data (default:
+#'   \code{FALSE}). The default is to add to or modify any previously added data
+#'   (if it exists). Setting \code{reset = TRUE} enables you to remove existing
+#'   data you no longer want to include in the study.
 #'
 #' @keywords internal
 NULL
@@ -123,8 +127,8 @@ NULL
 #' @inheritParams shared-add
 #'
 #' @export
-addSamples <- function(study, samples) {
-  addElements(study, samples)
+addSamples <- function(study, samples, reset = FALSE) {
+  addElements(study, samples, reset)
 }
 
 #' Add feature metadata
@@ -137,8 +141,8 @@ addSamples <- function(study, samples) {
 #' @inheritParams shared-add
 #'
 #' @export
-addFeatures <- function(study, features) {
-  addElements(study, features)
+addFeatures <- function(study, features, reset = FALSE) {
+  addElements(study, features, reset)
 }
 
 #' Add models
@@ -149,8 +153,8 @@ addFeatures <- function(study, features) {
 #' @inheritParams shared-add
 #'
 #' @export
-addModels <- function(study, models) {
-  addElements(study, models)
+addModels <- function(study, models, reset = FALSE) {
+  addElements(study, models, reset)
 }
 
 #' Add assays
@@ -164,8 +168,8 @@ addModels <- function(study, models) {
 #' @inheritParams shared-add
 #'
 #' @export
-addAssays <- function(study, assays) {
-  addElements(study, assays)
+addAssays <- function(study, assays, reset = FALSE) {
+  addElements(study, assays, reset)
 }
 
 #' Add tests
@@ -189,8 +193,8 @@ addAssays <- function(study, assays) {
 #'   study <- addTests(study, tests)
 #'
 #' @export
-addTests <- function(study, tests) {
-  addElements(study, tests)
+addTests <- function(study, tests, reset = FALSE) {
+  addElements(study, tests, reset)
 }
 
 #' Add annotations
@@ -209,8 +213,8 @@ addTests <- function(study, tests) {
 #' @inheritParams shared-add
 #'
 #' @export
-addAnnotations <- function(study, annotations) {
-  addElements(study, annotations)
+addAnnotations <- function(study, annotations, reset = FALSE) {
+  addElements(study, annotations, reset)
 }
 
 #' Add inference results
@@ -223,8 +227,8 @@ addAnnotations <- function(study, annotations) {
 #' @inheritParams shared-add
 #'
 #' @export
-addResults <- function(study, results) {
-  addElements(study, results)
+addResults <- function(study, results, reset = FALSE) {
+  addElements(study, results, reset)
 }
 
 #' Add enrichment results
@@ -242,8 +246,8 @@ addResults <- function(study, results) {
 #' @inheritParams shared-add
 #'
 #' @export
-addEnrichments <- function(study, enrichments) {
-  addElements(study, enrichments)
+addEnrichments <- function(study, enrichments, reset = FALSE) {
+  addElements(study, enrichments, reset)
 }
 
 #' Add meta-feature metadata
@@ -262,8 +266,8 @@ addEnrichments <- function(study, enrichments) {
 #' @inheritParams shared-add
 #'
 #' @export
-addMetaFeatures <- function(study, metaFeatures) {
-  addElements(study, metaFeatures)
+addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
+  addElements(study, metaFeatures, reset)
 }
 
 #' Add custom plotting functions
@@ -305,8 +309,8 @@ addMetaFeatures <- function(study, metaFeatures) {
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
 #'
 #' @export
-addPlots <- function(study, plots) {
-  addElements(study, plots)
+addPlots <- function(study, plots, reset = FALSE) {
+  addElements(study, plots, reset)
 }
 
 #' Add barcode plot metadata
@@ -333,8 +337,8 @@ addPlots <- function(study, plots) {
 #' @inheritParams shared-add
 #'
 #' @export
-addBarcodes <- function(study, barcodes) {
-  addElements(study, barcodes)
+addBarcodes <- function(study, barcodes, reset = FALSE) {
+  addElements(study, barcodes, reset)
 }
 
 #' Add reports
@@ -351,8 +355,8 @@ addBarcodes <- function(study, barcodes) {
 #' @inheritParams shared-add
 #'
 #' @export
-addReports <- function(study, reports) {
-  addElements(study, reports)
+addReports <- function(study, reports, reset = FALSE) {
+  addElements(study, reports, reset)
 }
 
 #' Add linkouts to external resources in the results table
@@ -399,8 +403,8 @@ addReports <- function(study, reports) {
 #' @seealso \code{\link{addFeatures}}
 #'
 #' @export
-addResultsLinkouts <- function(study, resultsLinkouts) {
-  addElements(study, resultsLinkouts)
+addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
+  addElements(study, resultsLinkouts, reset)
 }
 
 #' Add linkouts to external resources in the enrichments table
@@ -443,19 +447,29 @@ addResultsLinkouts <- function(study, resultsLinkouts) {
 #' @seealso \code{\link{addAnnotations}}, \code{\link{addEnrichments}}
 #'
 #' @export
-addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts) {
+addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
   addElements(study, enrichmentsLinkouts)
 }
 
-addElements <- function(study, elements) {
+addElements <- function(study, elements, reset = FALSE) {
   elementsName <- deparse(substitute(elements))
   checkStudy(study)
+  # Note: I really don't like this strategy of obtaining functions dynamically
+  # via getFromNamespace(), but I'm not sure what the best strategy would be.
+  # I could create S3 generics for the check() and sanitize() functions, and
+  # then set the class of `elements` to `elementsName`. That is more idiomatic,
+  # but it also seems like a lot simply to internally dispatch these functions
+  # here and also in validateStudy().
   checkFunctionName <- paste0("check", capitalize(elementsName))
   checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicNavigator")
   checkFunction(elements)
   sanitizeFunctionName <- paste0("sanitize", capitalize(elementsName))
   sanitizeFunction <- utils::getFromNamespace(sanitizeFunctionName, ns = "OmicNavigator")
   elements <- sanitizeFunction(elements)
+
+  if (reset) {
+    study[[elementsName]] <- list()
+  }
 
   study[[elementsName]] <- utils::modifyList(study[[elementsName]], elements)
 

@@ -109,6 +109,38 @@ expect_identical_xl(
   "data.frame"
 )
 
+# Test incremental add and reset -----------------------------------------------
+
+studyInc <- createStudy(name = "testInc")
+resultsAll <- OmicNavigator:::testResults()
+resultsOne <- resultsAll[1]
+resultsTwo <- resultsAll[2]
+resultsThreeA <- resultsAll[3]
+resultsThreeA[[1]][[2]] <- NULL
+resultsThreeB <- resultsAll[3]
+resultsThreeB[[1]][[1]] <- NULL
+
+# Add the data incrementally
+studyInc <- addResults(studyInc, results = resultsOne)
+studyInc <- addResults(studyInc, results = resultsTwo)
+studyInc <- addResults(studyInc, results = resultsThreeA)
+studyInc <- addResults(studyInc, results = resultsThreeB)
+
+expect_equal_xl(
+  studyInc[["results"]],
+  resultsAll,
+  info = "Data can be added incrementally"
+)
+
+# Reset the data and only include a subset
+studyReset <- addResults(studyInc, results = resultsOne, reset = TRUE)
+
+expect_equal_xl(
+  studyReset[["results"]],
+  resultsOne,
+  info = "Existing data can be reset"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

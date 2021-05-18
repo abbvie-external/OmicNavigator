@@ -1,3 +1,7 @@
+* The "add" functions have a new argument, `reset`. If `reset = TRUE`, then the
+existing data is removed prior to adding the new data. The default continues to
+be to add to or modify any existing data.
+
 # 1.1.6
 
 * The release tarball includes version 1.1.6 of the web app

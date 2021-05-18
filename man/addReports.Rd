@@ -4,7 +4,7 @@
 \alias{addReports}
 \title{Add reports}
 \usage{
-addReports(study, reports)
+addReports(study, reports, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -15,6 +15,11 @@ Each element should be either a URL or a path to a file on your computer.
 If it is a path to a file, this file will be included in the exported study
 package. To share a report across multiple models, use the modelID
 "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 You can include reports of the analyses you performed to generate the

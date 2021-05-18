@@ -4,7 +4,7 @@
 \alias{addResultsLinkouts}
 \title{Add linkouts to external resources in the results table}
 \usage{
-addResultsLinkouts(study, resultsLinkouts)
+addResultsLinkouts(study, resultsLinkouts, reset = FALSE)
 }
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
@@ -15,6 +15,11 @@ names of the list correspond to the model names. Each element of the list
 is a named list of character vectors. The names of this nested list must
 correspond to the column names of the matching features table. To share
 linkouts across multiple models, use the modelID "default".}
+
+\item{reset}{Reset the data prior to adding the new data (default:
+\code{FALSE}). The default is to add to or modify any previously added data
+(if it exists). Setting \code{reset = TRUE} enables you to remove existing
+data you no longer want to include in the study.}
 }
 \description{
 You can provide additional information on the features in your study by
