@@ -29,7 +29,8 @@ Authors@R: c(
          email = "brett.engelmann@abbvie.com")
   )
 License: MIT + file LICENSE
-License_restricts_use: yes
+License_restricts_use: no
+License_is_FOSS: yes
 Copyright: AbbVie Inc.
 Encoding: UTF-8
 LazyData: true
