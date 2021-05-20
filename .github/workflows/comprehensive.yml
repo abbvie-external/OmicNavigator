@@ -65,7 +65,9 @@ jobs:
       - uses: r-lib/actions/setup-tinytex@v1
 
       - name: Install extra LaTeX dependencies to build vignettes
-        run: tlmgr install ae parskip
+        run: |
+          tlmgr update --self
+          tlmgr install ae parskip
 
       - name: Query dependencies
         run: |
