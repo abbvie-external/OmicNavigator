@@ -37,8 +37,31 @@ if (!interactive()) options(prompt = " ", continue = " ", width = 70)
 
 \section{Introduction}
 
-Below are example calls to the available endpoints for retrieving data or plots
-from installed study packages.
+The OmicNavigator Web App is deployed via
+\href{https://www.opencpu.org/}{OpenCPU}. Below are example calls to the
+available endpoints for retrieving data or plots from installed study
+packages. For more details on each function, please see their individual man
+pages, which you can access by running \texttt{?nameOfFunction} in the R
+console. The example below displays the endpoints directly called in the R
+console and exported as JSON. However, note that the
+\href{https://www.opencpu.org/api.html}{OpenCPU API} is very flexible. You can
+query the API endpoints using the
+\href{https://www.opencpu.org/jslib.html}{JavaScript client library} (which is
+what the OmicNavigator Web App uses) or any HTTP client you prefer. And you
+aren't limited to JSON output, but can choose one of the many available
+\href{https://www.opencpu.org/api.html#api-formats}{output formats}. For
+example, the \texttt{curl} command below downloads a results table to a CSV
+file from a hypothetical study package from OpenCPU running on the local
+machine.
+
+\begin{verbatim}
+curl http://localhost:5656/ocpu/library/OmicNavigator/R/getResultsTable/csv \
+  -d 'study="studyABC"&modelID="model1"&testID="test1"' \
+  > results.csv
+\end{verbatim}
+
+If OmicNavigator is deployed on an external server, replace
+\texttt{http://localhost:5656} with the server's URL.
 
 <<packages>>=
 library(jsonlite)
