@@ -1296,6 +1296,54 @@ Click on the links to be taken to the relevant section.
   \hline
 \end{tabular}
 
+\subsection{Matching plot theme to app's appearance}
+\label{sec:theme}
+
+Your custom plots will be displayed in the app. If you'd like, you can theme
+your plots so that they better integrate with the app's appearance, e.g. with
+\texttt{ggplot2::theme()} or \texttt{ggplot2::scale\_color\_discrete()}. Note
+that this is completely optional.
+
+The app uses the following colors:
+
+\begin{itemize}
+  \item orange-reddish \href{https://duckduckgo.com/?q=color+picker+%23ff4400&ia=answer}{\texttt{\#ff4400}}
+  \item light orange \href{https://duckduckgo.com/?q=color+picker+%23ff7e38&ia=answer}{\texttt{\#ff7e38}}
+  \item navy blueish \href{https://duckduckgo.com/?q=color+picker+%232c3b78&ia=answer}{\texttt{\#2c3b78}}
+  \item darker royal blueish \href{https://duckduckgo.com/?q=color+picker+%23465fc5&ia=answer}{\texttt{\#465fc5}}
+  \item baby blueish \href{https://duckduckgo.com/?q=color+picker+%234cd2d5&ia=answer}{\texttt{\#4cd2d5}}
+  \item royal blueish \href{https://duckduckgo.com/?q=color+picker+%231678c2&ia=answer}{\texttt{\#1678c2}}
+  \item white \href{https://duckduckgo.com/?q=color+picker+%23fff&ia=answer}{\texttt{\#fff}}
+  \item lightish grey \href{https://duckduckgo.com/?q=color+picker+%23e0e1e2&ia=answer}{\texttt{\#e0e1e2}}
+  \item light blackish \href{https://duckduckgo.com/?q=color+picker+%232e2e2e&ia=answer}{\texttt{\#2e2e2e}}
+\end{itemize}
+
+You can use the hexadecimal codes for the colors directly in R, e.g.
+
+<<theme, fig=TRUE>>=
+op <- par(bg = "#e0e1e2", fg = "#2e2e2e", no.readonly = TRUE)
+boxplot(mpg ~ cyl, data = mtcars, col = c("#ff4400", "#2c3b78", "#4cd2d5"))
+par(op)
+@
+
+The app's text is displayed in one of the following fonts. It will choose the
+first font it finds installed on the machine:
+
+\begin{enumerate}
+  \item \href{https://www.fontsquirrel.com/fonts/lato}{Lato}
+  \item Arial
+  \item Helvetic
+  \item Any sans-serif font
+\end{enumerate}
+
+Fair warning that getting R to use a custom installed font like Lato is
+non-trivial, and it's even more difficult to make it portable (i.e. so that
+the font will also work on the server where OmicNavigator is deployed or a
+colleague's machine). Two options for R packages that can help you use custom
+fonts in R plots are
+\href{https://cran.r-project.org/package=showtext}{showtext} and
+\href{https://cran.r-project.org/package=extrafont}{extrafont}.
+
 \section{Session information}
 
 <<session-information, echo=FALSE, results=tex>>=
