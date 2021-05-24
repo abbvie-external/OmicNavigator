@@ -61,7 +61,11 @@ curl http://localhost:5656/ocpu/library/OmicNavigator/R/getResultsTable/csv \
 \end{verbatim}
 
 If OmicNavigator is deployed on an external server, replace
-\texttt{http://localhost:5656} with the server's URL.
+\texttt{http://localhost:5656} with the server's URL. For more information on
+the benefits and features of sharing and retrieving data via the OpenCPU API,
+please see the blog post
+\href{https://www.opencpu.org/posts/publishing-data-with-opencpu/}{Publishing
+dynamic data on ocpu.io}.
 
 <<packages>>=
 library(jsonlite)
