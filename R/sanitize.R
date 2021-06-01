@@ -97,3 +97,7 @@ sanitizeResultsLinkouts <- function(resultsLinkouts) {
 sanitizeEnrichmentsLinkouts <- function(enrichmentsLinkouts) {
   return(enrichmentsLinkouts)
 }
+
+sanitizeMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
+  return(metaFeaturesLinkouts)
+}

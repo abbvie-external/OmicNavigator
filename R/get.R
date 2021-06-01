@@ -336,6 +336,24 @@ getEnrichmentsLinkouts <- function(study, annotationID = NULL, quiet = FALSE, li
   )
 }
 
+#' Get metaFeatures table linkouts from a study
+#'
+#' @inherit shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
+  getElements(
+    study,
+    elements = "metaFeaturesLinkouts",
+    filters = list(modelID = modelID),
+    default = "default",
+    fileType = "json",
+    quiet = quiet,
+    libraries = libraries
+  )
+}
+
 # ... Arguments passed to either data.table::fread() or jsonlite::read_json()
 getElements <- function(
   study,

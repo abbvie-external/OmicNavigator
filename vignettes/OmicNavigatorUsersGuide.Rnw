@@ -1047,6 +1047,7 @@ the study package with \texttt{installStudy()} for the changes to take effect
 in the app.
 
 \subsection{MetaFeatures}
+\label{sec:metaFeatures}
 
 The features tables explained in Section \ref{sec:features} require that the
 first column containing the study featureID is unique. This enforces a 1:1
@@ -1175,6 +1176,16 @@ study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts)
 
 For more details, run \texttt{?addEnrichmentsLinkouts}.
 
+\subsection{MetaFeatures table linkouts}
+\label{sec:metaFeaturesLinkouts}
+
+You can provide linkouts to external resources for the metaFeatures in your
+study. These linkouts are embedded directly into the metaFeatures table
+(Section \ref{sec:metaFeatures}). The linkout URLs can use any of the columns
+in the optional metaFeatures table.
+
+For more details, run \texttt{?addMetaFeaturesLinkouts}.
+
 \section{More information}
 
 This section contains more information about OmicNavigator studies.
@@ -1293,6 +1304,8 @@ Click on the links to be taken to the relevant section.
   Enrichments barcode & Barcodes (\ref{sec:barcodes}), Enrichments (\ref{sec:enrichments}),  Results (\ref{sec:results}) &   \\
   \hline
   Custom plots & Plots (\ref{sec:plots}), Assays (\ref{sec:assays}), Samples (\ref{sec:samples})  &   \\
+  \hline
+  MetaFeatures table & metaFeatures (\ref{sec:metaFeatures}) & metaFeaturesLinkouts (\ref{sec:metaFeaturesLinkouts}) \\
   \hline
 \end{tabular}
 

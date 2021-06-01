@@ -19,6 +19,7 @@
 #' @inheritParams addReports
 #' @inheritParams addResultsLinkouts
 #' @inheritParams addEnrichmentsLinkouts
+#' @inheritParams addMetaFeaturesLinkouts
 #'
 #' @seealso
 #'   \code{\link{addSamples}},
@@ -35,6 +36,7 @@
 #'   \code{\link{addReports}},
 #'   \code{\link{addResultsLinkouts}},
 #'   \code{\link{addEnrichmentsLinkouts}},
+#'   \code{\link{addMetaFeaturesLinkouts}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -60,6 +62,7 @@ createStudy <- function(name,
                         reports = list(),
                         resultsLinkouts = list(),
                         enrichmentsLinkouts = list(),
+                        metaFeaturesLinkouts = list(),
                         version = NULL)
 {
   checkName(name)
@@ -82,6 +85,7 @@ createStudy <- function(name,
                 reports = list(),
                 resultsLinkouts = list(),
                 enrichmentsLinkouts = list(),
+                metaFeaturesLinkouts = list(),
                 overlaps = list(),
                 version = version)
   class(study) <- "onStudy"
@@ -100,6 +104,7 @@ createStudy <- function(name,
   study <- addReports(study, reports = reports)
   study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
   study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts)
+  study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = metaFeaturesLinkouts)
 
   return(study)
 }
@@ -449,6 +454,54 @@ addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
 #' @export
 addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
   addElements(study, enrichmentsLinkouts)
+}
+
+#' Add linkouts to external resources in the metaFeatures table
+#'
+#' You can provide additional information on the metaFeatures in your study by
+#' providing linkouts to external resources. These will be embedded directly in
+#' the metaFeatures table.
+#'
+#' For each linkout, the URL pattern you provide will be concatenated with the
+#' value of that column for each row. As an example, if your metaFeatures table
+#' included a column named \code{"ensembl"} that contained the Ensembl Gene ID
+#' for each feature, you could create a linkout to Ensembl using the following
+#' pattern:
+#'
+#' \preformatted{ensembl = "https://ensembl.org/Homo_sapiens/Gene/Summary?g="}
+#'
+#' As another example, if you had a column named \code{"entrez"} that contained
+#' the Entrez Gene ID  for each feature, you could create a linkout to Entrez
+#' using the following pattern:
+#'
+#' \preformatted{entrez = "https://www.ncbi.nlm.nih.gov/gene/"}
+#'
+#' Note that you can provide more than one linkout per column.
+#'
+#' @param metaFeaturesLinkouts The URL patterns that describe linkouts to external
+#'   resources (see Details below). The input object is a nested named list. The
+#'   names of the list correspond to the model names. Each element of the list
+#'   is a named list of character vectors. The names of this nested list must
+#'   correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
+#'   linkouts across multiple models, use the modelID "default".
+#' @inheritParams shared-add
+#'
+#' @examples
+#'   study <- createStudy("example")
+#'   metaFeaturesLinkouts <- list(
+#'     default = list(
+#'       ensembl = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+#'                   "https://www.genome.ucsc.edu/cgi-bin/hgGene?hgg_gene="),
+#'       entrez = "https://www.ncbi.nlm.nih.gov/gene/"
+#'     )
+#'   )
+#'   study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts)
+#'
+#' @seealso \code{\link{addMetaFeatures}}
+#'
+#' @export
+addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) {
+  addElements(study, metaFeaturesLinkouts, reset)
 }
 
 addElements <- function(study, elements, reset = FALSE) {

@@ -29,6 +29,7 @@ testStudy <- function(name,
                        reports = testReports(),
                        resultsLinkouts = testResultsLinkouts(),
                        enrichmentsLinkouts = testEnrichmentsLinkouts(),
+                       metaFeaturesLinkouts = testMetaFeaturesLinkouts(),
                        version = version)
 
   return(study)
@@ -323,6 +324,20 @@ testEnrichmentsLinkouts <- function(n = 3) {
     annotation_03 = "https://reactome.org/content/detail/"
   )
   return(enrichmentsLinkouts)
+}
+
+testMetaFeaturesLinkouts <- function(n = 3) {
+  metaFeaturesLinkouts <- list(
+    default = list(
+      metaFeatureVar01 = c("https://ensembl.org/Homo_sapiens/Gene/Summary?g=",
+                   "https://www.targetvalidation.org/target/"),
+      metaFeatureVar02 = "https://www.ncbi.nlm.nih.gov/gene/"
+    ),
+    model_03 = list(
+      metaFeatureVar03 = "https://www.ncbi.nlm.nih.gov/nuccore?term="
+    )
+  )
+  return(metaFeaturesLinkouts)
 }
 
 testStudyMinimal <- function() {

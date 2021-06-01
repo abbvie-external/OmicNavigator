@@ -35,6 +35,7 @@ validateResults <- function(study) {
     features <- getFeatures(study, modelID = modelID, quiet = TRUE)
     metaFeatures <- getMetaFeatures(study, modelID = modelID, quiet = TRUE)
     resultsLinkouts <- getResultsLinkouts(study, modelID = modelID, quiet = TRUE)
+    metaFeaturesLinkouts <- getMetaFeaturesLinkouts(study, modelID = modelID, quiet = TRUE)
 
     # Send message if no common columns across tests. This will disable UpSet
     # filtering in app.
@@ -94,6 +95,16 @@ validateResults <- function(study) {
           message("Validation: ",
                   "Some of the features in the results table are missing from the featureID column in the metaFeatures table\n",
                   sprintf("modelID: %s, testID: %s", modelID, testID))
+        }
+        # Validate metaFeaturesLinkouts target metaFeatures columns
+        if (!isEmpty(metaFeaturesLinkouts)) {
+          for (k in seq_along(metaFeaturesLinkouts)) {
+            columnName <- names(metaFeaturesLinkouts)[k]
+            if (!columnName %in% colnames(metaFeatures)) {
+              stop(sprintf("Invalid metaFeatures table linkout for modelID \"%s\"\n", modelID),
+                   sprintf("\"%s\" is not the name of an available metaFeature", columnName))
+            }
+          }
         }
       }
 
