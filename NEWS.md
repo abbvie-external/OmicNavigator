@@ -1,3 +1,7 @@
+# 1.1.7
+
+* The release tarball includes version 1.1.7 of the web app
+
 * Added support for linkouts in metaFeatures table. See
 `?addMetaFeaturesLinkouts` for details. These linkouts will be displayed as
 favicons in the metaFeatures table in a future release of the app.
