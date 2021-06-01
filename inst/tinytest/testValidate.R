@@ -187,3 +187,19 @@ expect_error_xl(
   validateStudy(invalidEnrichmentsLinkouts),
   "The annotationID \"non-existent-annotationID\" is not an available annotation\n"
 )
+
+# MetaFeatures Linkouts --------------------------------------------------------
+
+# A metaFeatures linkout refers to a non-existing column in the metaFeatures table
+invalidMetaFeaturesLinkouts <- testStudyObj
+names(invalidMetaFeaturesLinkouts[["metaFeaturesLinkouts"]][["model_03"]]) <- "non-existent-column"
+
+expect_error_xl(
+  validateStudy(invalidMetaFeaturesLinkouts),
+  "Invalid metaFeatures table linkout for modelID \"model_03\""
+)
+
+expect_error_xl(
+  validateStudy(invalidMetaFeaturesLinkouts),
+  "\"non-existent-column\" is not the name of an available metaFeature"
+)

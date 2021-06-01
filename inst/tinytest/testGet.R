@@ -681,6 +681,7 @@ expect_identical_xl(
 )
 
 # getResultsLinkouts -----------------------------------------------------------
+
 expect_identical_xl(
   getResultsLinkouts(testStudyObj),
   testStudyObj[["resultsLinkouts"]]
@@ -717,7 +718,6 @@ expect_identical_xl(
   testStudyObj[["resultsLinkouts"]][["model_03"]],
   info = "Confirm model-specific results table linkouts returned"
 )
-
 
 # getEnrichmentsLinkouts -------------------------------------------------------
 
@@ -756,6 +756,45 @@ expect_identical_xl(
   getEnrichmentsLinkouts(testStudyName, annotationID = "annotation_03"),
   testStudyObj[["enrichmentsLinkouts"]][["annotation_03"]],
   info = "Confirm annotation-specific enrichments table linkouts returned"
+)
+
+# getMetaFeaturesLinkouts ------------------------------------------------------
+
+expect_identical_xl(
+  getMetaFeaturesLinkouts(testStudyObj),
+  testStudyObj[["metaFeaturesLinkouts"]]
+)
+
+expect_identical_xl(
+  getMetaFeaturesLinkouts(testStudyObj, modelID = testModelName),
+  testStudyObj[["metaFeaturesLinkouts"]][["default"]]
+)
+
+expect_identical_xl(
+  getMetaFeaturesLinkouts(testStudyObj, modelID = "model_03"),
+  testStudyObj[["metaFeaturesLinkouts"]][["model_03"]],
+  info = "Confirm model-specific metaFeatures table linkouts returned"
+)
+
+expect_message_xl(
+  getMetaFeaturesLinkouts(emptyStudy),
+  "No metaFeaturesLinkouts available"
+)
+
+expect_error_xl(
+  getMetaFeaturesLinkouts(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_identical_xl(
+  getMetaFeaturesLinkouts(testStudyName, modelID = testModelName),
+  testStudyObj[["metaFeaturesLinkouts"]][["default"]]
+)
+
+expect_identical_xl(
+  getMetaFeaturesLinkouts(testStudyName, modelID = "model_03"),
+  testStudyObj[["metaFeaturesLinkouts"]][["model_03"]],
+  info = "Confirm model-specific metaFeatures table linkouts returned"
 )
 
 # Teardown ---------------------------------------------------------------------

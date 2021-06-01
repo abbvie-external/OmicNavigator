@@ -331,6 +331,7 @@ toJSON(upsetCols, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{metaFeatures table}
+\label{sec:metaFeatures-table}
 
 For a given study, model, and featureID, return a table that contains the metaFeatures
 associated with that featureID.
@@ -439,12 +440,35 @@ enrichmentsLinkouts <- getEnrichmentsLinkouts(
 toJSON(enrichmentsLinkouts, auto_unbox = TRUE, pretty = TRUE)
 @
 
-\section{Favicons for table linkouts (experimental)}
+\section{Linkouts in metaFeatures table}
+\label{sec:metaFeatures-linkouts}
+
+Given a study and model, \texttt{getMetaFeaturesLinkouts()} returns one or
+more URL patterns that provide linkouts to external resources. The fields
+refer to columns in the metaFeatures table returned by
+\texttt{getMetaFeaturesTable()} (Section \ref{sec:metaFeatures-table}). The
+value of the column in each row should be concatenated to the end of the URL
+pattern to form each linkout.
+
+<<getMetaFeaturesLinkouts>>=
+metaFeaturesLinkouts <- getMetaFeaturesLinkouts(
+  study = "ABC",
+  modelID = "model_01"
+)
+toJSON(metaFeaturesLinkouts, auto_unbox = TRUE, pretty = 2)
+@
+
+Note that if you automatically unbox single strings in the JSON response, then
+the results for each column may be a string or an array of strings depending
+on whether there are one or more linkouts.
+
+\section{Favicons for table linkouts}
 \label{sec:favicons}
 
 To enhance the display of the table linkouts, \texttt{getFavicons()} returns
 the URL to the favicon for each linkout. You can pass the result from
-\texttt{getResultsLinkouts()} or \texttt{getEnrichmentsLinkouts()}.
+\texttt{getResultsLinkouts()}, \texttt{getEnrichmentsLinkouts()}, or
+\texttt{getMetaFeaturesLinkouts()}.
 
 <<getFavicons>>=
 resultsFavicons <- getFavicons(linkouts = resultsLinkouts)

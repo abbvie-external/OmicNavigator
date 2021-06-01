@@ -21,6 +21,7 @@ createStudy(
   reports = list(),
   resultsLinkouts = list(),
   enrichmentsLinkouts = list(),
+  metaFeaturesLinkouts = list(),
   version = NULL
 )
 }
@@ -143,6 +144,13 @@ external resources (see Details below). The input object is a named list.
 The names of the list correspond to the annotation names. Each element of
 the list is a character vector of linkouts for that annotationID.}
 
+\item{metaFeaturesLinkouts}{The URL patterns that describe linkouts to external
+resources (see Details below). The input object is a nested named list. The
+names of the list correspond to the model names. Each element of the list
+is a named list of character vectors. The names of this nested list must
+correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
+linkouts across multiple models, use the modelID "default".}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -171,6 +179,7 @@ study <- createStudy(name = "ABC",
   \code{\link{addReports}},
   \code{\link{addResultsLinkouts}},
   \code{\link{addEnrichmentsLinkouts}},
+  \code{\link{addMetaFeaturesLinkouts}},
   \code{\link{exportStudy}},
   \code{\link{installStudy}}
 }

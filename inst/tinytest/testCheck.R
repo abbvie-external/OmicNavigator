@@ -240,3 +240,7 @@ expect_error_xl(
 expect_error_xl(
   addEnrichmentsLinkouts(study, enrichmentsLinkouts = NULL)
 )
+
+expect_error_xl(
+  addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = NULL)
+)

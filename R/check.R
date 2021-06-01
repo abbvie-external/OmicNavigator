@@ -350,3 +350,16 @@ checkEnrichmentsLinkouts <- function(enrichmentsLinkouts) {
 
   return(NULL)
 }
+
+checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
+  checkList(metaFeaturesLinkouts)
+
+  for (i in seq_along(metaFeaturesLinkouts)) {
+    checkList(metaFeaturesLinkouts[[i]])
+    for (j in seq_along(metaFeaturesLinkouts[[i]])) {
+      stopifnot(is.character(metaFeaturesLinkouts[[i]][[j]]))
+    }
+  }
+
+  return(NULL)
+}
