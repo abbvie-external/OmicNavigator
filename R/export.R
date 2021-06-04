@@ -542,7 +542,7 @@ removeStudy <- function(study, library = .libPaths()[1]) {
     message("Removing study package ", packagePath)
   }
 
-  remove.packages(
+  utils::remove.packages(
     pkgs = package,
     lib = library
   )
