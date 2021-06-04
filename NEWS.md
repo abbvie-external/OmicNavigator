@@ -1,5 +1,9 @@
 * New function `removeStudy()` to remove an installed study package
 
+* Fixed minor bug in `listStudies()`. It couldn't find study packages in
+directories not included in `.libPaths()`. This likely only affected the unit
+tests.
+
 # 1.1.7
 
 * The release tarball includes version 1.1.7 of the web app

@@ -42,9 +42,7 @@ expect_identical_xl(observed, expected,
 expect_true_xl(dir.exists(expected))
 
 # Export minimal study
-suppressWarnings(
-  observed <- exportStudy(minimalStudyObj, type = "package", path = tmplib)
-)
+observed <- exportStudy(minimalStudyObj, type = "package", path = tmplib)
 expected <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))
 expect_identical_xl(observed, expected,
                     info = "Export minimal study as package directory")
@@ -82,9 +80,7 @@ directoryname <- file.path(tmplibQuote, OmicNavigator:::studyToPkg(testStudyName
 expect_false_xl(dir.exists(directoryname))
 
 # Export minimal study
-suppressWarnings(
-  tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
-)
+tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
 expect_true_xl(file.exists(tarball))
 expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))

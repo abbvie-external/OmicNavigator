@@ -494,7 +494,7 @@ getElements.character <- function(
   return(object)
 }
 
-getDirectory <- function(study, quiet = FALSE, libraries = NULL) {
+getDirectory <- function(study, libraries = NULL) {
   system.file("OmicNavigator/",
               package = paste0(getPrefix(), study),
               lib.loc = libraries)
