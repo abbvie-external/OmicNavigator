@@ -1,3 +1,5 @@
+* New function `removeStudy()` to remove an installed study package
+
 # 1.1.7
 
 * The release tarball includes version 1.1.7 of the web app

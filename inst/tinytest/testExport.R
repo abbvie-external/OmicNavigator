@@ -135,6 +135,17 @@ expect_identical_xl(
   updatedStudyObj[["version"]]
 )
 
+# Remove installed study -------------------------------------------------------
+
+studyToRemove <- OmicNavigator:::testStudy(name = "remove")
+suppressMessages(installStudy(studyToRemove, library = tmplib))
+expect_message_xl(
+  removeStudy(studyToRemove, library = tmplib),
+  studyToRemove[["name"]]
+)
+
+# Error handling
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(c(tmplib, tmplibSpace, tmplibQuote), recursive = TRUE, force = TRUE)

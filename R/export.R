@@ -505,3 +505,37 @@ installStudy <- function(study, library = .libPaths()[1]) {
   message("Success!")
   return(invisible(study))
 }
+
+#' @export
+removeStudy <- function(study, library = .libPaths()[1]) {
+  if (!dir.exists(library)) {
+    stop("This directory does not exist: ", library)
+  }
+
+  # Convert to R package name
+  if (is.character(study)) {
+    studyName <- study
+  } else if (inherits(study, "onStudy")) {
+    studyName <- study[["name"]]
+  } else {
+    stop("Argument `study` must be a string or an onStudy object")
+  }
+  package <- studyToPkg(studyName)
+
+  packagePath <- find.package(
+    package = package,
+    lib.loc = library,
+    quiet = TRUE
+  )
+  if (length(packagePath) == 0) {
+    stop(sprintf("Couldn't find %s in %s", package, library))
+  } else {
+    message("Removing study package ", packagePath)
+  }
+
+  remove.packages(
+    pkgs = package,
+    lib = library
+  )
+  return(invisible(packagePath))
+}
