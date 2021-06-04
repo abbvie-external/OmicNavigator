@@ -506,6 +506,15 @@ installStudy <- function(study, library = .libPaths()[1]) {
   return(invisible(study))
 }
 
+#' Remove an installed study R package
+#'
+#' @param study The name of the study or an \code{onStudy} object. Do \strong{not} include
+#' the prefix of the installed package, e.g. \code{ONstudy}.
+#' @param library Directory where the study package is installed. Defaults to first directory
+#'   returned by \code{\link{.libPaths}}.
+#'
+#' @return Invisibly returns the path of the removed study package
+#'
 #' @export
 removeStudy <- function(study, library = .libPaths()[1]) {
   if (!dir.exists(library)) {

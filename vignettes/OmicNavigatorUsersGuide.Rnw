@@ -734,6 +734,8 @@ install.packages("ONstudyvignetteExample_0.0.0.9000.tar.gz",
                  repos = NULL)
 @
 
+To remove an installed study package, see \texttt{?removeStudy}.
+
 \subsection{Run the app locally}
 
 After the study package is installed, I can run \texttt{startApp()} to open

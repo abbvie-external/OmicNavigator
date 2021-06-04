@@ -133,14 +133,35 @@ expect_identical_xl(
 
 # Remove installed study -------------------------------------------------------
 
-studyToRemove <- OmicNavigator:::testStudy(name = "remove")
+studyToRemoveName <- "remove"
+studyToRemove <- OmicNavigator:::testStudy(name = studyToRemoveName)
 suppressMessages(installStudy(studyToRemove, library = tmplib))
+studyToRemoveDir <- file.path(tmplib, OmicNavigator:::studyToPkg(studyToRemoveName))
+
+expect_true_xl(dir.exists(studyToRemoveDir))
+
 expect_message_xl(
   removeStudy(studyToRemove, library = tmplib),
-  studyToRemove[["name"]]
+  studyToRemoveName
 )
 
+expect_false_xl(dir.exists(studyToRemoveDir))
+
 # Error handling
+expect_error_xl(
+  removeStudy(removeStudyName, library = "xyz"),
+  "This directory does not exist: xyz"
+)
+
+expect_error_xl(
+  removeStudy(1),
+  "Argument `study` must be a string or an onStudy object"
+)
+
+expect_error_xl(
+  removeStudy("nonExistent"),
+  "Couldn't find"
+)
 
 # Teardown ---------------------------------------------------------------------
 
