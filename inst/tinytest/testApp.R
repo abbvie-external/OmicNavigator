@@ -51,6 +51,13 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  names(studies[[1]][["package"]]),
+  c("Package", "Title", "Version", "Description", "OmicNavigatorVersion",
+    "Imports", "Built", "description"),
+  info = "listStudies() returns DESCRIPTION"
+)
+
+expect_identical_xl(
   vapply(studies[[1]][["results"]], function(x) x[["modelID"]], character(1)),
   names(getModels(testStudyObj))
 )

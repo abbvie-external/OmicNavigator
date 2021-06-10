@@ -1,5 +1,8 @@
 * New function `removeStudy()` to remove an installed study package
 
+* `listStudies()` now returns all the fields in `DESCRIPTION` for each study
+package
+
 * Fixed minor bug in `listStudies()`. It couldn't find study packages in
 directories not included in `.libPaths()`. This likely only affected the unit
 tests.

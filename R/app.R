@@ -20,11 +20,14 @@ listStudies <- function(libraries = NULL) {
     # package metadata
     pkgName <- studyToPkg(studyName)
     pkgDescription <- utils::packageDescription(pkgName, lib.loc = libraries)
-    output[[i]][["package"]] <- list(
-      description = pkgDescription[["Description"]],
-      version = pkgDescription[["Version"]],
-      buildInfo = pkgDescription[["Built"]],
-      OmicNavigatorVersion = pkgDescription[["OmicNavigatorVersion"]]
+    pkgDescription <- unclass(pkgDescription)
+    attr(pkgDescription, "file") <- NULL
+    output[[i]][["package"]] <- pkgDescription
+    # For temporary backwards compatibility. The app currently reads
+    # "description"
+    output[[i]][["package"]] <- c(
+      output[[i]][["package"]],
+      list(description = pkgDescription[["Description"]])
     )
 
     if (as.package_version(pkgDescription[["OmicNavigatorVersion"]]) <

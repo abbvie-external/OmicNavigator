@@ -97,14 +97,14 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["description"]],
+  studyMetadata[[1]][["package"]][["Description"]],
   sprintf("The OmicNavigator data package for the study \"%s\"",
           testStudyObj[["description"]]),
   info = "Default package description when description==name"
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["version"]],
+  studyMetadata[[1]][["package"]][["Version"]],
   "0.0.0.9000",
   info = "Default package version used when version=NULL"
 )
@@ -122,12 +122,12 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["description"]],
+  studyMetadata[[1]][["package"]][["Description"]],
   updatedStudyObj[["description"]]
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["version"]],
+  studyMetadata[[1]][["package"]][["Version"]],
   updatedStudyObj[["version"]]
 )
 
