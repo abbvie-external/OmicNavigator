@@ -30,7 +30,8 @@ testStudy <- function(name,
                        resultsLinkouts = testResultsLinkouts(),
                        enrichmentsLinkouts = testEnrichmentsLinkouts(),
                        metaFeaturesLinkouts = testMetaFeaturesLinkouts(),
-                       version = version)
+                       version = version,
+                       studyMeta = testStudyMeta())
 
   return(study)
 }
@@ -338,6 +339,13 @@ testMetaFeaturesLinkouts <- function(n = 3) {
     )
   )
   return(metaFeaturesLinkouts)
+}
+
+testStudyMeta <- function() {
+  list(
+    department = "immunology",
+    organism = "Mus musculus"
+  )
 }
 
 testStudyMinimal <- function() {

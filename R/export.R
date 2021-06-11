@@ -389,6 +389,12 @@ createPackage <- function(study, directoryname) {
     OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
     stringsAsFactors = FALSE
   )
+  if (!isEmpty(study[["studyMeta"]])) {
+    description <- cbind(
+      description,
+      study[["studyMeta"]],
+      stringsAsFactors = FALSE)
+  }
   write.dcf(description, file = description_file)
 
   # Reports

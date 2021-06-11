@@ -1,5 +1,8 @@
 * New function `removeStudy()` to remove an installed study package
 
+* New argument `studyMeta` for `createStudy()`. You can add metadata to
+describe your study. See `?createStudy` and the User's Guide for more details.
+
 * `listStudies()` now returns all the fields in `DESCRIPTION` for each study
 package
 

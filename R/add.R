@@ -1,10 +1,19 @@
 #' Create a study
 #'
+#' Create a new OmicNavigator study.
+#'
+#' You can add metadata to describe your study by passing a named list to to the
+#' argument \code{studyMeta}. The names of the list cannot contain spaces or
+#' colons, and they can't start with \code{#} or \code{-}. The values of each
+#' list should be a single value.
+#'
 #' @param name Name of the study
 #' @param description Description of the study
 #' @param version (Optional) Include a version number to track the updates to
 #'   your study package. If you export the study to a package, the version is
 #'   used as the package version.
+#' @param studyMeta (Optional) Define metadata about your study. The input is a
+#'   list of key:value pairs. See below for more details.
 #' @inheritParams addSamples
 #' @inheritParams addFeatures
 #' @inheritParams addModels
@@ -45,6 +54,13 @@
 #' study <- createStudy(name = "ABC",
 #'                      description = "An analysis of ABC")
 #'
+#' # Define a version and study metadata
+#' study <- createStudy(name = "ABC",
+#'                      description = "An analysis of ABC",
+#'                      version = "0.1.0",
+#'                      studyMeta = list(department = "immunology",
+#'                                       organism = "Mus musculus"))
+#'
 #' @export
 createStudy <- function(name,
                         description = name,
@@ -63,11 +79,13 @@ createStudy <- function(name,
                         resultsLinkouts = list(),
                         enrichmentsLinkouts = list(),
                         metaFeaturesLinkouts = list(),
-                        version = NULL)
+                        version = NULL,
+                        studyMeta = list())
 {
   checkName(name)
   checkDescription(description)
   checkVersion(version)
+  checkStudyMeta(studyMeta)
 
   study <- list(name = name,
                 description = description,
@@ -87,7 +105,8 @@ createStudy <- function(name,
                 enrichmentsLinkouts = list(),
                 metaFeaturesLinkouts = list(),
                 overlaps = list(),
-                version = version)
+                version = version,
+                studyMeta = studyMeta)
   class(study) <- "onStudy"
 
   study <- addSamples(study, samples = samples)

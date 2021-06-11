@@ -102,6 +102,37 @@ expect_error_xl(
   "Invalid version for a study package"
 )
 
+# checkStudyMeta ---------------------------------------------------------------
+
+expect_silent_xl(
+  createStudy(name = "ok", studyMeta = list(a = "a")),
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list("a space" = "a")),
+  "cannot contain whitespace"
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list("a:" = "a")),
+  "cannot contain colons"
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list("#a" = "a")),
+  "cannot start with a comment character"
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list("-a" = "a")),
+  "cannot start with a dash"
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list(a = c("a", "b"))),
+  "single values"
+)
+
 # checkX -----------------------------------------------------------------------
 
 expect_error_xl(

@@ -109,6 +109,18 @@ expect_identical_xl(
   info = "Default package version used when version=NULL"
 )
 
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["department"]],
+  "immunology",
+  info = "Custom study metadata passed via studyMeta"
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["organism"]],
+  "Mus musculus",
+  info = "Custom study metadata passed via studyMeta"
+)
+
 updatedStudyObj <- testStudyObj
 updatedStudyObj[["description"]] <- "A custom description"
 updatedStudyObj[["version"]] <- "1.0.0"

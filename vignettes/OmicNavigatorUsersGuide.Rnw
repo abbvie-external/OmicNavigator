@@ -1188,6 +1188,17 @@ in the optional metaFeatures table.
 
 For more details, run \texttt{?addMetaFeaturesLinkouts}.
 
+\subsection{Study metadata}
+\label{sec:studyMeta}
+
+You can add metadata to describe your study by passing a named list to to the
+argument \texttt{studyMeta} when creating your study with
+\texttt{createStudy}. The names of the list cannot contain spaces or colons,
+and they can't start with \texttt{\#} or \texttt{-}. The values of each list
+should be a single value.
+
+For more details, run \texttt{?createStudy}.
+
 \section{More information}
 
 This section contains more information about OmicNavigator studies.

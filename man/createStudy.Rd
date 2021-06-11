@@ -22,7 +22,8 @@ createStudy(
   resultsLinkouts = list(),
   enrichmentsLinkouts = list(),
   metaFeaturesLinkouts = list(),
-  version = NULL
+  version = NULL,
+  studyMeta = list()
 )
 }
 \arguments{
@@ -154,14 +155,30 @@ linkouts across multiple models, use the modelID "default".}
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
+
+\item{studyMeta}{(Optional) Define metadata about your study. The input is a
+list of key:value pairs. See below for more details.}
 }
 \description{
-Create a study
+Create a new OmicNavigator study.
+}
+\details{
+You can add metadata to describe your study by passing a named list to to the
+argument \code{studyMeta}. The names of the list cannot contain spaces or
+colons, and they can't start with \code{#} or \code{-}. The values of each
+list should be a single value.
 }
 \examples{
 
 study <- createStudy(name = "ABC",
                      description = "An analysis of ABC")
+
+# Define a version and study metadata
+study <- createStudy(name = "ABC",
+                     description = "An analysis of ABC",
+                     version = "0.1.0",
+                     studyMeta = list(department = "immunology",
+                                      organism = "Mus musculus"))
 
 }
 \seealso{

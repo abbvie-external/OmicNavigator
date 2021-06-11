@@ -54,6 +54,48 @@ checkVersion <- function(version) {
   }
 }
 
+checkStudyMeta <- function(studyMeta) {
+  checkList(studyMeta)
+
+  if (isEmpty(studyMeta)) return(NULL)
+
+  for (i in seq_along(studyMeta)) {
+    metaField <- names(studyMeta)[i]
+    metaValue <- studyMeta[[i]]
+
+    # Fields cannot contain spaces or colons. They can't start with # or -
+    # https://www.debian.org/doc/debian-policy/ch-controlfields.html#syntax-of-control-files
+    if (grepl("[[:space:]]", metaField)) {
+      stop(
+        "studyMeta fields (ie the names of the list) cannot contain whitespace.\n",
+        "Problematic field: ", metaField, "\n")
+    }
+    if (grepl(":", metaField)) {
+      stop(
+        "studyMeta fields (ie the names of the list) cannot contain colons.\n",
+        "Problematic field: ", metaField, "\n")
+    }
+    if (grepl("^#", metaField)) {
+      stop(
+        "studyMeta fields (ie the names of the list) cannot start with a comment character.\n",
+        "Problematic field: ", metaField, "\n")
+    }
+    if (grepl("-", metaField)) {
+      stop(
+        "studyMeta fields (ie the names of the list) cannot start with a dash.\n",
+        "Problematic field: ", metaField, "\n")
+    }
+
+    # Values have to be length 1
+    if (length(metaValue) != 1) {
+      stop("studyMeta values must be single values.\n",
+           "Problematic field: ", metaField, "\n",
+           "Problematic value: ", paste(metaValue, collapse = ", "), "\n")
+    }
+
+  }
+}
+
 checkList <- function(x) {
   listName <- deparse(substitute(x))
 

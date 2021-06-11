@@ -12,7 +12,7 @@ dir.create(tmplib)
 
 # Test addX() ------------------------------------------------------------------
 
-study <- createStudy(name = "test")
+study <- createStudy(name = "test", studyMeta = OmicNavigator:::testStudyMeta())
 
 features <- OmicNavigator:::testFeatures()
 study <- addFeatures(study, features = features)
