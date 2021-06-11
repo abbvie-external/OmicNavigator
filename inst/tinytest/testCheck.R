@@ -105,7 +105,7 @@ expect_error_xl(
 # checkStudyMeta ---------------------------------------------------------------
 
 expect_silent_xl(
-  createStudy(name = "ok", studyMeta = list(a = "a")),
+  createStudy(name = "ok", studyMeta = list(a = "a"))
 )
 
 expect_error_xl(
