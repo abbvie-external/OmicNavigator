@@ -5,7 +5,10 @@
 #' You can add metadata to describe your study by passing a named list to to the
 #' argument \code{studyMeta}. The names of the list cannot contain spaces or
 #' colons, and they can't start with \code{#} or \code{-}. The values of each
-#' list should be a single value.
+#' list should be a single value. Also, your metadata fields cannot use any of
+#' the
+#' \href{https://gist.github.com/jdblischak/f9d946327c9991fb57dde1e6f2bff1c2}{reserved
+#' fields for R's DESCRIPTION file}.
 #'
 #' @param name Name of the study
 #' @param description Description of the study

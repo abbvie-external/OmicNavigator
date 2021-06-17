@@ -59,31 +59,56 @@ checkStudyMeta <- function(studyMeta) {
 
   if (isEmpty(studyMeta)) return(NULL)
 
+  descriptionFieldsReservedFile <- system.file(
+    "extdata/description-fields-reserved.txt",
+    package = "OmicNavigator",
+    mustWork = TRUE
+  )
+  descriptionFieldsReserved <- scan(
+    file = descriptionFieldsReservedFile,
+    what = character(),
+    quiet = TRUE
+  )
+
   for (i in seq_along(studyMeta)) {
     metaField <- names(studyMeta)[i]
     metaValue <- studyMeta[[i]]
+
+    # Fields cannot be any of those reserved for R's DESCRIPTION field
+    if (metaField %in% descriptionFieldsReserved) {
+      stop(
+        "studyMeta fields (ie the names of the list) cannot be named the same as any of the reserved fields for R's DESCRIPTION file.\n",
+        "Problematic field: ", metaField, "\n",
+        "To see the full list of reserved fields, run the following:\n",
+        "browseURL(\"https://gist.github.com/jdblischak/f9d946327c9991fb57dde1e6f2bff1c2\")"
+      )
+    }
 
     # Fields cannot contain spaces or colons. They can't start with # or -
     # https://www.debian.org/doc/debian-policy/ch-controlfields.html#syntax-of-control-files
     if (grepl("[[:space:]]", metaField)) {
       stop(
         "studyMeta fields (ie the names of the list) cannot contain whitespace.\n",
-        "Problematic field: ", metaField, "\n")
+        "Problematic field: ", metaField, "\n"
+      )
     }
     if (grepl(":", metaField)) {
       stop(
         "studyMeta fields (ie the names of the list) cannot contain colons.\n",
-        "Problematic field: ", metaField, "\n")
+        "Problematic field: ", metaField, "\n"
+      )
     }
     if (grepl("^#", metaField)) {
       stop(
         "studyMeta fields (ie the names of the list) cannot start with a comment character.\n",
-        "Problematic field: ", metaField, "\n")
+        "Problematic field: ", metaField, "\n"
+      )
     }
     if (grepl("-", metaField)) {
       stop(
         "studyMeta fields (ie the names of the list) cannot start with a dash.\n",
-        "Problematic field: ", metaField, "\n")
+        "Problematic field: ", metaField, "\n"
+      )
     }
 
     # Values have to be length 1

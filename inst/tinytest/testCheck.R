@@ -133,6 +133,23 @@ expect_error_xl(
   "single values"
 )
 
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list(Author = "A Name")),
+  "reserved fields for R's DESCRIPTION file",
+  info = "R's DESCRIPTION fields are not allowed"
+)
+
+expect_silent_xl(
+  createStudy(name = "ok", studyMeta = list(author = "A Name")),
+  info = "Allowed to use lowercase versions of R's DESCRIPTION fields"
+)
+
+expect_error_xl(
+  createStudy(name = "error", studyMeta = list("Classification/ACM" = "topic")),
+  "reserved fields for R's DESCRIPTION file",
+  info = "R's DESCRIPTION fields are not allowed"
+)
+
 # checkX -----------------------------------------------------------------------
 
 expect_error_xl(
