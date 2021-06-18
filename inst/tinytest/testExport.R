@@ -110,6 +110,12 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  studyMetadata[[1]][["package"]][["Maintainer"]],
+  "Unknown <unknown@unknown>",
+  info = "Default package maintainer"
+)
+
+expect_identical_xl(
   studyMetadata[[1]][["package"]][["department"]],
   "immunology",
   info = "Custom study metadata passed via studyMeta"
@@ -124,6 +130,8 @@ expect_identical_xl(
 updatedStudyObj <- testStudyObj
 updatedStudyObj[["description"]] <- "A custom description"
 updatedStudyObj[["version"]] <- "1.0.0"
+updatedStudyObj[["maintainer"]] <- "My Name"
+updatedStudyObj[["maintainerEmail"]] <- "me@email.com"
 
 suppressMessages(installStudy(updatedStudyObj, library = tmplib))
 studyMetadata <- listStudies(libraries = tmplib)
@@ -141,6 +149,12 @@ expect_identical_xl(
 expect_identical_xl(
   studyMetadata[[1]][["package"]][["Version"]],
   updatedStudyObj[["version"]]
+)
+
+expect_identical_xl(
+  studyMetadata[[1]][["package"]][["Maintainer"]],
+  sprintf("%s <%s>", updatedStudyObj[["maintainer"]],
+          updatedStudyObj[["maintainerEmail"]])
 )
 
 # Remove installed study -------------------------------------------------------

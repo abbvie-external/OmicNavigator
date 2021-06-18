@@ -23,6 +23,8 @@ createStudy(
   enrichmentsLinkouts = list(),
   metaFeaturesLinkouts = list(),
   version = NULL,
+  maintainer = NULL,
+  maintainerEmail = NULL,
   studyMeta = list()
 )
 }
@@ -156,6 +158,12 @@ linkouts across multiple models, use the modelID "default".}
 your study package. If you export the study to a package, the version is
 used as the package version.}
 
+\item{maintainer}{(Optional) Include the name of the study package's
+maintainer}
+
+\item{maintainerEmail}{(Optional) Include the email of the study package's
+maintainer}
+
 \item{studyMeta}{(Optional) Define metadata about your study. The input is a
 list of key:value pairs. See below for more details.}
 }
@@ -180,6 +188,8 @@ study <- createStudy(name = "ABC",
 study <- createStudy(name = "ABC",
                      description = "An analysis of ABC",
                      version = "0.1.0",
+                     maintainer = "My Name",
+                     maintainerEmail = "me@email.com",
                      studyMeta = list(department = "immunology",
                                       organism = "Mus musculus"))
 

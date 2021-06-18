@@ -285,8 +285,8 @@ library(OmicNavigator)
 @
 
 Next run \texttt{createStudy()} to create your OmicNavigator study object. The
-first argument is the name of the study. The second argument (optional) is a description of
-the study.
+first argument is the name of the study. The second argument (optional) is a
+description of the study.
 
 <<createStudy>>=
 study <- createStudy(name = "vignetteExample",
@@ -308,7 +308,9 @@ follow these rules that apply to all R package names:
 
 \end{itemize}
 
-For more details, run \texttt{?createStudy}.
+For more details, run \texttt{?createStudy}. For example, there are additional
+optional arguments such as \texttt{version}, \texttt{maintainer}, and
+\texttt{maintainerEmail}.
 
 \subsection{Results}
 \label{sec:results}

@@ -381,10 +381,21 @@ createPackage <- function(study, directoryname) {
   } else {
     pkgdescription <- study[["description"]]
   }
+  if (isEmpty(study[["maintainer"]])) {
+    pkgmaintainer <- "Unknown"
+  } else {
+    pkgmaintainer <- study[["maintainer"]]
+  }
+  if (isEmpty(study[["maintainerEmail"]])) {
+    pkgmaintainer <- paste(pkgmaintainer, "<unknown@unknown>")
+  } else {
+    pkgmaintainer <- sprintf("%s <%s>", pkgmaintainer, study[["maintainerEmail"]])
+  }
   description <- data.frame(
     Package = pkgname,
     Title = sprintf("OmicNavigator study %s", study[["name"]]),
     Version = pkgversion,
+    Maintainer = pkgmaintainer,
     Description = pkgdescription,
     OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
     stringsAsFactors = FALSE

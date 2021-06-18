@@ -54,6 +54,46 @@ checkVersion <- function(version) {
   }
 }
 
+
+checkMaintainer <- function(maintainer) {
+  if (is.null(maintainer)) return(NULL)
+  stopifnot(
+    is.character(maintainer),
+    length(maintainer) == 1
+  )
+}
+
+checkMaintainerEmail <- function(maintainerEmail) {
+  if (is.null(maintainerEmail)) return(NULL)
+  stopifnot(
+    is.character(maintainerEmail),
+    length(maintainerEmail) == 1
+  )
+
+  # Confirm email string is valid with a few sanity checks
+  # https://stackoverflow.com/a/48170419
+  if (!grepl("@", maintainerEmail)) {
+    # The email address should contain at least one '@'
+    stop(
+      "A valid email address should contain at least one '@'\n",
+      "Invalid maintainer email: ", maintainerEmail, "\n"
+    )
+  }
+  if (grepl("@$", maintainerEmail)) {
+    # The email address can't end with '@' (domain would be empty)
+    stop(
+      "Invalid maintainer email: ", maintainerEmail, "\n"
+    )
+  }
+  emailParts <- strsplit(maintainerEmail, split = "@")[[1]]
+  if (sum(nchar(emailParts[-length(emailParts)])) == 0) {
+    # The string to the left of the rightmost '@' should be non-empty (local-part)
+    stop(
+      "Invalid maintainer email: ", maintainerEmail, "\n"
+    )
+  }
+}
+
 checkStudyMeta <- function(studyMeta) {
   checkList(studyMeta)
 

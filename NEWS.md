@@ -3,6 +3,9 @@
 * New argument `studyMeta` for `createStudy()`. You can add metadata to
 describe your study. See `?createStudy` and the User's Guide for more details.
 
+* New arguments `maintainer` and `maintainerEmail` for `createStudy()` to make
+it easier for others to know who to contact for questions about your study
+
 * `listStudies()` now returns all the fields in `DESCRIPTION` for each study
 package
 

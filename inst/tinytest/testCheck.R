@@ -102,6 +102,63 @@ expect_error_xl(
   "Invalid version for a study package"
 )
 
+# checkMaintainer -----------------------------------------------------------------
+
+expect_silent_xl(
+  createStudy(name = "ok", maintainer = "my name")
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainer = TRUE)
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainer = c("my", "name"))
+)
+
+# checkMaintainerEmail ---------------------------------------------------------
+
+expect_silent_xl(
+  createStudy(name = "ok", maintainerEmail = "me@email.com")
+)
+
+expect_silent_xl(
+  createStudy(name = "ok", maintainerEmail = "@me@email.com")
+)
+
+expect_silent_xl(
+  createStudy(name = "ok", maintainerEmail = "me@me@email.com"),
+  info = "The local-part can contain '@'"
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = TRUE)
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = c("my", "name"))
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = "me_email.com"),
+  "A valid email address should contain at least one '@'"
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = "me@"),
+  "Invalid maintainer email"
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = "@email.com"),
+  "Invalid maintainer email"
+)
+
+expect_error_xl(
+  createStudy(name = "error", maintainerEmail = "@email.com@"),
+  "Invalid maintainer email"
+)
+
 # checkStudyMeta ---------------------------------------------------------------
 
 expect_silent_xl(

@@ -15,6 +15,10 @@
 #' @param version (Optional) Include a version number to track the updates to
 #'   your study package. If you export the study to a package, the version is
 #'   used as the package version.
+#' @param maintainer (Optional) Include the name of the study package's
+#'   maintainer
+#' @param maintainerEmail (Optional) Include the email of the study package's
+#'   maintainer
 #' @param studyMeta (Optional) Define metadata about your study. The input is a
 #'   list of key:value pairs. See below for more details.
 #' @inheritParams addSamples
@@ -61,6 +65,8 @@
 #' study <- createStudy(name = "ABC",
 #'                      description = "An analysis of ABC",
 #'                      version = "0.1.0",
+#'                      maintainer = "My Name",
+#'                      maintainerEmail = "me@email.com",
 #'                      studyMeta = list(department = "immunology",
 #'                                       organism = "Mus musculus"))
 #'
@@ -83,11 +89,15 @@ createStudy <- function(name,
                         enrichmentsLinkouts = list(),
                         metaFeaturesLinkouts = list(),
                         version = NULL,
+                        maintainer = NULL,
+                        maintainerEmail = NULL,
                         studyMeta = list())
 {
   checkName(name)
   checkDescription(description)
   checkVersion(version)
+  checkMaintainer(maintainer)
+  checkMaintainerEmail(maintainerEmail)
   checkStudyMeta(studyMeta)
 
   study <- list(name = name,
@@ -109,6 +119,8 @@ createStudy <- function(name,
                 metaFeaturesLinkouts = list(),
                 overlaps = list(),
                 version = version,
+                maintainer = maintainer,
+                maintainerEmail = maintainerEmail,
                 studyMeta = studyMeta)
   class(study) <- "onStudy"
 
