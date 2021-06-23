@@ -1,3 +1,7 @@
+# 1.2.1
+
+* The release tarball includes version 1.1.8 of the web app
+
 * New function `removeStudy()` to remove an installed study package
 
 * New argument `studyMeta` for `createStudy()`. You can add metadata to
