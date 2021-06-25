@@ -1,38 +1,30 @@
-importStudy <- function(x) {
-  stopifnot(is.character(x), length(x) == 1)
-  if (endsWith(x, ".tar.gz")) {
-    importStudyFromTarball(x)
-  } else if (dir.exists(x)) {
-    importStudyFromDirectory(x)
-  } else if (nchar(find.package(x, quiet = TRUE)) > 0) {
-    importStudyFromDirectory(x, inst = "")
-  } else {
-    stop("Please pass a study package tarball, study package source directory, or the name of an installed study package")
+#' Import a study package
+#'
+#' Create an onStudy object by importing an installed study package
+#'
+#' @param study Named of an installed OmicNavigator study
+#' @inheritParams listStudies
+#'
+#' @export
+importStudy <- function(study, libraries = NULL) {
+  pkg <- studyToPkg(study)
+  if (!requireNamespace(pkg, lib.loc = libraries, quietly = TRUE)) {
+    stop("The package ", pkg, " is not installed")
   }
-}
+  pathToPkg <- find.package(pkg, lib.loc = libraries, quiet = TRUE, verbose = FALSE)
 
-installStudyFromTarball <- function(x) {
-  tempDir <- tempfile()
-  utils::untar(x, exdir = tempDir)
-  importStudyFromDirectory(tempDir)
-}
+  # Export plotting functions to global environment
+  functions <- getNamespaceExports(pkg)
+  for (fname in functions) {
+    f <- utils::getFromNamespace(fname, pkg)
+    assign(fname, f, envir = parent.frame())
+  }
 
-importStudyFromDirectory <- function(x, inst = "inst/") {
-  descriptionFile <- file.path(x, "DESCRIPTION")
-  descriptionFields <- read.dcf(descriptionFile)
-  descriptionFields <- structure(
-    as.list(descriptionFields),
-    .Names = colnames(descriptionFields)
-  )
-  onData <- file.path(x, inst, "OmicNavigator")
-
-  name <- pkgToStudy(descriptionFields[["Package"]])
-  description <- descriptionFields[["Description"]]
-  version <- descriptionFields[["Version"]]
-  maintainerField <- strsplit(descriptionFields[["Maintainer"]], "<|>")[[1]]
+  # Import info from DESCRIPTION
+  description <- utils::packageDescription(pkg, lib.loc = libraries)
+  maintainerField <- strsplit(description[["Maintainer"]], "<|>")[[1]]
   maintainer <- sub("[[:space:]]$", "", maintainerField[1])
   maintainerEmail <- maintainerField[2]
-
   descriptionFieldsReservedFile <- system.file(
     "extdata/description-fields-reserved.txt",
     package = "OmicNavigator",
@@ -43,14 +35,37 @@ importStudyFromDirectory <- function(x, inst = "inst/") {
     what = character(),
     quiet = TRUE
   )
-  studyMeta <- descriptionFields[setdiff(names(descriptionFields), descriptionFieldsReserved)]
+  studyMeta <- description[setdiff(names(description), descriptionFieldsReserved)]
 
-  createStudy(
-    name = name,
-    description = description,
-    version = version,
+  # Make paths to reports absolute
+  reports <- getReports(study, quiet = TRUE, libraries = libraries)
+  reports <- lapply(reports, function(x) {
+    if (isUrl(x)) x else file.path(dirname(pathToPkg), x)
+  })
+
+  onStudy <- createStudy(
+    name = study,
+    description = description[["Description"]],
+    samples = getSamples(study, quiet = TRUE, libraries = libraries),
+    features = getFeatures(study, quiet = TRUE, libraries = libraries),
+    models = getModels(study, quiet = TRUE, libraries = libraries),
+    assays = getAssays(study, quiet = TRUE, libraries = libraries),
+    tests = getTests(study, quiet = TRUE, libraries = libraries),
+    annotations = getAnnotations(study, quiet = TRUE, libraries = libraries),
+    results = getResults(study, quiet = TRUE, libraries = libraries),
+    enrichments = getEnrichments(study, quiet = TRUE, libraries = libraries),
+    metaFeatures = getMetaFeatures(study, quiet = TRUE, libraries = libraries),
+    plots = getPlots(study, quiet = TRUE, libraries = libraries),
+    barcodes = getBarcodes(study, quiet = TRUE, libraries = libraries),
+    reports = reports,
+    resultsLinkouts = getResultsLinkouts(study, quiet = TRUE, libraries = libraries),
+    enrichmentsLinkouts = getEnrichmentsLinkouts(study, quiet = TRUE, libraries = libraries),
+    metaFeaturesLinkouts = getMetaFeaturesLinkouts(study, quiet = TRUE, libraries = libraries),
+    version = description[["Version"]],
     maintainer = maintainer,
     maintainerEmail = maintainerEmail,
     studyMeta = studyMeta
   )
+  onStudy[["overlaps"]] <- getOverlaps(study, quiet = TRUE, libraries = libraries)
+  return(onStudy)
 }

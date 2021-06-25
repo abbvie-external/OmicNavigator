@@ -1,3 +1,7 @@
+* New function `importStudy()` to import an installed study package into R as an
+`onStudy` object. This is intended to be used to edit a study when you don't
+have access to the original data and code that created it
+
 # 1.2.1
 
 * The release tarball includes version 1.1.8 of the web app
