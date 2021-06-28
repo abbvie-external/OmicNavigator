@@ -67,5 +67,11 @@ importStudy <- function(study, libraries = NULL) {
     studyMeta = studyMeta
   )
   onStudy[["overlaps"]] <- getOverlaps(study, quiet = TRUE, libraries = libraries)
+
+  # Unload the package namespace from the search path. Otherwise find.package()
+  # will continue to identify this package, even if it has subsequently been
+  # deleted.
+  unloadNamespace(pkg)
+
   return(onStudy)
 }
