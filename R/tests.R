@@ -2,6 +2,8 @@
 testStudy <- function(name,
                       description = name,
                       version = NULL,
+                      maintainer = NULL,
+                      maintainerEmail = NULL,
                       seed = 12345L,
                       numericFeatureID = FALSE,
                       nFeatures = 100)
@@ -31,6 +33,8 @@ testStudy <- function(name,
                        enrichmentsLinkouts = testEnrichmentsLinkouts(),
                        metaFeaturesLinkouts = testMetaFeaturesLinkouts(),
                        version = version,
+                       maintainer = maintainer,
+                       maintainerEmail = maintainerEmail,
                        studyMeta = testStudyMeta())
 
   return(study)
