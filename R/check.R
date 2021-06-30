@@ -243,10 +243,17 @@ checkTests <- function(tests) {
   for (i in seq_along(tests)) {
     checkList(tests[[i]])
     for (j in seq_along(tests[[i]])) {
-      stopifnot(
-        is.character(tests[[i]][[j]]),
-        length(tests[[i]][[j]]) == 1
-      )
+      if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
+        warning(
+          "FutureWarning: You entered a single string for a testID.\n",
+          "This is now discouraged and support will be removed in the future.\n",
+          "Please instead enter a named list, i.e.\n",
+          sprintf("list(description = \"%s\")", tests[[i]][[j]]),
+          immediate. = TRUE
+        )
+        next
+      }
+      checkList(tests[[i]][[j]])
     }
   }
 

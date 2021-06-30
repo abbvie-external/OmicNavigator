@@ -302,6 +302,10 @@ exportSummary <- function(x, path = ".") {
     for (j in seq_along(modelTests)) {
       testID <- modelTests[j]
       testDisplay <- getTests(x, modelID = modelID, testID = testID, quiet = TRUE)
+      # The tooltip is either added as a single string per testID, or as a named
+      # list with other metadata fields, where the field "description" is the
+      # metadata field
+      if (is.list(testDisplay)) testDisplay <- testDisplay[["description"]]
       if (isEmpty(testDisplay)) testDisplay <- testID
       output[["results"]][[i]][["tests"]][[j]] <- list(
         testID = testID,

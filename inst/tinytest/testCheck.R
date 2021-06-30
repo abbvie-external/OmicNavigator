@@ -243,6 +243,20 @@ expect_error_xl(
   addTests(study, tests = NULL)
 )
 
+expect_warning_xl(
+  addTests(study, tests = list(model_01 = list(test_01 = "tooltip"))),
+  "FutureWarning"
+)
+
+expect_silent_xl(
+  addTests(study, tests = list(model_01 = list(test_01 = list(description = "tooltip"))))
+)
+
+expect_error_xl(
+  addTests(study, tests = list(model_01 = list(test_01 = list("tooltip")))),
+  info = "The list elements must be named"
+)
+
 expect_error_xl(
   addAnnotations(study, annotations = NULL)
 )
