@@ -14,7 +14,9 @@ Each element of the top-level list is a model. The names should be the
 modelIDs. For each modelID, each element of the nested list is a test. The
 names should be the testIDs. The value should be a single character string
 describing the testID. To share tests across multiple models, use the
-modelID "default".}
+modelID "default". Instead of a single character string, you can provide a
+list of metadata fields about each test. The field "description" will be
+used to derive the tooltip displayed in the app.}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data
@@ -28,10 +30,26 @@ Add tests
   study <- createStudy("example")
   tests <- list(
     default = list(
-      test1 = "Name of first test",
-      test2 = "Name of second test"
+      test_01 = "Name of first test",
+      test_02 = "Name of second test"
     )
   )
   study <- addTests(study, tests)
+
+  # Alternative: provide additional metadata about each test
+  tests <- list(
+    default = list(
+      test_01 = list(
+        description = "Name of first test",
+        comparison_type = "treatment vs control",
+        effect_size = "beta"
+      ),
+      test_02 = list(
+        description = "Name of second test",
+        comparison_type = "treatment vs control",
+        effect_size = "logFC"
+      )
+    )
+  )
 
 }

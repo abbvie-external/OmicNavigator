@@ -227,11 +227,27 @@ addAssays <- function(study, assays, reset = FALSE) {
 #'   study <- createStudy("example")
 #'   tests <- list(
 #'     default = list(
-#'       test1 = "Name of first test",
-#'       test2 = "Name of second test"
+#'       test_01 = "Name of first test",
+#'       test_02 = "Name of second test"
 #'     )
 #'   )
 #'   study <- addTests(study, tests)
+#'
+#'   # Alternative: provide additional metadata about each test
+#'   tests <- list(
+#'     default = list(
+#'       test_01 = list(
+#'         description = "Name of first test",
+#'         comparison_type = "treatment vs control",
+#'         effect_size = "beta"
+#'       ),
+#'       test_02 = list(
+#'         description = "Name of second test",
+#'         comparison_type = "treatment vs control",
+#'         effect_size = "logFC"
+#'       )
+#'     )
+#'   )
 #'
 #' @export
 addTests <- function(study, tests, reset = FALSE) {

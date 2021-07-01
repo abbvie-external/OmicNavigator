@@ -533,7 +533,9 @@ I then add this to the OmicNavigator study with \texttt{addTests}.
 study <- addTests(study, tests)
 @
 
-For more details, run \texttt{?addTests}.
+For more details, run \texttt{?addTests}. Importantly, note that instead of a
+only adding a single string as above, you could also add a named list with
+additional metadata to describe each testID.
 
 \subsection{Features}
 \label{sec:features}

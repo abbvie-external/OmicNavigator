@@ -56,7 +56,7 @@ machine.
 
 \begin{verbatim}
 curl http://localhost:5656/ocpu/library/OmicNavigator/R/getResultsTable/csv \
-  -d 'study="studyABC"&modelID="model1"&testID="test1"' \
+  -d 'study="studyABC"&modelID="model_01"&testID="test_01"' \
   > results.csv
 \end{verbatim}
 

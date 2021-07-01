@@ -2,10 +2,11 @@
 `onStudy` object. This is intended to be used to edit a study when you don't
 have access to the original data and code that created it
 
-* Support for test metadata. Previously you could only add a single string to
-describe each testID, which would be displayed in the app as a tooltip. Now you
-can provide a list with arbitrary metadata. The tooltip is derived from the list
-element `description`
+* Optional support for test metadata via `addTests()` and `getTests()`.
+Previously you could only add a single string to describe each testID, which
+would be displayed in the app as a tooltip. Now you also have the option to
+provide a list with arbitrary metadata. The tooltip is derived from the list
+element `description` (if it exists)
 
 # 1.2.1
 

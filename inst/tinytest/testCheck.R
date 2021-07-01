@@ -243,18 +243,25 @@ expect_error_xl(
   addTests(study, tests = NULL)
 )
 
-expect_warning_xl(
+expect_silent_xl(
   addTests(study, tests = list(model_01 = list(test_01 = "tooltip"))),
-  "FutureWarning"
+  info = "addTests() accepts a single string per testID"
 )
 
 expect_silent_xl(
-  addTests(study, tests = list(model_01 = list(test_01 = list(description = "tooltip"))))
+  addTests(study, tests = list(model_01 = list(test_01 = list(description = "tooltip")))),
+  info = "addTests() accepts a named list per testID"
 )
 
 expect_error_xl(
   addTests(study, tests = list(model_01 = list(test_01 = list("tooltip")))),
+  "must be named",
   info = "The list elements must be named"
+)
+
+expect_error_xl(
+  addTests(study, tests = list(model_01 = list(test_01 = data.frame(a = 1)))),
+  "must be a list, not a data frame"
 )
 
 expect_error_xl(
