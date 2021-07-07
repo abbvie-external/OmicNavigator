@@ -214,10 +214,11 @@ checkModels <- function(models) {
   checkList(models)
 
   for (i in seq_along(models)) {
-    stopifnot(
-      is.character(models[[i]]),
-      length(models[[i]]) == 1
-    )
+    # Accepts either a single string or a named list
+    if (is.character(models[[i]]) && length(models[[i]]) == 1) {
+      next
+    }
+    checkList(models[[i]])
   }
 
   return(NULL)

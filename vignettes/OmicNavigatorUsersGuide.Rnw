@@ -507,7 +507,9 @@ And then add it to the OmicNavigator study with \texttt{addModels}.
 study <- addModels(study, models)
 @
 
-For more details, run \texttt{?addModels}.
+For more details, run \texttt{?addModels}. Importantly, note that instead of a
+only adding a single string as above, you could alternatively add a named list
+with additional metadata to describe each modelID.
 
 \subsection{Tests}
 
@@ -534,8 +536,8 @@ study <- addTests(study, tests)
 @
 
 For more details, run \texttt{?addTests}. Importantly, note that instead of a
-only adding a single string as above, you could also add a named list with
-additional metadata to describe each testID.
+only adding a single string as above, you could alternatively add a named list
+with additional metadata to describe each testID.
 
 \subsection{Features}
 \label{sec:features}

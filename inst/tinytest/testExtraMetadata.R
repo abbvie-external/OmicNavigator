@@ -12,10 +12,25 @@ dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 
-# Extra test metadata ----------------------------------------------------------
-
 testStudyName <- "extraTestMetadata"
 testExtraMetadata <- OmicNavigator:::testStudy(name = testStudyName)
+
+# Add extra metadata -----------------------------------------------------------
+
+models <- list(
+ model_01 = list(
+   description = "Name of first model",
+   data_type = "transcriptomics"
+ ),
+ model_02 = list(
+   description = "Name of second model",
+   data_type = "proteomics"
+ )
+)
+
+expect_silent_xl(
+  testExtraMetadata <- addModels(testExtraMetadata, models = models, reset = TRUE)
+)
 
 tests <- list(
  default = list(
@@ -36,6 +51,18 @@ expect_silent_xl(
   testExtraMetadata <- addTests(testExtraMetadata, tests = tests, reset = TRUE)
 )
 
+# Get extra metadata from study object -----------------------------------------
+
+expect_identical_xl(
+  getModels(testExtraMetadata),
+  models
+)
+
+expect_identical_xl(
+  getModels(testExtraMetadata, modelID = "model_01", quiet = TRUE),
+  models[["model_01"]]
+)
+
 expect_identical_xl(
   getTests(testExtraMetadata),
   tests
@@ -51,13 +78,24 @@ expect_identical_xl(
   tests[["default"]][["test_01"]]
 )
 
+# Get extra metadata from installed study --------------------------------------
+
 suppressMessages(installStudy(testExtraMetadata))
+
+expect_identical_xl(
+  getModels(testStudyName),
+  models
+)
+
+expect_identical_xl(
+  getModels(testStudyName, modelID = "model_01", quiet = TRUE),
+  models[["model_01"]]
+)
 
 expect_identical_xl(
   getTests(testStudyName),
   tests
 )
-
 
 expect_identical_xl(
   getTests(testStudyName, modelID = "model_01", quiet = TRUE),
@@ -69,7 +107,19 @@ expect_identical_xl(
   tests[["default"]][["test_01"]]
 )
 
+# Tooltips returned to listStudies() -------------------------------------------
+
 listed <- listStudies(libraries = tmplib)
+
+expect_identical_xl(
+  listed[[1]][["results"]][[1]][["modelDisplay"]],
+  models[["model_01"]][["description"]]
+)
+
+expect_identical_xl(
+  listed[[1]][["results"]][[2]][["modelDisplay"]],
+  models[["model_02"]][["description"]]
+)
 
 expect_identical_xl(
   listed[[1]][["results"]][[1]][["tests"]][[1]][["testDisplay"]],
@@ -81,7 +131,14 @@ expect_identical_xl(
   tests[["default"]][["test_02"]][["description"]]
 )
 
+# Extra metadata imported from installed study package -------------------------
+
 imported <- importStudy(testStudyName)
+
+expect_identical_xl(
+  imported[["models"]],
+  testExtraMetadata[["models"]]
+)
 
 expect_identical_xl(
   imported[["tests"]],

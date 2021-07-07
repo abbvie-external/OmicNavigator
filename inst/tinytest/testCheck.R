@@ -235,6 +235,27 @@ expect_error_xl(
   addModels(study, models = NULL)
 )
 
+expect_silent_xl(
+  addModels(study, models = list(model_01 = "tooltip")),
+  info = "addModels() accepts a single string per modelID"
+)
+
+expect_silent_xl(
+  addModels(study, models = list(model_01 = list(description = "tooltip"))),
+  info = "addModels() accepts a named list per modelID"
+)
+
+expect_error_xl(
+  addModels(study, models = list(model_01 = list("tooltip"))),
+  "must be named",
+  info = "The list elements must be named"
+)
+
+expect_error_xl(
+  addModels(study, models = list(model_01 = data.frame(a = 1))),
+  "must be a list, not a data frame"
+)
+
 expect_error_xl(
   addAssays(study, assays = NULL)
 )

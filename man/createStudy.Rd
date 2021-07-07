@@ -47,7 +47,10 @@ modelID "default". All columns will be coerced to character strings.}
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
-the descriptions of the models.}
+the descriptions of the models. Alternatively, instead of a single
+character string, you can provide a list of metadata fields about each
+model. The field "description" will be used to derive the tooltip displayed
+in the app.}
 
 \item{assays}{The assays from the study. The input object is a list of data
 frames (one per model). The row names should correspond to the featureIDs

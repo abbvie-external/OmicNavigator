@@ -1,3 +1,9 @@
+* Optional support for model metadata via `addModels()` and `getModles()`.
+Previously you could only add a single string to describe each modelID, which
+would be displayed in the app as a tooltip. Now you also have the option to
+provide a list with arbitrary metadata. The tooltip is derived from the list
+element `description` (if it exists)
+
 # 1.3.1
 
 * New function `importStudy()` to import an installed study package into R as an

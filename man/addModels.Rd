@@ -11,7 +11,10 @@ addModels(study, models, reset = FALSE)
 
 \item{models}{The models analyzed in the study. The input is a named list.
 The names correspond to the names of the models. The elements correspond to
-the descriptions of the models.}
+the descriptions of the models. Alternatively, instead of a single
+character string, you can provide a list of metadata fields about each
+model. The field "description" will be used to derive the tooltip displayed
+in the app.}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data
@@ -20,4 +23,25 @@ data you no longer want to include in the study.}
 }
 \description{
 Add models
+}
+\examples{
+  study <- createStudy("example")
+  models <- list(
+    model_01 = "Name of first model",
+    model_02 = "Name of second model"
+  )
+  study <- addModels(study, models)
+
+  # Alternative: provide additional metadata about each model
+  models <- list(
+    model_01 = list(
+      description = "Name of first model",
+      data_type = "transcriptomics"
+    ),
+    model_02 = list(
+      description = "Name of second model",
+      data_type = "proteomics"
+    )
+  )
+
 }
