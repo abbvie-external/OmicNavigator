@@ -52,7 +52,7 @@ jobs:
         R CMD build --no-manual --no-build-vignettes .
         R CMD INSTALL --no-docs --no-multiarch --no-staged-install OmicNavigator_*.tar.gz
     - name: Test
-      run: suppressMessages(tinytest::test_package("OmicNavigator"))
+      run: suppressMessages(tinytest::test_package("OmicNavigator", ncpu = 2))
       shell: Rscript {0}
     - name: Run vignettes
       run: |
