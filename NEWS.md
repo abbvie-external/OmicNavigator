@@ -1,3 +1,7 @@
+# 1.4.1
+
+* The release tarball includes version 1.1.9 of the web app
+
 * Optional support for model metadata via `addModels()` and `getModles()`.
 Previously you could only add a single string to describe each modelID, which
 would be displayed in the app as a tooltip. Now you also have the option to
