@@ -8,7 +8,8 @@
 calc_overlap <- function(set1, set2) {
   set_intersect <- set1[match(set2, set1, 0L)]
   n_intersect <- length(set_intersect)
-  set_union <- .Internal(unique(c(set1, set2), incomparables = FALSE, fromLast = FALSE, nmax = NA))
+  # set_union <- .Internal(unique(c(set1, set2), incomparables = FALSE, fromLast = FALSE, nmax = NA))
+  set_union <- unique(c(set1, set2))
   n_union <- length(set_union)
   jaccard <- n_intersect / n_union
   overlap <- n_intersect / min(length(set1), length(set2))
