@@ -186,3 +186,19 @@ that you know will break the tests, you can put "skip" anywhere in the branch
 name. Also note that the continuous integrations jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
+
+## CRAN submission
+
+Run the following additional tests prior to CRAN submission.
+
+```R
+devtools::check_win_devel()
+rhub::validate_email()
+rhub::check_for_cran(platform = "solaris-x86-patched")
+rhub::check_for_cran(platform = "ubuntu-gcc-devel")
+```
+
+Then update `cran-comments.md` accordingly, build the tarball, and [submit the
+tarball][cran].
+
+[cran]: https://cran.r-project.org/submit.html

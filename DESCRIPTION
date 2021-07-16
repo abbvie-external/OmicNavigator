@@ -1,17 +1,17 @@
 Package: OmicNavigator
 Type: Package
-Title: Open-Source Software for Omic Data Analysis and Visualization
+Title: Open-Source Software for 'Omic' Data Analysis and Visualization
 Description: 
-  A tool for interactive exploration of the results from omics
+  A tool for interactive exploration of the results from 'omics'
   experiments to facilitate novel discoveries from high-throughput biology. The
-  software includes R functions for the bioinformatician to deposit study
+  software includes R functions for the 'bioinformatician' to deposit study
   metadata and the outputs from statistical analyses (e.g. differential
   expression, enrichment). These results are then exported to an interactive
   JavaScript dashboard that can be interrogated on the user’s local machine or
   deployed online to be explored by collaborators. The dashboard includes
-  sortable tables, interactive plots including network visualization, and
+  'sortable' tables, interactive plots including network visualization, and
   fine-grained filtering based on statistical significance.
-Version: 1.4.1
+Version: 1.4.2
 Authors@R: c(
   person("Terrence", "Ernst", role = c("aut"),
          comment = "Web application"),

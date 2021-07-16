@@ -11,3 +11,4 @@
 ^\.github$
 ^Dockerfile$
 ^inst/OmicNavigator\.gif$
+^cran-comments\.md$

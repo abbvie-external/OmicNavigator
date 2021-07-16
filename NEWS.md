@@ -1,3 +1,7 @@
+# 1.4.2
+
+* Prepare for CRAN submission
+
 # 1.4.1
 
 * The release tarball includes version 1.1.9 of the web app
