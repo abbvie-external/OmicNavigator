@@ -28,6 +28,8 @@ Authors@R: c(
   person("Brett", "Engelmann", role = c("aut"),
          email = "brett.engelmann@abbvie.com")
   )
+URL: https://github.com/abbvie-external/OmicNavigator
+BugReports: https://github.com/abbvie-external/OmicNavigator/issues
 License: MIT + file LICENSE
 License_restricts_use: no
 License_is_FOSS: yes
