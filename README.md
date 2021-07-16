@@ -23,6 +23,14 @@ analyses such as scatter, network, volcano, and barcode plots. The tool also
 includes dynamic, multi-set filtering across hypothesis tests based on
 user-defined thresholds such as statistical significance or effect size.
 
+This repository contains the R package. To see an example of how to create an
+OmicNavigator study, check out the repository [OmicNavigatorExample][]. If
+you're a developer interested in the web application code, check out the
+repository [OmicNavigatorWebApp][].
+
+[OmicNavigatorWebApp]: https://github.com/abbvie-external/OmicNavigatorWebApp
+[OmicNavigatorExample]: https://github.com/abbvie-external/OmicNavigatorExample
+
 ## Features
 
 * Simple, yet flexible **study-model-test** data model for differential and/or enrichment analyses
