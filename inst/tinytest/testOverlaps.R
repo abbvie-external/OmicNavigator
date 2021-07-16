@@ -39,6 +39,7 @@ expect_equal_xl(
     term2 = c("b", "c", "c"),
     overlapSize = c(3, 3, 3),
     overlap = c(1, 1/2, 1),
-    jaccard = c(1/2, 1/3, 1/2)
+    jaccard = c(1/2, 1/3, 1/2),
+    stringsAsFactors = FALSE
   )
 )
