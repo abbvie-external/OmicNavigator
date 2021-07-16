@@ -16,7 +16,7 @@ Authors@R: c(
   person("Terrence", "Ernst", role = c("aut"),
          comment = "Web application"),
   person("John", "Blischak", role = c("aut", "cre"),
-         email = "john.blischak@abbvie.com"),
+         email = "jdblischak@gmail.com"),
   person("Paul", "Nordlund", role = c("aut"),
          comment = "Web application"),
   person("Justin", "Moore", role = c("aut"),
