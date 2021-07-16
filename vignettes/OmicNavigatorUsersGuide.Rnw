@@ -1364,7 +1364,7 @@ first font it finds installed on the machine:
 \begin{enumerate}
   \item \href{https://www.fontsquirrel.com/fonts/lato}{Lato}
   \item Arial
-  \item Helvetic
+  \item Helvetica
   \item Any sans-serif font
 \end{enumerate}
 

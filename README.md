@@ -130,7 +130,7 @@ version.
 
 ### Minimal installation
 
-If you are only using the R pacakge functions, and don't need to run the app,
+If you are only using the R package functions, and don't need to run the app,
 you can perform a minimal installation. This is useful if you are using
 OmicNavigator in a data engineering pipeline or as part of a continuous
 integration build.
