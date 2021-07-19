@@ -26,14 +26,14 @@ Authors@R: c(
   person("Akshay", "Bhamidipati", role = c("aut"),
          comment = "Web application"),
   person("Brett", "Engelmann", role = c("aut"),
-         email = "brett.engelmann@abbvie.com")
+         email = "brett.engelmann@abbvie.com"),
+  person(given = "AbbVie Inc.", role = c("cph", "fnd"))
   )
 URL: https://github.com/abbvie-external/OmicNavigator
 BugReports: https://github.com/abbvie-external/OmicNavigator/issues
 License: MIT + file LICENSE
 License_restricts_use: no
 License_is_FOSS: yes
-Copyright: AbbVie Inc.
 Encoding: UTF-8
 LazyData: true
 Depends: 
