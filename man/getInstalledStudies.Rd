@@ -11,7 +11,8 @@ getInstalledStudies(libraries = NULL)
 packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
-character vector of OmicNavigator study packages
+Returns a character vector of the installed OmicNavigator study
+  packages
 }
 \description{
 Get installed OmicNavigator studies

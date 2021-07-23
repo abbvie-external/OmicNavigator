@@ -14,6 +14,9 @@ study, e.g. \code{c("results", "enrichments")}}
 
 \item{...}{Currently unused}
 }
+\value{
+Invisibly returns the original \code{onStudy} object
+}
 \description{
 Displays a tree-like summary of the elements that have been added to an
 OmicNavigator study.

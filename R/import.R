@@ -5,6 +5,9 @@
 #' @param study Named of an installed OmicNavigator study
 #' @inheritParams listStudies
 #'
+#' @return Returns the \code{onStudy} object imported from the OmicNavigator
+#'   study package
+#'
 #' @export
 importStudy <- function(study, libraries = NULL) {
   pkg <- studyToPkg(study)

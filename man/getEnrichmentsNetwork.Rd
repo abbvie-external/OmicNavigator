@@ -19,6 +19,15 @@ left as \code{NULL} (the default), then
 \code{\link[utils]{installed.packages}} will use the result of
 \code{\link{.libPaths}}.}
 }
+\value{
+Returns a list with the following components:
+
+  \item{tests}{(character) Vector of testIDs}
+  \item{nodes}{(data frame) The description of each annotation term (i.e.
+  node). The nominal and adjusted p-values are in list-columns.}
+  \item{links}{(list) The statistics for each pairwise overlap between the
+  annotation terms (i.e. nodes)}
+}
 \description{
 Get enrichments network from a study
 }

@@ -9,6 +9,10 @@ addOverlaps(study)
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 The app's network view of the enrichments results requires pairwise overlap
 metrics between all the terms of each annotation in order to draw the edges

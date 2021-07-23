@@ -77,7 +77,7 @@ calc_pairwise_overlaps <- function(sets) {
 #' manually calculate these pairwise overlaps by calling \code{addOverlaps}
 #' prior to installing or exporting your study.
 #'
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addOverlaps <- function(study) {

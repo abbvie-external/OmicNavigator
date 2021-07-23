@@ -507,6 +507,9 @@ createPackage <- function(study, directoryname) {
 #' @param library Directory to install package. Defaults to first directory
 #'   returned by \code{\link{.libPaths}}.
 #'
+#' @return Invisibly returns the original \code{onStudy} object that was passed
+#'   to the argument \code{study}
+#'
 #' @export
 installStudy <- function(study, library = .libPaths()[1]) {
   stopifnot(inherits(study, "onStudy"), dir.exists(library))

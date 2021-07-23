@@ -3,7 +3,8 @@
 #' @param libraries Character vector of library directories to search for study
 #'   packages. If \code{NULL}, uses \code{.libPaths}.
 #'
-#' @return character vector of OmicNavigator study packages
+#' @return Returns a character vector of the installed OmicNavigator study
+#'   packages
 #'
 #' @examples
 #'  getInstalledStudies()

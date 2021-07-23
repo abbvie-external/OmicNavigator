@@ -33,6 +33,14 @@ or the name of an installed study package.}
 
 \item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
 }
+\value{
+Returns a data frame with the enrichments, similar to
+  \code{\link{getEnrichmentsTable}}. Only rows that pass all the filters are
+  included.
+}
 \description{
 getEnrichmentsIntersection
+}
+\seealso{
+\code{\link{getEnrichmentsTable}}
 }

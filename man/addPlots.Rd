@@ -26,6 +26,10 @@ share plots across multiple models, use the modelID "default".}
 (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 data you no longer want to include in the study.}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 Include custom plots that the app will display when a feature is selected by
 the user.

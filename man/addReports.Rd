@@ -21,6 +21,10 @@ package. To share a report across multiple models, use the modelID
 (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 data you no longer want to include in the study.}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 You can include reports of the analyses you performed to generate the
 results.

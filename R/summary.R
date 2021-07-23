@@ -8,6 +8,8 @@
 #'   study, e.g. \code{c("results", "enrichments")}
 #' @param ... Currently unused
 #'
+#' @return Invisibly returns the original \code{onStudy} object
+#'
 #' @export
 summary.onStudy <- function(object, elements = NULL, ...) {
   if (!is.null(elements) && is.character(elements)) {

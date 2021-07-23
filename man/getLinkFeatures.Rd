@@ -14,6 +14,10 @@ package.}
 
 \item{termID1, termID2}{Linked terms to find overlapping features}
 }
+\value{
+Returns a character vector with the features included in both termIDs
+  (i.e. the intersection)
+}
 \description{
 Get the shared features in a network link
 }

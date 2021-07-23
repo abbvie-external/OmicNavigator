@@ -19,6 +19,10 @@ fails, you may need to adjust the download settings for your operating
 system. For example, to download with \code{wget}, pass the argument
 \code{method = "wget"}.}
 }
+\value{
+A one-element character vector with the absolute path to the
+  directory in which the app files were installed
+}
 \description{
 In order to run the OmicNavigator web app on your local machine, the app must
 be installed in the \code{www/} subdirectory of the R package. If you

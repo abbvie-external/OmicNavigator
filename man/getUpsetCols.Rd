@@ -13,7 +13,7 @@ or the name of an installed study package.}
 \item{modelID}{Filter by modelID}
 }
 \value{
-character vector
+Returns a character vector with the names of the common columns
 }
 \description{
 Determine the common columns across all tests of a model that are available

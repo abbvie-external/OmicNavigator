@@ -20,6 +20,13 @@ NULL
 #' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
+#' @return Returns a data frame with the results, similar to
+#'   \code{\link{getResultsTable}}. Only rows that pass all the filters are
+#'   included. The new column \code{Set_Membership} is a comma-separated field
+#'   that includes the testIDs in which the featureID passed the filters.
+#'
+#' @seealso \code{\link{getResultsTable}}
+#'
 #' @export
 getResultsIntersection <- function(
   study,
@@ -151,6 +158,12 @@ getInferenceIntersection <- function(Inference.Results, testCategory, anchor, mu
 #'
 #' @inheritParams shared-upset
 #' @inheritParams shared-get
+#'
+#' @return Returns a data frame with the enrichments, similar to
+#'   \code{\link{getEnrichmentsTable}}. Only rows that pass all the filters are
+#'   included.
+#'
+#' @seealso \code{\link{getEnrichmentsTable}}
 #'
 #' @export
 getEnrichmentsIntersection <- function(
@@ -436,6 +449,9 @@ InferenceUpsetPlot <- function(Inference.Results, testCategory, sigValue, operat
 #' @inheritParams shared-upset
 #' @inheritParams shared-get
 #'
+#' @return No return value. This function is called for the side effect of
+#'   creating an UpSet plot.
+#'
 #' @export
 getEnrichmentsUpset <- function(
   study,
@@ -575,7 +591,7 @@ formatEnrichmentResults <- function(study, modelID, annotationID, type) {
 #'
 #' @inheritParams shared-get
 #'
-#' @return character vector
+#' @return Returns a character vector with the names of the common columns
 #'
 #' @export
 getUpsetCols <- function(

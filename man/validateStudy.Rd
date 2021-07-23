@@ -9,6 +9,11 @@ validateStudy(study)
 \arguments{
 \item{study}{An OmicNavigator study object}
 }
+\value{
+For a valid study object, the logical value \code{TRUE} is invisibly
+  returned. For an invalid study object, there is no return value because an
+  error is thrown.
+}
 \description{
 Validate a study
 }

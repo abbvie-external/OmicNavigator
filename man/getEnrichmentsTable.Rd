@@ -27,6 +27,13 @@ left as \code{NULL} (the default), then
 \code{\link[utils]{installed.packages}} will use the result of
 \code{\link{.libPaths}}.}
 }
+\value{
+A data frame of enrichments with the following columns:
+
+  \item{termID}{The unique ID for the annotation term}
+  \item{description}{The description of the annotation term}
+  \item{...}{One column for each of the enrichments}
+}
 \description{
 Get enrichments table from a study
 }

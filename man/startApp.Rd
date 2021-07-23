@@ -9,6 +9,10 @@ startApp(...)
 \arguments{
 \item{...}{extra parameters passed to \link[opencpu]{ocpu_start_server}}
 }
+\value{
+No return value. This function is only called for the side effect of
+  running a local instance of the app.
+}
 \description{
 After you have installed at least one OmicNavigator study package with
 \code{\link{installStudy}}, you can explore the results in the app. The

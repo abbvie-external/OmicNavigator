@@ -12,6 +12,10 @@ installStudy(study, library = .libPaths()[1])
 \item{library}{Directory to install package. Defaults to first directory
 returned by \code{\link{.libPaths}}.}
 }
+\value{
+Invisibly returns the original \code{onStudy} object that was passed
+  to the argument \code{study}
+}
 \description{
 Install a study as an R package
 }

@@ -7,6 +7,15 @@
 #'   \code{\link[utils]{installed.packages}} will use the result of
 #'   \code{\link{.libPaths}}.
 #'
+#' @return Returns a nested list with one element per installed OmicNavigator
+#'   study package. Each study package entry has the following sublist components:
+#'
+#'   \item{name}{(character) Name of the study}
+#'   \item{package}{(list) The fields from \code{DESCRIPTION}}
+#'   \item{results}{(nested list) The testIDs available for each modelID}
+#'   \item{enrichments}{(nested list) The annotationIDs available for each modelID}
+#'   \item{plots}{(nested list) The plotIDs available for each modelID}
+#'
 #' @export
 listStudies <- function(libraries = NULL) {
   studies <- getInstalledStudies(libraries = libraries)
@@ -95,6 +104,12 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
 #' @inheritParams shared-upset
 #' @inheritParams listStudies
 #'
+#' @return A data frame of enrichments with the following columns:
+#'
+#'   \item{termID}{The unique ID for the annotation term}
+#'   \item{description}{The description of the annotation term}
+#'   \item{...}{One column for each of the enrichments}
+#'
 #' @export
 getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", libraries = NULL) {
   stopifnot(type %in% c("nominal", "adjusted"))
@@ -119,6 +134,14 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #'
 #' @inheritParams shared-get
 #' @inheritParams listStudies
+#'
+#' @return Returns a list with the following components:
+#'
+#'   \item{tests}{(character) Vector of testIDs}
+#'   \item{nodes}{(data frame) The description of each annotation term (i.e.
+#'   node). The nominal and adjusted p-values are in list-columns.}
+#'   \item{links}{(list) The statistics for each pairwise overlap between the
+#'   annotation terms (i.e. nodes)}
 #'
 #' @importFrom data.table ":=" "%chin%" .N
 #' @export
@@ -205,6 +228,8 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
+#' @return Returns a character vector with the features in the termID
+#'
 #' @seealso \code{\link{getLinkFeatures}}
 #'
 #' @export
@@ -240,6 +265,9 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' @inheritParams getNodeFeatures
 #' @inheritParams shared-get
 #'
+#' @return Returns a character vector with the features included in both termIDs
+#'   (i.e. the intersection)
+#'
 #' @seealso \code{\link{getNodeFeatures}}
 #'
 #' @export
@@ -256,6 +284,12 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 #' Get metaFeatures for a given feature
 #'
 #' @inheritParams shared-get
+#'
+#' @return Returns a data frame with the metaFeatures for the provided
+#'   featureID. If the featureID is not found in the metaFeatures table, the
+#'   data frame will have zero rows.
+#'
+#' @seealso \code{\link{addMetaFeatures}}, \code{\link{getMetaFeatures}}
 #'
 #' @export
 getMetaFeaturesTable <- function(study, modelID, featureID) {
@@ -276,6 +310,20 @@ getMetaFeaturesTable <- function(study, modelID, featureID) {
 #' Get data for barcode and violin plots
 #'
 #' @inheritParams shared-get
+#'
+#' @return A list with the following components:
+#'
+#'   \item{data}{Data frame with the differential statistics to plot}
+#'   \item{highest}{(numeric) The largest differential statistic, rounded up to
+#'   the next integer}
+#'   \item{labelStat}{(character) The x-axis label to describe the differential
+#'   statistic}
+#'   \item{labelLow}{(character) The vertical axis label on the left to describe
+#'   smaller values (default is "Low")}
+#'   \item{labelHigh}{(character) The vertical axis label on the right to
+#'   describe larger values (default is "High")}
+#'
+#' @seealso \code{\link{addBarcodes}}, \code{\link{getBarcodes}}
 #'
 #' @export
 getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
@@ -393,6 +441,10 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
 #'
 #' @inheritParams shared-get
 #'
+#' @return Returns a one-element character vector with either a path to a report
+#'   file or a URL to a report web page. If no report is available for the
+#'   modelID, an empty character vector is returned.
+#'
 #' @export
 getReportLink <- function(study, modelID) {
   report <- getReports(study, modelID = modelID)
@@ -411,6 +463,13 @@ getReportLink <- function(study, modelID) {
 }
 
 #' Get version of OmicNavigator package
+#'
+#' This is a convenience function for the app. It is easier to always call the
+#' OmicNavigator package functions via OpenCPU than to call the utils package
+#' for this one endpoint.
+#'
+#' @return Returns a one-element character vector with the version of the
+#'   currently installed OmicNavigator R package
 #'
 #' @export
 getPackageVersion <- function() {

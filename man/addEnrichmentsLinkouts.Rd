@@ -19,6 +19,10 @@ the list is a character vector of linkouts for that annotationID.}
 (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 data you no longer want to include in the study.}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 You can provide additional information on the annotation terms in your study
 by providing linkouts to external resources. These will be embedded directly

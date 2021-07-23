@@ -172,6 +172,10 @@ maintainer}
 \item{studyMeta}{(Optional) Define metadata about your study. The input is a
 list of key:value pairs. See below for more details.}
 }
+\value{
+Returns a new OmicNavigator study object, which is a named nested
+  list with class \code{onStudy}
+}
 \description{
 Create a new OmicNavigator study.
 }

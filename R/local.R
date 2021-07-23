@@ -22,6 +22,9 @@
 #'
 #' @inheritParams opencpu::ocpu_start_app
 #'
+#' @return No return value. This function is only called for the side effect of
+#'   running a local instance of the app.
+#'
 #' @export
 startApp <- function(...) {
   for (appPkg in appPackages) {
@@ -57,6 +60,9 @@ startApp <- function(...) {
 #'   system. For example, to download with \code{wget}, pass the argument
 #'   \code{method = "wget"}.
 #' @inheritParams base::system.file
+#'
+#' @return A one-element character vector with the absolute path to the
+#'   directory in which the app files were installed
 #'
 #' @export
 installApp <- function(version = NULL, overwrite = FALSE, lib.loc = NULL, ...) {

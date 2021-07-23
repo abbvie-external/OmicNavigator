@@ -3,6 +3,10 @@
 #'
 #' @param study An OmicNavigator study object
 #'
+#' @return For a valid study object, the logical value \code{TRUE} is invisibly
+#'   returned. For an invalid study object, there is no return value because an
+#'   error is thrown.
+#'
 #' @export
 validateStudy <- function(study) {
   checkStudy(study)

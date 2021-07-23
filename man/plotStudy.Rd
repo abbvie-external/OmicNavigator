@@ -21,6 +21,11 @@ left as \code{NULL} (the default), then
 \code{\link[utils]{installed.packages}} will use the result of
 \code{\link{.libPaths}}.}
 }
+\value{
+This function is called for the side effect of creating a plot.
+  However, it also invisible returns the original \code{onStudy} object
+  passed to \code{study}.
+}
 \description{
 Plot a feature using a custom plotting function
 }

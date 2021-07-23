@@ -3,6 +3,10 @@
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
+#' @return This function is called for the side effect of creating a plot.
+#'   However, it also invisible returns the original \code{onStudy} object
+#'   passed to \code{study}.
+#'
 #' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
 #'
 #' @export

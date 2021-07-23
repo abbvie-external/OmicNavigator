@@ -14,6 +14,14 @@ or the name of an installed study package.}
 
 \item{featureID}{Filter by featureID}
 }
+\value{
+Returns a data frame with the metaFeatures for the provided
+  featureID. If the featureID is not found in the metaFeatures table, the
+  data frame will have zero rows.
+}
 \description{
 Get metaFeatures for a given feature
+}
+\seealso{
+\code{\link{addMetaFeatures}}, \code{\link{getMetaFeatures}}
 }

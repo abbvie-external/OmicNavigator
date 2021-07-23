@@ -37,6 +37,9 @@
 #' @inheritParams addEnrichmentsLinkouts
 #' @inheritParams addMetaFeaturesLinkouts
 #'
+#' @return Returns a new OmicNavigator study object, which is a named nested
+#'   list with class \code{onStudy}
+#'
 #' @seealso
 #'   \code{\link{addSamples}},
 #'   \code{\link{addFeatures}},
@@ -153,6 +156,9 @@ createStudy <- function(name,
 #'   (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 #'   data you no longer want to include in the study.
 #'
+#' @return Returns the original \code{onStudy} object passed to the argument
+#'   \code{study}, but modified to include the newly added data
+#'
 #' @keywords internal
 NULL
 
@@ -163,7 +169,7 @@ NULL
 #'   column of each data frame is used as the sampleID, so it must contain
 #'   unique values. To share a data frame across multiple models, use the
 #'   modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addSamples <- function(study, samples, reset = FALSE) {
@@ -177,7 +183,7 @@ addSamples <- function(study, samples, reset = FALSE) {
 #'   column of each data frame is used as the featureID, so it must contain
 #'   unique values. To share a data frame across multiple models, use the
 #'   modelID "default". All columns will be coerced to character strings.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addFeatures <- function(study, features, reset = FALSE) {
@@ -192,7 +198,7 @@ addFeatures <- function(study, features, reset = FALSE) {
 #'   character string, you can provide a list of metadata fields about each
 #'   model. The field "description" will be used to derive the tooltip displayed
 #'   in the app.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -227,7 +233,7 @@ addModels <- function(study, models, reset = FALSE) {
 #'   sampleIDs (\code{\link{addSamples}}). The data frame should only contain
 #'   numeric values. To share a data frame across multiple models, use the
 #'   modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addAssays <- function(study, assays, reset = FALSE) {
@@ -244,7 +250,7 @@ addAssays <- function(study, assays, reset = FALSE) {
 #'   modelID "default". Instead of a single character string, you can provide a
 #'   list of metadata fields about each test. The field "description" will be
 #'   used to derive the tooltip displayed in the app.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -290,7 +296,7 @@ addTests <- function(study, tests, reset = FALSE) {
 #'   a list of annotation terms. The names of \code{terms} sublist correspond to
 #'   the name of the annotation terms. Each of the annotation terms should be a
 #'   character vector of featureIDs.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addAnnotations <- function(study, annotations, reset = FALSE) {
@@ -304,7 +310,7 @@ addAnnotations <- function(study, annotations, reset = FALSE) {
 #'   Each element in the list should be a list of data frames with inference
 #'   results, one for each test. In each data frame, the featureID must be in
 #'   the first column, and all other columns must be numeric.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addResults <- function(study, results, reset = FALSE) {
@@ -323,7 +329,7 @@ addResults <- function(study, results, reset = FALSE) {
 #'   table must contain the following columns: "termID", "description",
 #'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
 #'   adjusting for multiple testing). Any additional columns are ignored.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addEnrichments <- function(study, enrichments, reset = FALSE) {
@@ -343,7 +349,7 @@ addEnrichments <- function(study, enrichments, reset = FALSE) {
 #'   (\code{\link{addFeatures}}). To share a data frame across multiple models,
 #'   use the modelID "default". All columns will be coerced to character
 #'   strings.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
@@ -384,7 +390,7 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   \code{"singleFeature"}. Optionally, if the plotting function requires
 #'   external packages, these can be defined in the element \code{packages}. To
 #'   share plots across multiple models, use the modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
 #'
@@ -414,7 +420,7 @@ addPlots <- function(study, plots, reset = FALSE) {
 #'   6) \code{featureDisplay} - The feature variable to use to label the barcode plot
 #'   on hover.
 #'   To share metadata across multiple models, use the modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addBarcodes <- function(study, barcodes, reset = FALSE) {
@@ -432,7 +438,7 @@ addBarcodes <- function(study, barcodes, reset = FALSE) {
 #'   If it is a path to a file, this file will be included in the exported study
 #'   package. To share a report across multiple models, use the modelID
 #'   "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @export
 addReports <- function(study, reports, reset = FALSE) {
@@ -467,7 +473,7 @@ addReports <- function(study, reports, reset = FALSE) {
 #'   is a named list of character vectors. The names of this nested list must
 #'   correspond to the column names of the matching features table. To share
 #'   linkouts across multiple models, use the modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -513,7 +519,7 @@ addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
 #'   external resources (see Details below). The input object is a named list.
 #'   The names of the list correspond to the annotation names. Each element of
 #'   the list is a character vector of linkouts for that annotationID.
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -559,7 +565,7 @@ addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
 #'   is a named list of character vectors. The names of this nested list must
 #'   correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
 #'   linkouts across multiple models, use the modelID "default".
-#' @inheritParams shared-add
+#' @inherit shared-add
 #'
 #' @examples
 #'   study <- createStudy("example")

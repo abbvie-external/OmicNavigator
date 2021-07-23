@@ -22,6 +22,10 @@ strings.}
 (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 data you no longer want to include in the study.}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 The meta-features table is useful anytime there are metadata variables that
 cannot be mapped 1:1 to your features. For example, a peptide may be

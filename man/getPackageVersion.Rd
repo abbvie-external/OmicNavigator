@@ -6,6 +6,12 @@
 \usage{
 getPackageVersion()
 }
+\value{
+Returns a one-element character vector with the version of the
+  currently installed OmicNavigator R package
+}
 \description{
-Get version of OmicNavigator package
+This is a convenience function for the app. It is easier to always call the
+OmicNavigator package functions via OpenCPU than to call the utils package
+for this one endpoint.
 }

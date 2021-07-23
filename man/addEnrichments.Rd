@@ -25,6 +25,10 @@ adjusting for multiple testing). Any additional columns are ignored.}
 (if it exists). Setting \code{reset = TRUE} enables you to remove existing
 data you no longer want to include in the study.}
 }
+\value{
+Returns the original \code{onStudy} object passed to the argument
+  \code{study}, but modified to include the newly added data
+}
 \description{
 Add enrichment results
 }

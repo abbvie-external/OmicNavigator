@@ -20,3 +20,5 @@
 ## Resubmission
 
 * I moved the copyright holder to Authors@R
+
+* I documented the return value for all exported functions with \value{}

@@ -30,6 +30,10 @@ or the name of an installed study package.}
 
 \item{tests}{Restrict UpSet plot to these tests}
 }
+\value{
+No return value. This function is called for the side effect of
+  creating an UpSet plot.
+}
 \description{
 getEnrichmentsUpset
 }
