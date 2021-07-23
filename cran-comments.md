@@ -1,3 +1,9 @@
+## Resubmission
+
+* I moved the copyright holder to Authors@R
+
+* I documented the return value for all exported functions with \value{}
+
 ## Test environments
 
 * win-builder (devel)
@@ -16,9 +22,3 @@
 0 errors | 0 warnings | 1 note
 
 * This is a new release.
-
-## Resubmission
-
-* I moved the copyright holder to Authors@R
-
-* I documented the return value for all exported functions with \value{}
