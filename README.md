@@ -55,8 +55,7 @@ ctrl+c or Esc to stop running the app.
 
 ```R
 # Install and load the package
-install.packages("remotes")
-remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
+install.packages("OmicNavigator", dependencies = TRUE)
 library(OmicNavigator)
 
 # Create a very minimal study with a single results table
@@ -79,17 +78,19 @@ Analysis tab is available once you add the results of an enrichment analysis).
 
 ## Installation
 
-OmicNavigator is a [web app](https://github.com/abbvie-external/OmicNavigatorWebApp) and R code bundled together as an R package. You can install OmicNavigator multiple ways.
+OmicNavigator is a [web
+app](https://github.com/abbvie-external/OmicNavigatorWebApp) and R code bundled
+together as an R package. You can install OmicNavigator multiple ways.
 
 ### Full installation in 2 steps (recommended)
 
 This is the quickest and easiest method for you to be able to install
 OmicNavigator and run the web app on your local machine.
 
-1. Install the OmicNavigator R package directly from GitHub:
+1. Install the OmicNavigator R package directly from CRAN:
 
     ```
-    remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
+    install.packages("OmicNavigator", dependencies = TRUE)
     ```
 
 1. Install the web app:
@@ -137,11 +138,29 @@ you can perform a minimal installation. This is useful if you are using
 OmicNavigator in a data engineering pipeline or as part of a continuous
 integration build.
 
-1. Install the OmicNavigator R package directly from GitHub, without the extra
+1. Install the OmicNavigator R package directly from CRAN, without the extra
 dependencies required to run the app:
 
     ```
-    remotes::install_github("abbvie-external/OmicNavigator")
+    install.packages("OmicNavigator")
+    ```
+
+### Install development version from GitHub
+
+If you need access to the latest changes to OmicNavigator, you can install the
+development version of the package directly from GitHub.
+
+1. Install the OmicNavigator R package directly from GitHub:
+
+    ```
+    remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
+    ```
+
+1. Install the web app:
+
+    ```
+    library(OmicNavigator)
+    installApp()
     ```
 
 ### Installation troubleshooting
