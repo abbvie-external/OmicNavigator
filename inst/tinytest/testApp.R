@@ -392,9 +392,8 @@ expect_identical_xl(
 # getFavicons ------------------------------------------------------------------
 
 if (at_home()) {
-  # Only run these tests locally with tinytest::test_all(). Skip when running
-  # tinytest::test_package() (called by R CMD check). faviconPlease is unable to
-  # obtain the favicons from the EBI sites when run on Jenkins.
+  # Only run getFavicons() tests "at home". Accessing internet resources it too
+  # prone to spurious errors.
 
   expect_identical_xl(
     getFavicons(getResultsLinkouts(testStudyName)),
@@ -429,12 +428,12 @@ if (at_home()) {
     )
   )
 
-}
+  expect_identical_xl(
+    getFavicons("https://reactome.org/content/detail/"),
+    "https://reactome.org//templates/favourite/favicon.ico"
+  )
 
-expect_identical_xl(
-  getFavicons("https://reactome.org/content/detail/"),
-  "https://reactome.org//templates/favourite/favicon.ico"
-)
+}
 
 expect_identical_xl(
   getFavicons(list()),
