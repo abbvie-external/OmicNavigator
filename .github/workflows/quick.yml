@@ -27,6 +27,7 @@ jobs:
     env:
       R_LIBS_USER: ~/rlibs
       R_COMPILE_AND_INSTALL_PACKAGES: never
+      TT_AT_HOME: TRUE
 
     steps:
     - uses: actions/checkout@v2

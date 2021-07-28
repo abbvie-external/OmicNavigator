@@ -52,6 +52,7 @@ jobs:
       R_COMPILE_AND_INSTALL_PACKAGES: never
       RSPM: ${{ matrix.config.rspm }}
       GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+      TT_AT_HOME: TRUE
 
     steps:
       - uses: actions/checkout@v2
