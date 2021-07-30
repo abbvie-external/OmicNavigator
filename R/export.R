@@ -55,6 +55,10 @@ buildPkg <- function(pkgDir) {
     stdout = TRUE,
     stderr = NULL
   )
+  # Display stdout if anything went wrong
+  if (!is.null(attr(stdout, "status"))) {
+    warning(paste(stdout, collapse = "\n"))
+  }
   regex <- sprintf("%s.*\\.tar\\.gz", getPrefix())
   regexMatch <- regexpr(regex, stdout[length(stdout)])
   tarball <- regmatches(stdout[length(stdout)], regexMatch)

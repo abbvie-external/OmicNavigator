@@ -86,6 +86,35 @@ expect_true_xl(startsWith(tarball, tmplib))
 directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))
 expect_false_xl(dir.exists(directoryname))
 
+# Return warning message if package fails to build
+pkgDir <- tempfile()
+e <- new.env(parent = emptyenv())
+# This function gets added to the package with an incomplete Rd file, which
+# causes an error during the build
+e$x <- function() 1 + 1
+suppressMessages(
+  utils::package.skeleton(
+    name = basename(pkgDir),
+    path = tempdir(),
+    environment = e
+  )
+)
+
+expect_warning_xl(
+  OmicNavigator:::buildPkg(pkgDir),
+  "ERROR: package installation failed",
+  info = "Return warning message for failed package build"
+)
+
+# Remove the problematic man file
+file.remove(file.path(pkgDir, "man", "x.Rd"))
+
+expect_silent_xl(
+  OmicNavigator:::buildPkg(pkgDir)
+)
+
+unlink(pkgDir, recursive = TRUE, force = TRUE)
+
 # Check package metadata -------------------------------------------------------
 
 suppressMessages(installStudy(testStudyObj, library = tmplib))

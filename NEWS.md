@@ -1,3 +1,6 @@
+* Report the error message from `R CMD build` as a warning if `exportStudy()`
+fails to create a tarball for a study package
+
 # 1.4.2
 
 * Prepare for CRAN submission
