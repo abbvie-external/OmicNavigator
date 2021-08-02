@@ -227,8 +227,36 @@ expect_warning_xl(
   ".+non-character.+x.+z"
 )
 
+featuresMissing <-  list(
+  default = data.frame(
+    x = c("a", NA, "c"),
+    y = letters[1:3],
+    stringsAsFactors = FALSE
+  )
+)
+
+expect_error_xl(
+  addFeatures(study, features = featuresMissing),
+  "missing values",
+  info = "A single missing value would still be unique. Error if it is found"
+)
+
 expect_error_xl(
   addSamples(study, samples = NULL)
+)
+
+samplesMissing <-  list(
+  default = data.frame(
+    x = c("a", NA, "c"),
+    y = letters[1:3],
+    stringsAsFactors = FALSE
+  )
+)
+
+expect_error_xl(
+  addSamples(study, samples = samplesMissing),
+  "missing values",
+  info = "A single missing value would still be unique. Error if it is found"
 )
 
 expect_error_xl(
@@ -291,6 +319,22 @@ expect_error_xl(
 
 expect_error_xl(
   addResults(study, results = NULL)
+)
+
+resultsMissing <-  list(
+  m1 = list(
+    t1 = data.frame(
+      x = c("a", NA, "c"),
+      y = rnorm(3),
+      stringsAsFactors = FALSE
+    )
+  )
+)
+
+expect_error_xl(
+  addResults(study, results = resultsMissing),
+  "missing values",
+  info = "A single missing value would still be unique. Error if it is found"
 )
 
 expect_error_xl(

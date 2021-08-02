@@ -1,3 +1,6 @@
+* Bug fix: Prevent a single missing value in an ID column that is required to be
+unique (reported by Marco Rocha Curado)
+
 * Report the error message from `R CMD build` as a warning if `exportStudy()`
 fails to create a tarball for a study package
 

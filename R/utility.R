@@ -101,6 +101,10 @@ hasUniqueIdColumn <- function(x) {
     stop(sprintf("The first column, \"%s\", must contain unique values", colName),
          call. = FALSE)
   }
+  if (anyNA(colValues)) {
+    stop(sprintf("The first column, \"%s\", cannot contain missing values", colName),
+         call. = FALSE)
+  }
 }
 
 enrichmentsToWide <- function(x, type) {
