@@ -80,7 +80,7 @@ calc_pairwise_overlaps <- function(sets) {
 #' @inherit shared-add
 #'
 #' @export
-addOverlaps <- function(study) {
+addOverlaps <- function(study, reset = FALSE) {
   checkStudy(study)
 
   if (isEmpty(study[["annotations"]])) {
@@ -110,6 +110,11 @@ addOverlaps <- function(study) {
     overlaps <- overlaps[overlaps[["overlapSize"]] > 0, ]
     overlapsList[[annotationID]] <- overlaps
   }
+
+  if (reset) {
+    study[[elementsName]] <- list()
+  }
+
   study[["overlaps"]] <- utils::modifyList(study[["overlaps"]], overlapsList)
 
   return(study)

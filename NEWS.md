@@ -4,6 +4,10 @@ unique (reported by Marco Rocha Curado)
 * Report the error message from `R CMD build` as a warning if `exportStudy()`
 fails to create a tarball for a study package
 
+* Add the argument `reset` to `addOverlaps()`. You would only potentially need
+this if you are pre-calculating the annotation term overlaps prior to exporting
+the study
+
 # 1.4.2
 
 * Prepare for CRAN submission
