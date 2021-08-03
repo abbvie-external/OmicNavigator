@@ -8,6 +8,9 @@ fails to create a tarball for a study package
 this if you are pre-calculating the annotation term overlaps prior to exporting
 the study
 
+* Skip tests that fail only on CRAN Linux and macOS machines. The tests will
+continue to run on GitHub Actions
+
 # 1.4.2
 
 * Prepare for CRAN submission
