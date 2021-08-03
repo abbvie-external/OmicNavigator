@@ -12,3 +12,4 @@
 ^Dockerfile$
 ^inst/OmicNavigator\.gif$
 ^cran-comments\.md$
+^.*\.tar\.gz$
