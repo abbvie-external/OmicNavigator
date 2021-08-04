@@ -1,8 +1,7 @@
 ## Resubmission
 
-* I moved the copyright holder to Authors@R
-
-* I documented the return value for all exported functions with \value{}
+Some package tests were failing mainly on CRAN Debian and macOS machines. I now
+skip these tests on CRAN and only test them locally and on GitHub Actions.
 
 ## Test environments
 
@@ -19,6 +18,4 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 note
-
-* This is a new release.
+0 errors | 0 warnings | 0 notes

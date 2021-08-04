@@ -1,3 +1,5 @@
+# 1.4.3
+
 * Bug fix: Prevent a single missing value in an ID column that is required to be
 unique (reported by Marco Rocha Curado)
 
