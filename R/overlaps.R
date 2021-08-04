@@ -112,7 +112,7 @@ addOverlaps <- function(study, reset = FALSE) {
   }
 
   if (reset) {
-    study[[elementsName]] <- list()
+    study[["overlaps"]] <- list()
   }
 
   study[["overlaps"]] <- utils::modifyList(study[["overlaps"]], overlapsList)

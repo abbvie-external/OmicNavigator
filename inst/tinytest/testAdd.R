@@ -78,6 +78,11 @@ suppressMessages(
   OmicNavigator::exportStudy(study, type = "package", path = tmplib)
 )
 
+# Confirm that addOverlaps() can use `reset` argument
+suppressMessages(
+  study <- addOverlaps(study, reset = TRUE)
+)
+
 # Test tibble and data.table input ---------------------------------------------
 
 studyWithTibbleInput <- createStudy("tibble")
