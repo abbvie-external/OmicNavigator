@@ -10,11 +10,12 @@
 #' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
 #'
 #' @export
-plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
+plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, libraries = NULL) {
   stopifnot(
     is.character(modelID),
     is.character(featureID),
     is.character(plotID),
+    # is.character(testID),
     is.null(libraries) || is.character(libraries)
   )
 
@@ -49,7 +50,7 @@ plotStudy <- function(study, modelID, featureID, plotID, libraries = NULL) {
     )
   }
 
-  plottingData <- getPlottingData(study, modelID, featureID,
+  plottingData <- getPlottingData(study, modelID, featureID, testID = testID,
                                   libraries = libraries)
 
   # Setup for the plot and ensure everything is properly reset after the
@@ -139,10 +140,11 @@ resetSearch <- function(pkgNamespaces) {
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export
-getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
+getPlottingData <- function(study, modelID, featureID, testID, libraries = NULL) {
   stopifnot(
     is.character(modelID),
     is.character(featureID),
+    # is.character(testID),
     is.null(libraries) || is.character(libraries)
   )
   # Deduplicate the featureIDs
@@ -186,10 +188,26 @@ getPlottingData <- function(study, modelID, featureID, libraries = NULL) {
     row.names(featuresPlotting) <- NULL # reset row numbers after filtering
   }
 
+  if (!isEmpty(testID)) {
+    results <- getResults(study, modelID = modelID, testID = testID, quiet = TRUE,
+                          libraries = libraries)
+    if (isEmpty(results)) {
+      stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID, modelID))
+    }
+    featureIDAvailable_results <- featureID %in% results[,1]
+    if (any(!featureIDAvailable_results)) {
+      stop(sprintf("The feature \"%s\" is not available for testID \"%s\"",
+                   featureID[!featureIDAvailable][1], testID))
+    }
+    resultsPlotting <- results[match(featureID, results[,1], nomatch = 0), , drop = FALSE]
+  }
+
   plottingData <- list(
     assays = assaysPlotting,
     samples = samplesPlotting,
     features = featuresPlotting
   )
+  if (!isEmpty(testID))  plottingData <- c(plottingData, list(results = resultsPlotting))
+
   return(plottingData)
 }
