@@ -15,7 +15,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     is.character(modelID),
     is.character(featureID),
     is.character(plotID),
-    # is.character(testID),
+    is.null(testID) || is.character(testID),
     is.null(libraries) || is.character(libraries)
   )
 
