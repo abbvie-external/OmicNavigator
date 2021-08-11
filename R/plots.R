@@ -140,7 +140,7 @@ resetSearch <- function(pkgNamespaces) {
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export
-getPlottingData <- function(study, modelID, featureID, testID, libraries = NULL) {
+getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries = NULL) {
   stopifnot(
     is.character(modelID),
     is.character(featureID),
