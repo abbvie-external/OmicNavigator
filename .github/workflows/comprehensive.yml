@@ -102,10 +102,16 @@ jobs:
         run: sessionInfo()
         shell: Rscript {0}
 
+      # The fact that the README can't access the GIF only throws an error for
+      # R 3.4.4. Setting _R_CHECK_TOPLEVEL_FILES_ to false had no effect on
+      # R CMD check.
+      - name: Delete README
+        if: ${{ matrix.config.r == '3.4.4' }}
+        run: rm README.md
+
       - name: Check
         env:
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-          _R_CHECK_TOPLEVEL_FILES_: false
         run: |
           options(crayon.enabled = TRUE)
           rcmdcheck::rcmdcheck(args = c("--no-manual", "--as-cran"), error_on = "warning", check_dir = "check")
