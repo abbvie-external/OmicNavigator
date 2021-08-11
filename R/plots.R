@@ -144,7 +144,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   stopifnot(
     is.character(modelID),
     is.character(featureID),
-    # is.character(testID),
+    is.null(testID) || is.character(testID),
     is.null(libraries) || is.character(libraries)
   )
   # Deduplicate the featureIDs
