@@ -4,7 +4,7 @@
 \alias{plotStudy}
 \title{Plot a feature using a custom plotting function}
 \usage{
-plotStudy(study, modelID, featureID, plotID, libraries = NULL)
+plotStudy(study, modelID, featureID, plotID, testID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -15,6 +15,8 @@ or the name of an installed study package.}
 \item{featureID}{Filter by featureID}
 
 \item{plotID}{Filter by plotID}
+
+\item{testID}{Filter by testID}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

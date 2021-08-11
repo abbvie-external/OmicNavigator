@@ -137,6 +137,11 @@ resetSearch <- function(pkgNamespaces) {
 #' rows are reordered to match the order of this input (and thus match the order
 #' of the assays data frame).}
 #'
+#' \item{\code{results}}{A data frame that contains the test results,
+#' filtered to only include the row(s) corresponding to the input featureID(s).
+#' If multiple featureIDs are requested, the rows are reordered to match the
+#' order of this input. The column order is unchanged.}
+#'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export

@@ -4,7 +4,7 @@
 \alias{getPlottingData}
 \title{Get plotting data}
 \usage{
-getPlottingData(study, modelID, featureID, libraries = NULL)
+getPlottingData(study, modelID, featureID, testID = NULL, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -13,6 +13,8 @@ or the name of an installed study package.}
 \item{modelID}{Filter by modelID}
 
 \item{featureID}{Filter by featureID}
+
+\item{testID}{Filter by testID}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then
@@ -37,6 +39,11 @@ filtered to only include the row(s) corresponding to the input featureID(s)
 (see \code{\link{getFeatures}}). If multiple featureIDs are requested, the
 rows are reordered to match the order of this input (and thus match the order
 of the assays data frame).}
+
+\item{\code{results}}{A data frame that contains the test results,
+filtered to only include the row(s) corresponding to the input featureID(s).
+If multiple featureIDs are requested, the rows are reordered to match the
+order of this input. The column order is unchanged.}
 }
 \description{
 This function creates the input data that \code{\link{plotStudy}} passes to
