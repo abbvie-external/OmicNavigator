@@ -381,6 +381,71 @@ expect_warning(
   info = "Warning when assays has a row that is missing from the features table"
 )
 
+
+# getPlottingData (testID) -----------------------------------------------------
+
+plottingData <- getPlottingData(
+  testStudyObj,
+  modelID = testModelName,
+  featureID = "feature_0001",
+  testID = "test_01"
+)
+
+samples <- getSamples(testStudyObj, modelID = testModelName)
+assays <- getAssays(testStudyObj, modelID = testModelName)
+results <- getResults(testStudyObj, modelID = testModelName, testID = "test_01")
+
+expect_true_xl(
+  inherits(plottingData, "list")
+)
+
+expect_true_xl(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["results"]], "data.frame")
+)
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  featureID = "feature_0001",
+  testID = "test_01"
+)
+
+samples <- getSamples(testStudyName, modelID = testModelName)
+assays <- getAssays(testStudyName, modelID = testModelName)
+results <- getResults(testStudyName, modelID = testModelName, testID = "test_01")
+
+expect_true_xl(
+  inherits(plottingData, "list")
+)
+
+expect_true_xl(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[["results"]], "data.frame")
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unloadNamespace(testPkgName)
