@@ -210,7 +210,7 @@ toJSON(linkFeatures[1:4], pretty = TRUE)
 \label{sec:custom-plots}
 
 Display the custom plots provided by the user with \texttt{plotStudy()}. Provided a
-study, model, feature, and plot, \texttt{plotStudy()} generates the custom plot.
+study, model, feature, test and plot, \texttt{plotStudy()} generates the custom plot.
 
 The featureID is obtained from the first column returned by
 \texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining arguments
@@ -222,7 +222,8 @@ plotStudy(
   study = "ABC",
   modelID = "model_01",
   featureID = "feature_0001",
-  plotID = "plotBase"
+  plotID = "plotBase",
+  testID = "test_01"
 )
 @
 
@@ -231,7 +232,8 @@ plotStudy(
   study = "ABC",
   modelID = "model_03",
   featureID = "feature_0001",
-  plotID = "plotGg"
+  plotID = "plotGg",
+  testID = "test_01"
 )
 @
 
@@ -245,7 +247,8 @@ plotStudy(
   study = "ABC",
   modelID = "model_01",
   featureID = c("feature_0001", "feature_0002"),
-  plotID = "plotMultiFeature"
+  plotID = "plotMultiFeature",
+  testID = "test_01"
 )
 @
 

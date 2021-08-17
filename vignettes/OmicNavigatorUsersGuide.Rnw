@@ -1041,6 +1041,10 @@ plotStudy(study, modelID = "main", featureID = c("21390", "19216"),
           plotID = "plotPca")
 @
 
+Optionally, data related to test results can be plotted by providing a valid
+testID to the plotStudy call. For instance, for modelID = "main" one could call
+plotStudy with testID = "basal.vs.lp" to be able to plot its test results.
+
 To make the custom plotting functions available in the app, re-install the study
 package with \texttt{installStudy()}.
 
