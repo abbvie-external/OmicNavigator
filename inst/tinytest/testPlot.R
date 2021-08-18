@@ -41,7 +41,7 @@ expect_identical_xl(
   plotsAll
 )
 
-# plotStudy --------------------------------------------------------------------
+# plotStudy (object) -----------------------------------------------------------
 
 pkgsAttachedPre <- search()
 parSettingsPre <- graphics::par(no.readonly = TRUE)
@@ -79,6 +79,8 @@ expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_01", featureID = "non-existent", plotID = "plotBase"),
   "non-existent"
 )
+
+# plotStudy (package) ----------------------------------------------------------
 
 # Remove plotting functions from current environment. This ensures that the
 # calls to plotStudy() below obtain the plotting functions from the package
@@ -164,7 +166,26 @@ expect_error_xl(
   info = "Cannot pass multiple featureIDs to a singleFeature plot"
 )
 
-# getPlottingData --------------------------------------------------------------
+# plotStudy (testID) -----------------------------------------------------------
+
+expect_silent_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
+            plotID = "plotBase", testID = "test_01")
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
+            plotID = "plotBase", testID = "non-existent"),
+  "non-existent"
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "non-existent",
+            plotID = "plotBase", testID = "test_01"),
+  "non-existent"
+)
+
+# getPlottingData (object) -----------------------------------------------------
 
 plottingData <- getPlottingData(
   testStudyObj,
@@ -172,24 +193,47 @@ plottingData <- getPlottingData(
   featureID = "feature_0001"
 )
 
-samples <- getSamples(testStudyObj, modelID = testModelName)
 assays <- getAssays(testStudyObj, modelID = testModelName)
+samples <- getSamples(testStudyObj, modelID = testModelName)
+features <- getFeatures(testStudyObj, modelID = testModelName)
 
 expect_true_xl(
   inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features")
 )
 
 expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
+expect_equal_xl(
+  plottingData[["assays"]],
+  assays["feature_0001", ]
+)
+
 expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["samples"]],
+  samples
 )
 
 expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
+
+expect_equal_xl(
+  plottingData[["features"]],
+  features[features[[1]] == "feature_0001", ]
+)
+
+# getPlottingData (package) ----------------------------------------------------
 
 plottingData <- getPlottingData(
   testStudyName,
@@ -197,26 +241,43 @@ plottingData <- getPlottingData(
   featureID = "feature_0001"
 )
 
-samples <- getSamples(testStudyName, modelID = testModelName)
-assays <- getAssays(testStudyName, modelID = testModelName)
-
 expect_true_xl(
   inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features")
 )
 
 expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
+expect_equal_xl(
+  plottingData[["assays"]],
+  assays["feature_0001", ]
+)
+
 expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["samples"]],
+  samples
 )
 
 expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
-# getPlottingData (multiFeature) -----------------------------------------------
+expect_equal_xl(
+  plottingData[["features"]],
+  features[features[[1]] == "feature_0001", ]
+)
+
+# getPlottingData (object, multiFeature) ---------------------------------------
 
 plottingData <- getPlottingData(
   testStudyObj,
@@ -228,6 +289,11 @@ expect_true_xl(
   inherits(plottingData, "list")
 )
 
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features")
+)
+
 expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
@@ -249,6 +315,8 @@ expect_equal_xl(
   nrow(plottingData[["features"]]),
   2
 )
+
+# getPlottingData (package, multiFeature) --------------------------------------
 
 plottingData <- getPlottingData(
   testStudyName,
@@ -281,6 +349,8 @@ expect_equal_xl(
   nrow(plottingData[["features"]]),
   2
 )
+
+# getPlottingData (edge cases) -------------------------------------------------
 
 # Duplicate featureIDs should be deduplicated
 plottingData <- getPlottingData(
@@ -382,7 +452,7 @@ expect_warning(
 )
 
 
-# getPlottingData (testID) -----------------------------------------------------
+# getPlottingData (object, testID) ---------------------------------------------
 
 plottingData <- getPlottingData(
   testStudyObj,
@@ -391,29 +461,57 @@ plottingData <- getPlottingData(
   testID = "test_01"
 )
 
-samples <- getSamples(testStudyObj, modelID = testModelName)
 assays <- getAssays(testStudyObj, modelID = testModelName)
+samples <- getSamples(testStudyObj, modelID = testModelName)
+features <- getFeatures(testStudyObj, modelID = testModelName)
 results <- getResults(testStudyObj, modelID = testModelName, testID = "test_01")
 
 expect_true_xl(
   inherits(plottingData, "list")
 )
 
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features", "results")
+)
+
 expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["assays"]],
+  assays["feature_0001", ]
 )
 
 expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
 )
 
+expect_equal_xl(
+  plottingData[["samples"]],
+  samples
+)
+
 expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["features"]],
+  features[features[[1]] == "feature_0001", ]
 )
 
 expect_true_xl(
   inherits(plottingData[["results"]], "data.frame")
 )
+
+expect_equal_xl(
+  plottingData[["results"]],
+  results[results[[1]] == "feature_0001", ]
+)
+
+# getPlottingData (package, testID) --------------------------------------------
 
 plottingData <- getPlottingData(
   testStudyName,
@@ -422,28 +520,63 @@ plottingData <- getPlottingData(
   testID = "test_01"
 )
 
-samples <- getSamples(testStudyName, modelID = testModelName)
-assays <- getAssays(testStudyName, modelID = testModelName)
-results <- getResults(testStudyName, modelID = testModelName, testID = "test_01")
-
 expect_true_xl(
   inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features", "results")
 )
 
 expect_true_xl(
   inherits(plottingData[["assays"]], "data.frame")
 )
 
+expect_equal_xl(
+  plottingData[["assays"]],
+  assays["feature_0001", ]
+)
+
 expect_true_xl(
   inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["samples"]],
+  samples
 )
 
 expect_true_xl(
   inherits(plottingData[["features"]], "data.frame")
 )
 
+expect_equal_xl(
+  plottingData[["features"]],
+  features[features[[1]] == "feature_0001", ]
+)
+
 expect_true_xl(
   inherits(plottingData[["results"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["results"]],
+  results[results[[1]] == "feature_0001", ]
+)
+
+# getPlottingData (package, multiFeature, testID) ------------------------------
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  featureID = c("feature_0006", "feature_0002"),
+  testID = "test_01"
+)
+
+expect_identical_xl(
+  plottingData[["results"]][[1]],
+  c("feature_0006", "feature_0002")
 )
 
 # Teardown ---------------------------------------------------------------------
