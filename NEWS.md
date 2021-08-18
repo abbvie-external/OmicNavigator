@@ -1,3 +1,12 @@
+* Both `plotStudy()` and `getPlottingData()` gained a new argument `testID`. If
+supplied, the R object passed to your custom plotting function will include the
+element `results` that contains the rows of the results table for that testID
+for the provided featureID(s). The app always passes the testID when calling
+`plotStudy()`. If your plotting function doesn't need the information in the
+results table, it will continue to work as before (implemented by [Marco
+Curado](https://github.com/curadomr) in [PR
+#4](https://github.com/abbvie-external/OmicNavigator/pull/4))
+
 # 1.4.3
 
 * Bug fix: Prevent a single missing value in an ID column that is required to be
