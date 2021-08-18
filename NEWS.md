@@ -1,3 +1,7 @@
+# 1.5.1
+
+* The release tarball includes version 1.2.1 of the web app
+
 * Both `plotStudy()` and `getPlottingData()` gained a new argument `testID`. If
 supplied, the R object passed to your custom plotting function will include the
 element `results` that contains the rows of the results table for that testID
