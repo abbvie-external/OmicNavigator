@@ -1042,8 +1042,9 @@ plotStudy(study, modelID = "main", featureID = c("21390", "19216"),
 @
 
 Optionally, data related to test results can be plotted by providing a valid
-testID to the plotStudy call. For instance, for modelID = "main" one could call
-plotStudy with testID = "basal.vs.lp" to be able to plot its test results.
+testID to the \texttt{plotStudy()}. For instance, for \texttt{modelID = "main"}
+one could call \texttt{plotStudy()} with \texttt{testID = "basal.vs.lp"} to be
+able to plot its test results.
 
 To make the custom plotting functions available in the app, re-install the study
 package with \texttt{installStudy()}.
