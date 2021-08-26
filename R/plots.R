@@ -33,21 +33,48 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     f <- getPlotFunction(plotID, study = study)
   }
 
-  # Throw error is mismatch between number of features and plot type
+  # Throw error is mismatch between number of features / tests and plot type
   nFeatures <- length(featureID)
-  plotType <- p[["plotType"]]
+  nTests    <- length(testID)
+  plotType  <- p[["plotType"]]
+
   if (isEmpty(plotType)) plotType <- "singleFeature"
-  if (plotType == "singleFeature" && nFeatures != 1) {
-    stop(
-      "Plot type \"singleFeature\" requires 1 featureID\n",
-      sprintf("Received %d featureID(s)", nFeatures)
-    )
-  }
-  if (plotType == "multiFeature" && nFeatures < 2) {
-    stop(
-      "Plot type \"multiFeature\" requires at least 2 featureIDs\n",
-      sprintf("Received %d featureID(s)", nFeatures)
-    )
+  if (length(plotType) == 1 && plotType == "multiTest") plotType <- c("singleFeature", "multiTest")
+  nPlotType <- length(plotType)
+
+  for (ind in 1:nPlotType) {
+    if (plotType[ind] == "singleFeature") {
+      if (nFeatures != 1) {
+        stop(
+          "Plot type \"singleFeature\" requires 1 featureID\n",
+          sprintf("Received %d featureID(s)", nFeatures)
+        )
+      } else if (nTests > 1 && !any(which(plotType == "multiTest"))) {
+        stop(
+          "Plot type \"singleFeature\" requires 1 testID or be associated with multiTest, e.g. plot type = c(\"singleFeature\", \"multiTest\")\n",
+          sprintf("Received %d testID(s)", nTests)
+        )
+      }
+    }
+    if (plotType[ind] == "multiFeature") {
+      if (nFeatures < 2) {
+        stop(
+          "Plot type \"multiFeature\" requires at least 2 featureIDs\n",
+          sprintf("Received %d featureID(s)", nFeatures)
+        )
+      } else if (nTests > 1 && !any(which(plotType == "multiTest"))) {
+        stop(
+          "Plot type \"multiFeature\" requires 1 testID or be associated with multiTest, e.g. plot type = c(\"multiFeature\", \"multiTest\")\n",
+          sprintf("Received %d testID(s)", nTests)
+        )
+      }
+    }
+    if (plotType[ind] == "multiTest" && nTests < 2) {
+      stop(
+        "Plot type \"multiTest\" requires at least 2 testIDs\n",
+        sprintf("Received %d testID(s)", nTests)
+      )
+    }
   }
 
   plottingData <- getPlottingData(study, modelID, featureID, testID = testID,
@@ -140,7 +167,8 @@ resetSearch <- function(pkgNamespaces) {
 #' \item{\code{results}}{A data frame that contains the test results,
 #' filtered to only include the row(s) corresponding to the input featureID(s).
 #' If multiple featureIDs are requested, the rows are reordered to match the
-#' order of this input. The column order is unchanged.}
+#' order of this input. The column order is unchanged. If multiple testIDs are
+#' provided, they are stored in a list object.}
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
@@ -194,17 +222,22 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   }
 
   if (!isEmpty(testID)) {
-    results <- getResults(study, modelID = modelID, testID = testID, quiet = TRUE,
-                          libraries = libraries)
-    if (isEmpty(results)) {
-      stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID, modelID))
+    resultsPlotting <- vector("list", length(testID))
+    for (i in seq_along(testID)) {
+      results <- getResults(study, modelID = modelID, testID = testID[i], quiet = TRUE,
+                            libraries = libraries)
+      if (isEmpty(results)) {
+        stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID[i], modelID))
+      }
+      featureIDAvailable_results <- featureID %in% results[,1]
+      if (any(!featureIDAvailable_results)) {
+        stop(sprintf("The feature \"%s\" is not available for testID \"%s\"",
+                     featureID[!featureIDAvailable][1], testID[i]))
+      }
+      resultsPlotting[[i]] <- results[match(featureID, results[,1], nomatch = 0), , drop = FALSE]
+      names(resultsPlotting)[[i]] <- testID[i]
     }
-    featureIDAvailable_results <- featureID %in% results[,1]
-    if (any(!featureIDAvailable_results)) {
-      stop(sprintf("The feature \"%s\" is not available for testID \"%s\"",
-                   featureID[!featureIDAvailable][1], testID))
-    }
-    resultsPlotting <- results[match(featureID, results[,1], nomatch = 0), , drop = FALSE]
+    if (length(resultsPlotting) == 1) resultsPlotting <- resultsPlotting[[1]]
   }
 
   plottingData <- list(
@@ -212,7 +245,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     samples = samplesPlotting,
     features = featuresPlotting
   )
-  if (!isEmpty(testID))  plottingData <- c(plottingData, list(results = resultsPlotting))
+  if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
 
   return(plottingData)
 }

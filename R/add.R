@@ -362,9 +362,10 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #' the user.
 #'
 #' Custom plotting functions are passed a list of data frames: \code{assays}
-#' with the measurements, \code{features} with the feature data, and
-#' \code{samples} with the sample data. Both \code{assays} and \code{features}
-#' are subset to only include data for the specified featureID(s) (and
+#' with the measurements, \code{features} with the feature data,
+#' \code{samples} with the sample data, and \code{results} with test results
+#' data. Note that \code{assays}, \code{features} and \code{results}
+#' only include data for the specified featureID(s) (and
 #' re-ordered so their rows match). Thus your custom plotting function must have
 #' at least one argument. It can have additional arguments if you wish, but
 #' these must be provided with default values, because \code{plotStudy} only
@@ -385,7 +386,10 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   session. The third list provides metadata to describe each plot. The only
 #'   required metadata element is \code{displayName}, which controls how the
 #'   plot will be named in the app. You are encouraged to also specify the
-#'   \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"}. If you
+#'   \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"},
+#'   \code{"multiTest"}. Note that PlotType accepts a vector of entries,
+#'   whenever applicable, e.g., plotType = c(\code{"multiFeature"},
+#'   \code{"multiTest"}). If you
 #'   do not specify the \code{plotType}, the plot will be assumed to be
 #'   \code{"singleFeature"}. Optionally, if the plotting function requires
 #'   external packages, these can be defined in the element \code{packages}. To
