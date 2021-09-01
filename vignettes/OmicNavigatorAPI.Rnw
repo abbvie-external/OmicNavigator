@@ -252,6 +252,24 @@ plotStudy(
 )
 @
 
+In addition, the study can provide ``multiTest'' plots, which accept more than
+one testID. These can be provided via the field \texttt{plotType} in the output
+from \texttt{listStudies()} (Section \ref{sec:list-studies}). Note that plotType
+for ``multiTest'' may be provided in a vector,
+e.g. plotType = c(``multiFeature'', ``multiTest''). A call for plotType =
+``multiTest'' is set to default to plotType = c(``singleFeature'', ``multiTest'')
+
+<<plotStudy-plotMultiTest, fig=TRUE>>=
+plotStudy(
+  study = "ABC",
+  modelID = "model_01",
+  featureID = c("feature_0001", "feature_0002"),
+  plotID = "plotMultiTest_mf",
+  testID = c("test_01", "test_02")
+)
+@
+
+
 \section{Results intersection}
 \label{sec:results-intersection}
 

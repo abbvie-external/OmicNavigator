@@ -7,6 +7,7 @@ using(ttdo)
 
 library(OmicNavigator)
 
+
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
 plots <- OmicNavigator:::testPlots()
@@ -30,7 +31,7 @@ pkgDependencies <- utils::packageDescription(
 
 expect_identical_xl(
   pkgDependencies,
-  "ggplot2, graphics, rlang, stats"
+  "ggplot2, graphics, rlang, stats, tidyr"
 )
 
 pkgExports <- sort(getNamespaceExports(testPkgName))
@@ -183,6 +184,44 @@ expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "non-existent",
             plotID = "plotBase", testID = "test_01"),
   "non-existent"
+)
+
+
+# plotStudy (multitest) --------------------------------------------------------
+## check plotStudy calls without checking getPlottingData outputs
+
+expect_silent_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
+            plotID = "plotMultiTest_sf", testID = c("test_01", "test_02"))
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "non-existent",
+            plotID = "plotMultiTest_sf", testID = c("test_01", "test_02")),
+  "non-existent"
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
+            plotID = "plotMultiTest_sf", testID = "test_01")
+)
+
+expect_silent_xl(
+  plotStudy(testStudyName, modelID = "model_01",
+            featureID = c("feature_0001", "feature_0002"),
+            plotID = "plotMultiTest_mf", testID = c("test_01", "test_02"))
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01",
+            featureID = "non-existent",
+            plotID = "plotMultiTest_mf", testID = c("test_01", "test_02"))
+)
+
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_01",
+            featureID = c("feature_0001", "feature_0002"),
+            plotID = "plotMultiTest_mf", testID = "test_01")
 )
 
 # getPlottingData (object) -----------------------------------------------------
@@ -563,6 +602,69 @@ expect_true_xl(
 expect_equal_xl(
   plottingData[["results"]],
   results[results[[1]] == "feature_0001", ]
+)
+
+# getPlottingData (package, multitest) -----------------------------------------
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = testModelName,
+  featureID = c("feature_0001", "feature_0002"),
+  testID = c("test_01", "test_02")
+)
+
+expect_true_xl(
+  inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  c("assays", "samples", "features", "results")
+)
+
+expect_true_xl(
+  inherits(plottingData[["assays"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["assays"]],
+  assays[c("feature_0001", "feature_0002"), ]
+)
+
+expect_true_xl(
+  inherits(plottingData[["samples"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["samples"]],
+  samples
+)
+
+expect_true_xl(
+  inherits(plottingData[["features"]], "data.frame")
+)
+
+expect_equal_xl(
+  plottingData[["features"]],
+  features[features[[1]] == c("feature_0001", "feature_0002"), ]
+)
+
+expect_true_xl(
+  inherits(plottingData[["results"]], "list")
+)
+
+result_test01 <- testStudyObj$results[[testModelName]]$test_01
+result_test01 <- result_test01[order(result_test01$customID),]
+expect_equal_xl(
+  plottingData[["results"]][["test_01"]],
+  result_test01[result_test01$customID %in% c("feature_0001", "feature_0002"),]
+)
+
+result_test02 <- testStudyObj$results[[testModelName]]$test_02
+result_test02 <- result_test02[order(result_test02$customID),]
+expect_equal_xl(
+  plottingData[["results"]][["test_02"]],
+  result_test02[result_test02$customID %in% c("feature_0001", "feature_0002"),]
 )
 
 # getPlottingData (package, multiFeature, testID) ------------------------------

@@ -259,6 +259,39 @@ testPlots <- function() {
                    xlab = "PC 1", ylab = "PC 2", main = "PCA")
   }
   assign("plotMultiFeature", plotMultiFeature, envir = parent.frame())
+  plotMultiTest_sf <- function(x) {
+    var_x <- data.frame(lapply(x$results, `[`, 2))
+    colnames(var_x)<- names(x$results)
+    features <- rownames(var_x)
+    var_x <- data.frame(features, gather(var_x))
+
+    var_y <- data.frame(lapply(x$results, `[`, 3))
+    colnames(var_y) <- names(x$results)
+    features <- rownames(var_y)
+    var_y <- data.frame(features, gather(var_y))
+
+    df <- merge(var_x, var_y, by=c("key", "features"))
+
+    plot(df$value.x ~ df$value.y, col = factor(df$key))
+  }
+  assign("plotMultiTest_sf", plotMultiTest_sf, envir = parent.frame())
+  plotMultiTest_mf <- function(x) {
+    var_x <- data.frame(lapply(x$results, `[`, 2))
+    colnames(var_x)<- names(x$results)
+    features <- rownames(var_x)
+    var_x <- data.frame(features, gather(var_x))
+
+    var_y <- data.frame(lapply(x$results, `[`, 3))
+    colnames(var_y) <- names(x$results)
+    features <- rownames(var_y)
+    var_y <- data.frame(features, gather(var_y))
+
+    df <- merge(var_x, var_y, by=c("key", "features"))
+
+    plot(df$value.x ~ df$value.y, col = factor(df$key))
+  }
+  assign("plotMultiTest_mf", plotMultiTest_mf, envir = parent.frame())
+
   plots <- list(
     default = list(
       plotBase = list(
@@ -269,6 +302,17 @@ testPlots <- function() {
         displayName = "PCA",
         plotType = "multiFeature",
         packages = "stats"
+      ),
+      plotMultiTest_sf = list(
+        displayName = "scatterplot_singlefeat",
+        plotType = "multiTest",
+        # default should set plotType to c("singleFeature", "multiTest")
+        packages = "tidyr"
+      ),
+      plotMultiTest_mf = list(
+        displayName = "scatterplot_multifeat",
+        plotType = c("multiFeature", "multiTest"),
+        packages = "tidyr"
       )
     ),
     model_03 = list(
