@@ -93,7 +93,7 @@ if (at_home()) {
   expect_false_xl(dir.exists(directoryname))
 
   # Return warning message if package fails to build
-  pkgDir <- tempfile()
+  pkgDir <- tempfile(pattern = OmicNavigator:::getPrefix())
   e <- new.env(parent = emptyenv())
   # This function gets added to the package with an incomplete Rd file, which
   # causes an error during the build
@@ -116,10 +116,11 @@ if (at_home()) {
   file.remove(file.path(pkgDir, "man", "x.Rd"))
 
   expect_silent_xl(
-    OmicNavigator:::buildPkg(pkgDir)
+    tarball <- OmicNavigator:::buildPkg(pkgDir)
   )
 
   unlink(pkgDir, recursive = TRUE, force = TRUE)
+  file.remove(tarball)
 }
 
 # Check package metadata -------------------------------------------------------
