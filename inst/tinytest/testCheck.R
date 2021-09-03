@@ -207,7 +207,7 @@ expect_error_xl(
   info = "R's DESCRIPTION fields are not allowed"
 )
 
-# checkX -----------------------------------------------------------------------
+# checkFeatures ----------------------------------------------------------------
 
 expect_error_xl(
   addFeatures(study, features = NULL)
@@ -241,6 +241,8 @@ expect_error_xl(
   info = "A single missing value would still be unique. Error if it is found"
 )
 
+# checkSamples -----------------------------------------------------------------
+
 expect_error_xl(
   addSamples(study, samples = NULL)
 )
@@ -258,6 +260,8 @@ expect_error_xl(
   "missing values",
   info = "A single missing value would still be unique. Error if it is found"
 )
+
+# checkModels ------------------------------------------------------------------
 
 expect_error_xl(
   addModels(study, models = NULL)
@@ -284,9 +288,24 @@ expect_error_xl(
   "must be a list, not a data frame"
 )
 
+# checkAssays ------------------------------------------------------------------
+
 expect_error_xl(
   addAssays(study, assays = NULL)
 )
+
+assaysWithNonNumeric <- list(
+  default = data.frame(
+    one = letters,
+    two = 1:26
+  )
+)
+
+expect_error_xl(
+  addAssays(study, assays = assaysWithNonNumeric)
+)
+
+# checkTests -------------------------------------------------------------------
 
 expect_error_xl(
   addTests(study, tests = NULL)
@@ -313,9 +332,13 @@ expect_error_xl(
   "must be a list, not a data frame"
 )
 
+# checkAnnotations -------------------------------------------------------------
+
 expect_error_xl(
   addAnnotations(study, annotations = NULL)
 )
+
+# checkResults -----------------------------------------------------------------
 
 expect_error_xl(
   addResults(study, results = NULL)
@@ -337,9 +360,13 @@ expect_error_xl(
   info = "A single missing value would still be unique. Error if it is found"
 )
 
+# checkEnrichments -------------------------------------------------------------
+
 expect_error_xl(
   addEnrichments(study, enrichments = NULL)
 )
+
+# checkMetaFeatures ------------------------------------------------------------
 
 expect_error_xl(
   addMetaFeatures(study, metaFeatures = NULL)
@@ -349,6 +376,8 @@ expect_warning_xl(
   addMetaFeatures(study, metaFeatures = nonCharacterFeatures),
   ".+non-character.+x.+z"
 )
+
+# checkPlots -------------------------------------------------------------------
 
 expect_error_xl(
   addPlots(study, plots = NULL)
@@ -400,9 +429,13 @@ expect_silent_xl(
 )
 rm(functionUnusualButValid)
 
+# checkBarcodes ----------------------------------------------------------------
+
 expect_error_xl(
   addBarcodes(study, barcodes = NULL)
 )
+
+# checkReports -----------------------------------------------------------------
 
 expect_error_xl(
   addReports(study, reports = NULL)
@@ -424,13 +457,19 @@ expect_error_xl(
   "Report must be a URL or a path to an existing file"
 )
 
+# checkResultsLinkouts ---------------------------------------------------------
+
 expect_error_xl(
   addResultsLinkouts(study, resultsLinkouts = NULL)
 )
 
+# checkEnrichmentsLinkouts -----------------------------------------------------
+
 expect_error_xl(
   addEnrichmentsLinkouts(study, enrichmentsLinkouts = NULL)
 )
+
+# checkMetaFeaturesLinkouts ----------------------------------------------------
 
 expect_error_xl(
   addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = NULL)

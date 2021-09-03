@@ -233,6 +233,12 @@ checkAssays <- function(assays) {
       nrow(assays[[i]]) > 0,
       ncol(assays[[i]]) > 0
     )
+    # All the columns must be numeric
+    colsAllNum <- all(vapply(assays[[i]], is.numeric, logical(1)))
+    if (!colsAllNum) {
+      stop("The columns of the assays data frame must all be numeric.\n",
+           sprintf("Problematic modelID: %s", names(assays)[i]))
+    }
   }
 
   return(NULL)

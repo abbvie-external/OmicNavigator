@@ -1,3 +1,10 @@
+* Bug fix: The documentation states that the assays table must only contain
+numeric columns. However, if a user added a data frame with non-numeric columns,
+no warning or error occurred. Now `addAssays()` will throw an error if it
+detects any non-numeric columns (reported by [Anastasia
+Galperina])(https://github.com/agalperina) in [WebApp Issue
+#57](https://github.com/abbvie-external/OmicNavigatorWebApp/issues/57))
+
 # 1.5.2
 
 * The release tarball includes version 1.3.1 of the web app
