@@ -3,10 +3,10 @@
 # Setup ------------------------------------------------------------------------
 
 source("tinytestSettings.R")
+
 using(ttdo)
 
 library(OmicNavigator)
-
 
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
@@ -31,7 +31,7 @@ pkgDependencies <- utils::packageDescription(
 
 expect_identical_xl(
   pkgDependencies,
-  "ggplot2, graphics, rlang, stats, tidyr"
+  "data.table, ggplot2, graphics, rlang, stats"
 )
 
 pkgExports <- sort(getNamespaceExports(testPkgName))
