@@ -262,33 +262,33 @@ testPlots <- function() {
   plotMultiTest_sf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
-    features <- rownames(var_x)
-    var_x <- data.frame(features, gather(var_x))
+    var_x <- data.table::data.table(features = rownames(var_x), var_x)
+    var_x <- data.table::melt(var_x, measure.vars = c(2,3))
 
     var_y <- data.frame(lapply(x$results, `[`, 3))
     colnames(var_y) <- names(x$results)
-    features <- rownames(var_y)
-    var_y <- data.frame(features, gather(var_y))
+    var_y <- data.table::data.table(features = rownames(var_y), var_y)
+    var_y <- data.table::melt(var_y, measure.vars = c(2,3))
 
-    df <- merge(var_x, var_y, by=c("key", "features"))
+    df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    plot(df$value.x ~ df$value.y, col = factor(df$key))
+    plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTest_sf", plotMultiTest_sf, envir = parent.frame())
   plotMultiTest_mf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
-    features <- rownames(var_x)
-    var_x <- data.frame(features, gather(var_x))
+    var_x <- data.table::data.table(features = rownames(var_x), var_x)
+    var_x <- data.table::melt(var_x, measure.vars = c(2,3))
 
     var_y <- data.frame(lapply(x$results, `[`, 3))
     colnames(var_y) <- names(x$results)
-    features <- rownames(var_y)
-    var_y <- data.frame(features, gather(var_y))
+    var_y <- data.table::data.table(features = rownames(var_y), var_y)
+    var_y <- data.table::melt(var_y, measure.vars = c(2,3))
 
-    df <- merge(var_x, var_y, by=c("key", "features"))
+    df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    plot(df$value.x ~ df$value.y, col = factor(df$key))
+    plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTest_mf", plotMultiTest_mf, envir = parent.frame())
 
@@ -307,12 +307,12 @@ testPlots <- function() {
         displayName = "scatterplot_singlefeat",
         plotType = "multiTest",
         # default should set plotType to c("singleFeature", "multiTest")
-        packages = "tidyr"
+        packages = "data.table"
       ),
       plotMultiTest_mf = list(
         displayName = "scatterplot_multifeat",
         plotType = c("multiFeature", "multiTest"),
-        packages = "tidyr"
+        packages = "data.table"
       )
     ),
     model_03 = list(
