@@ -3,7 +3,6 @@
 # Setup ------------------------------------------------------------------------
 
 source("tinytestSettings.R")
-
 using(ttdo)
 
 library(OmicNavigator)
