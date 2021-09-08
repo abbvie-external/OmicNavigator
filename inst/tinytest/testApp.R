@@ -91,9 +91,23 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
-  vapply(studies[[1]][["plots"]][[1]][["plots"]],
-         function(x) x[["plotType"]], character(1)),
-  c("singleFeature", "multiFeature")
+  studies[[1]][["plots"]][[1]][["plots"]][[1]][["plotType"]],
+  "singleFeature"
+)
+
+expect_identical_xl(
+  studies[[1]][["plots"]][[1]][["plots"]][[2]][["plotType"]],
+  "multiFeature"
+)
+
+expect_identical_xl(
+  studies[[1]][["plots"]][[1]][["plots"]][[3]][["plotType"]],
+  "multiTest"
+)
+
+expect_identical_xl(
+  studies[[1]][["plots"]][[1]][["plots"]][[4]][["plotType"]],
+  list("multiFeature", "multiTest")
 )
 
 # If there are no OmicNavigator study packages installed, return an empty list.
