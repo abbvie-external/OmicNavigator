@@ -259,7 +259,7 @@ testPlots <- function() {
                    xlab = "PC 1", ylab = "PC 2", main = "PCA")
   }
   assign("plotMultiFeature", plotMultiFeature, envir = parent.frame())
-  plotMultiTest_sf <- function(x) {
+  plotMultiTestSf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
     var_x <- data.table::data.table(features = rownames(var_x), var_x)
@@ -272,10 +272,10 @@ testPlots <- function() {
 
     df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    plot(df$value.x ~ df$value.y, col = factor(df$variable))
+    graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
-  assign("plotMultiTest_sf", plotMultiTest_sf, envir = parent.frame())
-  plotMultiTest_mf <- function(x) {
+  assign("plotMultiTestSf", plotMultiTestSf, envir = parent.frame())
+  plotMultiTestMf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
     var_x <- data.table::data.table(features = rownames(var_x), var_x)
@@ -288,9 +288,9 @@ testPlots <- function() {
 
     df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    plot(df$value.x ~ df$value.y, col = factor(df$variable))
+    graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
-  assign("plotMultiTest_mf", plotMultiTest_mf, envir = parent.frame())
+  assign("plotMultiTestMf", plotMultiTestMf, envir = parent.frame())
 
   plots <- list(
     default = list(
@@ -303,13 +303,13 @@ testPlots <- function() {
         plotType = "multiFeature",
         packages = "stats"
       ),
-      plotMultiTest_sf = list(
+      plotMultiTestSf = list(
         displayName = "scatterplot_singlefeat",
         plotType = "multiTest",
         # default should set plotType to c("singleFeature", "multiTest")
         packages = "data.table"
       ),
-      plotMultiTest_mf = list(
+      plotMultiTestMf = list(
         displayName = "scatterplot_multifeat",
         plotType = c("multiFeature", "multiTest"),
         packages = "data.table"

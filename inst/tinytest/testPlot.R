@@ -191,36 +191,36 @@ expect_error_xl(
 
 expect_silent_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
-            plotID = "plotMultiTest_sf", testID = c("test_01", "test_02"))
+            plotID = "plotMultiTestSf", testID = c("test_01", "test_02"))
 )
 
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "non-existent",
-            plotID = "plotMultiTest_sf", testID = c("test_01", "test_02")),
+            plotID = "plotMultiTestSf", testID = c("test_01", "test_02")),
   "non-existent"
 )
 
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
-            plotID = "plotMultiTest_sf", testID = "test_01")
+            plotID = "plotMultiTestSf", testID = "test_01")
 )
 
 expect_silent_xl(
   plotStudy(testStudyName, modelID = "model_01",
             featureID = c("feature_0001", "feature_0002"),
-            plotID = "plotMultiTest_mf", testID = c("test_01", "test_02"))
+            plotID = "plotMultiTestMf", testID = c("test_01", "test_02"))
 )
 
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01",
             featureID = "non-existent",
-            plotID = "plotMultiTest_mf", testID = c("test_01", "test_02"))
+            plotID = "plotMultiTestMf", testID = c("test_01", "test_02"))
 )
 
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01",
             featureID = c("feature_0001", "feature_0002"),
-            plotID = "plotMultiTest_mf", testID = "test_01")
+            plotID = "plotMultiTestMf", testID = "test_01")
 )
 
 # getPlottingData (object) -----------------------------------------------------
