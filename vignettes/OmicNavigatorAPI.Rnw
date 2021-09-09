@@ -264,7 +264,7 @@ plotStudy(
   study = "ABC",
   modelID = "model_01",
   featureID = c("feature_0001", "feature_0002"),
-  plotID = "plotMultiTest_mf",
+  plotID = "plotMultiTestMf",
   testID = c("test_01", "test_02")
 )
 @
