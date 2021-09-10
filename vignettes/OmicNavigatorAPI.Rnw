@@ -94,6 +94,9 @@ local({
 List all the available studies along with their models, tests, annotations, and
 plots.
 
+\textbf{Update:} The \texttt{plotType} may be a single string or a nested list
+of multiple plot types (e.g. ``singleFeature'' and ``multiTest'')
+
 <<list-studies, eval=FALSE>>=
 studies <- listStudies()
 @

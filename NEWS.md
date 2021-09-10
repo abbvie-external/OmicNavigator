@@ -1,3 +1,8 @@
+* New `plotType` of `"multiTest"`. Include this when adding a custom plot with
+`addPlots()` to have the app pass the results tables for all testIDs for a given
+modelID (implemented by [Marco Curado](https://github.com/curadomr) in [PR
+#6](https://github.com/abbvie-external/OmicNavigator/pull/6))
+
 * Bug fix: The documentation states that the assays table must only contain
 numeric columns. However, if a user added a data frame with non-numeric columns,
 no warning or error occurred. Now `addAssays()` will throw an error if it

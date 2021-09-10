@@ -1045,7 +1045,7 @@ Optionally, data related to test results can be plotted by providing a valid
 testID to the \texttt{plotStudy()}. For instance, for \texttt{modelID = "main"}
 one could call \texttt{plotStudy()} with \texttt{testID = "basal.vs.lp"} to be
 able to plot its test results. For plotting data from multiple tests, plotType
-must be set to "multiTest".
+must be set to ``multiTest''.
 
 To make the custom plotting functions available in the app, re-install the study
 package with \texttt{installStudy()}.
