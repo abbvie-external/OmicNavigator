@@ -1,3 +1,7 @@
+# 1.6.1
+
+* The release tarball includes version 1.3.2 of the web app
+
 * New `plotType` of `"multiTest"`. Include this when adding a custom plot with
 `addPlots()` to have the app pass the results tables for all testIDs for a given
 modelID (implemented by [Marco Curado](https://github.com/curadomr) in [PR
