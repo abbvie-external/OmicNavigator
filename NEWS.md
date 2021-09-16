@@ -7,7 +7,7 @@ modelID (implemented by [Marco Curado](https://github.com/curadomr) in [PR
 numeric columns. However, if a user added a data frame with non-numeric columns,
 no warning or error occurred. Now `addAssays()` will throw an error if it
 detects any non-numeric columns (reported by [Anastasia
-Galperina])(https://github.com/agalperina) in [WebApp Issue
+Galperina](https://github.com/agalperina) in [WebApp Issue
 #57](https://github.com/abbvie-external/OmicNavigatorWebApp/issues/57))
 
 # 1.5.2
