@@ -1,4 +1,4 @@
-FROM opencpu/base:2.2.2
+FROM opencpu/base:v2.2.5
 
 COPY . /app
 
