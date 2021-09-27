@@ -185,7 +185,17 @@ names(invalidEnrichmentsLinkouts[["enrichmentsLinkouts"]])[1] <- "non-existent-a
 
 expect_error_xl(
   validateStudy(invalidEnrichmentsLinkouts),
-  "The annotationID \"non-existent-annotationID\" is not an available annotation\n"
+  "The annotationID \"non-existent-annotationID\" is not an available annotation"
+)
+
+# The annotationID referenced by the enrichmentLinkout must be included in the
+# enrichments. However, it's not required to contain the extra metadata added by
+# addAnnotations(). The latter is only required for the network view.
+enrichmentWithoutAnnotation <- testStudyObj
+enrichmentWithoutAnnotation[["annotations"]][["annotation_01"]] <- NULL
+
+expect_silent_xl(
+  validateStudy(enrichmentWithoutAnnotation)
 )
 
 # MetaFeatures Linkouts --------------------------------------------------------

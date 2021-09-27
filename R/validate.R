@@ -232,14 +232,18 @@ validateEnrichmentsLinkouts <- function(study) {
 
   if (isEmpty(enrichmentsLinkouts)) return(invisible(NA))
 
-  annotations <- getAnnotations(study, quiet = TRUE)
+  enrichments <- getEnrichments(study, quiet = TRUE)
+  annotationIDs <- lapply(enrichments, names)
+  annotationIDs <- unique(unlist(annotationIDs))
 
   for (i in seq_along(enrichmentsLinkouts)) {
     annotationID <- names(enrichmentsLinkouts)[i]
-    if (!annotationID %in% names(annotations)) {
+    if (!annotationID %in% annotationIDs) {
       stop("Invalid enrichments table linkout\n",
-           sprintf("The annotationID \"%s\" is not an available annotation\n", annotationID),
-           "Add it with addAnnotations()")
+           sprintf("The annotationID \"%s\" is not an available annotation.\n",
+                   annotationID),
+           "You can only add linkouts with addEnrichmentsLinkouts() for\n",
+           "annotationIDs that have been added for at least one model with addEnrichments()")
     }
   }
 

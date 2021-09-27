@@ -1,3 +1,11 @@
+* Bug fix: The validation of the enrichments table linkouts was too strict. It
+required that the annotationID be present in the annotations created by
+`addAnnotations()`. This extra information about the annotationID is only
+required for the network view. The validation now only throws an error if the
+annotationID was not included for at least one modelID in the enrichments data
+added with `addEnrichments()` (reported by [Anastasia
+Galperina](https://github.com/agalperina))
+
 # 1.6.3
 
 * The release tarball includes version 1.3.4 of the web app
