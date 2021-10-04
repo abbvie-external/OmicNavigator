@@ -185,20 +185,26 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
   assays <- getAssays(study, modelID = modelID, quiet = TRUE,
                       libraries = libraries)
-  if (isEmpty(assays)) {
+  # Assays data is only required if no testID is defined. Users may want to only
+  # plot data from the results table
+  if (isEmpty(assays) && !is.null(testID)) {
+    message(sprintf("No assays available for modelID \"%s\"\n", modelID))
+    assaysPlotting <- assays
+  } else if (isEmpty(assays)) {
     stop(sprintf("No assays available for modelID \"%s\"\n", modelID),
          "Add assays data with addAssays()")
+  } else {
+    featureIDAvailable <- featureID %in% rownames(assays)
+    if (any(!featureIDAvailable)) {
+      stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                   featureID[!featureIDAvailable][1], modelID))
+    }
+    assaysPlotting <- assays[featureID, , drop = FALSE]
   }
-  featureIDAvailable <- featureID %in% rownames(assays)
-  if (any(!featureIDAvailable)) {
-    stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                 featureID[!featureIDAvailable][1], modelID))
-  }
-  assaysPlotting <- assays[featureID, , drop = FALSE]
 
   samples <- getSamples(study, modelID = modelID, quiet = TRUE,
                         libraries = libraries)
-  if (isEmpty(samples)) {
+  if (isEmpty(samples) || isEmpty(assays)) {
     samplesPlotting <- samples
   } else {
     samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,

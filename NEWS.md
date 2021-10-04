@@ -6,6 +6,12 @@ annotationID was not included for at least one modelID in the enrichments data
 added with `addEnrichments()` (reported by [Anastasia
 Galperina](https://github.com/agalperina))
 
+* Bug fix: Now that custom plots can include data from the results table, it is
+no longer an error to include custom plots in a study without assays or samples
+data (reported by Joe LoGrasso). Also relaxed the validation requirement for
+custom plots so that the study can contain assays data but not corresponding
+samples data
+
 # 1.6.3
 
 * The release tarball includes version 1.3.4 of the web app

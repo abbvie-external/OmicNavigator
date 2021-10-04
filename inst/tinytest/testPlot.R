@@ -489,6 +489,39 @@ expect_warning(
   info = "Warning when assays has a row that is missing from the features table"
 )
 
+# getPlottingData() can work even if the only data returned is "results"
+testStudyObjMinimal <- OmicNavigator:::testStudyMinimal()
+
+plottingDataMinimal <- getPlottingData(
+  testStudyObjMinimal,
+  modelID = testModelName,
+  featureID = "feature_0001",
+  testID = "test_01"
+)
+
+expect_identical_xl(
+  plottingDataMinimal[["assays"]],
+  list()
+)
+
+expect_identical_xl(
+  plottingDataMinimal[["samples"]],
+  list()
+)
+
+expect_identical_xl(
+  plottingDataMinimal[["features"]],
+  list()
+)
+
+expect_true_xl(
+  inherits(plottingDataMinimal[["results"]], "data.frame")
+)
+
+expect_identical_xl(
+  plottingDataMinimal[["results"]][[1]],
+  "feature_0001"
+)
 
 # getPlottingData (object, testID) ---------------------------------------------
 

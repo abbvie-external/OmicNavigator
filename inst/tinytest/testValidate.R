@@ -213,3 +213,26 @@ expect_error_xl(
   validateStudy(invalidMetaFeaturesLinkouts),
   "\"non-existent-column\" is not the name of an available metaFeature"
 )
+
+# Plots ------------------------------------------------------------------------
+
+# A study no longer has to have assays and samples for custom plots since they
+# may only be plotting columns from the results table
+
+studyNoAssaysNoSamples <- testStudyObj
+studyNoAssaysNoSamples[["assays"]] <- list()
+studyNoAssaysNoSamples[["samples"]] <- list()
+
+expect_true_xl(
+  validateStudy(studyNoAssaysNoSamples),
+  info = "Custom plots may only plot results data. Assays and samples not required"
+)
+
+# A study can also have assays but not samples
+studyNoSamples <- testStudyObj
+studyNoSamples[["samples"]] <- list()
+
+expect_true_xl(
+  validateStudy(studyNoSamples),
+  info = "Samples not required to plot assays data"
+)

@@ -261,29 +261,17 @@ validatePlots <- function(study) {
     modelID <- models[i]
     modelPlots <- getPlots(study, modelID, quiet = TRUE)
     if (isEmpty(modelPlots)) next
-    # Custom plots require assays
+    # Custom plots no longer require assays, since they can plot columns from
+    # the results table. If assays are unavailable, send a message and then
+    # skip the rest of the validation between assays with
+    # samples/features/results
     assays <- getAssays(study, modelID, quiet = TRUE)
     if (isEmpty(assays)) {
-      stop("Custom plots require assays. Missing assays for modelID \"%s\"",
-           modelID)
+      message(sprintf("Custom plots often use assays. Missing assays for modelID \"%s\"",
+                      modelID))
+      next
     }
-    # Custom plots require samples
-    samples <- getSamples(study, modelID, quiet = TRUE)
-    if (isEmpty(samples)) {
-      stop("Custom plots require samples. Missing samples for modelID \"%s\"",
-           modelID)
-    }
-    # Column names of assays must be in first column of samples table
-    cols <- colnames(assays)
-    colsInSamples <- cols %in% samples[, 1]
-    if (sum(colsInSamples) == 0) {
-      stop("The column names of the assays table do not match the sampleID column in the samples table\n",
-           sprintf("modelID: %s", modelID))
-    }
-    if (!all(colsInSamples)) {
-      stop("Some of the column names of the assays table are missing from the sampleID column in the samples table\n",
-           sprintf("modelID: %s", modelID))
-    }
+
     # featureID column of results must be row names of assays
     tests <- names(study[["results"]][[modelID]])
     rows <- row.names(assays)
@@ -300,6 +288,26 @@ validatePlots <- function(study) {
              sprintf("modelID: %s, testID: %s", modelID, testID))
       }
     } # inner loop of testIDs
+
+    # Validate concordance between assays and samples
+    samples <- getSamples(study, modelID, quiet = TRUE)
+    if (isEmpty(samples)) {
+      message(sprintf("Custom plots often use samples. Missing samples for modelID \"%s\"",
+                      modelID))
+      next
+    }
+    # Column names of assays must be in first column of samples table
+    cols <- colnames(assays)
+    colsInSamples <- cols %in% samples[, 1]
+    if (sum(colsInSamples) == 0) {
+      stop("The column names of the assays table do not match the sampleID column in the samples table\n",
+           sprintf("modelID: %s", modelID))
+    }
+    if (!all(colsInSamples)) {
+      stop("Some of the column names of the assays table are missing from the sampleID column in the samples table\n",
+           sprintf("modelID: %s", modelID))
+    }
+
   } # outer loop of modelIDs
 
   return(invisible(TRUE))
