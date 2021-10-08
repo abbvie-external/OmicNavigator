@@ -429,6 +429,22 @@ expect_silent_xl(
 )
 rm(functionUnusualButValid)
 
+# Functions cannot be named the same as any functions in package:base. Otherwise
+# getPlotFunction() returns the function in package:base instead of the user
+# defined function.
+
+# base::plot()
+expect_error_xl(
+  addPlots(study, plots = list(default = list(plot = list(displayName = "a plot named plot")))),
+  "package:base"
+)
+
+# base::sign()
+expect_error_xl(
+  addPlots(study, plots = list(default = list(sign = list(displayName = "a plot named sign")))),
+  "package:base"
+)
+
 # checkBarcodes ----------------------------------------------------------------
 
 expect_error_xl(

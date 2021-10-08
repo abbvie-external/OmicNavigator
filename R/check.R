@@ -355,12 +355,23 @@ checkMetaFeatures <- function(metaFeatures, study = NULL) {
 checkPlots <- function(plots) {
   checkList(plots)
 
+  # Can't name a custom plotting function the same name as any function in the
+  # base namespace. When the plotting function is found via dynGet() based on
+  # its name, the function in package:base is found first. This is not a problem
+  # for any of the other packages on the search path.
+  reservedNames <- ls("package:base")
+
   for (i in seq_along(plots)) {
     checkList(plots[[i]])
     for (j in seq_along(plots[[i]])) {
       plotEntry <- plots[[i]][[j]]
       checkList(plotEntry)
       plotID <- names(plots[[i]])[j]
+      if (plotID %in% reservedNames) {
+        stop(sprintf("Invalid plotID: \"%s\"\n", plotID),
+             "You can't name the custom plotting using the same name as any function in package:base.\n",
+             "Run ls(\"package:base\") to see the list of prohibited names\n")
+      }
       plotFunction <- getPlotFunction(plotID)
       if (!is.function(plotFunction)) {
         stop(sprintf("Unable to find function \"%s\"", plotID))

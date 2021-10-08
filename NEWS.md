@@ -12,6 +12,10 @@ data (reported by Joe LoGrasso). Also relaxed the validation requirement for
 custom plots so that the study can contain assays data but not corresponding
 samples data
 
+* Bug fix: Custom plotting functions cannot have the same name as any of the
+functions defined in the base package. This error is now caught early with
+`addPlots()` (reported by [Anastasia Galperina](https://github.com/agalperina))
+
 # 1.6.3
 
 * The release tarball includes version 1.3.4 of the web app
