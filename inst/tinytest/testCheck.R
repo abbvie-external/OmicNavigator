@@ -433,17 +433,19 @@ rm(functionUnusualButValid)
 # getPlotFunction() returns the function in package:base instead of the user
 # defined function.
 
-# base::plot()
-expect_error_xl(
-  addPlots(study, plots = list(default = list(plot = list(displayName = "a plot named plot")))),
-  "package:base"
-)
-
 # base::sign()
 expect_error_xl(
   addPlots(study, plots = list(default = list(sign = list(displayName = "a plot named sign")))),
   "package:base"
 )
+
+# base::plot() was added to base in R 4.0.0
+if (getRversion() > "4") {
+  expect_error_xl(
+    addPlots(study, plots = list(default = list(plot = list(displayName = "a plot named plot")))),
+    "package:base"
+  )
+}
 
 # checkBarcodes ----------------------------------------------------------------
 
