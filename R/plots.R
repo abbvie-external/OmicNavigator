@@ -3,6 +3,14 @@
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
+#' @details The arguments \code{study}, \code{modelID}, \code{featureID}, and
+#' \code{testID} are passed to the function \code{\link{getPlottingData}}, and
+#' the nested list returned by this function is passed as the first argument to
+#' your custom plotting function. By default, the app will pass a single
+#' featureID unless the plotType is "multiFeature". Similarly, the app will pass
+#' a single testID unless the plotType is "multiTest". You can specify the
+#' plotType when you add a plot with \code{\link{addPlots}}.
+#'
 #' @return This function is called for the side effect of creating a plot.
 #'   However, it also invisible returns the original \code{onStudy} object
 #'   passed to \code{study}.
@@ -146,7 +154,7 @@ resetSearch <- function(pkgNamespaces) {
 #' @inheritParams shared-get
 #' @inheritParams listStudies
 #'
-#' @return Returns a list of 3 data frames:
+#' @return Returns a list of 4 data frames:
 #'
 #' \item{\code{assays}}{A data frame that contains the assay measurements,
 #' filtered to only include the row(s) corresponding to the input featureID(s)
@@ -169,6 +177,12 @@ resetSearch <- function(pkgNamespaces) {
 #' If multiple featureIDs are requested, the rows are reordered to match the
 #' order of this input. The column order is unchanged. If multiple testIDs are
 #' provided, they are stored in a list object.}
+#'
+#' The data frame \code{results} is only returned if you pass a testID. By
+#' default the app will always pass the currently selected testID. To make
+#' \code{results} a list of data frames (one for each testID for the currently
+#' selected modelID), set the plotType to be "multiTest" when adding the plot
+#' with \code{\link{addPlots}}.
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'

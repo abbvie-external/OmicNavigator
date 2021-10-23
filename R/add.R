@@ -389,11 +389,11 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"},
 #'   \code{"multiTest"}. Note that PlotType accepts a vector of entries,
 #'   whenever applicable, e.g., plotType = c(\code{"multiFeature"},
-#'   \code{"multiTest"}). If you
-#'   do not specify the \code{plotType}, the plot will be assumed to be
-#'   \code{"singleFeature"}. Optionally, if the plotting function requires
-#'   external packages, these can be defined in the element \code{packages}. To
-#'   share plots across multiple models, use the modelID "default".
+#'   \code{"multiTest"}). If you do not specify the \code{plotType}, the plot
+#'   will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
+#'   Optionally, if the plotting function requires external packages, these can
+#'   be defined in the element \code{packages}. To share plots across multiple
+#'   models, use the modelID "default".
 #' @inherit shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
