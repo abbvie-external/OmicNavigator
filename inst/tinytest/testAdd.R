@@ -2,6 +2,7 @@
 
 # Setup ------------------------------------------------------------------------
 
+# source(paste0(getwd(), "/inst/tinytest/tinytestSettings.R"))
 source("tinytestSettings.R")
 using(ttdo)
 
@@ -43,6 +44,9 @@ study <- addMetaFeatures(study, metaFeatures = metaFeatures)
 
 barcodes <- OmicNavigator:::testBarcodes()
 study <- addBarcodes(study, barcodes = barcodes)
+
+mapping <- OmicNavigator:::testMapping()
+study <- addMapping(study, mapping = mapping)
 
 reports <- OmicNavigator:::testReports()
 study <- addReports(study, reports = reports)

@@ -2,6 +2,7 @@
 
 # Setup ------------------------------------------------------------------------
 
+# source(paste0(getwd(), "/inst/tinytest/tinytestSettings.R"))
 source("tinytestSettings.R")
 using(ttdo)
 
@@ -235,4 +236,24 @@ studyNoSamples[["samples"]] <- list()
 expect_true_xl(
   validateStudy(studyNoSamples),
   info = "Samples not required to plot assays data"
+)
+
+# Mapping ----------------------------------------------------------------------
+
+# Check if model names from mapping are not matching model names from results
+invalidMapping <- testStudyObj
+names(invalidMapping[["mapping"]]) <- c("model_01", "model")
+
+expect_error_xl(
+  validateStudy(invalidMapping),
+  "At least one mapping name does not match any model name from results table\n"
+)
+
+# Check if features from mapping are not matching features from results
+invalidMapping <- testStudyObj
+invalidMapping[["mapping"]][["model_01"]] <- rep("non-matching feature", 100)
+
+expect_error_xl(
+  validateStudy(invalidMapping),
+  "Mapping features for modelID do not match features from modelID results table\n"
 )

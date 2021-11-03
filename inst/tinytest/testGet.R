@@ -2,6 +2,7 @@
 
 # Setup ------------------------------------------------------------------------
 
+# source(paste0(getwd(), "/inst/tinytest/tinytestSettings.R"))
 source("tinytestSettings.R")
 using(ttdo)
 
@@ -595,6 +596,28 @@ expect_identical_xl(
 expect_identical_xl(
   getPlots(testStudyName, modelID = "model_03"),
   testStudyObj[["plots"]][["model_03"]]
+)
+
+# getMapping -------------------------------------------------------------------
+
+expect_identical_xl(
+  getMapping(testStudyObj),
+  testStudyObj[["mapping"]]
+)
+
+expect_message_xl(
+  getMapping(emptyStudy),
+  "No mapping available"
+)
+
+expect_error_xl(
+  getMapping(1),
+  "No method for object of class \"numeric\""
+)
+
+expect_error_xl(
+  getMapping(data.frame()),
+  "No method for object of class \"data.frame\""
 )
 
 # getBarcodes ------------------------------------------------------------------

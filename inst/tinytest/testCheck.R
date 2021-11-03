@@ -447,6 +447,12 @@ if (getRversion() > "4") {
   )
 }
 
+# checkMapping -----------------------------------------------------------------
+
+expect_error_xl(
+  addMapping(study, mapping = NULL)
+)
+
 # checkBarcodes ----------------------------------------------------------------
 
 expect_error_xl(

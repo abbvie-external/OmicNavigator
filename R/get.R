@@ -266,6 +266,24 @@ getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   )
 }
 
+#' Get mapping object from a study
+#'
+#' @inherit shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getMapping <- function(study, quiet = FALSE, libraries = NULL) {
+  getElements(
+    study,
+    elements = "mapping",
+    filters = list(),
+    default = "default",
+    fileType = "json",
+    quiet = quiet,
+    libraries = libraries
+  )
+}
+
 #' Get barcodes from a study
 #'
 #' @inherit shared-get

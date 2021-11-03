@@ -23,6 +23,7 @@ validateStudy <- function(study) {
   validateEnrichments(study)
   validateEnrichmentsLinkouts(study)
   validatePlots(study)
+  validateMapping(study)
 
   return(invisible(TRUE))
 }
@@ -312,3 +313,34 @@ validatePlots <- function(study) {
 
   return(invisible(TRUE))
 }
+
+validateMapping <- function(study) {
+  mapping <- study[["mapping"]]
+
+  # Mapping isn't required
+  if (isEmpty(mapping)) return(NA)
+
+  # Check whether mapping names match model names from results table
+  models <- names(study[["results"]])
+  for (i in seq_along(mapping)) {
+    mappingID <- names(mapping[i])
+    if (!mappingID %in% models) {
+      stop("At least one mapping name does not match any model name from results table\n",
+           sprintf("mappingID: %s", mappingID))
+    }
+  }
+
+  # Check whether mapping features match results features
+  results <- getResults(study)
+  for (i in seq_along(mapping)) {
+    mappingID <- names(mapping[i])
+    mappingFeatures <- mapping[[i]][which(!is.na(mapping[[i]]))]
+    modelFeatures   <- results[[grep(mappingID, models)]][1][[1]][,1]
+    if (!length(intersect(mappingFeatures, modelFeatures)) > 0) {
+      stop("Mapping features for modelID do not match features from modelID results table\n",
+           sprintf("modelID: %s", mappingID))
+    }
+  }
+  return(invisible(TRUE))
+}
+
