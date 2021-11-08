@@ -413,7 +413,7 @@ checkMapping <- function(mapping) {
   listMaxLength <- max(sapply(mapping, length))
   mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
 
-  mappingdf <- as.data.frame(mapping)
+  mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
 
   # NAs are accepted, but not if all values for a model are NA
   stopifnot(vapply(mappingdf, is.character, logical(1)))
@@ -427,7 +427,7 @@ checkMapping <- function(mapping) {
       featAligned <- any(sum(!sapply(tempModel, is.na)) > 1)
     }
 
-    if (isFALSE(featAligned)) {
+    if (!is.na(featAligned) && !featAligned) {
       stop(sprintf("Model \"%s\" does not present any feature mapping to another model.", colnames(mappingdf)[[i]]))
     }
   }
