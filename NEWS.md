@@ -1,3 +1,11 @@
+# 1.7.0
+
+* New study element `mapping` for mapping featureIDs across models of a study
+(see `?addMapping` and `getMapping`). This will make it possible to create plots
+that combine data across models, which will be enabled in future versions
+(implemented by [Marco Curado](https://github.com/curadomr) in [PR
+#7](https://github.com/abbvie-external/OmicNavigator/pull/7))
+
 * Bug fix: The validation of the enrichments table linkouts was too strict. It
 required that the annotationID be present in the annotations created by
 `addAnnotations()`. This extra information about the annotationID is only
