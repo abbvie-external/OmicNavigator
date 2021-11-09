@@ -17,6 +17,7 @@ createStudy(
   enrichments = list(),
   metaFeatures = list(),
   plots = list(),
+  mapping = list(),
   barcodes = list(),
   reports = list(),
   resultsLinkouts = list(),
@@ -112,13 +113,19 @@ session. The third list provides metadata to describe each plot. The only
 required metadata element is \code{displayName}, which controls how the
 plot will be named in the app. You are encouraged to also specify the
 \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"},
-\code{"multiTest"}. Note that PlotType accepts a vector of entries,
-whenever applicable, e.g., plotType = c(\code{"multiFeature"},
+\code{"multiTest"}, \code{"multiModel"}. PlotType accepts vector of
+entries, whenever applicable, e.g., plotType = c(\code{"multiFeature"},
 \code{"multiTest"}). If you do not specify the \code{plotType}, the plot
 will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
 Optionally, if the plotting function requires external packages, these can
 be defined in the element \code{packages}. To share plots across multiple
 models, use the modelID "default".}
+
+\item{mapping}{Feature IDs from models. The input object is a list object
+with element names matching model names, and each element containing a
+vector with feature IDs per model. Features with same index position across
+models are considered found across models. For each model, the feature IDs
+must match the feature IDs from results object of the respective model.}
 
 \item{barcodes}{The metadata variables that describe the barcode plot.
 The input object is a list of lists (one per model). Each sublist must
@@ -217,6 +224,7 @@ study <- createStudy(name = "ABC",
   \code{\link{addEnrichments}},
   \code{\link{addMetaFeatures}},
   \code{\link{addPlots}},
+  \code{\link{addMapping}},
   \code{\link{addBarcodes}},
   \code{\link{addReports}},
   \code{\link{addResultsLinkouts}},

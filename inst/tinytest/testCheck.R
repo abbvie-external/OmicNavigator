@@ -447,6 +447,45 @@ if (getRversion() > "4") {
   )
 }
 
+# checkMapping -----------------------------------------------------------------
+
+expect_error_xl(
+  addMapping(study, mapping = NULL)
+)
+
+## add checks based on check.R
+tempMapping <- list(model_01 = c("feature_01", "feature_02"),
+                    model_02 = c("feature_01", NA))
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+tempMapping <- list(model_01 = c("feature_01", "feature_02"),
+                    model_02 = c(NA, NA))
+expect_error_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with distinct sizes for elements
+tempMapping <- list(model_01 = c("feature_01", "feature_02"),
+                    model_02 = c("feature_01"))
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with one single element
+tempMapping <- list(model_01 = c("feature_01", "feature_02"))
+expect_error_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping features that do not match across models
+tempMapping <- list(model_01 = c("feature_01", "feature_02", NA, NA),
+                    model_02 = c(NA, NA, "feature_05", "feature_06"))
+expect_error_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
 # checkBarcodes ----------------------------------------------------------------
 
 expect_error_xl(

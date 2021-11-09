@@ -32,6 +32,8 @@ testStudy <- function(name,
                        resultsLinkouts = testResultsLinkouts(),
                        enrichmentsLinkouts = testEnrichmentsLinkouts(),
                        metaFeaturesLinkouts = testMetaFeaturesLinkouts(),
+                       mapping = testMapping(seed = seed, nFeatures = nFeatures,
+                                             numericFeatureID = numericFeatureID),
                        version = version,
                        maintainer = maintainer,
                        maintainerEmail = maintainerEmail,
@@ -324,6 +326,31 @@ testPlots <- function() {
     )
   )
   return(plots)
+}
+
+testMapping <- function(seed = 12345L, nFeatures = 100,
+                        numericFeatureID = FALSE) {
+
+  results <- testResults(seed = seed, nFeatures = nFeatures,
+                         numericFeatureID = numericFeatureID)
+
+  model_01_feats <- results[[1]][[1]][,1]
+  model_02_feats <- results[[2]][[1]][,1]
+
+  model_01_feats <- model_01_feats[order(model_01_feats)]
+  model_02_feats <- model_02_feats[order(model_02_feats)]
+
+  set.seed(1)
+  model_01_feats[which(model_01_feats %in% sample(model_01_feats, 10))] <- NA
+  set.seed(2)
+  model_02_feats[which(model_02_feats %in% sample(model_02_feats, 10))] <- NA
+
+  mapping <- list(
+    model_01 = model_01_feats,
+    model_02 = model_02_feats
+  )
+
+  return(mapping)
 }
 
 testBarcodes <- function(n = 3) {

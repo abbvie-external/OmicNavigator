@@ -402,6 +402,39 @@ checkPlots <- function(plots) {
   return(NULL)
 }
 
+checkMapping <- function(mapping) {
+  checkList(mapping)
+
+  # stop if mapping object has less than 2 elements
+  if (length(mapping) > 0) stopifnot(length(mapping) > 1)
+  else return(NULL)
+
+  # check if list elements have the same size. If not, fill difference with NA.
+  listMaxLength <- max(sapply(mapping, length))
+  mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
+
+  mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
+
+  # NAs are accepted, but not if all values for a model are NA
+  stopifnot(vapply(mappingdf, is.character, logical(1)))
+
+  # check if any given model has at least one feature aligned with another model
+  for (i in seq_along(mappingdf)) {
+    tempModel   <- mappingdf[!is.na(mappingdf[[i]]),]
+    if (nrow(tempModel) > 1) {
+      featAligned <- any(apply(!sapply(tempModel, is.na), 1, sum) > 1)
+    } else {
+      featAligned <- any(sum(!sapply(tempModel, is.na)) > 1)
+    }
+
+    if (!is.na(featAligned) && !featAligned) {
+      stop(sprintf("Model \"%s\" does not present any feature mapping to another model.", colnames(mappingdf)[[i]]))
+    }
+  }
+
+  return(NULL)
+}
+
 checkBarcodes <- function(barcodes) {
   checkList(barcodes)
 

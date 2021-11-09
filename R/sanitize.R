@@ -74,6 +74,10 @@ sanitizePlots <- function(plots) {
   return(plots)
 }
 
+sanitizeMapping <- function(mapping) {
+  return(mapping)
+}
+
 sanitizeBarcodes <- function(barcodes) {
   return(barcodes)
 }
