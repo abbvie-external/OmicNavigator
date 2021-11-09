@@ -3,6 +3,7 @@
 .RData
 .Ruserdata
 *.Rcheck
+inst/build
 inst/doc
 inst/www
 *.rds
