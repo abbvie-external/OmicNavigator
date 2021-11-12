@@ -8,6 +8,7 @@ instructions below to prepare your contribution.
 * [How to contribute with Git and GitHub](#how-to-contribute-with-git-and-github)
 * [Setup your development environment](#setup-your-development-environment)
 * [Updating NEWS.md](#updating-newsmd)
+* [Documentation](#documentation)
 * [Unit tests](#unit-tests)
 * [GitHub Actions](#github-actions)
 * [Run OmicNavigator with Docker](#run-omicnavigator-with-docker)
@@ -67,7 +68,7 @@ environment.
 First install the development only packages:
 
 ```
-install.packages(c("remotes", "roxygen2"))
+install.packages(c("devtools", "remotes", "roxygen2"))
 ```
 
 Second install the required and suggested dependencies:
@@ -108,6 +109,23 @@ For example:
 ```
 * Fix bug in `nameOfFunction()` that caused a problem with... (#12, #13, @username)
 ```
+
+## Documentation
+
+If you edit the function documentation in the `.R` files, you will need to
+regenerate the corresponding `.Rd` files in `man/`.
+
+1. Update the documentation files by running `devtools::document()` in the R
+console or pressing Ctrl+Shift+D in RStudio
+
+1. Reinstall the package with `devtools::install()` (Ctrl+Shift+B in RStudio).
+Alternatively you could reload the package with `devtools::load_all()`
+(Ctrl+Shift+L in RStudio), but note that any links in the documentation won't
+work if the package is only loaded
+
+1. Confirm that the function documentation has been updated by running
+`?<name-of-function>`. You may have to refresh the help pane if you already had
+it open in RStudio
 
 ## Unit tests
 
