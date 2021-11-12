@@ -1,6 +1,17 @@
 # Contributing instructions
 
-Thanks for your interest in contributing to OmicNavigator!
+Thanks for your interest in contributing to OmicNavigator! Please follow the
+instructions below to prepare your contribution.
+
+* [Branches](#branches)
+* [Files and directories](#files-and-directories)
+* [How to contribute with Git and GitHub](#how-to-contribute-with-git-and-github)
+* [Setup your development environment](#setup-your-development-environment)
+* [Updating NEWS.md](#updating-newsmd)
+* [Unit tests](#unit-tests)
+* [GitHub Actions](#github-actions)
+* [Run OmicNavigator with Docker](#run-omicnavigator-with-docker)
+* [CRAN submission](#cran-submission)
 
 ## Branches
 
@@ -11,7 +22,20 @@ feature/\<x\> | Implements feature \<x\>
 bugfix/\<x\>  | Fixes bug \<x\>
 dev           | (Maintainer use only) Deploy to dev server to test experimental changes
 
-## How to contribute
+## Files and directories
+
+* `R/` - R source code files
+* `inst/tinytest/` - Test files
+* `inst/www/` - Web app
+* `scripts/` - Utility scripts for maintaining the package
+
+## How to contribute with Git and GitHub
+
+Please follow the steps below to create and submit your proposed changes to
+OmicNavigator. If you are new to Git and/or GitHub, please see the tutorial [A
+Quick Introduction to Version Control with Git and GitHub][intro-git-github].
+
+[intro-git-github]: https://doi.org/10.1371/journal.pcbi.1004668
 
 1. Fork the repository to your personal account
 
@@ -37,6 +61,41 @@ environment.
     ```
     git push origin feature/<x>
     ```
+
+## Setup your development environment
+
+First install the development only packages:
+
+```
+install.packages(c("remotes", "roxygen2"))
+```
+
+Second install the required and suggested dependencies:
+
+```
+remotes::install_deps(dependencies = TRUE)
+```
+
+Third install LaTeX, Make, and Graphviz if you wish to re-build the
+vignettes:
+
+```
+sudo apt-get install texlive texinfo make graphviz
+```
+
+If you’re on Windows or macOS, I recommend using the R package
+[tinytex](https://cran.r-project.org/package=tinytex) to install the
+minimal [TinyTex](https://yihui.org/tinytex/) distribution.
+
+To install the app for local testing, the easiest method is to install it once
+in the source directory, so that the app is always installed whenever you build
+the package locally. You can do this by first loading the package with devtools
+and then running `installApp()`, which will install the app to `inst/www/`:
+
+```
+devtools::load_all()
+installApp()
+```
 
 ## Updating NEWS.md
 
@@ -100,70 +159,6 @@ output too much, you can wrap the tinytest function call with
 `suppressMessages()`. This will suppress the messages from the OmicNavigator
 functions but still display the test results.
 
-## Setup your development environment
-
-First install the development only packages:
-
-```
-install.packages(c("remotes", "roxygen2"))
-```
-
-Second install the required and suggested dependencies:
-
-```
-remotes::install_deps(dependencies = TRUE)
-```
-
-Third install LaTeX, Make, and Graphviz if you wish to re-build the
-vignettes:
-
-```
-sudo apt-get install texlive texinfo make graphviz
-```
-
-If you’re on Windows or macOS, I recommend using the R package
-[tinytex](https://cran.r-project.org/package=tinytex) to install the
-minimal [TinyTex](https://yihui.org/tinytex/) distribution.
-
-To install the app for local testing, the easiest method is to install it once
-in the source directory, so that the app is always installed whenever you build
-the package locally. You can do this by first loading the package with devtools
-and then running `installApp()`, which will install the app to `inst/www/`:
-
-```
-devtools::load_all()
-installApp()
-```
-
-## Run OmicNavigator with Docker
-
-The repository includes a `Dockerfile` to install and run OmicNavigator. This is
-convenient if you want to test changes you've made to the R package without
-installing the dependencies on your local machine.
-
-```
-# Build the image
-docker build -t omicnavigator .
-# Run the image
-docker run --name onapp -t -p 8004:8004 omicnavigator
-```
-
-Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator/
-
-When you're finished, stop and delete the container:
-
-```
-docker stop onapp
-docker rm onapp
-```
-
-## Files and directories
-
-* `R/` - R source code files
-* `inst/tinytest/` - Test files
-* `inst/www/` - Web app
-* `scripts/` - Utility scripts for maintaining the package
-
 ## GitHub Actions
 
 We use [GitHub Actions](https://github.com/features/actions) for CI/CD. The
@@ -186,6 +181,28 @@ that you know will break the tests, you can put "skip" anywhere in the branch
 name. Also note that the continuous integrations jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
+
+## Run OmicNavigator with Docker
+
+The repository includes a `Dockerfile` to install and run OmicNavigator. This is
+convenient if you want to test changes you've made to the R package without
+installing the dependencies on your local machine.
+
+```
+# Build the image
+docker build -t omicnavigator .
+# Run the image
+docker run --name onapp -t -p 8004:8004 omicnavigator
+```
+
+Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator/
+
+When you're finished, stop and delete the container:
+
+```
+docker stop onapp
+docker rm onapp
+```
 
 ## CRAN submission
 
