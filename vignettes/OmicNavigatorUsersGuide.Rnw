@@ -258,7 +258,7 @@ To obtain the results, I ran their script
 and saved some of the objects to use in this vignette.
 
 <<data>>=
-data("RNAseq123", package = "OmicNavigator")
+data("RNAseq123", package = "OmicNavigator", envir = parent.frame())
 ls()
 @
 
