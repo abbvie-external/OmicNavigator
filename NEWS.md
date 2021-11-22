@@ -1,3 +1,7 @@
+# 1.7.1
+
+* The release tarball includes version 1.4.0 of the web app
+
 # 1.7.0
 
 * New study element `mapping` for mapping featureIDs across models of a study
