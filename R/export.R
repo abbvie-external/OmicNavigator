@@ -78,6 +78,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportEnrichments(study, directoryname)
   exportMetaFeatures(study, directoryname)
   exportPlots(study, directoryname)
+  exportMapping(study, directoryname)
   exportBarcodes(study, directoryname)
   exportReports(study, directoryname)
   exportResultsLinkouts(study, directoryname)
@@ -229,6 +230,15 @@ exportPlots <- function(study, path = ".") {
   exportElements(
     study,
     elements = "plots",
+    path = path,
+    fileType = "json"
+  )
+}
+
+exportMapping <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "mapping",
     path = path,
     fileType = "json"
   )

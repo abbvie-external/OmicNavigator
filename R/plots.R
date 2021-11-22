@@ -27,7 +27,15 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     is.null(libraries) || is.character(libraries)
   )
 
-  plots <- getPlots(study, modelID = modelID, libraries = libraries)
+  plots <- list()
+  for (i in seq_along(modelID)) {
+    tempPlots <- (getPlots(study, modelID = modelID[i], libraries = libraries))
+    if (i == 1) {
+      plots <- tempPlots
+    } else if (!is.null(tempPlots)) {
+      plots <- c(plots, tempPlots)
+    }
+  }
   plotsAvailable <- names(plots)
   if(!plotID %in% plotsAvailable) {
     stop(sprintf("The plot \"%s\" is not available.\n", plotID),
@@ -41,9 +49,10 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     f <- getPlotFunction(plotID, study = study)
   }
 
-  # Throw error is mismatch between number of features / tests and plot type
+  # Throw error if there is mismatch between number of features/tests and plot type
   nFeatures <- length(featureID)
   nTests    <- length(testID)
+  nModels   <- length(modelID)
   plotType  <- p[["plotType"]]
 
   if (isEmpty(plotType)) plotType <- "singleFeature"
@@ -82,6 +91,41 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
         "Plot type \"multiTest\" requires at least 2 testIDs\n",
         sprintf("Received %d testID(s)", nTests)
       )
+    }
+    # multiModel is checked as a multiTest as it requires at least 2 testIDs, eg.:
+    # (1) 1 testID per model and > 1 model
+    # (2) > 1 testID and 1 model
+    if (plotType[ind] == "multiModel") {
+      if (nTests < 2) {
+        stop(
+          "Plot type \"multiModel\" requires at least 2 testIDs\n",
+          sprintf("Received the following testID(s) : %s ", testID)
+        )
+      }
+      if (any(is.na(names(testID))) | is.null(names(testID))) {
+        stop(
+          "Plot type \"multiModel\" requires a vector for testID named after related modelID"
+        )
+      }
+      if (nModels > 1) {
+        mapping <- getMapping(study = study, libraries = libraries)
+        if (is.list(mapping) & length(mapping) == 0) {
+          stop(
+            "Plot type \"multiModel\" requires mapping object if > 1 modelID is used\n",
+            sprintf("Received %d modelIDs", nModels)
+          )
+        }
+      }
+    }
+  }
+
+  if (length(modelID) > 1) {
+    model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
+    if (!all(featureID %in% model_features)) {
+      stop(
+        "features list contains at least one feature not present in the corresponding model from mapping object\n",
+        sprintf("ModelID : %s", modelID[1])
+        )
     }
   }
 
@@ -197,75 +241,116 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   # Deduplicate the featureIDs
   featureID <- unique(featureID)
 
-  assays <- getAssays(study, modelID = modelID, quiet = TRUE,
-                      libraries = libraries)
-  # Assays data is only required if no testID is defined. Users may want to only
-  # plot data from the results table
-  if (isEmpty(assays) && !is.null(testID)) {
-    message(sprintf("No assays available for modelID \"%s\"\n", modelID))
-    assaysPlotting <- assays
-  } else if (isEmpty(assays)) {
-    stop(sprintf("No assays available for modelID \"%s\"\n", modelID),
-         "Add assays data with addAssays()")
-  } else {
-    featureIDAvailable <- featureID %in% rownames(assays)
-    if (any(!featureIDAvailable)) {
-      stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                   featureID[!featureIDAvailable][1], modelID))
-    }
-    assaysPlotting <- assays[featureID, , drop = FALSE]
+  if (length(modelID) > 1) {
+    mapping <- getMapping(study)
+    listMaxLength <- max(sapply(mapping, length))
+    mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
+
+    mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
+    mapping_features_all <- stats::na.omit(mappingdf)
+    column_order <- unique(c(modelID[1], colnames(mapping_features_all)))
+    mapping_features_all <- mapping_features_all[, column_order]
+
+    mapping_features <- mapping_features_all[which(mapping_features_all[,1] %in% featureID),]
+
+    testID_all <- testID
   }
 
-  samples <- getSamples(study, modelID = modelID, quiet = TRUE,
+  for (model_i in modelID) {
+
+    if (length(modelID) > 1) {
+      featureID <- unique(mapping_features[,which(colnames(mapping_features) %in% model_i)])
+      testID <- testID_all[which(names(testID_all) == model_i)]
+    }
+
+    assays <- getAssays(study, modelID = model_i, quiet = TRUE,
                         libraries = libraries)
-  if (isEmpty(samples) || isEmpty(assays)) {
-    samplesPlotting <- samples
-  } else {
-    samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,
-                               drop = FALSE]
-    if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
-      warning("Not all of the sampleIDs have metadata")
-    }
-    row.names(samplesPlotting) <- NULL # reset row numbers after filtering
-  }
 
-  features <- getFeatures(study, modelID = modelID, quiet = TRUE,
+    # Assays data is only required if no testID is defined. Users may want to only
+    # plot data from the results table
+    if (isEmpty(assays) && !is.null(testID)) {
+      message(sprintf("No assays available for modelID \"%s\"\n", model_i))
+      assaysPlotting <- assays
+    } else if (isEmpty(assays)) {
+      stop(sprintf("No assays available for modelID \"%s\"\n", model_i),
+           "Add assays data with addAssays()")
+    } else {
+      featureIDAvailable <- featureID %in% rownames(assays)
+      if (any(!featureIDAvailable)) {
+        stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                     featureID[!featureIDAvailable][1], model_i))
+      }
+      assaysPlotting <- assays[featureID, , drop = FALSE]
+    }
+
+    samples <- getSamples(study, modelID = model_i, quiet = TRUE,
                           libraries = libraries)
-  if (isEmpty(features)) {
-    featuresPlotting <- features
-  } else {
-    featuresPlotting <- features[match(featureID, features[[1]], nomatch = 0), , drop = FALSE]
-    if (!identical(featuresPlotting[[1]], featureID)) {
-      warning("Not all of the featureIDs have metadata")
+    if (isEmpty(samples) || isEmpty(assays)) {
+      samplesPlotting <- samples
+    } else {
+      samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,
+                                 drop = FALSE]
+      if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
+        warning("Not all of the sampleIDs have metadata")
+      }
+      row.names(samplesPlotting) <- NULL # reset row numbers after filtering
     }
-    row.names(featuresPlotting) <- NULL # reset row numbers after filtering
-  }
 
-  if (!isEmpty(testID)) {
-    resultsPlotting <- vector("list", length(testID))
-    for (i in seq_along(testID)) {
-      results <- getResults(study, modelID = modelID, testID = testID[i], quiet = TRUE,
+    features <- getFeatures(study, modelID = model_i, quiet = TRUE,
                             libraries = libraries)
-      if (isEmpty(results)) {
-        stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID[i], modelID))
+    if (isEmpty(features)) {
+      featuresPlotting <- features
+    } else {
+      featuresPlotting <- features[match(featureID, features[[1]], nomatch = 0), , drop = FALSE]
+      if (!identical(featuresPlotting[[1]], featureID)) {
+        warning("Not all of the featureIDs have metadata")
       }
-      featureIDAvailable_results <- featureID %in% results[,1]
-      if (any(!featureIDAvailable_results)) {
-        stop(sprintf("The feature \"%s\" is not available for testID \"%s\"",
-                     featureID[!featureIDAvailable][1], testID[i]))
-      }
-      resultsPlotting[[i]] <- results[match(featureID, results[,1], nomatch = 0), , drop = FALSE]
-      names(resultsPlotting)[[i]] <- testID[i]
+      row.names(featuresPlotting) <- NULL # reset row numbers after filtering
     }
-    if (length(resultsPlotting) == 1) resultsPlotting <- resultsPlotting[[1]]
+
+    if (!isEmpty(testID)) {
+      resultsPlotting <- vector("list", length(testID))
+      for (i in seq_along(testID)) {
+        results <- getResults(study, modelID = model_i, testID = testID[i], quiet = TRUE,
+                              libraries = libraries)
+        if (isEmpty(results)) {
+          stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID[i], model_i))
+        }
+        featureIDAvailable_results <- featureID %in% results[,1]
+        if (any(!featureIDAvailable_results)) {
+          stop(sprintf("The feature \"%s\" is not available for testID \"%s\"",
+                       featureID[!featureIDAvailable][1], testID[i]))
+        }
+        resultsPlotting[[i]] <- results[match(featureID, results[,1], nomatch = 0), , drop = FALSE]
+        names(resultsPlotting)[[i]] <- testID[i]
+      }
+      if (length(resultsPlotting) == 1) resultsPlotting <- resultsPlotting[[1]]
+    }
+
+    if (length(modelID) > 1) {
+      if (!exists("plottingData")) plottingData <- list()
+      temp_model <- list(
+        assays = assaysPlotting,
+        samples = samplesPlotting,
+        features = featuresPlotting,
+        results = resultsPlotting
+      )
+      plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
+    } else {
+    plottingData <- list(
+      assays = assaysPlotting,
+      samples = samplesPlotting,
+      features = featuresPlotting
+    )
+    if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
+    }
   }
 
-  plottingData <- list(
-    assays = assaysPlotting,
-    samples = samplesPlotting,
-    features = featuresPlotting
-  )
-  if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
+  # for multiModel, reorder plottingData to have the same order as study$model
+  if (length(modelID) > 1) {
+    model_seq <- names(getModels(study))
+    plottingData <- plottingData[order(match(names(plottingData), model_seq))]
+  }
 
   return(plottingData)
 }

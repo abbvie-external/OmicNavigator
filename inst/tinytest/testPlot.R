@@ -11,6 +11,8 @@ testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
 plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
+mapping <- OmicNavigator:::testMapping()
+testStudyObj <- addMapping(testStudyObj, mapping)
 testModelName <- names(testStudyObj[["models"]])[1]
 
 tmplib <- tempfile()
@@ -166,6 +168,65 @@ expect_error_xl(
   info = "Cannot pass multiple featureIDs to a singleFeature plot"
 )
 
+# plotStudy (multiModel) -------------------------------------------------------
+
+mmodel <- names(testStudyObj[["models"]])[1:2]
+mmtestID <- c("test_01", "test_02")
+names(mmtestID) <- mmodel
+
+expect_silent_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0002", "feature_0010", "feature_0026"),
+    plotID = "multiModel_scatterplot",
+    testID = mmtestID
+  )
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0026", "feature_0001", "feature_0002", "feature_0010"),
+    plotID = "multiModel_scatterplot"
+  ),
+  "Plot type \"multiModel\" requires at least 2 testIDs"
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0026", "feature_0001", "feature_0002", "feature_0010"),
+    plotID = "multiModel_scatterplot",
+    testID = mmtestID[1]
+  ),
+  "Plot type \"multiModel\" requires at least 2 testIDs"
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0026", "feature_0001", "feature_0002", "feature_0010"),
+    plotID = "multiModel_scatterplot",
+    testID = c("test_01", "test_02")
+  ),
+  "Plot type \"multiModel\" requires a vector for testID named after related modelID"
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0020006", "feature_0001", "feature_0002"),
+    plotID = "multiModel_scatterplot",
+    testID = mmtestID
+  ),
+  "features list contains at least one feature not present in the corresponding model from mapping object"
+)
+
 # plotStudy (testID) -----------------------------------------------------------
 
 expect_silent_xl(
@@ -184,7 +245,6 @@ expect_error_xl(
             plotID = "plotBase", testID = "test_01"),
   "non-existent"
 )
-
 
 # plotStudy (multitest) --------------------------------------------------------
 ## check plotStudy calls without checking getPlottingData outputs
@@ -385,6 +445,114 @@ expect_true_xl(
 
 expect_equal_xl(
   nrow(plottingData[["features"]]),
+  2
+)
+
+# getPlottingData (object, multiModel) -----------------------------------------
+
+mmodel <- names(testStudyObj[["models"]])[1:2]
+mmtestID <- c("test_01", "test_02")
+names(mmtestID) <- mmodel
+
+plottingData <- getPlottingData(
+  testStudyObj,
+  modelID = mmodel,
+  featureID = c("feature_0010", "feature_0020"),
+  testID = mmtestID
+)
+
+expect_true_xl(
+  inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  mmodel
+)
+
+expect_identical_xl(
+  names(plottingData[[1]]),
+  c("assays", "samples", "features", "results")
+)
+
+expect_identical_xl(
+  names(plottingData[[2]]),
+  c("assays", "samples", "features", "results")
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["assays"]], "data.frame")
+)
+
+expect_equal_xl(
+  nrow(plottingData[[1]][["assays"]]),
+  2
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["samples"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["features"]], "data.frame")
+)
+
+expect_equal_xl(
+  nrow(plottingData[[1]][["features"]]),
+  2
+)
+
+# getPlottingData (package, multiModel) -----------------------------------------
+
+mmodel <- names(testStudyObj[["models"]])[1:2]
+mmtestID <- c("test_01", "test_02")
+names(mmtestID) <- mmodel
+
+plottingData <- getPlottingData(
+  testStudyName,
+  modelID = mmodel,
+  featureID = c("feature_0010", "feature_0020"),
+  testID = mmtestID
+)
+
+expect_true_xl(
+  inherits(plottingData, "list")
+)
+
+expect_identical_xl(
+  names(plottingData),
+  mmodel
+)
+
+expect_identical_xl(
+  names(plottingData[[1]]),
+  c("assays", "samples", "features", "results")
+)
+
+expect_identical_xl(
+  names(plottingData[[2]]),
+  c("assays", "samples", "features", "results")
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["assays"]], "data.frame")
+)
+
+expect_equal_xl(
+  nrow(plottingData[[1]][["assays"]]),
+  2
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["samples"]], "data.frame")
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["features"]], "data.frame")
+)
+
+expect_equal_xl(
+  nrow(plottingData[[1]][["features"]]),
   2
 )
 

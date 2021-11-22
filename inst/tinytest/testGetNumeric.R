@@ -153,9 +153,20 @@ expect_identical_xl(
   testStudyObj[["mapping"]]
 )
 
+expect_identical_xl(
+  getMapping(testStudyName),
+  testStudyObj[["mapping"]]
+)
+
 expect_true_xl(
   is.character(
     unlist(getMapping(testStudyObj))
+  )
+)
+
+expect_true_xl(
+  is.character(
+    unlist(getMapping(testStudyName))
   )
 )
 

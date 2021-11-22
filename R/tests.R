@@ -293,6 +293,14 @@ testPlots <- function() {
     graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTestMf", plotMultiTestMf, envir = parent.frame())
+  multiModel_scatterplot <- function(x) {
+    ggdf <- data.frame(
+      var1 = x[[1]]$results[,"beta"],
+      var2 = x[[2]]$results[,"beta"]
+    )
+    graphics::plot(x = ggdf$var1, y = ggdf$var2)
+  }
+  assign("multiModel_scatterplot", multiModel_scatterplot, envir = parent.frame())
 
   plots <- list(
     default = list(
@@ -315,6 +323,11 @@ testPlots <- function() {
         displayName = "scatterplot_multifeat",
         plotType = c("multiFeature", "multiTest"),
         packages = "data.table"
+      ),
+      multiModel_scatterplot = list(
+        displayName = "mmplot",
+        packages = "stats",
+        plotType = "multiModel"
       )
     ),
     model_03 = list(
@@ -336,7 +349,6 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
 
   model_01_feats <- results[[1]][[1]][,1]
   model_02_feats <- results[[2]][[1]][,1]
-
   model_01_feats <- model_01_feats[order(model_01_feats)]
   model_02_feats <- model_02_feats[order(model_02_feats)]
 
