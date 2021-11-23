@@ -30,11 +30,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   plots <- list()
   for (i in seq_along(modelID)) {
     tempPlots <- (getPlots(study, modelID = modelID[i], libraries = libraries))
-    if (i == 1) {
-      plots <- tempPlots
-    } else if (!is.null(tempPlots)) {
-      plots <- c(plots, tempPlots)
-    }
+    plots <- c(plots, tempPlots)
   }
   plotsAvailable <- names(plots)
   if(!plotID %in% plotsAvailable) {
@@ -102,7 +98,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           sprintf("Received the following testID(s) : %s ", testID)
         )
       }
-      if (any(is.na(names(testID))) | is.null(names(testID))) {
+      if ((!is.null(names(testID)) & any(is.na(names(testID)))) | is.null(names(testID))) {
         stop(
           "Plot type \"multiModel\" requires a vector for testID named after related modelID"
         )

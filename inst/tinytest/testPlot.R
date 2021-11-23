@@ -11,8 +11,6 @@ testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
 plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
-mapping <- OmicNavigator:::testMapping()
-testStudyObj <- addMapping(testStudyObj, mapping)
 testModelName <- names(testStudyObj[["models"]])[1]
 
 tmplib <- tempfile()

@@ -352,10 +352,8 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
   model_01_feats <- model_01_feats[order(model_01_feats)]
   model_02_feats <- model_02_feats[order(model_02_feats)]
 
-  set.seed(1)
-  model_01_feats[which(model_01_feats %in% sample(model_01_feats, 10))] <- NA
-  set.seed(2)
-  model_02_feats[which(model_02_feats %in% sample(model_02_feats, 10))] <- NA
+  model_01_feats[c(1, 14, 32, 55, 99, 108)] <- NA
+  model_02_feats[c(6, 18, 30, 75, 88, 102)] <- NA
 
   mapping <- list(
     model_01 = model_01_feats,
