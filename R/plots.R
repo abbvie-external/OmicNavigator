@@ -29,7 +29,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
 
   plots <- list()
   for (i in seq_along(modelID)) {
-    tempPlots <- (getPlots(study, modelID = modelID[i], libraries = libraries))
+    tempPlots <- getPlots(study, modelID = modelID[i], libraries = libraries)
     plots <- c(plots, tempPlots)
   }
   plotsAvailable <- names(plots)

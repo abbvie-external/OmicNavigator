@@ -352,8 +352,12 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
   model_01_feats <- model_01_feats[order(model_01_feats)]
   model_02_feats <- model_02_feats[order(model_02_feats)]
 
-  model_01_feats[c(1, 14, 32, 55, 99, 108)] <- NA
-  model_02_feats[c(6, 18, 30, 75, 88, 102)] <- NA
+  missing_01 <- c(1, 14, 32, 55, 99, 108)
+  missing_01 <- missing_01[missing_01 <= nFeatures]
+  model_01_feats[missing_01] <- NA
+  missing_02 <- c(6, 18, 30, 75, 88, 102)
+  missing_02 <- missing_02[missing_02 <= nFeatures]
+  model_02_feats[missing_02] <- NA
 
   mapping <- list(
     model_01 = model_01_feats,
