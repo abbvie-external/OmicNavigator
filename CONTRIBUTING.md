@@ -177,6 +177,20 @@ output too much, you can wrap the tinytest function call with
 `suppressMessages()`. This will suppress the messages from the OmicNavigator
 functions but still display the test results.
 
+Lastly, if you are making a large contribution, it can be helpful to evaluate
+the comprehensiveness of your tests by calculating the test coverage. The covr
+package runs the package tests and creates a report that details which lines
+were executed by the tests, and most importantly, which lines were never run.
+This will highlight any logic in your code that isn't being regularly tested.
+
+```
+install.packages("covr")
+library(covr)
+cov <- package_coverage()
+cov
+report(cov)
+```
+
 ## GitHub Actions
 
 We use [GitHub Actions](https://github.com/features/actions) for CI/CD. The
