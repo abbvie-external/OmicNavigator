@@ -42,7 +42,7 @@ Quick Introduction to Version Control with Git and GitHub][intro-git-github].
 
 1. Clone your fork to your local machine
 
-    ```
+    ```sh
     git clone https://github.com/<fork>/OmicNavigator.git
     cd OmicNavigator
     ```
@@ -50,7 +50,7 @@ Quick Introduction to Version Control with Git and GitHub][intro-git-github].
 1. Create a new branch. We recommend prefixing the branch name with `feature/`
 or `bugfix/` to help classify it, but don't worry about this too much.
 
-    ```
+    ```sh
     git checkout -b feature/<x>
     ```
 
@@ -59,7 +59,7 @@ environment.
 
 1. Add, commit, push, and open a Pull Request against the "main" branch.
 
-    ```
+    ```sh
     git push origin feature/<x>
     ```
 
@@ -67,20 +67,20 @@ environment.
 
 First install the development only packages:
 
-```
+```R
 install.packages(c("devtools", "remotes", "roxygen2"))
 ```
 
 Second install the required and suggested dependencies:
 
-```
+```R
 remotes::install_deps(dependencies = TRUE)
 ```
 
 Third install LaTeX, Make, and Graphviz if you wish to re-build the
 vignettes:
 
-```
+```sh
 sudo apt-get install texlive texinfo make graphviz
 ```
 
@@ -93,7 +93,7 @@ in the source directory, so that the app is always installed whenever you build
 the package locally. You can do this by first loading the package with devtools
 and then running `installApp()`, which will install the app to `inst/www/`:
 
-```
+```R
 devtools::load_all()
 installApp()
 ```
@@ -139,7 +139,7 @@ but not required for pull requests.
 After you make your changes, you can run all the tests by running the following
 in the R console:
 
-```
+```R
 tinytest::test_all()
 ```
 
@@ -147,14 +147,14 @@ For quicker feedback, you can run one specific test file. For example, if you
 are making changes to the functions in `R/get.R`, you can run the corresponding
 tests in `inst/tinytest/testGet.R` with:
 
-```
+```R
 tinytest::run_test_file("inst/tinytest/testGet.R")
 ```
 
 If you'd like to write additional tests (highly encouraged!), try to follow the
 style of the surrounding code. In general, the tests are structured like below:
 
-```
+```R
 observed <- functionName(
   arg1,
   arg2
@@ -183,7 +183,7 @@ package runs the package tests and creates a report that details which lines
 were executed by the tests, and most importantly, which lines were never run.
 This will highlight any logic in your code that isn't being regularly tested.
 
-```
+```R
 install.packages("covr")
 library(covr)
 cov <- package_coverage()
@@ -220,7 +220,7 @@ The repository includes a `Dockerfile` to install and run OmicNavigator. This is
 convenient if you want to test changes you've made to the R package without
 installing the dependencies on your local machine.
 
-```
+```sh
 # Build the image
 docker build -t omicnavigator .
 # Run the image
@@ -231,7 +231,7 @@ Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator
 
 When you're finished, stop and delete the container:
 
-```
+```sh
 docker stop onapp
 docker rm onapp
 ```

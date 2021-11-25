@@ -95,13 +95,13 @@ OmicNavigator and run the web app on your local machine.
 
 1. Install the OmicNavigator R package directly from CRAN:
 
-    ```
+    ```R
     install.packages("OmicNavigator", dependencies = TRUE)
     ```
 
 1. Install the web app:
 
-    ```
+    ```R
     library(OmicNavigator)
     installApp()
     ```
@@ -119,7 +119,7 @@ version.
 
 1. Install the dependencies:
 
-    ```
+    ```R
     remotes::install_deps("OmicNavigator_x.x.x.tar.gz", dependencies = TRUE)
     ```
 
@@ -127,13 +127,13 @@ version.
 
     1) In the R console:
 
-        ```
+        ```R
         install.packages("OmicNavigator_x.x.x.tar.gz", repos = NULL)
         ```
 
     1) In the terminal:
 
-        ```
+        ```sh
         R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_x.x.x.tar.gz
         ```
 
@@ -147,7 +147,7 @@ integration build.
 1. Install the OmicNavigator R package directly from CRAN, without the extra
 dependencies required to run the app:
 
-    ```
+    ```R
     install.packages("OmicNavigator")
     ```
 
@@ -158,13 +158,13 @@ development version of the package directly from GitHub.
 
 1. Install the OmicNavigator R package directly from GitHub:
 
-    ```
+    ```R
     remotes::install_github("abbvie-external/OmicNavigator", dependencies = TRUE)
     ```
 
 1. Install the web app:
 
-    ```
+    ```R
     library(OmicNavigator)
     installApp()
     ```
@@ -180,7 +180,7 @@ system libraries yourself first.
 If you are using Debian/Ubuntu, you can install all of the required system
 libraries using the commands below:
 
-```
+```sh
 sudo apt update
 sudo apt install \
   libcurl4-openssl-dev \
