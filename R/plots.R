@@ -52,7 +52,14 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   plotType  <- p[["plotType"]]
 
   if (isEmpty(plotType)) plotType <- "singleFeature"
-  if (length(plotType) == 1 && plotType == "multiTest") plotType <- c("singleFeature", "multiTest")
+  if (length(plotType) == 1) {
+    if (plotType == "multiTest") {
+      plotType <- c("singleFeature", "multiTest")
+    } else if (plotType == "multiModel") {
+      plotType <- c("singleFeature", "multiModel")
+    }
+  }
+
   nPlotType <- length(plotType)
 
   for (ind in 1:nPlotType) {
@@ -62,9 +69,9 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           "Plot type \"singleFeature\" requires 1 featureID\n",
           sprintf("Received %d featureID(s)", nFeatures)
         )
-      } else if (nTests > 1 && !any(which(plotType == "multiTest"))) {
+      } else if (nTests > 1 && !any(which(plotType %in% c("multiTest", "multiModel")))) {
         stop(
-          "Plot type \"singleFeature\" requires 1 testID or be associated with multiTest, e.g. plot type = c(\"singleFeature\", \"multiTest\")\n",
+          "Plot type \"singleFeature\" requires 1 testID or be associated with either multiTest or multiModel\n",
           sprintf("Received %d testID(s)", nTests)
         )
       }
@@ -75,9 +82,9 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           "Plot type \"multiFeature\" requires at least 2 featureIDs\n",
           sprintf("Received %d featureID(s)", nFeatures)
         )
-      } else if (nTests > 1 && !any(which(plotType == "multiTest"))) {
+      } else if (nTests > 1 && !any(which(plotType %in% c("multiTest", "multiModel")))) {
         stop(
-          "Plot type \"multiFeature\" requires 1 testID or be associated with multiTest, e.g. plot type = c(\"multiFeature\", \"multiTest\")\n",
+          "Plot type \"multiFeature\" requires 1 testID or be associated with either multiTest or multiModel\n",
           sprintf("Received %d testID(s)", nTests)
         )
       }
@@ -95,7 +102,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
       if (nTests < 2) {
         stop(
           "Plot type \"multiModel\" requires at least 2 testIDs\n",
-          sprintf("Received the following testID(s) : %s ", testID)
+          sprintf("Received %d testID(s)", nTests)
         )
       }
       if ((!is.null(names(testID)) & any(is.na(names(testID)))) | is.null(names(testID))) {

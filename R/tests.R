@@ -301,6 +301,17 @@ testPlots <- function() {
     graphics::plot(x = ggdf$var1, y = ggdf$var2)
   }
   assign("multiModel_scatterplot", multiModel_scatterplot, envir = parent.frame())
+  multiModel_barplot_sf <- function(x) {
+    df <- data.frame(
+      name  = names(x),
+      beta = c(x[[1]]$results[,"beta"], x[[2]]$results[,"beta"])
+    )
+    graphics::barplot(height = df$beta, names = df$name,
+                      xlab=x[[1]]$results$features_id,
+                      ylim=c(ifelse(min(df$beta) < 0, min(df$beta)*1.5, -min(df$beta)*1.5),
+                             max(df$beta)*1.5))
+  }
+  assign("multiModel_barplot_sf", multiModel_barplot_sf, envir = parent.frame())
 
   plots <- list(
     default = list(
@@ -327,7 +338,12 @@ testPlots <- function() {
       multiModel_scatterplot = list(
         displayName = "mmplot",
         packages = "stats",
-        plotType = "multiModel"
+        plotType = c("multiFeature", "multiModel")
+      ),
+      multiModel_barplot_sf = list(
+        displayName = "mmplot_sf",
+        packages = "stats",
+        plotType = c("singleFeature", "multiModel")
       )
     ),
     model_03 = list(

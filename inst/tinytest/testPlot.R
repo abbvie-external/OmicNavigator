@@ -1,7 +1,7 @@
 # Test custom plots
 
 # Setup ------------------------------------------------------------------------
-
+# source(paste0(getwd(), "/inst/tinytest/tinytestSettings.R"))
 source("tinytestSettings.R")
 using(ttdo)
 
@@ -223,6 +223,27 @@ expect_error_xl(
     testID = mmtestID
   ),
   "features list contains at least one feature not present in the corresponding model from mapping object"
+)
+
+expect_silent_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = "feature_0002",
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  )
+)
+
+expect_error_xl(
+  plotStudy(
+    testStudyName,
+    modelID = mmodel,
+    featureID = c("feature_0020006", "feature_0001", "feature_0002"),
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  ),
+  "Plot type \"singleFeature\" requires 1 featureID"
 )
 
 # plotStudy (testID) -----------------------------------------------------------
@@ -500,6 +521,8 @@ expect_equal_xl(
   2
 )
 
+rm(plottingData)
+
 # getPlottingData (package, multiModel) -----------------------------------------
 
 mmodel <- names(testStudyObj[["models"]])[1:2]
@@ -553,6 +576,8 @@ expect_equal_xl(
   nrow(plottingData[[1]][["features"]]),
   2
 )
+
+rm(plottingData)
 
 # getPlottingData (edge cases) -------------------------------------------------
 
@@ -878,6 +903,37 @@ expect_identical_xl(
   plottingData[["results"]][[1]],
   c("feature_0006", "feature_0002")
 )
+
+# noMapping (multiModel) -------------------------------------------------------
+
+# testStudyObjNoMapping <- testStudyObj
+# testStudyObjNoMapping[["mapping"]] <- list()
+# suppressMessages(installStudy(testStudyObjNoMapping))
+#
+# expect_error_xl(
+#   plotStudy(
+#     testStudyObjNoMapping,
+#     modelID = mmodel,
+#     featureID = "feature_0002",
+#     plotID = "multiModel_barplot_sf",
+#     testID = mmtestID
+#   ),
+#   "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+# )
+#
+# testStudyObjNoMapping[["mapping"]] <- NULL
+# suppressMessages(installStudy(testStudyObjNoMapping))
+#
+# expect_error_xl(
+#   plotStudy(
+#     testStudyObjNoMapping,
+#     modelID = mmodel,
+#     featureID = "feature_0002",
+#     plotID = "multiModel_barplot_sf",
+#     testID = mmtestID
+#   ),
+#   "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+# )
 
 # Teardown ---------------------------------------------------------------------
 
