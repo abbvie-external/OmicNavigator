@@ -41,6 +41,39 @@ expect_identical_xl(
   plotsAll
 )
 
+# noMapping (multiModel) -------------------------------------------------------
+
+testStudyObjNoMapping <- testStudyObj
+testStudyObjNoMapping[["mapping"]] <- list()
+
+mmodel <- names(testStudyObj[["models"]])[1:2]
+mmtestID <- c("test_01", "test_02")
+names(mmtestID) <- mmodel
+
+expect_error_xl(
+  plotStudy(
+    testStudyObjNoMapping,
+    modelID = mmodel,
+    featureID = "feature_0002",
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  ),
+  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+)
+
+testStudyObjNoMapping[["mapping"]] <- NULL
+
+expect_error_xl(
+  plotStudy(
+    testStudyObjNoMapping,
+    modelID = mmodel,
+    featureID = "feature_0002",
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  ),
+  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+)
+
 # plotStudy (object) -----------------------------------------------------------
 
 pkgsAttachedPre <- search()
@@ -902,39 +935,6 @@ plottingData <- getPlottingData(
 expect_identical_xl(
   plottingData[["results"]][[1]],
   c("feature_0006", "feature_0002")
-)
-
-# noMapping (multiModel) -------------------------------------------------------
-
-testStudyObjNoMapping <- testStudyObj
-testStudyObjNoMapping[["mapping"]] <- list()
-
-mmodel <- names(testStudyObj[["models"]])[1:2]
-mmtestID <- c("test_01", "test_02")
-names(mmtestID) <- mmodel
-
-expect_error_xl(
-  plotStudy(
-    testStudyObjNoMapping,
-    modelID = mmodel,
-    featureID = "feature_0002",
-    plotID = "multiModel_barplot_sf",
-    testID = mmtestID
-  ),
-  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
-)
-
-testStudyObjNoMapping[["mapping"]] <- NULL
-
-expect_error_xl(
-  plotStudy(
-    testStudyObjNoMapping,
-    modelID = mmodel,
-    featureID = "feature_0002",
-    plotID = "multiModel_barplot_sf",
-    testID = mmtestID
-  ),
-  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
 )
 
 # Teardown ---------------------------------------------------------------------
