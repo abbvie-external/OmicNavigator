@@ -906,34 +906,36 @@ expect_identical_xl(
 
 # noMapping (multiModel) -------------------------------------------------------
 
-# testStudyObjNoMapping <- testStudyObj
-# testStudyObjNoMapping[["mapping"]] <- list()
-# suppressMessages(installStudy(testStudyObjNoMapping))
-#
-# expect_error_xl(
-#   plotStudy(
-#     testStudyObjNoMapping,
-#     modelID = mmodel,
-#     featureID = "feature_0002",
-#     plotID = "multiModel_barplot_sf",
-#     testID = mmtestID
-#   ),
-#   "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
-# )
-#
-# testStudyObjNoMapping[["mapping"]] <- NULL
-# suppressMessages(installStudy(testStudyObjNoMapping))
-#
-# expect_error_xl(
-#   plotStudy(
-#     testStudyObjNoMapping,
-#     modelID = mmodel,
-#     featureID = "feature_0002",
-#     plotID = "multiModel_barplot_sf",
-#     testID = mmtestID
-#   ),
-#   "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
-# )
+testStudyObjNoMapping <- testStudyObj
+testStudyObjNoMapping[["mapping"]] <- list()
+
+mmodel <- names(testStudyObj[["models"]])[1:2]
+mmtestID <- c("test_01", "test_02")
+names(mmtestID) <- mmodel
+
+expect_error_xl(
+  plotStudy(
+    testStudyObjNoMapping,
+    modelID = mmodel,
+    featureID = "feature_0002",
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  ),
+  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+)
+
+testStudyObjNoMapping[["mapping"]] <- NULL
+
+expect_error_xl(
+  plotStudy(
+    testStudyObjNoMapping,
+    modelID = mmodel,
+    featureID = "feature_0002",
+    plotID = "multiModel_barplot_sf",
+    testID = mmtestID
+  ),
+  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+)
 
 # Teardown ---------------------------------------------------------------------
 
