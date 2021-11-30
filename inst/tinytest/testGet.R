@@ -605,6 +605,11 @@ expect_identical_xl(
   testStudyObj[["mapping"]]
 )
 
+expect_identical_xl(
+  getMapping(testStudyName),
+  testStudyObj[["mapping"]]
+)
+
 expect_message_xl(
   getMapping(emptyStudy),
   "No mapping available"

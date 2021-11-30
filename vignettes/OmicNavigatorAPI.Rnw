@@ -272,6 +272,25 @@ plotStudy(
 )
 @
 
+Finally, the study can provide ``multiModel'' plots, which accept more than
+one modelID and one or more testIDs per modelID. These can be provided via the
+field \texttt{plotType} in the output from \texttt{listStudies()} (Section
+\ref{sec:list-studies}). Note that for plotType = ``multiModel'', testID must be
+provided as a named vector, with each testID named after the related modelID
+
+<<plotStudy-plotMultiTest, fig=TRUE>>=
+modelID <- c("model_01", "model_02")
+testID <- c("test_01", "test_02")
+names(testID) <- modelID
+
+plotStudy(
+  study = "ABC",
+  modelID = modelID,
+  featureID = c("feature_0002", "feature_0003", "feature_0004"),
+  plotID = "multiModel_scatterplot",
+  testID = testID
+)
+@
 
 \section{Results intersection}
 \label{sec:results-intersection}

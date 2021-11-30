@@ -293,6 +293,25 @@ testPlots <- function() {
     graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTestMf", plotMultiTestMf, envir = parent.frame())
+  multiModel_scatterplot <- function(x) {
+    ggdf <- data.frame(
+      var1 = x[[1]]$results[,"beta"],
+      var2 = x[[2]]$results[,"beta"]
+    )
+    graphics::plot(x = ggdf$var1, y = ggdf$var2)
+  }
+  assign("multiModel_scatterplot", multiModel_scatterplot, envir = parent.frame())
+  multiModel_barplot_sf <- function(x) {
+    df <- data.frame(
+      name  = names(x),
+      beta = c(x[[1]]$results[,"beta"], x[[2]]$results[,"beta"])
+    )
+    graphics::barplot(height = df$beta, names = df$name,
+                      xlab=x[[1]]$results$features_id,
+                      ylim=c(ifelse(min(df$beta) < 0, min(df$beta)*1.5, -min(df$beta)*1.5),
+                             max(df$beta)*1.5))
+  }
+  assign("multiModel_barplot_sf", multiModel_barplot_sf, envir = parent.frame())
 
   plots <- list(
     default = list(
@@ -315,6 +334,16 @@ testPlots <- function() {
         displayName = "scatterplot_multifeat",
         plotType = c("multiFeature", "multiTest"),
         packages = "data.table"
+      ),
+      multiModel_scatterplot = list(
+        displayName = "mmplot",
+        packages = "stats",
+        plotType = c("multiFeature", "multiModel")
+      ),
+      multiModel_barplot_sf = list(
+        displayName = "mmplot_sf",
+        packages = "stats",
+        plotType = c("singleFeature", "multiModel")
       )
     ),
     model_03 = list(
@@ -336,14 +365,15 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
 
   model_01_feats <- results[[1]][[1]][,1]
   model_02_feats <- results[[2]][[1]][,1]
-
   model_01_feats <- model_01_feats[order(model_01_feats)]
   model_02_feats <- model_02_feats[order(model_02_feats)]
 
-  set.seed(1)
-  model_01_feats[which(model_01_feats %in% sample(model_01_feats, 10))] <- NA
-  set.seed(2)
-  model_02_feats[which(model_02_feats %in% sample(model_02_feats, 10))] <- NA
+  missing_01 <- c(1, 14, 32, 55, 99, 108)
+  missing_01 <- missing_01[missing_01 <= nFeatures]
+  model_01_feats[missing_01] <- NA
+  missing_02 <- c(6, 18, 30, 75, 88, 102)
+  missing_02 <- missing_02[missing_02 <= nFeatures]
+  model_02_feats[missing_02] <- NA
 
   mapping <- list(
     model_01 = model_01_feats,
