@@ -279,7 +279,7 @@ rhub::check_for_cran(platform = "solaris-x86-patched")
 rhub::check_for_cran(platform = "ubuntu-gcc-devel")
 ```
 
-Then update `cran-comments.md` accordingly, build the tarball, and [submit the
-tarball][cran].
+Then update `cran-comments.md` accordingly, build the tarball (delete `inst/www/`
+if you have the app installed locally), and [submit the tarball][cran].
 
 [cran]: https://cran.r-project.org/submit.html
