@@ -1,3 +1,13 @@
+# 1.8.0
+
+* Support for new plotType multiModel. This will enable visualizations between
+models of a given study. See the User's Guide for instructions. Note that
+currently this is only supported when calling `plotStudy()` in the R console.
+Support for multiModel plots in the app will be implemented in a future release.
+For now, the app will send a harmless error if it encounters a multiModel plot
+(implemented by [Marco Curado](https://github.com/curadomr) in [PR
+#8](https://github.com/abbvie-external/OmicNavigator/pull/8))
+
 # 1.7.1
 
 * The release tarball includes version 1.4.0 of the web app
