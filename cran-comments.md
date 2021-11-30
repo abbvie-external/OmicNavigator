@@ -1,8 +1,3 @@
-## Resubmission
-
-Some package tests were failing mainly on CRAN Debian and macOS machines. I now
-skip these tests on CRAN and only test them locally and on GitHub Actions.
-
 ## Test environments
 
 * win-builder (devel)
@@ -18,4 +13,9 @@ skip these tests on CRAN and only test them locally and on GitHub Actions.
 
 ## R CMD check results
 
-0 errors | 0 warnings | 0 notes
+0 errors | 0 warnings | 1 notes
+
+* checking examples ... [50s] NOTE
+Examples with CPU (user + system) or elapsed time > 10s
+                     user system elapsed
+getInstalledStudies 15.29     10   43.29
