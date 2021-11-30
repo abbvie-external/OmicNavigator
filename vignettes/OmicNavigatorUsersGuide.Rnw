@@ -1023,7 +1023,7 @@ the current R session, \texttt{cellTypeBox}, \texttt{cellTypeBoxGg},
 the custom plotting function. The only required element is \texttt{displayName},
 which is the text that will be displayed in the app. You are encouraged to also
 specify the \texttt{plotType}, e.g. \texttt{"singleFeature"},
-\texttt{"multiFeature"}, c(\texttt{"multiTest", "multiFeature")}). If
+\texttt{"multiFeature"}, \texttt{c("multiTest", "multiFeature")}. If
 you do not specify the \texttt{plotType}, the plot will be assumed to be
 \texttt{"singleFeature"}. An optional element is \texttt{packages}, in which
 you list any R packages that are required for the plotting function to work.

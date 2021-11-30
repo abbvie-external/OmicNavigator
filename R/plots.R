@@ -245,7 +245,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   featureID <- unique(featureID)
 
   if (length(modelID) > 1) {
-    mapping <- getMapping(study)
+    mapping <- getMapping(study, libraries = libraries)
     listMaxLength <- max(sapply(mapping, length))
     mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
 
@@ -351,7 +351,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
   # for multiModel, reorder plottingData to have the same order as study$model
   if (length(modelID) > 1) {
-    model_seq <- names(getModels(study))
+    model_seq <- names(getModels(study, libraries = libraries))
     plottingData <- plottingData[order(match(names(plottingData), model_seq))]
   }
 
