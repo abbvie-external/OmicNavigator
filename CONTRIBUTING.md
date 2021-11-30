@@ -12,6 +12,7 @@ instructions below to prepare your contribution.
 * [Unit tests](#unit-tests)
 * [GitHub Actions](#github-actions)
 * [Run OmicNavigator with Docker](#run-omicnavigator-with-docker)
+* [Tag a new release](#tag-a-new-release)
 * [CRAN submission](#cran-submission)
 
 ## Branches
@@ -235,6 +236,37 @@ When you're finished, stop and delete the container:
 docker stop onapp
 docker rm onapp
 ```
+
+## Tag a new release
+
+Follow these steps to tag a new release:
+
+* Bump the version in `DESCRIPTION`. Make sure it only has 3 components
+(major.minor.patch)
+
+* Update `NEWS.md`. Manually add the section header `# major.minor.patch`
+
+* Commit the changes
+
+* Tag the release
+
+    ```sh
+    git tag -l -n9
+    git tag -a v#.#.# -m "v#.#.#"s
+    ```
+
+* Push the tag to GitHub
+
+    ```sh
+    git push origin --tags
+    ```
+
+* Monitor the GitHub Actions workflow [Create a release from a
+tag][gh-actions-release]. It will create a new release, copy-paste the section
+from `NEWS.md` to use as the release notes, build and upload the PDF vignettes,
+and build and upload a tarball with the app pre-bundled
+
+[gh-actions-release]: https://github.com/abbvie-external/OmicNavigator/actions/workflows/release.yml
 
 ## CRAN submission
 
