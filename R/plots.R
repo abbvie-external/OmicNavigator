@@ -12,11 +12,10 @@
 #' plotType when you add a plot with \code{\link{addPlots}}.
 #'
 #' @return This function is called for the side effect of creating a plot. It
-#'   returns the result from the custom plotting function specified by
+#'   invisibly returns the result from the custom plotting function specified by
 #'   \code{plotID}. Previously it invisibly returned the study object. It's
-#'   unlikely you relied on this behavior. For a base R plot, the return value
-#'   will be \code{NULL}. For a ggplot2 plot, the return value will be the
-#'   plotting object with class \code{"ggplot"}.
+#'   unlikely you relied on this behavior. For a ggplot2 plot, the return value
+#'   will be the plotting object with class \code{"ggplot"}.
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
 #'
@@ -158,7 +157,14 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
 
   returned <- f(plottingData)
 
-  return(returned)
+  # This is required so that the plot is immediately displayed. The final value
+  # is returned invisibly to avoid overwhelming the R console with the data some
+  # plotting functions return, but this prevents the ggplot object from
+  # displaying (it's the same reason you have to print() ggplot plots inside a
+  # for loop).
+  if (inherits(returned, "ggplot")) print(returned)
+
+  return(invisible(returned))
 }
 
 getPlotFunction <- function(plotID, study = NULL) {
