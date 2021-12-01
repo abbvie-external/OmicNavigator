@@ -2,6 +2,9 @@
 
 * Removed long-running example
 
+* Removed leftover LaTeX files and added them to .Rbuildignore to prevent future
+issues
+
 ## Test environments
 
 * win-builder (devel)

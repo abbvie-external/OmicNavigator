@@ -13,3 +13,9 @@
 ^inst/OmicNavigator\.gif$
 ^cran-comments\.md$
 ^.*\.tar\.gz$
+^vignettes/.*\.bbl$
+^vignettes/.*\.blg$
+^vignettes/.*\.log$
+^vignettes/.*\.synctex\.gz$
+^vignettes/.*\.tex$
+^vignettes/.*\.toc$
