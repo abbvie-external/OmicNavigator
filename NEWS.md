@@ -1,3 +1,9 @@
+* **Breaking change:** The function `plotStudy()` now returns the result from
+the custom plotting function. Previously it invisibly returned the study object.
+It's unlikely you relied on this behavior. For a base R plot, the return value
+will be `NULL`. For a ggplot2 plot, the return value will be the plotting
+object with class `"ggplot"`.
+
 # 1.8.0
 
 * Support for new plotType multiModel. This will enable visualizations between

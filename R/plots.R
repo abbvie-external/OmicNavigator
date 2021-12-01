@@ -11,9 +11,12 @@
 #' a single testID unless the plotType is "multiTest". You can specify the
 #' plotType when you add a plot with \code{\link{addPlots}}.
 #'
-#' @return This function is called for the side effect of creating a plot.
-#'   However, it also invisible returns the original \code{onStudy} object
-#'   passed to \code{study}.
+#' @return This function is called for the side effect of creating a plot. It
+#'   returns the result from the custom plotting function specified by
+#'   \code{plotID}. Previously it invisibly returned the study object. It's
+#'   unlikely you relied on this behavior. For a base R plot, the return value
+#'   will be \code{NULL}. For a ggplot2 plot, the return value will be the
+#'   plotting object with class \code{"ggplot"}.
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
 #'
@@ -154,9 +157,8 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   }
 
   returned <- f(plottingData)
-  if (inherits(returned, "ggplot")) print(returned)
 
-  return(invisible(study))
+  return(returned)
 }
 
 getPlotFunction <- function(plotID, study = NULL) {
