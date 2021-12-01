@@ -40,6 +40,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
          "Plots available:\n",
          sprintf("* \"%s\"\n", plotsAvailable))
   }
+  ##not sure what inherits does or getPlotFunction ***************************
   p <- plots[[plotID]]
   if (inherits(study, "onStudy")) {
     f <- getPlotFunction(plotID)
@@ -63,6 +64,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   }
 
   nPlotType <- length(plotType)
+  dynamic <- F
 
   for (ind in 1:nPlotType) {
     if (plotType[ind] == "singleFeature") {
@@ -97,6 +99,9 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
         sprintf("Received %d testID(s)", nTests)
       )
     }
+    if(plotType[ind] == "plotly"){
+      dynamic <- TRUE
+    }
     # multiModel is checked as a multiTest as it requires at least 2 testIDs, eg.:
     # (1) 1 testID per model and > 1 model
     # (2) > 1 testID and 1 model
@@ -121,18 +126,18 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           )
         }
       }
+      if (length(modelID) > 1) {
+        model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
+        if (!all(featureID %in% model_features)) {
+          stop(
+            "features list contains at least one feature not present in the corresponding model from mapping object\n",
+            sprintf("ModelID : %s", modelID[1])
+          )
+        }
+      }
     }
   }
 
-  if (length(modelID) > 1) {
-    model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
-    if (!all(featureID %in% model_features)) {
-      stop(
-        "features list contains at least one feature not present in the corresponding model from mapping object\n",
-        sprintf("ModelID : %s", modelID[1])
-        )
-    }
-  }
 
   plottingData <- getPlottingData(study, modelID, featureID, testID = testID,
                                   libraries = libraries)
@@ -155,7 +160,11 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     }
   }
 
-  returned <- f(plottingData)
+  if (dynamic == T){
+    returned <- plotly::plotly_json(f(plottingData))
+  }else{
+    returned <- f(plottingData)
+  }
 
   # This is required so that the plot is immediately displayed. The final value
   # is returned invisibly to avoid overwhelming the R console with the data some
