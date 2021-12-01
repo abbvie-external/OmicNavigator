@@ -1,3 +1,7 @@
+## Resubmission
+
+* Removed long-running example
+
 ## Test environments
 
 * win-builder (devel)
@@ -13,9 +17,4 @@
 
 ## R CMD check results
 
-0 errors | 0 warnings | 1 notes
-
-* checking examples ... [50s] NOTE
-Examples with CPU (user + system) or elapsed time > 10s
-                     user system elapsed
-getInstalledStudies 15.29     10   43.29
+0 errors | 0 warnings | 0 notes

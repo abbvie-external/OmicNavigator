@@ -17,7 +17,3 @@ Returns a character vector of the installed OmicNavigator study
 \description{
 Get installed OmicNavigator studies
 }
-\examples{
- getInstalledStudies()
-
-}

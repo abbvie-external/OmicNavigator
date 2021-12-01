@@ -6,9 +6,6 @@
 #' @return Returns a character vector of the installed OmicNavigator study
 #'   packages
 #'
-#' @examples
-#'  getInstalledStudies()
-#'
 #' @export
 getInstalledStudies <- function(libraries = NULL) {
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
