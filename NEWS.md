@@ -1,3 +1,7 @@
+# 1.9.1
+
+* The release tarball includes version 1.4.1 of the web app
+
 * **Breaking change:** The function `plotStudy()` now invisibly returns the
 result from the custom plotting function. Previously it invisibly returned the
 study object. It's unlikely you relied on this behavior. For a ggplot2 plot, the
