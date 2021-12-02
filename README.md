@@ -217,10 +217,7 @@ OmicNavigator is deployed as an [OpenCPU](https://www.opencpu.org/ "OpenCPU") ap
 
 OmicNavigator development is influenced by many existing bioinformatics and data visualization tools, including the set analysis visualization tool [UpSet](https://github.com/VCG/upset "UpSet") and the enrichment analysis network visualization tool [EnrichmentMap](https://github.com/BaderLab/EnrichmentMapApp "EnrichmentMap")
 
-## Code of Conduct
+## Contributing and Code of Conduct
 
-Please note that the OmicNavigator project is released with a [Contributor Code
-of Conduct][coc]. By contributing to this project, you agree to abide by its
-terms. The full text is also available at `.github/CODE_OF_CONDUCT.md`.
-
-[coc]: https://contributor-covenant.org/version/2/0/CODE_OF_CONDUCT.html
+Please note that the OmicNavigator project is released with guidelines on how to best contribute and a code of conduct. 
+You can find these documents in `CONTRIBUTING.md` and `.github/CODE_OF_CONDUCT.md`.
