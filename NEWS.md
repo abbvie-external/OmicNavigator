@@ -208,7 +208,7 @@ package. It usually worked before, but now it should always work.
 * New function `installApp()` to download the web app after installing the R
 package
 
-* Support for tibble and data.table input. For consistentcy, they will be be
+* Support for tibble and data.table input. For consistency, they will be be
 automatically converted to pure data frame objects internally.
 
 * Bug fix: `exportStudy()` now properly overwrites an existing tarball when the
@@ -401,7 +401,7 @@ featureIDs are consistent between the results, features, and assays tables
 
 # 0.19.0
 
-* Most package functions now consistenly return empty data structures (e.g.
+* Most package functions now consistently return empty data structures (e.g.
 `list()`) when a query requests data that is unavailable. Previously the
 functions would throw an error if the requested data was unavailable. There is
 a new section in the API vignette documenting this behavior for the functions
