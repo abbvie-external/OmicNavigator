@@ -162,7 +162,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
 
   if (dynamic == T){
     returned <- plotly::plotly_json(f(plottingData))
-    detach("package:plotly", unload = T)
+   # detach("package:plotly", unload = T)
 
   }else{
     returned <- f(plottingData)
