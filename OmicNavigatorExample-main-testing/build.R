@@ -4,7 +4,7 @@ library(ggplot2)
 library(gplots)
 library(viridis)
 library(OmicNavigator)
-library(plotly)
+#library(plotly)
 
 # Create a new study -----------------------------------------------------------
 
@@ -95,13 +95,13 @@ x <- getPlottingData(study, modelID = "Differential_Expression", featureID = "49
 expression_by_cell_type <- function(x) {
   ggDataFrame <- cbind(x$samples,
                        feature = as.numeric(x$assays))
-   p <- ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
+  p <- ggplot(ggDataFrame, aes(x = .data$group, y = .data$feature, fill = .data$group)) +
     geom_boxplot(alpha = .75) +
     labs(x = "Cell type", y = "Gene expression",
          title = sprintf("%s (Entrez %s)", x$features$symbol, x$features$entrez)) +
     scale_fill_viridis(discrete = TRUE, begin = .25) +
     theme_classic()
-   plotly::ggplotly(p)
+  ggplotly(p)
 }
 # expression_by_cell_type(x)
 # p <- expression_by_cell_type(x)
@@ -140,7 +140,7 @@ plots <- list(
     expression_by_cell_type = list(
       displayName = "Expression by cell type",
       plotType = c("singleFeature", "plotly"),
-      packages = c("ggplot2", "viridis", "plotly")
+      packages = c("plotly", "ggplot2", "viridis")
     ),
     heatmap.custom = list(
       displayName = "Expression Heatmap",
@@ -152,7 +152,7 @@ plots <- list(
 study <- addPlots(study, plots = plots)
 
 p <- plotStudy(study, modelID = "Differential_Expression", featureID = "497097",
-          plotID = "expression_by_cell_type")
+               plotID = "expression_by_cell_type")
 plotStudy(study, modelID = "Differential_Expression", featureID = "27395",
           plotID = "expression_by_cell_type")
 plotStudy(study, modelID = "Differential_Expression", featureID = IntFeatures,
