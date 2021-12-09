@@ -193,6 +193,8 @@ resetPar <- function(originalParSettings) {
 resetSearch <- function(pkgNamespaces) {
   searchPath <- search()
   pkgNamespaces <- unique(pkgNamespaces)
+  # Detach packages in reverse order to avoid dependency conflicts
+  pkgNamespaces <- pkgNamespaces[rank(match(pkgNamespaces, searchPath))]
   for (namespace in pkgNamespaces) {
     if (namespace %in% searchPath) {
       detach(namespace, character.only = TRUE)

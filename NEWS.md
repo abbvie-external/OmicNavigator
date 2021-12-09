@@ -1,3 +1,11 @@
+* Bug fix: Detach packages in reverse order to avoid dependency conflicts.
+Explanation: when plotting with `plotStudy()`, any required packages are
+attached temporarily and then detached. When one package "Depends" on another
+package (e.g. plotly Depends on ggplot2), the first package must be detached
+before its dependency can be detached. Now this dependency order is taken into
+account when detaching the packages (reported by [Joe
+LoGrasso](https://github.com/joelograsso))
+
 # 1.9.1
 
 * The release tarball includes version 1.4.1 of the web app
