@@ -40,7 +40,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
          "Plots available:\n",
          sprintf("* \"%s\"\n", plotsAvailable))
   }
-  ##not sure what inherits does or getPlotFunction ***************************
+
   p <- plots[[plotID]]
   if (inherits(study, "onStudy")) {
     f <- getPlotFunction(plotID)
@@ -64,7 +64,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   }
 
   nPlotType <- length(plotType)
-  dynamic <- F
+  dynamic <- FALSE
 
   for (ind in 1:nPlotType) {
     if (plotType[ind] == "singleFeature") {
@@ -160,11 +160,10 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     }
   }
 
-  if (dynamic == T){
-    returned <- plotly::plotly_json(f(plottingData))
-    #detach("package:plotly", unload = T)
+  if (dynamic == TRUE){
+    returned <- plotly::plotly_json(f(plottingData), jsonedit = FALSE)
 
-  }else{
+    }else{
     returned <- f(plottingData)
   }
 

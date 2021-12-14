@@ -398,7 +398,8 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
 #'   Optionally, if the plotting function requires external packages, these can
 #'   be defined in the element \code{packages}. To share plots across multiple
-#'   models, use the modelID "default". This is modified to accept plotly plots.
+#'   models, use the modelID "default". To add a plotting function that returns
+#'   an interactive plotly plot, add "plotly" to the \code{plotType} vector.
 #' @inherit shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}

@@ -52,6 +52,7 @@ Suggests:
   faviconPlease,
   ggplot2,
   opencpu,
+  plotly,
   tinytest (>= 1.2.3),
   ttdo (>= 0.0.6),
   UpSetR
