@@ -92,7 +92,7 @@ expect_error_xl(
 )
 #plotly
 expect_error_xl(
-  plotStudy(testStudyObj, modelID = "model_03", featureID = "feature_0001", plotID = "plotPlotly")
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "plotPlotly")
 )
 
 expect_error_xl(
@@ -947,6 +947,11 @@ expect_identical_xl(
 
 # Plotly Plots -----------------------------------------------------------------
 
+
+json <- plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotPlotly")
+expect_true_xl(
+  inherits(json, "json")
+)
 
 # Teardown ---------------------------------------------------------------------
 
