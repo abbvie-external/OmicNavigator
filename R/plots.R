@@ -35,7 +35,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     plots <- c(plots, tempPlots)
   }
   plotsAvailable <- names(plots)
-  if(!plotID %in% plotsAvailable) {
+  if (!plotID %in% plotsAvailable) {
     stop(sprintf("The plot \"%s\" is not available.\n", plotID),
          "Plots available:\n",
          sprintf("* \"%s\"\n", plotsAvailable))
@@ -99,7 +99,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
         sprintf("Received %d testID(s)", nTests)
       )
     }
-    if(plotType[ind] == "plotly"){
+    if (plotType[ind] == "plotly") {
       dynamic <- TRUE
     }
     # multiModel is checked as a multiTest as it requires at least 2 testIDs, eg.:
@@ -160,10 +160,9 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     }
   }
 
-  if (dynamic == TRUE){
+  if (dynamic == TRUE) {
     returned <- plotly::plotly_json(f(plottingData), jsonedit = FALSE)
-
-    }else{
+  } else {
     returned <- f(plottingData)
   }
 

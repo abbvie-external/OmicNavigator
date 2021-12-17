@@ -1,3 +1,13 @@
+# 1.10.0
+
+* Support for custom [plotly][] plots. Include the `plotType` `"plotly"` to add
+custom functions that return interactive plotly graphs (implemented by [Joe
+LoGrasso](https://github.com/joelograsso) in [PR
+#9](https://github.com/abbvie-external/OmicNavigator/pull/9)) Front-end support
+will be added in a future release of the web app
+
+[plotly]: https://cran.r-project.org/package=plotly
+
 * Bug fix: Detach packages in reverse order to avoid dependency conflicts.
 Explanation: when plotting with `plotStudy()`, any required packages are
 attached temporarily and then detached. When one package "Depends" on another

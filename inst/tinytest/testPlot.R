@@ -947,7 +947,6 @@ expect_identical_xl(
 
 # Plotly Plots -----------------------------------------------------------------
 
-
 json <- plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotPlotly")
 expect_true_xl(
   inherits(json, "json")
