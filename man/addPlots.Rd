@@ -22,7 +22,8 @@ entries, whenever applicable, e.g., plotType = c(\code{"multiFeature"},
 will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
 Optionally, if the plotting function requires external packages, these can
 be defined in the element \code{packages}. To share plots across multiple
-models, use the modelID "default".}
+models, use the modelID "default". To add a plotting function that returns
+an interactive plotly plot, add "plotly" to the \code{plotType} vector.}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data

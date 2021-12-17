@@ -30,7 +30,7 @@ pkgDependencies <- utils::packageDescription(
 
 expect_identical_xl(
   pkgDependencies,
-  "data.table, ggplot2, graphics, rlang, stats"
+  "data.table, ggplot2, graphics, plotly, rlang, stats"
 )
 
 pkgExports <- sort(getNamespaceExports(testPkgName))
@@ -90,6 +90,10 @@ expect_silent_xl(
 expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_03", featureID = "feature_0001", plotID = "plotBase")
 )
+#plotly
+expect_error_xl(
+  plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "plotPlotly")
+)
 
 expect_error_xl(
   plotStudy(testStudyObj, modelID = "model_01", featureID = "feature_0001", plotID = "plotGg")
@@ -130,6 +134,10 @@ expect_silent_xl(
 
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotBase")
+)
+#plotly
+expect_error_xl(
+  plotStudy(testStudyName, modelID = "model_04", featureID = "feature_0001", plotID = "plotPlotly")
 )
 
 expect_error_xl(
@@ -935,6 +943,14 @@ plottingData <- getPlottingData(
 expect_identical_xl(
   plottingData[["results"]][[1]],
   c("feature_0006", "feature_0002")
+)
+
+# Plotly Plots -----------------------------------------------------------------
+
+
+json <- plotStudy(testStudyName, modelID = "model_03", featureID = "feature_0001", plotID = "plotPlotly")
+expect_true_xl(
+  inherits(json, "json")
 )
 
 # Teardown ---------------------------------------------------------------------
