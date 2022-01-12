@@ -1,3 +1,7 @@
+# 1.10.1
+
+* The release tarball includes version 1.5.0 of the web app
+
 # 1.10.0
 
 * Support for custom [plotly][] plots. Include the `plotType` `"plotly"` to add
