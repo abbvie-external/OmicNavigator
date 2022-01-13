@@ -7,6 +7,7 @@ on:
   push:
     tags:
       - 'v*'
+  workflow_dispatch:
 
 jobs:
   release:
@@ -51,12 +52,10 @@ jobs:
       shell: sudo Rscript {0}
 
     - name: Install TinyTeX
-      run: |
-        # https://yihui.name/tinytex/faq/
-        wget -qO- "https://yihui.org/tinytex/install-unx.sh" | sh -s - --admin --no-path
-        wget -qO- "https://raw.githubusercontent.com/yihui/tinytex/master/tools/pkgs-yihui.txt" | xargs ~/.TinyTeX/bin/*/tlmgr install
-        sudo ~/.TinyTeX/bin/*/tlmgr path add
-        chmod 755 ~/.TinyTeX/
+      uses: r-lib/actions/setup-tinytex@v2
+      env:
+        # install full prebuilt version
+        TINYTEX_INSTALLER: TinyTeX
 
     - name: Session information
       run: sessionInfo()
