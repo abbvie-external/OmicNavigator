@@ -2,7 +2,7 @@
 
 [![CRAN status](https://www.r-pkg.org/badges/version/OmicNavigator)](https://cran.r-project.org/package=OmicNavigator)
 [![R CMD check status from GitHub Actions](https://github.com/abbvie-external/OmicNavigator/workflows/Comprehensive%20test/badge.svg)](https://github.com/abbvie-external/OmicNavigator/actions/workflows/comprehensive.yml)
-[![Downloads count](https://cranlogs.r-pkg.org/badges/grand-total/OmicNavigator)](https://r-pkg.org/pkg/OmicNavigator)
+[![Monthly downloads](https://cranlogs.r-pkg.org/badges/OmicNavigator)](https://r-pkg.org/pkg/OmicNavigator)
 
 # OmicNavigator: Open-Source Software for Omic Data Analysis and Visualization 
 
