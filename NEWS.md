@@ -1,3 +1,6 @@
+* Detect custom plotting functions with `plotType == "plotly"` that don't
+properly return an object with class `"plotly"`
+
 # 1.10.1
 
 * The release tarball includes version 1.5.0 of the web app

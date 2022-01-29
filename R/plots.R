@@ -161,7 +161,12 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
   }
 
   if (dynamic == TRUE) {
-    returned <- plotly::plotly_json(f(plottingData), jsonedit = FALSE)
+    returned <- f(plottingData)
+    if (!inherits(returned, "plotly")) {
+      stop(sprintf("The plotID \"%s\" has plotType \"plotly\" but did not return an object with class \"plotly\"",
+                   plotID))
+    }
+    returned <- plotly::plotly_json(returned, jsonedit = FALSE)
   } else {
     returned <- f(plottingData)
   }
