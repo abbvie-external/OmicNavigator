@@ -8,7 +8,10 @@
 #' the nested list returned by this function is passed as the first argument to
 #' your custom plotting function. By default, the app will pass a single
 #' featureID unless the plotType is "multiFeature". Similarly, the app will pass
-#' a single testID unless the plotType is "multiTest". You can specify the
+#' a single testID unless the plotType is "multiTest". Finally, one or more
+#' testIDs can be passed per modelID when plotType is "multiModel". Note that
+#' for plotType = "multiModel", testID must be provided as a named vector,
+#' with each testID named after the related modelID. You can specify the
 #' plotType when you add a plot with \code{\link{addPlots}}.
 #'
 #' @return This function is called for the side effect of creating a plot. It
