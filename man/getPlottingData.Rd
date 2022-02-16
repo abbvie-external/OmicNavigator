@@ -56,6 +56,8 @@ with \code{\link{addPlots}}.
 This function creates the input data that \code{\link{plotStudy}} passes to
 custom plotting functions added with \code{\link{addPlots}}. You can use it
 directly when you are interactively creating your custom plotting functions.
+Note that for multiModel plots testID is required to be a named vector, with
+each testID named after the related modelID.
 }
 \seealso{
 \code{\link{addPlots}}, \code{\link{plotStudy}}

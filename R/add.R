@@ -385,13 +385,6 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #' Fortunately this latter code will also run fine as you interactively develop
 #' the function.
 #'
-#' You can specify the plotType when you add a plot with \code{\link{addPlots}}.
-#' By default, the app will pass a single featureID unless the plotType is
-#' "multiFeature". Similarly, the app will pass a single testID unless the plotType
-#' is "multiTest". Finally, one or more testIDs can be passed per modelID when
-#' plotType is "multiModel". Note that for plotType = "multiModel", testID must be
-#' provided as a named vector, with each testID named after the related modelID.
-#'
 #' @param plots Custom plotting functions for the study. The input object is a
 #'   nested list. The first list corresponds to the modelID(s). The second list
 #'   corresponds to the name(s) of the function(s) defined in the current R
