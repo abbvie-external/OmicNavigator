@@ -6,10 +6,7 @@
 #' @details The arguments \code{study}, \code{modelID}, \code{featureID}, and
 #' \code{testID} are passed to the function \code{\link{getPlottingData}}, and
 #' the nested list returned by this function is passed as the first argument to
-#' your custom plotting function. By default, the app will pass a single
-#' featureID unless the plotType is "multiFeature". Similarly, the app will pass
-#' a single testID unless the plotType is "multiTest". You can specify the
-#' plotType when you add a plot with \code{\link{addPlots}}.
+#' your custom plotting function.
 #'
 #' @return This function is called for the side effect of creating a plot. It
 #'   invisibly returns the result from the custom plotting function specified by
@@ -221,6 +218,8 @@ resetSearch <- function(pkgNamespaces) {
 #' This function creates the input data that \code{\link{plotStudy}} passes to
 #' custom plotting functions added with \code{\link{addPlots}}. You can use it
 #' directly when you are interactively creating your custom plotting functions.
+#' Note that for multiModel plots testID is required to be a named vector, with
+#' each testID named after the related modelID.
 #'
 #' @inheritParams shared-get
 #' @inheritParams listStudies

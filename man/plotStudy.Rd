@@ -37,10 +37,7 @@ Plot a feature using a custom plotting function
 The arguments \code{study}, \code{modelID}, \code{featureID}, and
 \code{testID} are passed to the function \code{\link{getPlottingData}}, and
 the nested list returned by this function is passed as the first argument to
-your custom plotting function. By default, the app will pass a single
-featureID unless the plotType is "multiFeature". Similarly, the app will pass
-a single testID unless the plotType is "multiTest". You can specify the
-plotType when you add a plot with \code{\link{addPlots}}.
+your custom plotting function.
 }
 \seealso{
 \code{\link{addPlots}}, \code{\link{getPlottingData}}
