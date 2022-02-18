@@ -7,7 +7,7 @@ Description:
   software includes R functions for the 'bioinformatician' to deposit study
   metadata and the outputs from statistical analyses (e.g. differential
   expression, enrichment). These results are then exported to an interactive
-  JavaScript dashboard that can be interrogated on the user’s local machine or
+  JavaScript dashboard that can be interrogated on the user's local machine or
   deployed online to be explored by collaborators. The dashboard includes
   'sortable' tables, interactive plots including network visualization, and
   fine-grained filtering based on statistical significance.
