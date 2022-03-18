@@ -26,7 +26,7 @@ getInstalledStudies <- function(libraries = NULL) {
 #'   or the name of an installed study package.
 #' @param modelID Filter by modelID
 #' @param testID Filter by testID
-#' @param annotationID Filter by annotation
+#' @param annotationID Filter by annotationID
 #' @param termID Filter by termID
 #' @param featureID Filter by featureID
 #' @param plotID Filter by plotID

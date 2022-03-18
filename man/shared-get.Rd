@@ -11,7 +11,7 @@ or the name of an installed study package.}
 
 \item{testID}{Filter by testID}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
 \item{termID}{Filter by termID}
 

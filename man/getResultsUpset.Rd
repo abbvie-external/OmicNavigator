@@ -12,11 +12,12 @@ or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
-\item{sigValue}{The significance levels for each column.}
+\item{sigValue}{The numeric significance value to use as a cutoff for each
+column}
 
-\item{operator}{The operators for each column.}
+\item{operator}{The comparison operators for each column, e.g. \code{"<"}}
 
-\item{column}{The columns to be thresheld.}
+\item{column}{The columns to apply the filters}
 
 \item{legacy}{Use legacy code (for testing purposes only)}
 }

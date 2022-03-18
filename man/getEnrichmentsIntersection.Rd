@@ -21,17 +21,22 @@ or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
-\item{mustTests}{The tests whose significant values must be included. (The intersection)}
+\item{mustTests}{The testIDs for which a featureID (or termID for enrichment)
+must pass the filters}
 
-\item{notTests}{The tests whose significant values will be removed. (The difference)}
+\item{notTests}{The testIDs for which a featureID (or termID for enrichment)
+must \bold{not} pass the filters. In other words, if a featureID passes the
+filter for a testID specified in notTests, that featureID is removed from
+the output}
 
-\item{sigValue}{The significance levels for each column.}
+\item{sigValue}{The numeric significance value to use as a cutoff for each
+column}
 
-\item{operator}{The operators for each column.}
+\item{operator}{The comparison operators for each column, e.g. \code{"<"}}
 
-\item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
+\item{type}{Type of p-value: (\code{"nominal"} or \code{"adjusted"})}
 }
 \value{
 Returns a data frame with the enrichments, similar to

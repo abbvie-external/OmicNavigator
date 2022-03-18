@@ -20,15 +20,16 @@ or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
-\item{sigValue}{The significance levels for each column.}
+\item{sigValue}{The numeric significance value to use as a cutoff for each
+column}
 
-\item{operator}{The operators for each column.}
+\item{operator}{The comparison operators for each column, e.g. \code{"<"}}
 
-\item{type}{Type of p-value (\code{"nominal"} or \code{"adjusted"})}
+\item{type}{Type of p-value: (\code{"nominal"} or \code{"adjusted"})}
 
-\item{tests}{Restrict UpSet plot to these tests}
+\item{tests}{Restrict UpSet plot to only include these tests}
 }
 \value{
 No return value. This function is called for the side effect of

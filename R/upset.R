@@ -2,14 +2,19 @@
 #'
 #' @name shared-upset
 #'
-#' @param anchor The primary test to filter from.
-#' @param mustTests The tests whose significant values must be included. (The intersection)
-#' @param notTests The tests whose significant values will be removed. (The difference)
-#' @param sigValue The significance levels for each column.
-#' @param operator The operators for each column.
-#' @param column The columns to be thresheld.
-#' @param type Type of p-value (\code{"nominal"} or \code{"adjusted"})
-#' @param tests Restrict UpSet plot to these tests
+#' @param anchor The primary testID to filter the results
+#' @param mustTests The testIDs for which a featureID (or termID for enrichment)
+#'   must pass the filters
+#' @param notTests The testIDs for which a featureID (or termID for enrichment)
+#'   must \bold{not} pass the filters. In other words, if a featureID passes the
+#'   filter for a testID specified in notTests, that featureID is removed from
+#'   the output
+#' @param sigValue The numeric significance value to use as a cutoff for each
+#'   column
+#' @param operator The comparison operators for each column, e.g. \code{"<"}
+#' @param column The columns to apply the filters
+#' @param type Type of p-value: (\code{"nominal"} or \code{"adjusted"})
+#' @param tests Restrict UpSet plot to only include these tests
 #' @param legacy Use legacy code (for testing purposes only)
 #'
 #' @keywords internal

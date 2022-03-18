@@ -19,7 +19,7 @@ or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
 \item{testID}{Filter by testID}
 

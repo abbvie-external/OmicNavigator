@@ -10,7 +10,7 @@ getNodeFeatures(study, annotationID, termID, libraries = NULL)
 \item{study}{An OmicNavigator study. Only accepts name of installed study
 package.}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
 \item{termID}{Filter by termID}
 

@@ -10,7 +10,7 @@ getLinkFeatures(study, annotationID, termID1, termID2)
 \item{study}{An OmicNavigator study. Only accepts name of installed study
 package.}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
 \item{termID1, termID2}{Linked terms to find overlapping features}
 }

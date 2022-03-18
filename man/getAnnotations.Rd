@@ -10,7 +10,7 @@ getAnnotations(study, annotationID = NULL, quiet = FALSE, libraries = NULL)
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
-\item{annotationID}{Filter by annotation}
+\item{annotationID}{Filter by annotationID}
 
 \item{quiet}{Suppress messages (default: \code{FALSE})}
 
