@@ -3,7 +3,8 @@ listed. This was only possible prior to version 1.2.0.5. After that, any study
 that hasn't explicitly provided a maintainer (and maintainer email) is assigned
 the maintainer `Unknown <unknown@unknown>` during export. It is highly
 recommended to set the maintainer name and email for any study package that will
-be shared
+be shared. Furthermore, `exportStudy()` will send a message when no maintainer
+email has been provided for a study package
 
 # 1.10.4
 

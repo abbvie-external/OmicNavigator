@@ -86,7 +86,10 @@ if (at_home()) {
   expect_false_xl(dir.exists(directoryname))
 
   # Export minimal study
-  tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib)
+  expect_message_xl(
+    tarball <- exportStudy(minimalStudyObj, type = "tarball", path = tmplib),
+    "Note: No maintainer email was specified. Using the placeholder: "
+  )
   expect_true_xl(file.exists(tarball))
   expect_true_xl(startsWith(tarball, tmplib))
   directoryname <- file.path(tmplib, OmicNavigator:::studyToPkg(minimalStudyName))

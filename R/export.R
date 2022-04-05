@@ -410,6 +410,8 @@ createPackage <- function(study, directoryname) {
   }
   if (isEmpty(study[["maintainerEmail"]])) {
     pkgmaintainer <- paste(pkgmaintainer, "<unknown@unknown>")
+    message("Note: No maintainer email was specified. Using the placeholder: ",
+            pkgmaintainer)
   } else {
     pkgmaintainer <- sprintf("%s <%s>", pkgmaintainer, study[["maintainerEmail"]])
   }
