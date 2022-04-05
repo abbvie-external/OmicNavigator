@@ -1,3 +1,10 @@
+* Update `importStudy()` to support study packages that don't have a Maintainer
+listed. This was only possible prior to version 1.2.0.5. After that, any study
+that hasn't explicitly provided a maintainer (and maintainer email) is assigned
+the maintainer `Unknown <unknown@unknown>` during export. It is highly
+recommended to set the maintainer name and email for any study package that will
+be shared
+
 # 1.10.4
 
 * The release tarball includes version 1.6.2 of the web app

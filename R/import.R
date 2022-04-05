@@ -25,6 +25,17 @@ importStudy <- function(study, libraries = NULL) {
 
   # Import info from DESCRIPTION
   description <- utils::packageDescription(pkg, lib.loc = libraries)
+  if (is.null(description[["Maintainer"]])) {
+    description[["Maintainer"]] <- "Unknown <unknown@unknown>"
+    message(
+      "This study package didn't have a maintainer listed",
+      "\nUsing the placeholder: ", description[["Maintainer"]],
+      "\nHighly recommended to update this with your own name and email:",
+      "\n<name of study object>$maintainer <- \"<Your Name>\"",
+      "\n<name of study object>$maintainer <- \"<youremail@domain.com>\"",
+      "\n(replace the text in between the brackets; make sure to delete the brackets)"
+    )
+  }
   maintainerField <- strsplit(description[["Maintainer"]], "<|>")[[1]]
   maintainer <- sub("[[:space:]]$", "", maintainerField[1])
   maintainerEmail <- maintainerField[2]
