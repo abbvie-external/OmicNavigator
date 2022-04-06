@@ -6,6 +6,13 @@ recommended to set the maintainer name and email for any study package that will
 be shared. Furthermore, `exportStudy()` will send a message when no maintainer
 email has been provided for a study package
 
+* Fix infamous `drop = FALSE`
+[bug](http://adv-r.had.co.nz/Subsetting.html#simplify-preserve) in
+`getUpsetCols()`. Previously, if the results tables for a given modelID only had
+two total columns (the featureID column and one data column), `getUpsetCols()`
+returned no common columns, and thus disabled the set interaction features in
+the app (reported by [Brett Engelmann](https://github.com/bengalengel))
+
 # 1.10.4
 
 * The release tarball includes version 1.6.2 of the web app

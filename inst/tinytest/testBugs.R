@@ -101,3 +101,27 @@ expect_message_xl(
 )
 
 rm(studyNoAssays, plotBetas)
+
+# Results table with only 2 columns --------------------------------------------
+
+# Have to set drop=FALSE in getUpsetCols() when the results table(s) only have 2
+# columns total. This is because after the featureID column is removed, then the
+# 1 remaining results column is converted to a vector. Then colnames() returns
+# NULL (since it's a vector), and no common column names are found, thus
+# disabling the set intersection features
+#
+# Creating an entire test study to confirm this well known error seems overkill
+# (even for me). Here I simply confirm that drop=FALSE solves this type of issue
+
+local({
+  results <- list(
+    test1 = data.frame(id = 1:3, stat = 1:3),
+    test2 = data.frame(id = 1:3, stat = 1:3)
+  )
+  colsAll <- lapply(results, function(x) colnames(x[, -1, drop = FALSE]))
+  colsCommon <- Reduce(intersect, colsAll)
+  expect_identical_xl(
+    colsCommon,
+    "stat"
+  )
+})
