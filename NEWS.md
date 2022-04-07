@@ -1,3 +1,7 @@
+# 1.10.5
+
+* The release tarball includes version 1.6.3 of the web app
+
 * Update `importStudy()` to support study packages that don't have a Maintainer
 listed. This was only possible prior to version 1.2.0.5. After that, any study
 that hasn't explicitly provided a maintainer (and maintainer email) is assigned
