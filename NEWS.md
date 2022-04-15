@@ -1,3 +1,5 @@
+* New function `combineStudies()` to combine two or more studies
+
 # 1.10.5
 
 * The release tarball includes version 1.6.3 of the web app
