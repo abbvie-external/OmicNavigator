@@ -376,6 +376,12 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   if (length(modelID) > 1) {
     model_seq <- names(getModels(study, libraries = libraries))
     plottingData <- plottingData[order(match(names(plottingData), model_seq))]
+  } else {
+    # include modelID and testID as top-level elements. A singleModel/singleTest
+    # function does not have access to either. A singleModel/multiTest function
+    # would have the testIDs but not the modelID
+    plottingData[["modelID"]] <- modelID
+    plottingData[["testID"]] <- testID
   }
 
   return(plottingData)
