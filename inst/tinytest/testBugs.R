@@ -125,3 +125,77 @@ local({
     "stat"
   )
 })
+
+# Empty sub-lists --------------------------------------------------------------
+
+# Empty lists at the top-level are fine since this is the default when there is
+# no data for that element. However, sub-lists in big nested lists like
+# enrichments can cause problems. Because the loop is never entered, they are
+# simply skipped by the checkX() functions. But when it comes time to export
+# the study, these empty sub-lists can be mistakenly interpreted as containing
+# data.
+
+local({
+  models <- OmicNavigator:::testModels()
+  models[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkModels(models),
+    "An empty list is not allowed in this context"
+  )
+
+  tests <- OmicNavigator:::testTests()
+  tests[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkTests(tests),
+    "An empty list is not allowed in this context"
+  )
+
+  annotations <- OmicNavigator:::testAnnotations()
+  annotations[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkAnnotations(annotations),
+    "An empty list is not allowed in this context"
+  )
+
+  results <- OmicNavigator:::testResults()
+  results[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkResults(results),
+    "An empty list is not allowed in this context"
+  )
+
+  enrichments <- OmicNavigator:::testEnrichments()
+  enrichments[[1]][["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkEnrichments(enrichments),
+    "An empty list is not allowed in this context"
+  )
+
+  plots <- OmicNavigator:::testPlots()
+  plots[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkPlots(plots),
+    "An empty list is not allowed in this context"
+  )
+
+  barcodes <- OmicNavigator:::testBarcodes()
+  barcodes[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkBarcodes(barcodes),
+    "An empty list is not allowed in this context"
+  )
+
+  resultsLinkouts <- OmicNavigator:::testResultsLinkouts()
+  resultsLinkouts[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkResultsLinkouts(resultsLinkouts),
+    "An empty list is not allowed in this context"
+  )
+
+  metaFeaturesLinkouts <- OmicNavigator:::testMetaFeaturesLinkouts()
+  metaFeaturesLinkouts[["empty"]] <- list()
+  expect_error_xl(
+    OmicNavigator:::checkMetaFeaturesLinkouts(metaFeaturesLinkouts),
+    "An empty list is not allowed in this context"
+  )
+})

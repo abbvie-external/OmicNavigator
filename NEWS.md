@@ -1,3 +1,9 @@
+* Bug fix: Do not allow empty sub-lists when adding elements that require a
+nested list (e.g. `addEnrichments()`). This can cause problems for
+`exportStudy()`/`installStudy()`, and make it appear that data is available when
+there is none (reported by Liang Jin and [Brett
+Engelmann](https://github.com/bengalengel))
+
 # 1.11.3
 
 * The release tarball includes version 1.6.6 of the web app

@@ -161,7 +161,7 @@ checkStudyMeta <- function(studyMeta) {
   }
 }
 
-checkList <- function(x) {
+checkList <- function(x, allowEmpty = TRUE) {
   listName <- deparse(substitute(x))
 
   if (!is.list(x)) {
@@ -172,7 +172,15 @@ checkList <- function(x) {
     stop(sprintf("The object \"%s\" must be a list, not a data frame", listName))
   }
 
-  if (!isEmpty(x) && is.null(names(x))) {
+  if (isEmpty(x)) {
+    if (allowEmpty) {
+      return(NULL)
+    } else {
+      stop("An empty list is not allowed in this context")
+    }
+  }
+
+  if (is.null(names(x))) {
     stop(sprintf("The elements of list \"%s\" must be named", listName))
   }
 
@@ -218,7 +226,7 @@ checkModels <- function(models) {
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
-    checkList(models[[i]])
+    checkList(models[[i]], allowEmpty = FALSE)
   }
 
   return(NULL)
@@ -248,13 +256,13 @@ checkTests <- function(tests) {
   checkList(tests)
 
   for (i in seq_along(tests)) {
-    checkList(tests[[i]])
+    checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
       }
-      checkList(tests[[i]][[j]])
+      checkList(tests[[i]][[j]], allowEmpty = FALSE)
     }
   }
 
@@ -265,7 +273,7 @@ checkAnnotations <- function(annotations) {
   checkList(annotations)
 
   for (i in seq_along(annotations)) {
-    checkList(annotations[[i]])
+    checkList(annotations[[i]], allowEmpty = FALSE)
     annotationID <- names(annotations)[i]
     if (is.null(annotations[[i]][["description"]])) {
       stop(sprintf("Missing description for annotation \"%s\"", annotationID))
@@ -277,7 +285,7 @@ checkAnnotations <- function(annotations) {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
     terms <- annotations[[i]][["terms"]]
-    checkList(terms)
+    checkList(terms, allowEmpty = FALSE)
     if (!all(vapply(terms, is.character, logical(1)))) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
@@ -295,7 +303,7 @@ checkResults <- function(results) {
   }
 
   for (i in seq_along(results)) {
-    checkList(results[[i]])
+    checkList(results[[i]], allowEmpty = FALSE)
     for (j in seq_along(results[[i]])) {
       dataFrame <- results[[i]][[j]]
       stopifnot(
@@ -319,10 +327,10 @@ checkEnrichments <- function(enrichments) {
 
   for (i in seq_along(enrichments)) {
     model <- enrichments[[i]]
-    checkList(model)
+    checkList(model, allowEmpty = FALSE)
     for (j in seq_along(model)) {
       annotation <- model[[j]]
-      checkList(annotation)
+      checkList(annotation, allowEmpty = FALSE)
       for (k in seq_along(annotation)) {
         test <- annotation[[k]]
         stopifnot(inherits(test, "data.frame"))
@@ -362,10 +370,10 @@ checkPlots <- function(plots) {
   reservedNames <- ls("package:base")
 
   for (i in seq_along(plots)) {
-    checkList(plots[[i]])
+    checkList(plots[[i]], allowEmpty = FALSE)
     for (j in seq_along(plots[[i]])) {
       plotEntry <- plots[[i]][[j]]
-      checkList(plotEntry)
+      checkList(plotEntry, allowEmpty = FALSE)
       plotID <- names(plots[[i]])[j]
       if (plotID %in% reservedNames) {
         stop(sprintf("Invalid plotID: \"%s\"\n", plotID),
@@ -440,7 +448,7 @@ checkBarcodes <- function(barcodes) {
 
   for (i in seq_along(barcodes)) {
     barcode <- barcodes[[i]]
-    checkList(barcode)
+    checkList(barcode, allowEmpty = FALSE)
     statistic <- barcode[["statistic"]]
     stopifnot(
       is.character(statistic),
@@ -491,7 +499,7 @@ checkResultsLinkouts <- function(resultsLinkouts) {
   checkList(resultsLinkouts)
 
   for (i in seq_along(resultsLinkouts)) {
-    checkList(resultsLinkouts[[i]])
+    checkList(resultsLinkouts[[i]], allowEmpty = FALSE)
     for (j in seq_along(resultsLinkouts[[i]])) {
       stopifnot(is.character(resultsLinkouts[[i]][[j]]))
     }
@@ -514,7 +522,7 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
   checkList(metaFeaturesLinkouts)
 
   for (i in seq_along(metaFeaturesLinkouts)) {
-    checkList(metaFeaturesLinkouts[[i]])
+    checkList(metaFeaturesLinkouts[[i]], allowEmpty = FALSE)
     for (j in seq_along(metaFeaturesLinkouts[[i]])) {
       stopifnot(is.character(metaFeaturesLinkouts[[i]][[j]]))
     }
