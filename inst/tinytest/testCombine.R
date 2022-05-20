@@ -96,3 +96,39 @@ expect_equal_xl(
   resultsProteomics,
   getResults(multiOmics, modelID = "proteomics", testID = "test")
 )
+
+# Combine studies with the same modelIDs - only the data from last study is kept
+study1 <- OmicNavigator:::testStudy("study1")
+study2 <- OmicNavigator:::testStudy("study2")
+study2[["results"]][["model_01"]][["test_01"]][1, 2] <- 1
+study2[["enrichments"]][["model_03"]][["annotation_02"]][["test_02"]][1, 3] <- 0.5
+
+studyCombined <- combineStudies(study1, study2)
+
+expect_equal_xl(
+  studyCombined[["results"]][["model_01"]][["test_01"]],
+  study2[["results"]][["model_01"]][["test_01"]]
+)
+
+expect_equal_xl(
+  studyCombined[["enrichments"]][["model_03"]][["annotation_02"]][["test_02"]],
+  study2[["enrichments"]][["model_03"]][["annotation_02"]][["test_02"]]
+)
+
+# Combine studies with the same modelIDs but different columns in each table.
+# Things get weird because data frames are technically lists, so the unique
+# columns are maintained by utils::modifyList()
+study1 <- OmicNavigator:::testStudy("study1")
+study2 <- OmicNavigator:::testStudy("study2")
+study1[["results"]][["model_01"]][["test_01"]][["new"]] <- 1
+study2[["results"]][["model_01"]][["test_01"]][1, 2] <- 1
+
+studyCombined <- combineStudies(study1, study2)
+
+expect_equal_xl(
+  studyCombined[["results"]][["model_01"]][["test_01"]],
+  cbind(
+    study2[["results"]][["model_01"]][["test_01"]],
+    new = study1[["results"]][["model_01"]][["test_01"]][["new"]]
+  )
+)

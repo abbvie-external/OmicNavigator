@@ -8,9 +8,18 @@
 #' combining. When there are conflicting elements (e.g. different study names or
 #' different maintainers), then the value for the latter study is kept. As a
 #' concrete example, if you combined 5 studies, the name of the combined study
-#' would be the name of the 5th study. However, if they each defined a different
-#' modelID, then the results for all 5 modelIDs would be included in the
-#' combined study.
+#' would be the name of the 5th study.
+#'
+#' The behavior is more complex for study elements that are nested lists of data
+#' frames (e.g. results). If the 5 studies included a results table for the same
+#' modelID/testID combination, then only the results from the 5th study would be
+#' retained. However, if they each defined a different modelID, then the results
+#' for all 5 modelIDs would be included in the combined study. Please note that
+#' you should be extra cautious in the situation where the studies have the same
+#' modelID/testID combination. Ideally they should all have the same column
+#' names. Since a data frame is technically a list, the workhorse function
+#' \code{\link[utils:modifyList]{modifyList}} will retain any uniquely named
+#' columns from earlier studies along with the columns from the final study.
 #'
 #' Note that as a shortcut you can also combine studies using the S3 method
 #' \code{\link[base:c]{c}}.
