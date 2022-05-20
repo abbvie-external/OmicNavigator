@@ -361,7 +361,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features")
+  c("assays", "samples", "features", "modelID")
 )
 
 expect_true_xl(
@@ -405,7 +405,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features")
+  c("assays", "samples", "features", "modelID")
 )
 
 expect_true_xl(
@@ -449,7 +449,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features")
+  c("assays", "samples", "features", "modelID")
 )
 
 expect_true_xl(
@@ -532,12 +532,12 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_true_xl(
@@ -588,12 +588,12 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_true_xl(
@@ -775,7 +775,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_true_xl(
@@ -829,7 +829,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_true_xl(
@@ -883,7 +883,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "modelID", "testID")
 )
 
 expect_true_xl(
