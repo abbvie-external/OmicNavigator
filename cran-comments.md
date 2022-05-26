@@ -1,10 +1,3 @@
-## Resubmission
-
-* Removed long-running example
-
-* Removed leftover LaTeX files and added them to .Rbuildignore to prevent future
-issues
-
 ## Test environments
 
 * win-builder (devel)
@@ -12,6 +5,7 @@ issues
 * R-hub
     * solaris-x86-patched
     * ubuntu-gcc-devel
+    * windows-x86_64-devel
 
 * GitHub Actions
     * windows-latest (release)

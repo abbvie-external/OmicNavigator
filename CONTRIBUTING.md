@@ -277,6 +277,7 @@ devtools::check_win_devel()
 rhub::validate_email()
 rhub::check_for_cran(platform = "solaris-x86-patched")
 rhub::check_for_cran(platform = "ubuntu-gcc-devel")
+rhub::check_for_cran(platform = "windows-x86_64-devel")
 ```
 
 Then update `cran-comments.md` accordingly, build the tarball (delete `inst/www/`
