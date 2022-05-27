@@ -68,7 +68,7 @@ installStudy(quickstart)
 
 # (optional) Install the example study RNAseq123 which demos many of the app's
 # available features
-install.packages(c("gplots", "viridis"))
+install.packages(c("gplots", "heatmaply", "iheatmapr", "plotly", "viridis"))
 tarball <- "https://github.com/abbvie-external/OmicNavigatorExample/releases/latest/download/ONstudyRNAseq123.tar.gz"
 install.packages(tarball, repos = NULL)
 
