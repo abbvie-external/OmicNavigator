@@ -50,7 +50,9 @@ The data frame \code{results} is only returned if you pass a testID. By
 default the app will always pass the currently selected testID. To make
 \code{results} a list of data frames (one for each testID for the currently
 selected modelID), set the plotType to be "multiTest" when adding the plot
-with \code{\link{addPlots}}.
+with \code{\link{addPlots}}. For "multiModel" plots, testID and modelID
+should be vectors of same length, where the index position indicate which
+test in testID relate to which model in modelID.
 }
 \description{
 This function creates the input data that \code{\link{plotStudy}} passes to

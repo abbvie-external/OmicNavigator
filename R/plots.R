@@ -99,9 +99,8 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     if (plotType[ind] == "plotly") {
       dynamic <- TRUE
     }
-    # multiModel is checked as a multiTest as it requires at least 2 testIDs, eg.:
-    # (1) 1 testID per model and > 1 model
-    # (2) > 1 testID and 1 model
+    # multiModel is checked as a multiTest as it requires at least 2 testIDs.
+    # E.g.: 1 testID per model and > 1 model
     if (plotType[ind] == "multiModel") {
       if (nTests < 2) {
         stop(
@@ -109,9 +108,10 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           sprintf("Received %d testID(s)", nTests)
         )
       }
-      if ((!is.null(names(testID)) & any(is.na(names(testID)))) | is.null(names(testID))) {
+      if (nModels < 2) {
         stop(
-          "Plot type \"multiModel\" requires a vector for testID named after related modelID"
+          "Plot type \"multiModel\" requires at least 2 modelIDs\n",
+          sprintf("Received %d modelID(s)", nModels)
         )
       }
       if (nModels > 1) {
@@ -123,18 +123,8 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
           )
         }
       }
-      if (length(modelID) > 1) {
-        model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
-        if (!all(featureID %in% model_features)) {
-          stop(
-            "features list contains at least one feature not present in the corresponding model from mapping object\n",
-            sprintf("ModelID : %s", modelID[1])
-          )
-        }
-      }
     }
   }
-
 
   plottingData <- getPlottingData(study, modelID, featureID, testID = testID,
                                   libraries = libraries)
@@ -252,7 +242,9 @@ resetSearch <- function(pkgNamespaces) {
 #' default the app will always pass the currently selected testID. To make
 #' \code{results} a list of data frames (one for each testID for the currently
 #' selected modelID), set the plotType to be "multiTest" when adding the plot
-#' with \code{\link{addPlots}}.
+#' with \code{\link{addPlots}}. For "multiModel" plots, testID and modelID
+#' should be vectors of same length, where the index position indicate which
+#' test in testID relate to which model in modelID.
 #'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
@@ -269,6 +261,38 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
   if (length(modelID) > 1) {
     mapping <- getMapping(study, libraries = libraries)
+
+    # Checking requirements for mapping
+    model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
+    if (!any(featureID %in% model_features)) {
+      stop(
+        sprintf("The provided features list does not contain any feature present in the model %s from mapping object.",
+                modelID[1]
+                )
+      )
+    }
+    if (!all(featureID %in% model_features)) {
+      message(
+        sprintf(
+          "The provided features list contains at least one feature not present in the model %s from mapping object.",
+          modelID[1]
+        ),
+        sprintf(
+          "\nOnly features available in the mapping object will be shown."
+        )
+      )
+    }
+    if (length(modelID) != length(testID)) {
+      stop(
+        "For multimodel plots modelID and testID are required to be vectors of the same length.",
+        "\n",
+        sprintf("modelID: %s", paste(modelID, collapse = ", ")),
+        "\n",
+        sprintf("testID: %s", paste(testID, collapse = ", "))
+      )
+    }
+
+    # Structuring data for mapping
     listMaxLength <- max(sapply(mapping, length))
     mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
 
@@ -279,14 +303,16 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
     mapping_features <- mapping_features_all[which(mapping_features_all[,1] %in% featureID),]
 
-    testID_all <- testID
+    testID_all <- testID[order(modelID)]
+    modelID    <- modelID[order(modelID)]
   }
 
-  for (model_i in modelID) {
+  for (ii in 1:length(modelID)) {
+    model_i <- modelID[ii]
 
     if (length(modelID) > 1) {
       featureID <- unique(mapping_features[,which(colnames(mapping_features) %in% model_i)])
-      testID <- testID_all[which(names(testID_all) == model_i)]
+      testID <- testID_all[ii]
     }
 
     assays <- getAssays(study, modelID = model_i, quiet = TRUE,
@@ -355,20 +381,32 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
     if (length(modelID) > 1) {
       if (!exists("plottingData")) plottingData <- list()
-      temp_model <- list(
+
+      if (!model_i %in% names(plottingData)) {
+        temp_model <- list(
+          assays = assaysPlotting,
+          samples = samplesPlotting,
+          features = featuresPlotting,
+          results = list(resultsPlotting)
+        )
+        names(temp_model$results) <- testID
+        plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
+      } else if (sum(modelID %in% model_i) > 1) {
+        resultsPlotting <- list(resultsPlotting)
+        names(resultsPlotting) <- testID
+        plottingData[[model_i]]$results <- c(plottingData[[model_i]]$results, resultsPlotting)
+      }
+
+      if (ii == length(modelID)) {
+        plottingData <- c(plottingData, stats::setNames(list(mapping_features), "mapping"))
+      }
+    } else {
+      plottingData <- list(
         assays = assaysPlotting,
         samples = samplesPlotting,
-        features = featuresPlotting,
-        results = resultsPlotting
+        features = featuresPlotting
       )
-      plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
-    } else {
-    plottingData <- list(
-      assays = assaysPlotting,
-      samples = samplesPlotting,
-      features = featuresPlotting
-    )
-    if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
+      if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
     }
   }
 

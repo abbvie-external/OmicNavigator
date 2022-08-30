@@ -211,7 +211,6 @@ expect_error_xl(
 
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
-names(mmtestID) <- mmodel
 
 expect_silent_xl(
   plotStudy(
@@ -244,7 +243,7 @@ expect_error_xl(
   "Plot type \"multiModel\" requires at least 2 testIDs"
 )
 
-expect_error_xl(
+expect_message_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,
@@ -252,28 +251,29 @@ expect_error_xl(
     plotID = "multiModel_scatterplot",
     testID = c("test_01", "test_02")
   ),
-  "Plot type \"multiModel\" requires a vector for testID named after related modelID"
+  "The provided features list contains at least one feature not present in the model"
 )
 
 expect_error_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,
-    featureID = c("feature_0020006", "feature_0001", "feature_0002"),
-    plotID = "multiModel_scatterplot",
-    testID = mmtestID
+    featureID = c("feature_0001"),
+    plotID = "multiModel_barplot_sf",
+    testID = c("test_01", "test_02")
   ),
-  "features list contains at least one feature not present in the corresponding model from mapping object"
+  "The provided features list does not contain any feature present in the model"
 )
 
-expect_silent_xl(
+expect_error_xl(
   plotStudy(
     testStudyName,
-    modelID = mmodel,
+    modelID = names(testStudyObj[["models"]]),
     featureID = "feature_0002",
     plotID = "multiModel_barplot_sf",
     testID = mmtestID
-  )
+  ),
+  "modelID and testID are required to be vectors of the same length"
 )
 
 expect_error_xl(
@@ -508,11 +508,12 @@ expect_equal_xl(
   2
 )
 
+rm(plottingData)
+
 # getPlottingData (object, multiModel) -----------------------------------------
 
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
-names(mmtestID) <- mmodel
 
 plottingData <- getPlottingData(
   testStudyObj,
@@ -526,7 +527,7 @@ expect_true_xl(
 )
 
 expect_identical_xl(
-  names(plottingData),
+  names(plottingData)[1:2],
   mmodel
 )
 
@@ -536,8 +537,18 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  names(plottingData[[1]][[4]]),
+  c("test_01")
+)
+
+expect_identical_xl(
   names(plottingData[[2]]),
   c("assays", "samples", "features", "results")
+)
+
+expect_identical_xl(
+  names(plottingData[[2]][[4]]),
+  c("test_02")
 )
 
 expect_true_xl(
@@ -560,6 +571,10 @@ expect_true_xl(
 expect_equal_xl(
   nrow(plottingData[[1]][["features"]]),
   2
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["results"]], "list")
 )
 
 rm(plottingData)
@@ -582,7 +597,7 @@ expect_true_xl(
 )
 
 expect_identical_xl(
-  names(plottingData),
+  names(plottingData)[1:2],
   mmodel
 )
 
@@ -592,8 +607,18 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
+  names(plottingData[[1]][[4]]),
+  c("test_01")
+)
+
+expect_identical_xl(
   names(plottingData[[2]]),
   c("assays", "samples", "features", "results")
+)
+
+expect_identical_xl(
+  names(plottingData[[2]][[4]]),
+  c("test_02")
 )
 
 expect_true_xl(
@@ -616,6 +641,10 @@ expect_true_xl(
 expect_equal_xl(
   nrow(plottingData[[1]][["features"]]),
   2
+)
+
+expect_true_xl(
+  inherits(plottingData[[1]][["results"]], "list")
 )
 
 rm(plottingData)
@@ -977,3 +1006,4 @@ expect_error(
 unloadNamespace(testPkgName)
 unlink(tmplib, recursive = TRUE, force = TRUE)
 .libPaths(libOrig)
+
