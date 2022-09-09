@@ -204,7 +204,7 @@ resetSearch <- function(pkgNamespaces) {
 }
 
 # check mapping data requirements and extract relevant features per featureID
-getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID) {
+getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID, libraries = NULL) {
   mapping <- getMapping(study, libraries = libraries)
 
   # Checking requirements for mapping
@@ -311,7 +311,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   featureID <- unique(featureID)
 
   if (length(modelID) > 1) {
-    mappingPlottingData <- getMappingPlottingData(study, modelID, featureID, testID)
+    mappingPlottingData <- getMappingPlottingData(study, modelID, featureID, testID, libraries)
     list2env(mappingPlottingData, environment())
   }
 
