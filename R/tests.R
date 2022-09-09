@@ -395,7 +395,8 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
   mapping <- list(
     data.frame(
       model_01 = model_01_feats,
-      model_02 = model_02_feats
+      model_02 = model_02_feats,
+      stringsAsFactors = FALSE
     )
   )
   names(mapping) <- "defaults"
