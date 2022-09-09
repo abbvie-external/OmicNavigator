@@ -275,7 +275,6 @@ getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
     elements = "mapping",
     filters = list(modelID = modelID),
     default = "default",
-    fileType = "json",
     quiet = quiet,
     libraries = libraries
   )
@@ -329,6 +328,7 @@ getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries =
     elements = "resultsLinkouts",
     filters = list(modelID = modelID),
     default = "default",
+    fileType = "json",
     quiet = quiet,
     libraries = libraries
   )
