@@ -102,9 +102,9 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
     # multiModel is checked as a multiTest as it requires at least 2 testIDs.
     # E.g.: 1 testID per model and > 1 model
     if (plotType[ind] == "multiModel") {
-      if (nTests < 2) {
+      if (!is.null(testID) & nTests == 1) {
         stop(
-          "Plot type \"multiModel\" requires at least 2 testIDs\n",
+          "Plot type \"multiModel\" requires testID to be either NULL (default) or a vector containing at least 2 testIDs\n",
           sprintf("Received %d testID(s)", nTests)
         )
       }
@@ -118,7 +118,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
         mapping <- getMapping(study = study, libraries = libraries)
         if (is.list(mapping) & length(mapping) == 0) {
           stop(
-            "Plot type \"multiModel\" requires mapping object if > 1 modelID is used\n",
+            "Plot type \"multiModel\" requires mapping object\n",
             sprintf("Received %d modelIDs", nModels)
           )
         }
@@ -203,6 +203,57 @@ resetSearch <- function(pkgNamespaces) {
   }
 }
 
+# check mapping data requirements and extract relevant features per featureID
+getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID) {
+  mapping <- getMapping(study, libraries = libraries)
+
+  # Checking requirements for mapping
+  model_features <- mapping[["defaults"]][modelID[1]] [!is.na(mapping[["defaults"]][modelID[1]])]
+  if (!any(featureID %in% model_features)) {
+    stop(
+      sprintf("The provided features list does not contain any feature present in the model %s from mapping object.",
+              modelID[1]
+      )
+    )
+  }
+  if (!all(featureID %in% model_features)) {
+    message(
+      sprintf(
+        "The provided features list contains at least one feature not present in the model %s from mapping object.",
+        modelID[1]
+      ),
+      sprintf(
+        "\nOnly features available in the mapping object will be shown."
+      )
+    )
+  }
+  if (!is.null(testID) & length(modelID) != length(testID)) {
+    stop(
+      "For multimodel plots modelID and testID are required to be vectors of the same length or testID to be set to NULL.",
+      "\n",
+      sprintf("modelID: %s", paste(modelID, collapse = ", ")),
+      "\n",
+      sprintf("testID: %s", paste(testID, collapse = ", "))
+    )
+  }
+
+  # Structuring data for mapping
+  mappingdf <- as.data.frame(mapping[["defaults"]], stringsAsFactors = FALSE)
+  column_order <- unique(c(modelID[1], colnames(mappingdf)))
+  mappingdf <- mappingdf[, column_order]
+
+  mapping_features <- mappingdf[which(mappingdf[,1] %in% featureID),]
+
+  if (!is.null(testID)) testID_all <- testID[order(modelID)] else testID_all <- NULL
+  modelID    <- modelID[order(modelID)]
+
+  mappingPlottingData <- list(
+    mapping_features = mapping_features,
+    testID_all = testID_all,
+    modelID = modelID
+  )
+}
+
 #' Get plotting data
 #'
 #' This function creates the input data that \code{\link{plotStudy}} passes to
@@ -260,51 +311,8 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
   featureID <- unique(featureID)
 
   if (length(modelID) > 1) {
-    mapping <- getMapping(study, libraries = libraries)
-
-    # Checking requirements for mapping
-    model_features <- mapping[[modelID[1]]][!is.na(mapping[[modelID[1]]])]
-    if (!any(featureID %in% model_features)) {
-      stop(
-        sprintf("The provided features list does not contain any feature present in the model %s from mapping object.",
-                modelID[1]
-                )
-      )
-    }
-    if (!all(featureID %in% model_features)) {
-      message(
-        sprintf(
-          "The provided features list contains at least one feature not present in the model %s from mapping object.",
-          modelID[1]
-        ),
-        sprintf(
-          "\nOnly features available in the mapping object will be shown."
-        )
-      )
-    }
-    if (length(modelID) != length(testID)) {
-      stop(
-        "For multimodel plots modelID and testID are required to be vectors of the same length.",
-        "\n",
-        sprintf("modelID: %s", paste(modelID, collapse = ", ")),
-        "\n",
-        sprintf("testID: %s", paste(testID, collapse = ", "))
-      )
-    }
-
-    # Structuring data for mapping
-    listMaxLength <- max(sapply(mapping, length))
-    mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
-
-    mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
-    mapping_features_all <- stats::na.omit(mappingdf)
-    column_order <- unique(c(modelID[1], colnames(mapping_features_all)))
-    mapping_features_all <- mapping_features_all[, column_order]
-
-    mapping_features <- mapping_features_all[which(mapping_features_all[,1] %in% featureID),]
-
-    testID_all <- testID[order(modelID)]
-    modelID    <- modelID[order(modelID)]
+    mappingPlottingData <- getMappingPlottingData(study, modelID, featureID, testID)
+    list2env(mappingPlottingData, environment())
   }
 
   for (ii in 1:length(modelID)) {
@@ -312,6 +320,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
     if (length(modelID) > 1) {
       featureID <- unique(mapping_features[,which(colnames(mapping_features) %in% model_i)])
+      featureID <- featureID[!is.na(featureID)]
       testID <- testID_all[ii]
     }
 
@@ -386,12 +395,12 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
         temp_model <- list(
           assays = assaysPlotting,
           samples = samplesPlotting,
-          features = featuresPlotting,
-          results = list(resultsPlotting)
+          features = featuresPlotting
         )
-        names(temp_model$results) <- testID
+        if (!isEmpty(testID)) temp_model <- c(temp_model, list(results = stats::setNames(list(resultsPlotting), testID)))
         plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
-      } else if (sum(modelID %in% model_i) > 1) {
+
+      } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
         resultsPlotting <- list(resultsPlotting)
         names(resultsPlotting) <- testID
         plottingData[[model_i]]$results <- c(plottingData[[model_i]]$results, resultsPlotting)
