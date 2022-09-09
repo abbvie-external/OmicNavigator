@@ -454,14 +454,16 @@ expect_error_xl(
 )
 
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
-                               model_02 = c("feature_01", "feature_02")))
+                               model_02 = c("feature_01", "feature_02"),
+                               stringsAsFactors = FALSE))
 names(tempMapping) <- "defaults"
 expect_silent_xl(
   addMapping(study, mapping = tempMapping)
 )
 
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
-                               model_02 = c("feature_01", NA)))
+                               model_02 = c("feature_01", NA),
+                               stringsAsFactors = FALSE))
 names(tempMapping) <- "defaults"
 expect_silent_xl(
   addMapping(study, mapping = tempMapping)
@@ -469,7 +471,8 @@ expect_silent_xl(
 
 # check mapping with no named list
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
-                               model_02 = c("feature_01", "feature_02")))
+                               model_02 = c("feature_01", "feature_02"),
+                               stringsAsFactors = FALSE))
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
   "The elements of list \"mapping\" must be named"
@@ -478,7 +481,8 @@ expect_error_xl(
 
 # check mapping with one model having only NAs
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
-                               model_02 = c(NA, NA)))
+                               model_02 = c(NA, NA),
+                               stringsAsFactors = FALSE))
 names(tempMapping) <- "defaults"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
@@ -486,7 +490,8 @@ expect_error_xl(
 )
 
 # check mapping with one single element
-tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02")))
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
+                               stringsAsFactors = FALSE))
 names(tempMapping) <- "defaults"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
@@ -495,7 +500,8 @@ expect_error_xl(
 
 # check mapping features that do not match across models
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02", NA, NA),
-                               model_02 = c(NA, NA, "feature_05", "feature_06")))
+                               model_02 = c(NA, NA, "feature_05", "feature_06"),
+                               stringsAsFactors = FALSE))
 names(tempMapping) <- "defaults"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
