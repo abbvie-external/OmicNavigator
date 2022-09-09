@@ -58,7 +58,7 @@ expect_error_xl(
     plotID = "multiModel_barplot_sf",
     testID = mmtestID
   ),
-  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+  "Plot type \"multiModel\" requires mapping object"
 )
 
 testStudyObjNoMapping[["mapping"]] <- NULL
@@ -71,7 +71,7 @@ expect_error_xl(
     plotID = "multiModel_barplot_sf",
     testID = mmtestID
   ),
-  "Plot type \"multiModel\" requires mapping object if > 1 modelID is used"
+  "Plot type \"multiModel\" requires mapping object"
 )
 
 # plotStudy (object) -----------------------------------------------------------
@@ -212,6 +212,7 @@ expect_error_xl(
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 
+# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_silent_xl(
   plotStudy(
     testStudyName,
@@ -227,22 +228,13 @@ expect_error_xl(
     testStudyName,
     modelID = mmodel,
     featureID = c("feature_0026", "feature_0001", "feature_0002", "feature_0010"),
-    plotID = "multiModel_scatterplot"
-  ),
-  "Plot type \"multiModel\" requires at least 2 testIDs"
-)
-
-expect_error_xl(
-  plotStudy(
-    testStudyName,
-    modelID = mmodel,
-    featureID = c("feature_0026", "feature_0001", "feature_0002", "feature_0010"),
     plotID = "multiModel_scatterplot",
     testID = mmtestID[1]
   ),
-  "Plot type \"multiModel\" requires at least 2 testIDs"
+  "Plot type \"multiModel\" requires testID to be either NULL \\(default\\) or a vector containing at least 2 testIDs"
 )
 
+# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_message_xl(
   plotStudy(
     testStudyName,
@@ -254,6 +246,7 @@ expect_message_xl(
   "The provided features list contains at least one feature not present in the model"
 )
 
+# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_error_xl(
   plotStudy(
     testStudyName,
@@ -265,6 +258,7 @@ expect_error_xl(
   "The provided features list does not contain any feature present in the model"
 )
 
+# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_error_xl(
   plotStudy(
     testStudyName,
@@ -273,7 +267,7 @@ expect_error_xl(
     plotID = "multiModel_barplot_sf",
     testID = mmtestID
   ),
-  "modelID and testID are required to be vectors of the same length"
+  "For multimodel plots modelID and testID are required to be vectors of the same length or testID to be set to NULL"
 )
 
 expect_error_xl(

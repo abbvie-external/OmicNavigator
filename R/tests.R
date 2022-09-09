@@ -393,9 +393,12 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
   model_02_feats[missing_02] <- NA
 
   mapping <- list(
-    model_01 = model_01_feats,
-    model_02 = model_02_feats
+    data.frame(
+      model_01 = model_01_feats,
+      model_02 = model_02_feats
+    )
   )
+  names(mapping) <- "defaults"
 
   return(mapping)
 }

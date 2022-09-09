@@ -242,7 +242,7 @@ expect_true_xl(
 
 # Check if model names from mapping are not matching model names from results
 invalidMapping <- testStudyObj
-names(invalidMapping[["mapping"]]) <- c("model_01", "model")
+names(invalidMapping[["mapping"]][[1]]) <- c("model_01", "model")
 
 expect_error_xl(
   validateStudy(invalidMapping),
@@ -251,7 +251,7 @@ expect_error_xl(
 
 # Check if features from mapping are not matching features from results
 invalidMapping <- testStudyObj
-invalidMapping[["mapping"]][["model_01"]] <- rep("non-matching feature", 100)
+invalidMapping[["mapping"]][[1]]["model_01"] <- rep("non-matching feature", 100)
 
 expect_error_xl(
   validateStudy(invalidMapping),

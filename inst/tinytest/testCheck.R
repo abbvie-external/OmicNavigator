@@ -1,7 +1,7 @@
 # Test checkX() methods
 
 # Setup ------------------------------------------------------------------------
-
+# source(paste0(getwd(), "/inst/tinytest/tinytestSettings.R"))
 source("tinytestSettings.R")
 using(ttdo)
 
@@ -453,37 +453,53 @@ expect_error_xl(
   addMapping(study, mapping = NULL)
 )
 
-## add checks based on check.R
-tempMapping <- list(model_01 = c("feature_01", "feature_02"),
-                    model_02 = c("feature_01", NA))
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
+                               model_02 = c("feature_01", "feature_02")))
+names(tempMapping) <- "defaults"
 expect_silent_xl(
   addMapping(study, mapping = tempMapping)
 )
 
-tempMapping <- list(model_01 = c("feature_01", "feature_02"),
-                    model_02 = c(NA, NA))
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
+                               model_02 = c("feature_01", NA)))
+names(tempMapping) <- "defaults"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with no named list
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
+                               model_02 = c("feature_01", "feature_02")))
 expect_error_xl(
-  addMapping(study, mapping = tempMapping)
+  addMapping(study, mapping = tempMapping),
+  "The elements of list \"mapping\" must be named"
 )
 
-# check mapping with distinct sizes for elements
-tempMapping <- list(model_01 = c("feature_01", "feature_02"),
-                    model_02 = c("feature_01"))
-expect_silent_xl(
-  addMapping(study, mapping = tempMapping)
+
+# check mapping with one model having only NAs
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
+                               model_02 = c(NA, NA)))
+names(tempMapping) <- "defaults"
+expect_error_xl(
+  addMapping(study, mapping = tempMapping),
+  "mapping object requires at least one feature per model"
 )
 
 # check mapping with one single element
-tempMapping <- list(model_01 = c("feature_01", "feature_02"))
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02")))
+names(tempMapping) <- "defaults"
 expect_error_xl(
-  addMapping(study, mapping = tempMapping)
+  addMapping(study, mapping = tempMapping),
+  "mapping object requires at least two models and one feature"
 )
 
 # check mapping features that do not match across models
-tempMapping <- list(model_01 = c("feature_01", "feature_02", NA, NA),
-                    model_02 = c(NA, NA, "feature_05", "feature_06"))
+tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02", NA, NA),
+                               model_02 = c(NA, NA, "feature_05", "feature_06")))
+names(tempMapping) <- "defaults"
 expect_error_xl(
-  addMapping(study, mapping = tempMapping)
+  addMapping(study, mapping = tempMapping),
+  "does not present any feature mapped to another model"
 )
 
 # checkBarcodes ----------------------------------------------------------------
@@ -531,3 +547,4 @@ expect_error_xl(
 expect_error_xl(
   addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = NULL)
 )
+
