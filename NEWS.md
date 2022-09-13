@@ -11,6 +11,10 @@ function, it also returns the results for the provided testIDs. In this case,
 testID is required to be provided as a vector of the same length of modelID, 
 where the index positions indicate which testID relates to which modelID.
 
+# 1.11.8
+
+* The release tarball includes version 1.7.1 of the web app
+
 # 1.11.7
 
 * The release tarball includes version 1.6.9 of the web app
