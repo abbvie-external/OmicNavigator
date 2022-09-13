@@ -7,16 +7,20 @@ Curado](https://github.com/curadomr))
 
 # 1.12.0
 
-* Update `addMapping()` to add the mapping object as a list of data frames, 
-where each data frame consists of a distinct mapping. Mapping object is required 
-for plots combining features from multiple models (multimodel plots).
+* Update `addMapping()` to add the mapping object as a list of data frames,
+where each data frame consists of a distinct mapping. Mapping object is required
+for plots combining features from multiple models (multiModel plots)
+(implemented by [Marco Curado](https://github.com/curadomr) in [PR
+#11](https://github.com/abbvie-external/OmicNavigator/pull/11))
 
-* For multimodel plots, `getPlottingData()` returns a nested list where elements
-are named after modelIDs, and each list element contains at least assays, 
-samples and features objects for the given modelID. If testID is passed to the 
-function, it also returns the results for the provided testIDs. In this case, 
-testID is required to be provided as a vector of the same length of modelID, 
-where the index positions indicate which testID relates to which modelID.
+* For multiModel plots, `getPlottingData()` returns a nested list where elements
+are named after modelIDs, and each list element contains at least assays,
+samples and features objects for the given modelID. If testID is passed to the
+function, it also returns the results for the provided testIDs. In this case,
+testID is required to be provided as a vector of the same length of modelID,
+where the index positions indicate which testID relates to which modelID
+(implemented by [Marco Curado](https://github.com/curadomr) in [PR
+#11](https://github.com/abbvie-external/OmicNavigator/pull/11))
 
 # 1.11.8
 
