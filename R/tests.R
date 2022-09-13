@@ -296,19 +296,19 @@ testPlots <- function() {
 
   multiModel_scatterplot <- function(x) {
     ggdf <- data.frame(
-      var1 = x[[1]]$results[,"beta"],
-      var2 = x[[2]]$results[,"beta"]
+      var1 = x[[1]]$results[[1]][,"beta"],
+      var2 = x[[2]]$results[[1]][,"beta"]
     )
     graphics::plot(x = ggdf$var1, y = ggdf$var2)
   }
   assign("multiModel_scatterplot", multiModel_scatterplot, envir = parent.frame())
   multiModel_barplot_sf <- function(x) {
     df <- data.frame(
-      name  = names(x),
-      beta = c(x[[1]]$results[,"beta"], x[[2]]$results[,"beta"])
+      name  = names(x)[1:length(x)-1],
+      beta = c(x[[1]]$results[[1]][,"beta"], x[[2]]$results[[1]][,"beta"])
     )
     graphics::barplot(height = df$beta, names = df$name,
-                      xlab=x[[1]]$results$features_id,
+                      xlab=x[[1]]$results[[1]]$features_id,
                       ylim=c(ifelse(min(df$beta) < 0, min(df$beta)*1.5, -min(df$beta)*1.5),
                              max(df$beta)*1.5))
   }
@@ -393,9 +393,13 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
   model_02_feats[missing_02] <- NA
 
   mapping <- list(
-    model_01 = model_01_feats,
-    model_02 = model_02_feats
+    data.frame(
+      model_01 = model_01_feats,
+      model_02 = model_02_feats,
+      stringsAsFactors = FALSE
+    )
   )
+  names(mapping) <- "defaults"
 
   return(mapping)
 }

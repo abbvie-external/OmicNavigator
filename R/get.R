@@ -269,13 +269,12 @@ getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' @inheritParams listStudies
 #'
 #' @export
-getMapping <- function(study, quiet = FALSE, libraries = NULL) {
+getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
     study,
     elements = "mapping",
-    filters = list(),
+    filters = list(modelID = modelID),
     default = "default",
-    fileType = "json",
     quiet = quiet,
     libraries = libraries
   )

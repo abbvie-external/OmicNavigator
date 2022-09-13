@@ -605,6 +605,7 @@ expect_identical_xl(
   testStudyObj[["mapping"]]
 )
 
+## Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_identical_xl(
   getMapping(testStudyName),
   testStudyObj[["mapping"]]

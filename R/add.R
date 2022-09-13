@@ -411,23 +411,17 @@ addPlots <- function(study, plots, reset = FALSE) {
 
 #' Add mapping object
 #'
-#' Includes a mapping list connecting features across models.
-#'
-#' Mapping object consists of a list with element names matching the model
-#' names, and each element consisting in a vector with feature IDs found in the
-#' result object. For making meaningful connections between models, feature IDs
-#' for distinct models must be aligned per index position in the vector.
+#' @param mapping Feature IDs from models. The input object is a list of named
+#' data frames. Column names indicate model names (modelID), and rows indicate
+#' featureIDs per model. Features with same index position across columns are
+#' treated as mapped across models. For each model, feature IDs must match
+#' feature IDs available in the results object of the respective model.
+#' The name of each list element should be set to either a modelID or "default".
 #' E.g., if in a study there are models "transcriptomics" and "proteomics" and
-#' the user wants to create a plot based on data from both, a mapping list with
-#' element names "transcriptomics" and "proteomics" should be created, where
-#' feature IDs of both models are found in the same index position in each list
-#' element.
-#'
-#' @param mapping Feature IDs from models. The input object is a list object
-#'   with element names matching model names, and each element containing a
-#'   vector with feature IDs per model. Features with same index position across
-#'   models are considered found across models. For each model, the feature IDs
-#'   must match the feature IDs from results object of the respective model.
+#' the user wants to create a plot based on data from both, a mapping object
+#' with column names "transcriptomics" and "proteomics" should be created, where
+#' feature IDs of both models that relate to each other are located in the same
+#' row across columns.
 #' @inherit shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}

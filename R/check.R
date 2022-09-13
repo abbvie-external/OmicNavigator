@@ -413,30 +413,25 @@ checkPlots <- function(plots) {
 checkMapping <- function(mapping) {
   checkList(mapping)
 
-  # stop if mapping object has less than 2 elements
-  if (length(mapping) > 0) stopifnot(length(mapping) > 1)
-  else return(NULL)
+  for (i in seq_along(mapping)) {
+    # stop if mapping object contains anything else besides data frames
+    if (!inherits(mapping[[i]], "data.frame")) stop("mapping object must be a list of at least one data frame")
+    # stop if mapping object has less than 2 models or 0 features
+    if (!(ncol(mapping[[i]]) > 1 & nrow(mapping[[i]]) > 0)) stop("mapping object requires at least two models and one feature")
+    # stop if mapping object has all NAs for a given model
+    if (!(sum(vapply(mapping[[i]], is.character, logical(1))) == ncol(mapping[[i]]))) stop("mapping object requires at least one feature per model")
+    # check if any given model has at least one feature aligned with another model
+    mapping_na <- as.data.frame(!sapply(mapping[[i]], is.na),
+                                stringsAsFactors = FALSE)
 
-  # check if list elements have the same size. If not, fill difference with NA.
-  listMaxLength <- max(sapply(mapping, length))
-  mapping <- lapply(lapply(mapping, unlist), "length<-", listMaxLength)
+    for (ii in seq_along(mapping_na)) {
+      tmpModel_indexFeatures  <- which(!is.na(mapping[[i]][,ii]))
+      compModel_indexFeatures <- which(!is.na(mapping[[i]][,-ii]))
+      featAligned <- any(tmpModel_indexFeatures %in% compModel_indexFeatures)
 
-  mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
-
-  # NAs are accepted, but not if all values for a model are NA
-  stopifnot(vapply(mappingdf, is.character, logical(1)))
-
-  # check if any given model has at least one feature aligned with another model
-  for (i in seq_along(mappingdf)) {
-    tempModel   <- mappingdf[!is.na(mappingdf[[i]]),]
-    if (nrow(tempModel) > 1) {
-      featAligned <- any(apply(!sapply(tempModel, is.na), 1, sum) > 1)
-    } else {
-      featAligned <- any(sum(!sapply(tempModel, is.na)) > 1)
-    }
-
-    if (!is.na(featAligned) && !featAligned) {
-      stop(sprintf("Model \"%s\" does not present any feature mapping to another model.", colnames(mappingdf)[[i]]))
+      if (!featAligned) {
+        stop(sprintf("Model \"%s\" does not present any feature mapped to another model.", colnames(mapping[[i]])[ii]))
+      }
     }
   }
 
@@ -530,3 +525,4 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
 
   return(NULL)
 }
+

@@ -239,8 +239,7 @@ exportMapping <- function(study, path = ".") {
   exportElements(
     study,
     elements = "mapping",
-    path = path,
-    fileType = "json"
+    path = path
   )
 }
 
