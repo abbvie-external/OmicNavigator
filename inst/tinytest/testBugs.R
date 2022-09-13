@@ -199,3 +199,33 @@ local({
     "An empty list is not allowed in this context"
   )
 })
+
+# Missing values in character columns ------------------------------------------
+
+# Marco discovered in PR #11 that missing values in character columns are not
+# preserved when reading from plain text files installed in study packages. This
+# is because by default data.table::fwrite() writes missing values as empty
+# strings (`na = ""`). When data.table::fread() reads the data, it converts
+# empty strings in numeric columns to NA. However, empty strings in character
+# columns are maintained as missing strings. I fixed this for future packages by
+# explicitly setting `na = "NA"`. I also explicitly set fread()'s na.strings to
+# c("NA", "") because it is set to change to only "" by default in a future
+# version. The test below confirms that legacy study packages with empty strings
+# can still be read. Also, since I included "" in na.strings, they are properly
+# read as missing values (whereas before they wouldn't have been)
+
+x <- data.frame(
+  int = c(1:3, NA),
+  num = c(1.2, -3.9, 10.0, NA),
+  char = c(letters[1:3], NA),
+  stringsAsFactors = FALSE
+)
+f <- tempfile()
+data.table::fwrite(x, file = f, sep = "\t", quote = TRUE, na = "")
+
+expect_equal_xl(
+  OmicNavigator:::readTable(f),
+  x,
+  info = "Missing values are preserved when reading plain text files from study packages created prior to version 1.12.1"
+)
+

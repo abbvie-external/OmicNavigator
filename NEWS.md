@@ -1,3 +1,10 @@
+# 1.12.1
+
+* Bug fix: Support missing values in character columns. Previously they were
+read as empty strings (`""`). This update applies to all new as well as existing
+study packages (ie it is backwards compatible) (reported by [Marco
+Curado](https://github.com/curadomr))
+
 # 1.12.0
 
 * Update `addMapping()` to add the mapping object as a list of data frames, 

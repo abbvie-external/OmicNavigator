@@ -37,6 +37,7 @@ readTable <- function(
     file = x,
     sep = sep,
     header = header,
+    na.strings = c("NA", ""),
     data.table = data.table,
     keepLeadingZeros = keepLeadingZeros,
     ...
@@ -54,6 +55,7 @@ writeTable <- function(x, file, sep = "\t", quote = TRUE, ...) {
     file = file,
     sep = sep,
     quote = quote,
+    na = "NA",
     ...
   )
 }
