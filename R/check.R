@@ -415,11 +415,11 @@ checkMapping <- function(mapping) {
 
   for (i in seq_along(mapping)) {
     # stop if mapping object contains anything else besides data frames
-    stopifnot("mapping object must be a list of at least one data frame" = inherits(mapping[[i]], "data.frame"))
+    if (!inherits(mapping[[i]], "data.frame")) stop("mapping object must be a list of at least one data frame")
     # stop if mapping object has less than 2 models or 0 features
-    stopifnot("mapping object requires at least two models and one feature" = ncol(mapping[[i]]) > 1 & nrow(mapping[[i]]) > 0)
+    if (!(ncol(mapping[[i]]) > 1 & nrow(mapping[[i]]) > 0)) stop("mapping object requires at least two models and one feature")
     # stop if mapping object has all NAs for a given model
-    stopifnot("mapping object requires at least one feature per model" = sum(vapply(mapping[[i]], is.character, logical(1))) == ncol(mapping[[i]]))
+    if (!(sum(vapply(mapping[[i]], is.character, logical(1))) == ncol(mapping[[i]]))) stop("mapping object requires at least one feature per model")
     # check if any given model has at least one feature aligned with another model
     mapping_na <- as.data.frame(!sapply(mapping[[i]], is.na),
                                 stringsAsFactors = FALSE)

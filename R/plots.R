@@ -312,7 +312,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
 
   if (length(modelID) > 1) {
     mappingPlottingData <- getMappingPlottingData(study, modelID, featureID, testID, libraries)
-    list2env(mappingPlottingData, environment())
+    mapping_features <- mappingPlottingData$mapping_features
+    testID_all <- mappingPlottingData$testID_all
+    modelID <- mappingPlottingData$modelID
   }
 
   for (ii in 1:length(modelID)) {
