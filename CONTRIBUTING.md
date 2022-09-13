@@ -252,7 +252,7 @@ Follow these steps to tag a new release:
 
     ```sh
     git tag -l -n9
-    git tag -a v#.#.# -m "v#.#.#"s
+    git tag -a v#.#.# -m "v#.#.#"
     ```
 
 * Push the tag to GitHub
