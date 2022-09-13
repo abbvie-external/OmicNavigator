@@ -279,7 +279,7 @@ field \texttt{plotType} in the output from \texttt{listStudies()} (Section
 modelID should be vectors of same length, where the index position indicate
 which test in testID relate to which model in modelID.
 
-<<plotStudy-plotMultiTest, fig=TRUE>>=
+<<plotStudy-plotMultiModel, fig=TRUE>>=
 modelID <- c("model_01", "model_02")
 testID <- c("test_01", "test_02")
 
