@@ -207,20 +207,31 @@ resetSearch <- function(pkgNamespaces) {
 getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID, libraries = NULL) {
   mapping <- getMapping(study, libraries = libraries)
 
+  # stop if mapping object contains only one element and is not called "defaults"
+  if (length(mapping) == 1 && names(mapping) != "defaults") {
+    stop("mapping list element must be called 'defaults' for mapping list containing one single element.")
+  }
+
   # Checking requirements for mapping
-  model_features <- mapping[["defaults"]][modelID[1]] [!is.na(mapping[["defaults"]][modelID[1]])]
+  if (length(mapping) == 1) {
+    mapping_name <- "defaults"
+  } else if (length(mapping) > 1) {
+    mapping_name <- modelID[1]
+  }
+  model_features <- mapping[[mapping_name]][modelID[1]] [!is.na(mapping[[mapping_name]][modelID[1]])]
+
   if (!any(featureID %in% model_features)) {
     stop(
-      sprintf("The provided features list does not contain any feature present in the model %s from mapping object.",
-              modelID[1]
+      sprintf("The provided features list does not contain any feature present in model '%s' from mapping '%s'.",
+              modelID[1], mapping_name
       )
     )
   }
   if (!all(featureID %in% model_features)) {
     message(
       sprintf(
-        "The provided features list contains at least one feature not present in the model %s from mapping object.",
-        modelID[1]
+        "The provided features list contains at least one feature not present in model '%s' from mapping '%s'",
+        modelID[1], mapping_name
       ),
       sprintf(
         "\nOnly features available in the mapping object will be shown."
@@ -238,7 +249,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   }
 
   # Structuring data for mapping
-  mappingdf <- as.data.frame(mapping[["defaults"]], stringsAsFactors = FALSE)
+  mappingdf <- as.data.frame(mapping[[mapping_name]], stringsAsFactors = FALSE)
   column_order <- unique(c(modelID[1], colnames(mappingdf)))
   mappingdf <- mappingdf[, column_order]
 
