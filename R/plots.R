@@ -207,17 +207,21 @@ resetSearch <- function(pkgNamespaces) {
 getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID, libraries = NULL) {
   mapping <- getMapping(study, libraries = libraries)
 
-  # stop if mapping object contains only one element and is not called "defaults"
-  if (length(mapping) == 1 && names(mapping) != "defaults") {
-    stop("mapping list element must be called 'defaults' for mapping list containing one single element.")
+  # at least two mapping names are not named after modelID.
+  if (sum(!names(mapping) %in% modelID) > 1) {
+    stop("Two or more mapping list elements are not named after modelIDs.")
   }
 
-  # Checking requirements for mapping
-  if (length(mapping) == 1) {
-    mapping_name <- "defaults"
-  } else if (length(mapping) > 1) {
+  # if modelID[1] is not present in names(mapping) and there is a 'default'
+  # mapping, then use the 'default'. Else, use mapping named after modelID[1].
+  if (!modelID[1] %in% names(mapping) && sum(!names(mapping) %in% modelID) == 1) {
+    mapping_name <- names(mapping)[!names(mapping) %in% modelID]
+  } else if (modelID[1] %in% names(mapping)) {
     mapping_name <- modelID[1]
+  } else {
+    return()
   }
+
   model_features <- mapping[[mapping_name]][modelID[1]] [!is.na(mapping[[mapping_name]][modelID[1]])]
 
   if (!any(featureID %in% model_features)) {
