@@ -360,10 +360,36 @@ expect_error_xl(
   info = "A single missing value would still be unique. Error if it is found"
 )
 
+resultsDefault <- list(
+  default = list(
+    t1 = data.frame(
+      x = c("a", "b", "c"),
+      y = rnorm(3),
+      stringsAsFactors = FALSE
+    )
+  )
+)
+
+expect_error_xl(
+  addResults(study, results = resultsDefault),
+  'The results cannot be shared using the modelID \"default\"'
+)
+
 # checkEnrichments -------------------------------------------------------------
 
 expect_error_xl(
   addEnrichments(study, enrichments = NULL)
+)
+
+enrichmentDefault <- list(
+  default = list(
+    t1 = NULL
+  )
+)
+
+expect_error_xl(
+  addEnrichments(study, enrichments = enrichmentDefault),
+  "The enrichments cannot be shared using the modelID \"default\""
 )
 
 # checkMetaFeatures ------------------------------------------------------------

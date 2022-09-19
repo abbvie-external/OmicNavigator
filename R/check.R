@@ -298,8 +298,8 @@ checkAnnotations <- function(annotations) {
 checkResults <- function(results) {
   checkList(results)
 
-  if ("defaults" %in% names(results)) {
-    stop("The results cannot be shared using the modelID \"defaults\"")
+  if ("default" %in% names(results)) {
+    stop("The results cannot be shared using the modelID \"default\"")
   }
 
   for (i in seq_along(results)) {
@@ -321,8 +321,8 @@ checkResults <- function(results) {
 checkEnrichments <- function(enrichments) {
   checkList(enrichments)
 
-  if ("defaults" %in% names(enrichments)) {
-    stop("The enrichments cannot be shared using the modelID \"defaults\"")
+  if ("default" %in% names(enrichments)) {
+    stop("The enrichments cannot be shared using the modelID \"default\"")
   }
 
   for (i in seq_along(enrichments)) {
