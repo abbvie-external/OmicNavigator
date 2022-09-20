@@ -482,7 +482,7 @@ expect_error_xl(
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                model_02 = c("feature_01", "feature_02"),
                                stringsAsFactors = FALSE))
-names(tempMapping) <- "defaults"
+names(tempMapping) <- "default"
 expect_silent_xl(
   addMapping(study, mapping = tempMapping)
 )
@@ -490,7 +490,7 @@ expect_silent_xl(
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                model_02 = c("feature_01", NA),
                                stringsAsFactors = FALSE))
-names(tempMapping) <- "defaults"
+names(tempMapping) <- "default"
 expect_silent_xl(
   addMapping(study, mapping = tempMapping)
 )
@@ -509,7 +509,7 @@ expect_error_xl(
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                model_02 = c(NA, NA),
                                stringsAsFactors = FALSE))
-names(tempMapping) <- "defaults"
+names(tempMapping) <- "default"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
   "mapping object requires at least one feature per model"
@@ -518,7 +518,7 @@ expect_error_xl(
 # check mapping with one single element
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                stringsAsFactors = FALSE))
-names(tempMapping) <- "defaults"
+names(tempMapping) <- "default"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
   "mapping object requires at least two models and one feature"
@@ -528,7 +528,7 @@ expect_error_xl(
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02", NA, NA),
                                model_02 = c(NA, NA, "feature_05", "feature_06"),
                                stringsAsFactors = FALSE))
-names(tempMapping) <- "defaults"
+names(tempMapping) <- "default"
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
   "does not present any feature mapped to another model"
