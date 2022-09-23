@@ -504,7 +504,6 @@ expect_error_xl(
   "The elements of list \"mapping\" must be named"
 )
 
-
 # check mapping with one model having only NAs
 tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                model_02 = c(NA, NA),

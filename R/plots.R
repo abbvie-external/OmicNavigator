@@ -205,37 +205,21 @@ resetSearch <- function(pkgNamespaces) {
 
 # check mapping data requirements and extract relevant features per featureID
 getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID, libraries = NULL) {
-  mapping <- getMapping(study, libraries = libraries)
-
-  # at least two mapping names are not named after modelID.
-  if (sum(!names(mapping) %in% modelID) > 1) {
-    stop("Two or more mapping list elements are not named after modelIDs.")
-  }
-
-  # if modelID[1] is not present in names(mapping) and there is a 'default'
-  # mapping, then use the 'default'. Else, use mapping named after modelID[1].
-  if (!modelID[1] %in% names(mapping) && sum(!names(mapping) %in% modelID) == 1) {
-    mapping_name <- names(mapping)[!names(mapping) %in% modelID]
-  } else if (modelID[1] %in% names(mapping)) {
-    mapping_name <- modelID[1]
-  } else {
-    return()
-  }
-
-  model_features <- mapping[[mapping_name]][modelID[1]] [!is.na(mapping[[mapping_name]][modelID[1]])]
+  mapping <- getMapping(study, modelID = modelID[1], quiet = TRUE, libraries = libraries)
+  model_features <- mapping[modelID[1]][!is.na(mapping[modelID[1]])]
 
   if (!any(featureID %in% model_features)) {
     stop(
-      sprintf("The provided features list does not contain any feature present in model '%s' from mapping '%s'.",
-              modelID[1], mapping_name
+      sprintf("The provided features list does not contain any feature present in model '%s' from mapping object.",
+              modelID[1]
       )
     )
   }
   if (!all(featureID %in% model_features)) {
     message(
       sprintf(
-        "The provided features list contains at least one feature not present in model '%s' from mapping '%s'",
-        modelID[1], mapping_name
+        "The provided features list contains at least one feature not present in model '%s' from mapping object.",
+        modelID[1]
       ),
       sprintf(
         "\nOnly features available in the mapping object will be shown."
@@ -253,7 +237,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   }
 
   # Structuring data for mapping
-  mappingdf <- as.data.frame(mapping[[mapping_name]], stringsAsFactors = FALSE)
+  mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
   column_order <- unique(c(modelID[1], colnames(mappingdf)))
   mappingdf <- mappingdf[, column_order]
 

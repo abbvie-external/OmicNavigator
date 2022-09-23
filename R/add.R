@@ -418,15 +418,15 @@ addPlots <- function(study, plots, reset = FALSE) {
 #' match feature IDs available in the results object of the respective model.
 #' 1:N relationships are allowed.
 #'
-#' If a single data frame is provided, this list element is recommended to be
-#' named 'default', but may also be named after model name(s) as provided
-#' in addModels(). For multiple list elements, each with its own data frame,
-#' list elements should be named after model name(s) (a single element may still
-#' be  named 'default'). In that case, when navigating in ON front-end (FE),
-#' mapping element related to the selected model in the FE will be used in
-#' multimodel plots. If a selected model in FE does not have a corresponding
-#' mapping list element, it may still use the mapping list element called
-#' 'default' if this is available.
+#' Mapping list elements are required to be named as 'default' or after a model
+#' name as provided in addModels(). If a single data frame is provided, this
+#' list element is recommended to be named 'default'. For multiple list
+#' elements, each with its own data frame, list elements should be named after
+#' model name(s) (a single element may still be  named 'default'). In that case,
+#' when navigating in ON front-end (FE), mapping element related to the selected
+#' model in the FE will be used in multimodel plots. If a selected model in FE
+#' does not have a corresponding mapping list element, it may still use the
+#' mapping list element called 'default' if this is available.
 #'
 #' E.g., if in a study there are models "transcriptomics" and "proteomics" and
 #' the user wants to create a plot based on data from both, a mapping list
