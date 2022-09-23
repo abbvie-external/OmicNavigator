@@ -1,3 +1,9 @@
+* Update mapping data to behave in the same way as the features, samples, etc.
+Each element of the list must be named after a modelID or "default" to be shared
+across multiple modelIDs (implemented by [Marco
+Curado](https://github.com/curadomr) in [PR
+#12](https://github.com/abbvie-external/OmicNavigator/pull/12))
+
 # 1.12.1
 
 * Bug fix: Support missing values in character columns. Previously they were
