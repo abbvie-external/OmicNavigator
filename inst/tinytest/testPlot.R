@@ -212,7 +212,6 @@ expect_error_xl(
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 
-# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_silent_xl(
   plotStudy(
     testStudyName,
@@ -234,7 +233,6 @@ expect_error_xl(
   "Plot type \"multiModel\" requires testID to be either NULL \\(default\\) or a vector containing at least 2 testIDs"
 )
 
-# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_message_xl(
   plotStudy(
     testStudyName,
@@ -243,10 +241,9 @@ expect_message_xl(
     plotID = "multiModel_scatterplot",
     testID = c("test_01", "test_02")
   ),
-  "The provided features list contains at least one feature not present in the model"
+  "The provided features list contains at least one feature not present in model"
 )
 
-# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_error_xl(
   plotStudy(
     testStudyName,
@@ -255,10 +252,9 @@ expect_error_xl(
     plotID = "multiModel_barplot_sf",
     testID = c("test_01", "test_02")
   ),
-  "The provided features list does not contain any feature present in the model"
+  "The provided features list does not contain any feature present in model"
 )
 
-# Crashing !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 expect_error_xl(
   plotStudy(
     testStudyName,

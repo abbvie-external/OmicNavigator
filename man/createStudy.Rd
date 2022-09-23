@@ -123,16 +123,28 @@ models, use the modelID "default". To add a plotting function that returns
 an interactive plotly plot, add "plotly" to the \code{plotType} vector.}
 
 \item{mapping}{Feature IDs from models. The input object is a list of named
-data frames. Column names indicate model names (modelID), and rows indicate
-featureIDs per model. Features with same index position across columns are
-treated as mapped across models. For each model, feature IDs must match
-feature IDs available in the results object of the respective model.
-The name of each list element should be set to either a modelID or "default".
+data frames. For each data frame, column names indicate model names while
+rows indicate featureIDs per model. Features with same index position across
+columns are treated as mapped across models. For each model, feature IDs must
+match feature IDs available in the results object of the respective model.
+1:N relationships are allowed.
+
+If a single data frame is provided, this list element is recommended to be
+named 'default', but may also be named after model name(s) as provided
+in addModels(). For multiple list elements, each with its own data frame,
+list elements should be named after model name(s) (a single element may still
+be  named 'default'). In that case, when navigating in ON front-end (FE),
+mapping element related to the selected model in the FE will be used in
+multimodel plots. If a selected model in FE does not have a corresponding
+mapping list element, it may still use the mapping list element called
+'default' if this is available.
+
 E.g., if in a study there are models "transcriptomics" and "proteomics" and
-the user wants to create a plot based on data from both, a mapping object
-with column names "transcriptomics" and "proteomics" should be created, where
-feature IDs of both models that relate to each other are located in the same
-row across columns.}
+the user wants to create a plot based on data from both, a mapping list
+should be provided with addMapping(). In this case, the mapping list element
+may be named 'default'. This should contain a data frame with column names
+'transcriptomics' and 'proteomics', where feature IDs that map across models
+are found in the same row.}
 
 \item{barcodes}{The metadata variables that describe the barcode plot.
 The input object is a list of lists (one per model). Each sublist must

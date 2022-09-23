@@ -205,13 +205,12 @@ resetSearch <- function(pkgNamespaces) {
 
 # check mapping data requirements and extract relevant features per featureID
 getMappingPlottingData <- function(study = study, modelID = modelID, featureID = featureID, testID = testID, libraries = NULL) {
-  mapping <- getMapping(study, libraries = libraries)
+  mapping <- getMapping(study, modelID = modelID[1], quiet = TRUE, libraries = libraries)
+  model_features <- mapping[modelID[1]][!is.na(mapping[modelID[1]])]
 
-  # Checking requirements for mapping
-  model_features <- mapping[["defaults"]][modelID[1]] [!is.na(mapping[["defaults"]][modelID[1]])]
   if (!any(featureID %in% model_features)) {
     stop(
-      sprintf("The provided features list does not contain any feature present in the model %s from mapping object.",
+      sprintf("The provided features list does not contain any feature present in model '%s' from mapping object.",
               modelID[1]
       )
     )
@@ -219,7 +218,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   if (!all(featureID %in% model_features)) {
     message(
       sprintf(
-        "The provided features list contains at least one feature not present in the model %s from mapping object.",
+        "The provided features list contains at least one feature not present in model '%s' from mapping object.",
         modelID[1]
       ),
       sprintf(
@@ -238,7 +237,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   }
 
   # Structuring data for mapping
-  mappingdf <- as.data.frame(mapping[["defaults"]], stringsAsFactors = FALSE)
+  mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
   column_order <- unique(c(modelID[1], colnames(mappingdf)))
   mappingdf <- mappingdf[, column_order]
 

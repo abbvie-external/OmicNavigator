@@ -399,7 +399,7 @@ testMapping <- function(seed = 12345L, nFeatures = 100,
       stringsAsFactors = FALSE
     )
   )
-  names(mapping) <- "defaults"
+  names(mapping) <- "default"
 
   return(mapping)
 }

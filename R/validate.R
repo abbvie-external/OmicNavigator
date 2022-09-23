@@ -324,10 +324,11 @@ validateMapping <- function(study) {
   models  <- names(study[["results"]])
   for (i in seq_along(mapping)) {
     for (ii in seq_along(mapping[[i]])) {
-      # Check whether mapping names match model names from results table
-      mappingID       <- names(mapping[[i]][ii])
-      if (!mappingID %in% models) {
-        stop("At least one mapping name does not match any model name from results table\n",
+      # Check whether mapping names match model names from results table or 'default'
+      mappingID <- names(mapping[[i]][ii])
+      if (!mappingID %in% c(models, "default")) {
+        stop("At least one mapping name is not named as 'default' nor does match any model name from results table.\n",
+             "Shared mapping is required to be named as 'default'.",
              sprintf("mappingID: %s", mappingID))
       }
       # Check whether mapping features match results features

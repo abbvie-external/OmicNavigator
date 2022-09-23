@@ -242,11 +242,11 @@ expect_true_xl(
 
 # Check if model names from mapping are not matching model names from results
 invalidMapping <- testStudyObj
-names(invalidMapping[["mapping"]][[1]]) <- c("model_01", "model")
+names(invalidMapping[["mapping"]][[1]]) <- c("model_01", "invalid_mapping_name")
 
 expect_error_xl(
   validateStudy(invalidMapping),
-  "At least one mapping name does not match any model name from results table\n"
+  "At least one mapping name is not named as 'default' nor does match any model name from results table."
 )
 
 # Check if features from mapping are not matching features from results
