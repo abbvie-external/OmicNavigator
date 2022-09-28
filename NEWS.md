@@ -1,3 +1,7 @@
+# 1.12.2
+
+* The release tarball includes version 1.7.2 of the web app
+
 * Update mapping data to behave in the same way as the features, samples, etc.
 Each element of the list must be named after a modelID or "default" to be shared
 across multiple modelIDs (implemented by [Marco
