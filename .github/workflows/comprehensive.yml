@@ -1,7 +1,5 @@
-name: Comprehensive test
-
 # Adapted from usethis::use_github_action_check_standard()
-
+name: Comprehensive test
 on:
   push:
     branches:
@@ -32,17 +30,13 @@ on:
       - 'tests/**'
       - 'vignettes/**'
   workflow_dispatch:
-
 defaults:
   run:
     shell: bash {0}
-
 jobs:
   check:
     runs-on: ${{ matrix.config.os }}
-
     name: ${{ matrix.config.os }} (${{ matrix.config.r }})
-
     strategy:
       fail-fast: false
       matrix:
@@ -50,75 +44,38 @@ jobs:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
           - {os: ubuntu-20.04, r: '3.4.4'}
-
-    env:
-      R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
-      R_COMPILE_AND_INSTALL_PACKAGES: never
-      _R_CHECK_CRAN_INCOMING_REMOTE_: false
-      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
-      TT_AT_HOME: TRUE
-
     steps:
-      - uses: actions/checkout@v2
-
+      - uses: actions/checkout@v3
       - uses: r-lib/actions/setup-r@v2-branch
         with:
           r-version: ${{ matrix.config.r }}
-
+          use-public-rspm: true
       - uses: r-lib/actions/setup-pandoc@v2
-
       - name: Install TinyTeX
         uses: r-lib/actions/setup-tinytex@v2
         env:
           # install full prebuilt version
           TINYTEX_INSTALLER: TinyTeX
-
-      - name: Query dependencies
-        run: |
-          install.packages('remotes')
-          saveRDS(remotes::dev_package_deps(dependencies = TRUE), ".github/depends.Rds", version = 2)
-          writeLines(sprintf("R-%i.%i", getRversion()$major, getRversion()$minor), ".github/R-version")
-        shell: Rscript {0}
-
-      - name: Restore R package cache
-        uses: actions/cache@v2
+      - uses: r-lib/actions/setup-r-dependencies@v2
         with:
-          path: ${{ env.R_LIBS_USER }}
-          key: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-${{ hashFiles('.github/depends.Rds') }}
-          restore-keys: ${{ runner.os }}-${{ hashFiles('.github/R-version') }}-1-
-
-      - name: Install system dependencies
-        if: runner.os == 'Linux'
-        run: |
-          while read -r cmd
-          do
-            eval sudo $cmd
-          done < <(Rscript -e 'writeLines(remotes::system_requirements("ubuntu", "20.04"))')
-
-      - name: Install dependencies
-        run: Rscript scripts/install-dependencies.R
-
-      - name: Session information
-        run: sessionInfo()
-        shell: Rscript {0}
-
+          cache-version: 1
       # The fact that the README can't access the GIF only throws an error for
       # R 3.4.4. Setting _R_CHECK_TOPLEVEL_FILES_ to false had no effect on
       # R CMD check.
       - name: Delete README
         if: ${{ matrix.config.r == '3.4.4' }}
         run: rm README.md
-
       - name: Build
         run: R CMD build --no-manual .
-
       - name: Check
+        env:
+          R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
+          _R_CHECK_CRAN_INCOMING_REMOTE_: false
+          TT_AT_HOME: TRUE
         run: R CMD check --no-manual --as-cran OmicNavigator_*.tar.gz
-
       - name: Test results
         if: always()
         run: cat OmicNavigator.Rcheck/tests/tinytest.Rout*
-
   deploy-main:
     needs: check
     if: ${{ github.repository == 'abbvie-external/OmicNavigator' && github.event_name != 'pull_request' }}
