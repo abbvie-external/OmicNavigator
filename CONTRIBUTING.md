@@ -11,7 +11,6 @@ instructions below to prepare your contribution.
 * [Documentation](#documentation)
 * [Unit tests](#unit-tests)
 * [GitHub Actions](#github-actions)
-* [Update the RSPM freeze date](#update-the-rspm-freeze-date)
 * [Run OmicNavigator with Docker](#run-omicnavigator-with-docker)
 * [Tag a new release](#tag-a-new-release)
 * [CRAN submission](#cran-submission)
@@ -215,34 +214,6 @@ that you know will break the tests, you can put "skip" anywhere in the branch
 name. Also note that the continuous integrations jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
-
-## Update the RSPM freeze date
-
-To avoid random CI failures due to changes in the package dependencies, all the
-Linux and Windows CI jobs download package binaries from the [RStudio Package
-Manager][rspm] (RSPM) frozen to a specific date (unfortunately RSPM doesn't
-build binaries for macOS, so instead we download the latest binaries from CRAN).
-
-However, to ensure that OmicNavigator continues to work with the latest versions
-of its dependencies, it's important to regularly bump the freeze date. Follow
-these steps:
-
-* Go to the [Setup page][rspm-setup] for the public RSPM
-* Change the Repository URL from "Latest" to "Freeze"
-* Choose the most recent date available
-* Change the Distribution (top right of navbar) to "Ubuntu 20.04 (focal)"
-* Copy this URL for Linux to `scripts/install-dependencies.R` and
-  `scripts/install-dependencies-dev.R`
-* Change the Distribution to "Windows"
-* Copy this URL for Windows to `scripts/install-dependencies.R` and
-  `scripts/install-dependencies-dev.R`
-* Add, commit, and push changes to `scripts/install-dependencies.R` and
-  `scripts/install-dependencies-dev.R`
-* This won't immediately trigger the CI jobs. You can either push a code change,
-  or go to the Actions tab and manually trigger a build
-
-[rspm]: https://packagemanager.rstudio.com/
-[rspm-setup]: https://packagemanager.rstudio.com/client/#/repos/1/overview
 
 ## Run OmicNavigator with Docker
 

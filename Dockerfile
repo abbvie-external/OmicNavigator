@@ -1,10 +1,12 @@
-FROM opencpu/base:v2.2.5
+FROM opencpu/base:v2.2.8
 
 COPY . /app
 
 WORKDIR /app
 
-RUN Rscript scripts/install-dependencies.R
+RUN bash scripts/setup-r2u.sh
+
+RUN bash scripts/install-dependencies-r2u.sh
 
 RUN R CMD build --no-manual --no-build-vignettes .
 

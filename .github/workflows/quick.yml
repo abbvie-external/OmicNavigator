@@ -1,5 +1,4 @@
 name: Quick test
-
 on:
   push:
     branches-ignore:
@@ -19,40 +18,28 @@ on:
       - 'tests/**'
       - 'vignettes/**'
   workflow_dispatch:
-
 jobs:
-  check:
-    runs-on: ubuntu-20.04
-
-    env:
-      R_LIBS_USER: ~/rlibs
-      R_COMPILE_AND_INSTALL_PACKAGES: never
-      TT_AT_HOME: TRUE
-
+  quick:
+    runs-on: ubuntu-22.04
     steps:
     - uses: actions/checkout@v2
-    - name: Cache R packages
-      uses: actions/cache@v2
-      with:
-        path: ${{ env.R_LIBS_USER }}
-        key: ${{ runner.os }}-packages
-    - name: Setup R
-      run: |
-        # R is already installed on GitHub's Ubuntu image
-        Rscript --version
-        # Create user library directory
-        mkdir -p ${{ env.R_LIBS_USER }}
-        echo 'R_LIBS_USER=${{ env.R_LIBS_USER }}' > $HOME/.Renviron
+    - name: Setup r2u
+      run: sudo bash scripts/setup-r2u.sh
     - name: Install R packages
-      run: Rscript scripts/install-dependencies.R
+      run: sudo bash scripts/install-dependencies-r2u.sh
+    - name: Build OmicNavigator
+      run: R CMD build --no-manual --no-build-vignettes .
+    - name: Install OmicNavigator
+      run: R CMD INSTALL --no-docs --no-multiarch --no-staged-install OmicNavigator_*.tar.gz
+      shell: sudo bash {0}
     - name: Session information
-      run: sessionInfo()
-      shell: Rscript {0}
-    - name: Build and install
       run: |
-        R CMD build --no-manual --no-build-vignettes .
-        R CMD INSTALL --no-docs --no-multiarch --no-staged-install OmicNavigator_*.tar.gz
+        library("OmicNavigator")
+        sessionInfo()
+      shell: Rscript {0}
     - name: Test
+      env:
+        TT_AT_HOME: TRUE
       run: suppressMessages(tinytest::test_package("OmicNavigator", ncpu = 2))
       shell: Rscript {0}
     - name: Run vignettes
@@ -64,9 +51,8 @@ jobs:
           source(tangled[i], local = new.env())
         }
       shell: Rscript {0}
-
   deploy-dev:
-    needs: check
+    needs: quick
     if: ${{ github.ref == 'refs/heads/dev' && github.repository == 'abbvie-external/OmicNavigator' && github.event_name != 'pull_request' }}
     runs-on: ubuntu-latest
     steps:
