@@ -79,8 +79,12 @@ listStudies <- function(libraries = NULL) {
 #'   features table will be character strings, even if the values appear
 #'   numeric.
 #'
+#'   If the optional arguments \code{annotationID} and \code{termID} are
+#'   provided, the table will be filtered to only include features in that
+#'   annotation term.
+#'
 #' @export
-getResultsTable <- function(study, modelID, testID, libraries = NULL) {
+getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID = NULL, libraries = NULL) {
   results <- getResults(study, modelID, testID)
   features <- getFeatures(study, modelID, quiet = TRUE)
 
@@ -94,6 +98,11 @@ getResultsTable <- function(study, modelID, testID, libraries = NULL) {
   columnsOrder <- c(colnames(features),
                     setdiff(colnames(results), colnames(features)))
   resultsTable <- resultsTable[, columnsOrder]
+
+  if (!is.null(annotationID) && !is.null(termID)) {
+    termFeatures <- getNodeFeatures(study, annotationID, termID, libraries = libraries)
+    resultsTable <- resultsTable[resultsTable[[1]] %in% termFeatures, ]
+  }
 
   return(resultsTable)
 }

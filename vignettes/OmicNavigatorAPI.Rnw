@@ -126,7 +126,24 @@ resultsTable <- getResultsTable(
   modelID = "model_01",
   testID = "test_01"
 )
+nrow(resultsTable)
 toJSON(resultsTable[1:2, ], pretty = TRUE)
+@
+
+To filter the results table to only include features that belong to a specific
+annotation term, specify the optional arguments \texttt{annotationID} and
+\texttt{termID}.
+
+<<results-table-term>>=
+resultsTableTerm <- getResultsTable(
+  study = "ABC",
+  modelID = "model_01",
+  testID = "test_01",
+  annotationID = "annotation_01",
+  termID =  "term_01"
+)
+nrow(resultsTableTerm)
+toJSON(resultsTableTerm[1:2, ], pretty = TRUE)
 @
 
 \section{Enrichments table}

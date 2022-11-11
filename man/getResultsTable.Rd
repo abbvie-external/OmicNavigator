@@ -4,7 +4,14 @@
 \alias{getResultsTable}
 \title{Get results table from a study}
 \usage{
-getResultsTable(study, modelID, testID, libraries = NULL)
+getResultsTable(
+  study,
+  modelID,
+  testID,
+  annotationID = NULL,
+  termID = NULL,
+  libraries = NULL
+)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -13,6 +20,10 @@ or the name of an installed study package.}
 \item{modelID}{Filter by modelID}
 
 \item{testID}{Filter by testID}
+
+\item{annotationID}{Filter by annotationID}
+
+\item{termID}{Filter by termID}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then
@@ -24,6 +35,10 @@ A data frame which includes the columns from the features table
   followed by the columns from the results table. All the columns from the
   features table will be character strings, even if the values appear
   numeric.
+
+  If the optional arguments \code{annotationID} and \code{termID} are
+  provided, the table will be filtered to only include features in that
+  annotation term.
 }
 \description{
 Get results table from a study

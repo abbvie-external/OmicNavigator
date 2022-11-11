@@ -1,3 +1,6 @@
+* Added optional arguments `annotationID` and `termID` to `getResultsTable()` to
+filter the results table to only include features in a given annotation term
+
 # 1.12.4
 
 * The release tarball includes version 1.7.4 of the web app

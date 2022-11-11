@@ -293,7 +293,7 @@ addTests <- function(study, tests, reset = FALSE) {
 #' @param annotations The annotations used for the enrichment analyses. The
 #'   input is a nested list. The top-level list contains one entry per
 #'   annotation database, e.g. reactome. The names correspond to the name of
-#'   each annotation database. Each of these elements should be list of that
+#'   each annotation database. Each of these elements should be a list that
 #'   contains more information about each annotation database. Specifically the
 #'   sublist should contain 1) \code{description}, a character vector that
 #'   describes the resource, 2) \code{featureID}, the name of the column in the

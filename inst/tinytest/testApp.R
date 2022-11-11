@@ -147,6 +147,24 @@ expect_equal_xl(
   getResultsTable(testStudyObj, testModelName, testTestName)
 )
 
+# getResultsTable (filtered by annotationID/termID) ----------------------------
+
+resultsTableTerm <- getResultsTable(testStudyName, testModelName, testTestName,
+                                    testAnnotationName, testTermName)
+termFeatures <- getNodeFeatures(testStudyObj, testAnnotationName, testTermName)
+
+expect_identical_xl(
+  class(resultsTableTerm),
+  "data.frame"
+)
+
+expect_true_xl(all(termFeatures %in% resultsTableTerm[[1]]))
+
+expect_equal_xl(
+  nrow(resultsTableTerm),
+  length(termFeatures)
+)
+
 # getEnrichmentsTable ----------------------------------------------------------
 
 enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)
