@@ -54,19 +54,29 @@ testSamples <- function(rows = 10, cols = 5, seed = 12345L) {
   return(samples)
 }
 
-testFeatures <- function(rows = 100, cols = 5, seed = 12345L, numericFeatureID = FALSE) {
+testFeatures <- function(rows = 100, cols = 6, seed = 12345L, numericFeatureID = FALSE) {
   set.seed(seed)
-  features <- matrix(sample(letters, size = rows * (cols - 2), replace = TRUE),
-                    nrow = rows, ncol = cols - 2)
-  colnames(features) <- sprintf("featureVar%02d", seq_len(cols - 2))
-  featureVarNumeric <- sample(1:100, size = rows, replace = TRUE)
-  features <- cbind(featureVarNumeric, features)
   if (numericFeatureID) {
     featureID <- sprintf("%04d", seq_len(rows))
   } else {
     featureID <- sprintf("feature_%04d", seq_len(rows))
   }
-  features <- cbind(customID = featureID, features)
+  secondaryFeatureID <- sprintf("feature_2_%04d", rev(seq_len(rows)))
+  featureVarNumeric <- sample(1:100, size = rows, replace = TRUE)
+  features <- cbind(
+    customID = featureID,
+    secondaryID = secondaryFeatureID,
+    featureVarNumeric
+  )
+  # Fill remaining columns with discrete features
+  nDiscreteFeatures <- cols - ncol(features)
+  discreteFeatures <- matrix(
+    sample(letters, size = rows * nDiscreteFeatures, replace = TRUE),
+    nrow = rows,
+    ncol = nDiscreteFeatures
+  )
+  colnames(discreteFeatures) <- sprintf("featureVar%02d", seq_len(nDiscreteFeatures))
+  features <- cbind(features, discreteFeatures)
   features <- as.data.frame(features, stringsAsFactors = FALSE)
   features <- list(default = features)
   return(features)
