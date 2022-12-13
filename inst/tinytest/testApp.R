@@ -21,7 +21,8 @@ writeLines("<p>example</p>", tmpReport)
 testStudyObj <- addReports(testStudyObj, list(model_02 = tmpReport))
 
 # Create annotation that uses secondary featureID
-secondaryID <- getFeatures(testStudyObj)[[1]][["secondaryID"]]
+secondaryFeatureIDName <- "secondaryID"
+secondaryID <- getFeatures(testStudyObj)[[1]][[secondaryFeatureIDName]]
 secondaryIDterms <- replicate(
   n = 10,
   sample(x = secondaryID, size = sample(5:25, size = 1, replace = TRUE)),
@@ -31,7 +32,7 @@ names(secondaryIDterms) <- sprintf("term_%02d", seq_along(secondaryIDterms))
 secondaryIDanno <- list(
   annotation_04 = list(
     description = "Annotation that uses a secondary featureID",
-    featureID = "secondaryID",
+    featureID = secondaryFeatureIDName,
     terms = secondaryIDterms
   )
 )
@@ -190,7 +191,27 @@ expect_identical_xl(
   "data.frame"
 )
 
-expect_true_xl(all(termFeatures %in% resultsTableTerm[[1]]))
+expect_identical_xl(
+  sort(resultsTableTerm[[1]]),
+  sort(termFeatures)
+)
+
+# Annotation with alternative featureID
+resultsTableTerm <- getResultsTable(testStudyName, testModelName, testTestName,
+                                    "annotation_04", testTermName)
+termFeatures <- getNodeFeatures(testStudyObj, "annotation_04", testTermName)
+secondaryFeatureIDcol <- which(colnames(resultsTableTerm) == secondaryFeatureIDName)
+
+expect_identical_xl(
+  class(resultsTableTerm),
+  "data.frame"
+)
+
+expect_identical_xl(
+  sort(resultsTableTerm[[secondaryFeatureIDcol]]),
+  sort(termFeatures),
+  info = "Pull results subset from an annotation term that uses an alternative featureID"
+)
 
 expect_equal_xl(
   nrow(resultsTableTerm),
