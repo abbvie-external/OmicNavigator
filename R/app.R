@@ -101,7 +101,9 @@ getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID 
 
   if (!is.null(annotationID) && !is.null(termID)) {
     termFeatures <- getNodeFeatures(study, annotationID, termID, libraries = libraries)
-    resultsTable <- resultsTable[resultsTable[[1]] %in% termFeatures, ]
+    annotationIDfeatureID <- getAnnotations(study, annotationID = annotationID)[["featureID"]]
+    featureIDcolumn <- which(colnames(resultsTable) == annotationIDfeatureID)
+    resultsTable <- resultsTable[resultsTable[[featureIDcolumn]] %in% termFeatures, ]
   }
 
   return(resultsTable)
