@@ -20,6 +20,38 @@ tmpReport <- tempfile(fileext = ".html")
 writeLines("<p>example</p>", tmpReport)
 testStudyObj <- addReports(testStudyObj, list(model_02 = tmpReport))
 
+# Create annotation that uses secondary featureID
+secondaryID <- getFeatures(testStudyObj)[[1]][["secondaryID"]]
+secondaryIDterms <- replicate(
+  n = 10,
+  sample(x = secondaryID, size = sample(5:25, size = 1, replace = TRUE)),
+  simplify = FALSE
+)
+names(secondaryIDterms) <- sprintf("term_%02d", seq_along(secondaryIDterms))
+secondaryIDanno <- list(
+  annotation_04 = list(
+    description = "Annotation that uses a secondary featureID",
+    featureID = "secondaryID",
+    terms = secondaryIDterms
+  )
+)
+testStudyObj <- addAnnotations(testStudyObj, secondaryIDanno)
+# just copy subset of enrichments from another annotation
+secondaryIDenrich <- getEnrichments(
+  study = testStudyObj,
+  modelID = "model_01",
+  annotationID = "annotation_01",
+  testID = "test_01"
+)[1:10, ]
+secondaryIDenrich <- list(
+  model_01 = list(
+    annotation_04 = list(
+      test_01 = secondaryIDenrich
+    )
+  )
+)
+testStudyObj <- addEnrichments(testStudyObj, secondaryIDenrich)
+
 tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
@@ -361,6 +393,21 @@ expect_identical_xl(
   barcodeData[["labelStat"]],
   "Effect size",
   info = "Confirm model-specific barcode data returned"
+)
+
+# Confirm that you can use alternative featureID for annotation terms
+barcodeData <- getBarcodeData(
+  testStudyName,
+  testModelName,
+  testTestName,
+  "annotation_04",
+  testTermName
+)
+
+expect_identical_xl(
+  sort(barcodeData[["data"]][["featureEnrichment"]]),
+  sort(getNodeFeatures(testStudyObj, "annotation_04", testTermName)),
+  info = "Pull results subset from an annotation term that uses an alternative featureID"
 )
 
 # getReportLink ----------------------------------------------------------------
