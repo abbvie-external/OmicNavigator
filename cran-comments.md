@@ -5,7 +5,6 @@
 * R-hub
     * solaris-x86-patched
     * ubuntu-gcc-devel
-    * windows-x86_64-devel
 
 * GitHub Actions
     * windows-latest (release)
