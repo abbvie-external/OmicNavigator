@@ -18,10 +18,6 @@ The URLs to the favicons for each linkout. The output returned will
 To enhance the display of the linkouts in the app's tables, it can fetch the
 favicon URL for each website.
 }
-\examples{
-  getFavicons("https://reactome.org/content/detail/")
-
-}
 \seealso{
 \code{\link{getResultsLinkouts}},
          \code{\link{getEnrichmentsLinkouts}}

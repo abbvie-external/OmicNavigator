@@ -498,9 +498,6 @@ getPackageVersion <- function() {
 #' @return The URLs to the favicons for each linkout. The output returned will
 #'   always be the same class and structure as the input.
 #'
-#' @examples
-#'   getFavicons("https://reactome.org/content/detail/")
-#'
 #' @seealso \code{\link{getResultsLinkouts}},
 #'          \code{\link{getEnrichmentsLinkouts}}
 #'

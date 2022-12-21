@@ -492,7 +492,7 @@ expect_identical_xl(
 # getFavicons ------------------------------------------------------------------
 
 if (at_home()) {
-  # Only run getFavicons() tests "at home". Accessing internet resources it too
+  # Only run getFavicons() tests "at home". Accessing internet resources is too
   # prone to spurious errors.
 
   expect_identical_xl(
