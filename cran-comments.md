@@ -9,7 +9,7 @@
 * GitHub Actions
     * windows-latest (release)
     * macOS-latest (release)
-    * ubuntu-20.04 (3.4.4)
+    * ubuntu-20.04 (3.5.3)
 
 ## R CMD check results
 
