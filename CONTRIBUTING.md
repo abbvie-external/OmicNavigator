@@ -13,6 +13,8 @@ instructions below to prepare your contribution.
 * [GitHub Actions](#github-actions)
 * [Run OmicNavigator with Docker](#run-omicnavigator-with-docker)
 * [Tag a new release](#tag-a-new-release)
+* [How to review and merge Pull Requests](#how-to-review-and-merge-pull-requests)
+* [How to sync the dev branch](#how-to-sync-the-dev-branch)
 * [CRAN submission](#cran-submission)
 
 ## Branches
@@ -268,9 +270,56 @@ and build and upload a tarball with the app pre-bundled
 
 [gh-actions-release]: https://github.com/abbvie-external/OmicNavigator/actions/workflows/release.yml
 
+## How to review and merge Pull Requests
+
+Some notes and advice on Pull Requests:
+
+* Pull Requests should be merged into the "main" branch
+* The GitHub Actions workflows won't be triggered by PRs from first-time
+  contributors to the repository. You'll need to check the edits they made and
+  then allow the Actions to run
+* Merge commits are disabled. Instead, you will have to decide whether to squash
+  or rebase the commits. Squashing combines all the commits into one single
+  commit. This is preferred when many small commits have been made in response
+  to feedback and failing tests. You'll have the opportunity to edit the commit
+  message to better convey the final contribution of the PR. If instead each
+  commit in the PR is a standalone change, then you can choose to rebase the
+  commits, which rewrites them on top of the "main" branch. Either way the
+  submitter will need to delete their feature branch and then pull the latest
+  from the official repo into their fork's "main" branch
+
+## How to sync the dev branch
+
+The "dev" branch exists to deploy experimental (and potentially breaking)
+changes that need to be coordinated by the backend R package and the frontend
+web app. However, it also needs to be kept in sync with the "main" branch.
+Otherwise the latest changes to the R package won't be deployed to the dev
+server.
+
+Unfortunately, [GitHub does not allow fast-forward merges of Pull
+Requests][so-no-fast-forward]. In other words, using the GitHub UI would require
+rewriting the commit SHA, and then "main" could no longer be cleanly merged into
+"dev".
+
+[so-no-fast-forward]: https://stackoverflow.com/questions/60597400/how-to-do-a-fast-forward-merge-on-github
+
+So instead, a developer with write-access needs to regularly sync "dev" by
+running the following locally:
+
+```sh
+# in the local clone of their fork
+git remote add upstream https://github.com/abbvie-external/OmicNavigator.git
+git pull upstream main
+git checkout dev
+git merge main
+git push upstream dev
+git checkout main
+```
+
 ## CRAN submission
 
-Run the following additional tests prior to CRAN submission.
+Run the following additional tests prior to CRAN submission, and then update
+`cran-comments.md` accordingly.
 
 ```R
 devtools::check_win_devel()
@@ -279,7 +328,12 @@ rhub::check_for_cran(platform = "solaris-x86-patched")
 rhub::check_for_cran(platform = "ubuntu-gcc-devel")
 ```
 
-Then update `cran-comments.md` accordingly, build the tarball (delete `inst/www/`
-if you have the app installed locally), and [submit the tarball][cran].
+Next build the tarball (first delete `inst/www/` if you have the app installed
+locally), and [submit the tarball][cran].
 
 [cran]: https://cran.r-project.org/submit.html
+
+```R
+rm -r inst/www/
+R CMD build .
+```
