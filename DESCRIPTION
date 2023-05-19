@@ -58,4 +58,4 @@ Suggests:
   tinytest (>= 1.2.3),
   ttdo (>= 0.0.6),
   UpSetR
-RoxygenNote: 7.2.1
+RoxygenNote: 7.2.3
