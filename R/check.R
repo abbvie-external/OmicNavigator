@@ -336,6 +336,12 @@ checkEnrichments <- function(enrichments) {
         stopifnot(inherits(test, "data.frame"))
         stopifnot(c("termID", "description", "nominal", "adjusted")
                   %in% colnames(test))
+        if ("nominal" %in% colnames(test) && !is.numeric(test$nominal)) {
+          stop("Column 'nominal' from enrichments must be numeric")
+        }
+        if ("adjusted" %in% colnames(test) && !is.numeric(test$adjusted)) {
+          stop("Column 'adjusted' from enrichments must be numeric")
+        }
         enrichments[[i]][[j]][[k]] <-
           test[, c("termID", "description", "nominal", "adjusted")]
       }
