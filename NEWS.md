@@ -1,3 +1,8 @@
+# 1.13.10
+
+* Update check.R, function checkEnrichments to test if enrichments object have
+columns 'nominal' and 'adjusted' with numeric values (required).  
+
 # 1.13.9
 
 * The release tarball includes version 1.8.1 of the web app
