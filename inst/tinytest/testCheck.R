@@ -392,6 +392,24 @@ expect_error_xl(
   "The enrichments cannot be shared using the modelID \"default\""
 )
 
+enrichment_numTest <- OmicNavigator:::testEnrichments()
+enrichment_numTest$model_01$annotation_01$test_01$nominal <-
+  as.character(enrichment_numTest$model_01$annotation_01$test_01$nominal)
+
+expect_error_xl(
+  addEnrichments(study, enrichments = enrichment_numTest),
+  "Column 'nominal' from enrichments must be numeric"
+)
+
+enrichment_numTest <- OmicNavigator:::testEnrichments()
+enrichment_numTest$model_01$annotation_01$test_01$adjusted <-
+  as.character(enrichment_numTest$model_01$annotation_01$test_01$adjusted)
+
+expect_error_xl(
+  addEnrichments(study, enrichments = enrichment_numTest),
+  "Column 'adjusted' from enrichments must be numeric"
+)
+
 # checkMetaFeatures ------------------------------------------------------------
 
 expect_error_xl(
