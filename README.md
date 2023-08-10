@@ -177,6 +177,8 @@ system library libcurl). Unfortunately R is unable to install these for you
 automatically. If you are using Linux/macOS, you will need to install these
 system libraries yourself first.
 
+Note that recent versions of macOS do not come with the X Window System. Please install [XQuartz](https://www.xquartz.org/ "XQuartz") to prevent plotting issues. See [here](https://cran.r-project.org/bin/macosx/RMacOSX-FAQ.html#Tcl_002fTk-issues "Tcl/tk issues") for more information.
+
 If you are using Debian/Ubuntu, you can install all of the required system
 libraries using the commands below:
 
