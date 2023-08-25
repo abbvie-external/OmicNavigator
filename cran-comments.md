@@ -3,7 +3,6 @@
 * win-builder (devel)
 
 * R-hub
-    * solaris-x86-patched
     * ubuntu-gcc-devel
 
 * GitHub Actions
@@ -14,3 +13,10 @@
 ## R CMD check results
 
 0 errors | 0 warnings | 0 notes
+
+## Comments
+
+* Added the appropriate PKGNAME-package \alias to the package overview help file
+  as per "Documenting packages" in R-exts
+
+* Updated invalid URLs

@@ -456,7 +456,7 @@ testResultsLinkouts <- function(n = 3) {
 
 testEnrichmentsLinkouts <- function(n = 3) {
   enrichmentsLinkouts <- list(
-    annotation_01 = c("http://amigo.geneontology.org/amigo/term/",
+    annotation_01 = c("https://amigo.geneontology.org/amigo/term/",
                       "https://www.ebi.ac.uk/QuickGO/term/"),
     annotation_03 = "https://reactome.org/content/detail/"
   )
