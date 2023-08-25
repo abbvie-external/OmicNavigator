@@ -324,7 +324,6 @@ Run the following additional tests prior to CRAN submission, and then update
 ```R
 devtools::check_win_devel()
 rhub::validate_email()
-rhub::check_for_cran(platform = "solaris-x86-patched")
 rhub::check_for_cran(platform = "ubuntu-gcc-devel")
 ```
 
