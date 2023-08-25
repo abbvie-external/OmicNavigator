@@ -1,3 +1,6 @@
+* Add the appropriate PKGNAME-package \alias to the package overview help file
+as per "Documenting packages" in R-exts
+
 # 1.13.12
 
 * The release tarball includes version 1.8.4 of the web app
