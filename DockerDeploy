@@ -1,0 +1,12 @@
+FROM opencpu/base:v2.2.11-2
+
+#install 'pak' then OmicNavigator
+RUN Rscript -e "install.packages('pak')"
+RUN Rscript -e "pak::pkg_install('abbvie-external/omicnavigator@*release', dependencies=T)"
+RUN Rscript -e 'OmicNavigator::installApp()'
+
+#install example package using source tarball
+RUN Rscript -e "tarball <- 'https://github.com/abbvie-external/OmicNavigatorExample/releases/latest/download/ONstudyRNAseq123.tar.gz'; pak::pkg_install(paste0('url::', tarball), dependencies=T)"
+
+#update upsetR with open pull request
+RUN Rscript -e "pak::pkg_install('hms-dbmi/UpSetR#199', dependencies=F, ask = F)"
