@@ -1,3 +1,7 @@
+# 1.13.14
+
+* The release tarball includes version 1.8.7 of the web app
+
 # 1.13.13
 
 * Add the appropriate PKGNAME-package \alias to the package overview help file
