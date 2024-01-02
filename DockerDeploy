@@ -1,4 +1,7 @@
 FROM opencpu/base:v2.2.11-2
+RUN apt update
+RUN apt upgrade --yes
+RUN apt install --yes libcurl4-openssl-dev
 
 #install 'pak' then OmicNavigator
 RUN Rscript -e "install.packages('pak')"
