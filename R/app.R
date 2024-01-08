@@ -223,6 +223,9 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
   links[["source"]] <- data.table::chmatch(links[["source"]], nodes[["termID"]])
   links[["target"]] <- data.table::chmatch(links[["target"]], nodes[["termID"]])
 
+  # filter links table to Overlap >= .1
+  links <- links[overlap >= .1, ]
+
   enrichmentsNetwork <- list(
     tests = tests,
     nodes = data.table::setDF(nodes),
