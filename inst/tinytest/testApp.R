@@ -383,7 +383,7 @@ barcodeData <- getBarcodeData(
 
 expect_identical_xl(
   names(barcodeData),
-  c("data", "highest", "labelStat", "labelLow", "labelHigh")
+  c("data", "highest", "lowest", "labelStat", "labelLow", "labelHigh")
 )
 
 expect_identical_xl(
