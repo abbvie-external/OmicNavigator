@@ -1,3 +1,26 @@
+# 1.13.16
+
+* The release tarball includes version 1.8.9 of the web app
+
+# 1.13.15
+
+* The release tarball includes version 1.8.8 of the web app
+
+# 1.13.14
+
+* The release tarball includes version 1.8.7 of the web app
+
+# 1.13.13
+
+* Add the appropriate PKGNAME-package \alias to the package overview help file
+as per "Documenting packages" in R-exts
+
+* Update invalid URLs in documentation and tests
+
+# 1.13.12
+
+* The release tarball includes version 1.8.4 of the web app
+
 # 1.13.11
 
 * The release tarball includes version 1.8.3 of the web app

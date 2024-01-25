@@ -519,8 +519,11 @@ if (at_home()) {
     getFavicons(getEnrichmentsLinkouts(testStudyName)),
     list(
       annotation_01 = c(
-        "http://amigo.geneontology.org/static/images/go-logo-favicon.ico",
-        "https://www.ebi.ac.uk/favicon.ico"
+        "https://amigo.geneontology.org/static/images/go-logo-favicon.ico",
+        "https://ebi.emblstatic.net/web_guidelines/EBI-Framework/v1.4/images/logos/EMBL-EBI/favicons/favicon.ico"
+        # "https://www.ebi.ac.uk/favicon.ico"
+        # The direct favicon.ico link still works, but faviconLink() find this
+        # new alternative first
       ),
       annotation_03 = c(
         "https://reactome.org//templates/favourite/favicon.ico"

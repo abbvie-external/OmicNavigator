@@ -545,11 +545,11 @@ addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
 #'
 #' For each linkout, the URL pattern you provide will be concatenated with the
 #' value of the termID column. As an example, if you used the annotation
-#' database \href{http://amigo.geneontology.org/}{AmiGO 2} for your enrichments
+#' database \href{https://amigo.geneontology.org/}{AmiGO 2} for your enrichments
 #' analysis, you can provide a linkout for each termID using the following
 #' pattern:
 #'
-#' \preformatted{go = "http://amigo.geneontology.org/amigo/term/"}
+#' \preformatted{go = "https://amigo.geneontology.org/amigo/term/"}
 #'
 #' As another example, if you used the annotation database
 #' \href{https://reactome.org/}{Reactome} for your enrichments analysis, you can
@@ -568,7 +568,7 @@ addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
 #' @examples
 #'   study <- createStudy("example")
 #'   enrichmentsLinkouts <- list(
-#'     gobp = c("http://amigo.geneontology.org/amigo/term/",
+#'     gobp = c("https://amigo.geneontology.org/amigo/term/",
 #'              "https://www.ebi.ac.uk/QuickGO/term/"),
 #'     reactome = "https://reactome.org/content/detail/"
 #'   )

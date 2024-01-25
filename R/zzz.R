@@ -10,7 +10,7 @@ OmicNavigatorPrefix <- "ONstudy"
 
 # The R package is meant to be used with a specific version of the app. If a
 # user has an older or newer version installed, send a warning.
-versionAppPinned <- "1.8.3"
+versionAppPinned <- "1.8.9"
 
 # The extra packages required to run the app
 appPackages <- c(
@@ -78,9 +78,7 @@ appPackages <- c(
 #' options(OmicNavigator.prefix = "OmicNavigatorStudy")
 #' }
 #'
-#' @docType package
-#' @name OmicNavigator
-NULL
+"_PACKAGE"
 
 # Make the internal package functions "data.table aware"
 # https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1

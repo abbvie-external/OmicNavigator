@@ -213,6 +213,10 @@ xml2 | libxml-2.0 | Debian/Ubuntu | libxml2-dev
 xml2 | libxml-2.0 | Fedora/CentOS/RHEL | libxml2-devel
 xml2 | libxml-2.0 | Solaris | libxml2_dev
 
+## Deployment with Docker
+
+If you would like to serve OmicNavigator please refer to the [Deployment](./Deployment.md) document. The instructions within this document outline the fastest way to prepare the OmicNavigator software for deployment using a [Docker](https://www.docker.com/) container. It also includes instructions for installing your custom OmicNavigator studies within the container. 
+
 ## Acknowledgements
 
 OmicNavigator is deployed as an [OpenCPU](https://www.opencpu.org/ "OpenCPU") app. The OpenCPU system enables embedded scientific computing with R.
