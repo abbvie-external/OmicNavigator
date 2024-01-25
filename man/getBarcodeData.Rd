@@ -24,6 +24,7 @@ A list with the following components:
   \item{data}{Data frame with the differential statistics to plot}
   \item{highest}{(numeric) The largest differential statistic, rounded up to
   the next integer}
+  \item{lowest}{(numeric) The lowest differential statistic, rounded down to the next integer}
   \item{labelStat}{(character) The x-axis label to describe the differential
   statistic}
   \item{labelLow}{(character) The vertical axis label on the left to describe

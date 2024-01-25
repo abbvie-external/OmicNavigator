@@ -1,3 +1,5 @@
+* Update `getBarcodeData()` to pass lowest statistic value. Change enables barcode plot to accommodate negative numbers.
+
 # 1.13.16
 
 * The release tarball includes version 1.8.9 of the web app
