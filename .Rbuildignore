@@ -19,3 +19,5 @@
 ^vignettes/.*\.synctex\.gz$
 ^vignettes/.*\.tex$
 ^vignettes/.*\.toc$
+^Deployment\.md$
+^DockerDeploy$
