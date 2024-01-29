@@ -306,7 +306,7 @@ if (getRversion() >= "3.6.0") {
 
   expect_identical_xl(
     dim(enrichmentsNetwork[["links"]]),
-    as.integer(c(1020, 6))
+    as.integer(c(944, 6))
   )
 
   link1 <- structure(

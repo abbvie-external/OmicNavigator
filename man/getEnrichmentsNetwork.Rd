@@ -26,7 +26,7 @@ Returns a list with the following components:
   \item{nodes}{(data frame) The description of each annotation term (i.e.
   node). The nominal and adjusted p-values are in list-columns.}
   \item{links}{(list) The statistics for each pairwise overlap between the
-  annotation terms (i.e. nodes)}
+  annotation terms (i.e. nodes). This list is filtered to all links where overlap coefficient >= .1.}
 }
 \description{
 Get enrichments network from a study

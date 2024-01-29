@@ -152,7 +152,7 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #'   \item{nodes}{(data frame) The description of each annotation term (i.e.
 #'   node). The nominal and adjusted p-values are in list-columns.}
 #'   \item{links}{(list) The statistics for each pairwise overlap between the
-#'   annotation terms (i.e. nodes)}
+#'   annotation terms (i.e. nodes). This list is filtered to all links where overlap coefficient >= .1.}
 #'
 #' @importFrom data.table ":=" "%chin%" .N
 #' @export

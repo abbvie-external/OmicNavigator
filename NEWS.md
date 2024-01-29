@@ -1,3 +1,5 @@
+* limit links returned from `getEnrichmentsNetwork` to those with overlap coefficient <= .1 
+
 # 1.13.17
 
 * The release tarball includes version 1.9.0 of the web app
