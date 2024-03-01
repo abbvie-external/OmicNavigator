@@ -72,6 +72,7 @@ importStudy <- function(study, libraries = NULL) {
     plots = getPlots(study, quiet = TRUE, libraries = libraries),
     barcodes = getBarcodes(study, quiet = TRUE, libraries = libraries),
     reports = reports,
+    mapping = getMapping(study, quiet = TRUE, libraries = libraries),
     resultsLinkouts = getResultsLinkouts(study, quiet = TRUE, libraries = libraries),
     enrichmentsLinkouts = getEnrichmentsLinkouts(study, quiet = TRUE, libraries = libraries),
     metaFeaturesLinkouts = getMetaFeaturesLinkouts(study, quiet = TRUE, libraries = libraries),
