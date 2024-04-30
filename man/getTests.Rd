@@ -23,7 +23,7 @@ left as \code{NULL} (the default), then
 }
 \value{
 The object returned depends on the data available and any filters
-  (e.g. the argument  \code{modelID}):
+(e.g. the argument  \code{modelID}):
 
 If no filters are specified, then the object returned is a nested list,
 similar to the original input object.

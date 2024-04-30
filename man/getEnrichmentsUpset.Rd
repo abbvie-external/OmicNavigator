@@ -33,7 +33,7 @@ column}
 }
 \value{
 No return value. This function is called for the side effect of
-  creating an UpSet plot.
+creating an UpSet plot.
 }
 \description{
 getEnrichmentsUpset

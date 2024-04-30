@@ -32,13 +32,13 @@ left as \code{NULL} (the default), then
 }
 \value{
 A data frame which includes the columns from the features table
-  followed by the columns from the results table. All the columns from the
-  features table will be character strings, even if the values appear
-  numeric.
+followed by the columns from the results table. All the columns from the
+features table will be character strings, even if the values appear
+numeric.
 
-  If the optional arguments \code{annotationID} and \code{termID} are
-  provided, the table will be filtered to only include features in that
-  annotation term.
+If the optional arguments \code{annotationID} and \code{termID} are
+provided, the table will be filtered to only include features in that
+annotation term.
 }
 \description{
 Get results table from a study

@@ -16,8 +16,8 @@ or the name of an installed study package.}
 }
 \value{
 Returns a data frame with the metaFeatures for the provided
-  featureID. If the featureID is not found in the metaFeatures table, the
-  data frame will have zero rows.
+featureID. If the featureID is not found in the metaFeatures table, the
+data frame will have zero rows.
 }
 \description{
 Get metaFeatures for a given feature

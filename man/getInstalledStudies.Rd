@@ -12,7 +12,7 @@ packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 Returns a character vector of the installed OmicNavigator study
-  packages
+packages
 }
 \description{
 Get installed OmicNavigator studies

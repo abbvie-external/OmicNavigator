@@ -23,7 +23,7 @@ directory ("package")}
 }
 \value{
 Invisibly returns the name of the tarball file ("tarball") or the
-  path to the package directory ("package")
+path to the package directory ("package")
 }
 \description{
 Export a study

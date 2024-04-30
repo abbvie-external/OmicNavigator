@@ -14,13 +14,13 @@ left as \code{NULL} (the default), then
 }
 \value{
 Returns a nested list with one element per installed OmicNavigator
-  study package. Each study package entry has the following sublist components:
+study package. Each study package entry has the following sublist components:
 
-  \item{name}{(character) Name of the study}
-  \item{package}{(list) The fields from \code{DESCRIPTION}}
-  \item{results}{(nested list) The testIDs available for each modelID}
-  \item{enrichments}{(nested list) The annotationIDs available for each modelID}
-  \item{plots}{(nested list) The plotIDs available for each modelID}
+\item{name}{(character) Name of the study}
+\item{package}{(list) The fields from \code{DESCRIPTION}}
+\item{results}{(nested list) The testIDs available for each modelID}
+\item{enrichments}{(nested list) The annotationIDs available for each modelID}
+\item{plots}{(nested list) The plotIDs available for each modelID}
 }
 \description{
 List available studies and their metadata

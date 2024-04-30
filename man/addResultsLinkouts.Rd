@@ -23,7 +23,7 @@ data you no longer want to include in the study.}
 }
 \value{
 Returns the original \code{onStudy} object passed to the argument
-  \code{study}, but modified to include the newly added data
+\code{study}, but modified to include the newly added data
 }
 \description{
 You can provide additional information on the features in your study by

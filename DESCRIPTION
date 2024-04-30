@@ -59,3 +59,4 @@ Suggests:
   ttdo (>= 0.0.6),
   UpSetR
 RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)

@@ -11,7 +11,7 @@ startApp(...)
 }
 \value{
 No return value. This function is only called for the side effect of
-  running a local instance of the app.
+running a local instance of the app.
 }
 \description{
 After you have installed at least one OmicNavigator study package with
