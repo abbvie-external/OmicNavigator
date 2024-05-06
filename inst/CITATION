@@ -1,0 +1,23 @@
+citHeader("Please use the following citation for OmicNavigator:")
+
+citEntry(entry="article",
+	author = c(person(c("Terrence","R"),"Ernst"),
+	           person(c("John","D"),"Blischak"),
+	           person("Paul","Nordlund"),
+	           person("Joe","Dalen"),
+	           person("Justin","Moore"),
+	           person("Akshay", "Bhamidipati"),
+	           person("Pankaj", "Dwivedi"),
+	           person("Joe","LoGrasso"),
+	           person(c("Marco","Rocha"),"Curado"),
+	           person(c("Brett", "Warren"), "Engelmann")),
+	title = "OmicNavigator: open-source software for the exploration, visualization, and archival of omic studies",
+	journal = "BMC Bioinformatics",
+	year = 2024,
+	volume = 25,
+	number = 1,
+	pages = "162",
+	doi = "10.1186/s12859-024-05743-4",
+	textVersion =
+	"Ernst, T.R., Blischak, J.D., Nordlund, P., Dalen, J., Moore, J., Bhamidipati, A., Dwivedi, P., LoGrasso, J., Curado, M.R., and Engelmann, B.W. OmicNavigator: open-source software for the exploration, visualization, and archival of omic studies. BMC Bioinformatics 25, 162 (2024). https://doi.org/10.1186/s12859-024-05743-4."
+)

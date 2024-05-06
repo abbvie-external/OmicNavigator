@@ -25,11 +25,17 @@ analyses such as scatter, network, volcano, and barcode plots. The tool also
 includes dynamic, multi-set filtering across hypothesis tests based on
 user-defined thresholds such as statistical significance or effect size.
 
+Please see our [publication][] for a thorough description of OmicNavigator. If you use OmicNavigator in a publication or presentation please cite:
+
+> Ernst, T.R., Blischak, J.D., Nordlund, P., Dalen, J., Moore, J., Bhamidipati, A., Dwivedi, P., LoGrasso, J., Curado, M.R., and Engelmann, B.W. OmicNavigator: open-source software for the exploration, visualization, and archival of omic studies. BMC Bioinformatics **25**, 162 (2024). https://doi.org/10.1186/s12859-024-05743-4.
+
+
 This repository contains the R package. To see an example of how to create an
 OmicNavigator study, check out the repository [OmicNavigatorExample][]. If
 you're a developer interested in the web application code, check out the
 repository [OmicNavigatorWebApp][].
 
+[publication]: https://doi.org/10.1186/s12859-024-05743-4
 [OmicNavigatorWebApp]: https://github.com/abbvie-external/OmicNavigatorWebApp
 [OmicNavigatorExample]: https://github.com/abbvie-external/OmicNavigatorExample
 

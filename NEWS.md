@@ -1,3 +1,5 @@
+* Added citation info to package and readme now references journal article
+
 * Update getPlottingData, plotStudy, and addPlots manuals
 
 # 1.13.22
