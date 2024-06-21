@@ -65,7 +65,13 @@ readJson <- function(x, simplifyVector = TRUE, ...) {
 }
 
 writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
-  jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
+  printingArgs <- list(...)
+  #for now only working with one argument to set na=null for models object
+  if(length(printingArgs) >= 1){
+    jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, na = printingArgs$na)
+  }else{
+  jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty)
+  }
 }
 
 ## Lists -----------------------------------------------------------------------
