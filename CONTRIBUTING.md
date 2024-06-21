@@ -336,3 +336,7 @@ locally), and [submit the tarball][cran].
 rm -r inst/www/
 R CMD build .
 ```
+
+Enter the name and email of the current package maintainer (role `cre` in
+`DESCRIPTION`). Copy-paste the contents of `cran-comments.md` into the box
+"Optional comment". Finally click "Upload the package".

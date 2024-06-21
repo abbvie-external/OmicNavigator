@@ -14,16 +14,18 @@ The input object is a list of lists (one per model). Each sublist must
 contain the element \code{statistic}, which is the column name in the
 results table to use to construct the barcode plot. Each sublist may
 additionally contain any of the following optional elements:
-1) \code{absolute} - Should the statistic be converted to its absolute
+\enumerate{
+\item \code{absolute} - Should the statistic be converted to its absolute
 value (default is \code{TRUE}).
-2) \code{logFoldChange} - The column name in the results table that contains
+\item \code{logFoldChange} - The column name in the results table that contains
 the log fold change values.
-3) \code{labelStat} - The x-axis label to describe the statistic.
-4) \code{labelLow} - The left-side label to describe low values of the statistic.
-5) \code{labelHigh} - The right-side label to describe high values of the statistic.
-6) \code{featureDisplay} - The feature variable to use to label the barcode plot
+\item \code{labelStat} - The x-axis label to describe the statistic.
+\item \code{labelLow} - The left-side label to describe low values of the statistic.
+\item \code{labelHigh} - The right-side label to describe high values of the statistic.
+\item \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
-To share metadata across multiple models, use the modelID "default".}
+To share metadata across multiple models, use the modelID "default".
+}}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data
@@ -32,10 +34,10 @@ data you no longer want to include in the study.}
 }
 \value{
 Returns the original \code{onStudy} object passed to the argument
-  \code{study}, but modified to include the newly added data
+\code{study}, but modified to include the newly added data
 }
 \description{
 The app can display a barcode plot of the enrichment results for a given
-annotation term. The metadata in `barcodes` instructs the app how to create
+annotation term. The metadata in \code{barcodes} instructs the app how to create
 and label the barcode plot.
 }

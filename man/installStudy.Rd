@@ -14,7 +14,7 @@ returned by \code{\link{.libPaths}}.}
 }
 \value{
 Invisibly returns the original \code{onStudy} object that was passed
-  to the argument \code{study}
+to the argument \code{study}
 }
 \description{
 Install a study as an R package

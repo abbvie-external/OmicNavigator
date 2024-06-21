@@ -1,22 +1,52 @@
-#' Plot a feature using a custom plotting function
+#'Invoke a custom plotting function
 #'
-#' @inheritParams shared-get
-#' @inheritParams listStudies
+#'`plotStudy()` invokes a custom plotting function saved within an OmicNavigator
+#'study. This function is called by the app using the study-model-test
+#'selection, feature selections, and plotting function metadata (see
+#'[addPlots()]) to define arguments.
 #'
-#' @details The arguments \code{study}, \code{modelID}, \code{featureID}, and
-#' \code{testID} are passed to the function \code{\link{getPlottingData}}, and
-#' the nested list returned by this function is passed as the first argument to
-#' your custom plotting function.
+#'@inheritParams shared-get
+#'@inheritParams listStudies
 #'
-#' @return This function is called for the side effect of creating a plot. It
-#'   invisibly returns the result from the custom plotting function specified by
-#'   \code{plotID}. Previously it invisibly returned the study object. It's
-#'   unlikely you relied on this behavior. For a ggplot2 plot, the return value
-#'   will be the plotting object with class \code{"ggplot"}.
+#'@details The arguments \code{study}, \code{modelID}, \code{featureID}, and
+#'  `testID` are passed to the function [getPlottingData()]. The list returned
+#'  by `getPlottingData()` is passed as the first argument to a custom plotting
+#'  function. Some custom `plotTypes` (see [addPlots()]) require care when being
+#'  invoked and attention should be paid to how a custom plot will be rendered
+#'  by the app. Custom plots with `plotType = c(‘multiModel’, ‘singleTest’)`
+#'  accept a `modelID` vector of length n and a vector of `testID`s length n,
+#'  where n is the number of models. Custom plots with `plotType =
+#'  c(‘multiModel’, ‘multiTest’)` accept `modelID` and `testID` vectors of
+#'  length m, where m is the total number of tests considered across all models
+#'  (note `testID`s are often repeated across models). Note that the index
+#'  positions of these two vectors should correspond. That is, `testID` position
+#'  1 should be found in the model specified by `modelID` position 1, etc.
 #'
-#' @seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
+#'  The app will invoke custom plotting functions via `plotStudy()` using the
+#'  current menu selections and plot metadata (see [addPlots()]). Plots with
+#'  `plotType = ‘multiTest’` will be invoked with all `testID`s found within the
+#'  currently selected model. Plots with `plotType =
+#'  c(‘multiModel’,‘singleTest’)` will be invoked with all `modelID`s within the
+#'  study (unless the plot has specified a list of models via `models`) and the
+#'  currently selected `testID` (an error will result if the currently selected
+#'  `testID` is not present in all relevant models for the plot). Plots with
+#'  `plotType = c(‘multiModel’, ‘multiTest’)` will be invoked with all
+#'  `modelID`s within the study (unless the plot has specified a list of models
+#'  via `models`) and all identical `testID`s across models (if there are no
+#'  matching testIDs across models an error will result).
 #'
-#' @export
+#'@return
+#'
+#'  This function is called for the side effect of creating a plot. It invisibly
+#'  returns the result from the custom plotting function specified by `plotID`.
+#'  Previously it invisibly returned the study object. It's unlikely you relied
+#'  on this behavior. For a ggplot2 plot, the return value will be the plotting
+#'  object with class `"ggplot"`. For a plotly plot, the return value will be
+#'  the json schema used for plotting with class `“json”`.
+#'
+#'@seealso \code{\link{addPlots}}, \code{\link{getPlottingData}}
+#'
+#'@export
 plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, libraries = NULL) {
   stopifnot(
     is.character(modelID),
@@ -253,18 +283,38 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   )
 }
 
-#' Get plotting data
+#'Get plotting data from an OmicNavigator study
 #'
-#' This function creates the input data that \code{\link{plotStudy}} passes to
-#' custom plotting functions added with \code{\link{addPlots}}. You can use it
-#' directly when you are interactively creating your custom plotting functions.
-#' Note that for multiModel plots testID is required to be a named vector, with
-#' each testID named after the related modelID.
+#'Returns `assay`, `sample`, `feature`, and `result` data that may be used for
+#'plotting. This function is called by `plotStudy()` and the output is passed to
+#'custom plotting functions. It should be used directly when interactively
+#'creating custom plotting functions.
 #'
-#' @inheritParams shared-get
-#' @inheritParams listStudies
+#'The end-user should call this function and populate the first argument of
+#'their custom plotting function with the output. When building functions, the
+#'end-user should understand the category of plotting function they are creating
+#'(e.g. `singleFeature` or `multiFeature`, see [addPlots()]) and call
+#'`getPlottingData()` accordingly.
 #'
-#' @return Returns a list of 4 data frames:
+#'Custom plots that accept data from multiple models and a single test
+#'(`plotType = c(‘multiModel’, ‘singleTest’)`; see [addPlots()]) should be built
+#'to accept output from `getPlottingData()` where `modelID` is vector of length
+#'n and `testID` is a vector of length n, where n is the number of models.
+#'Custom plots that accept data from multiple models and multiple tests
+#'(`plotType = c(‘multiModel’, ‘multiTest’)`) should be built to accept output
+#'from `getPlottingData()` where `modelID` and `testID` vectors are length m,
+#'where m is the total number of tests considered across all models (note that
+#'`testID`s must be repeated across models for the plotting function to work in
+#'the app). The index positions of these two vectors should correspond. That is,
+#'`testID` position 1 should be found in the model specified by `modelID`
+#'position 1, etc. See [addPlots()] for information about the assignment of
+#'`plotTypes` for your custom plots.
+#'
+#'
+#'@inheritParams shared-get
+#'@inheritParams listStudies
+#'
+#'@return Returns a list of at least 4 objects:
 #'
 #' \item{\code{assays}}{A data frame that contains the assay measurements,
 #' filtered to only include the row(s) corresponding to the input featureID(s)
@@ -288,17 +338,15 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #' order of this input. The column order is unchanged. If multiple testIDs are
 #' provided, they are stored in a list object.}
 #'
-#' The data frame \code{results} is only returned if you pass a testID. By
-#' default the app will always pass the currently selected testID. To make
-#' \code{results} a list of data frames (one for each testID for the currently
-#' selected modelID), set the plotType to be "multiTest" when adding the plot
-#' with \code{\link{addPlots}}. For "multiModel" plots, testID and modelID
-#' should be vectors of same length, where the index position indicate which
-#' test in testID relate to which model in modelID.
+#' \item{\code{mapping}}{A data frame that contains the featureID(s) from each
+#' model. This is the filtered mapping object. This data frame is returned when multiple models are passed as arguments}
 #'
-#' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
+#'  The data frame \code{results} is only returned if you pass a testID. By
+#'  default the app will always pass the currently selected testID.
 #'
-#' @export
+#'@seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
+#'
+#'@export
 getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries = NULL) {
   stopifnot(
     is.character(modelID),

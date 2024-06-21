@@ -14,8 +14,8 @@ or the name of an installed study package.}
 }
 \value{
 Returns a one-element character vector with either a path to a report
-  file or a URL to a report web page. If no report is available for the
-  modelID, an empty character vector is returned.
+file or a URL to a report web page. If no report is available for the
+modelID, an empty character vector is returned.
 }
 \description{
 Get link to report

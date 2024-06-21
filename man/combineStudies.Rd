@@ -11,7 +11,7 @@ combineStudies(...)
 }
 \value{
 Returns a new combined OmicNavigator study object, which is a named
-  nested list with class \code{onStudy}
+nested list with class \code{onStudy}
 }
 \description{
 Create a new OmicNavigator study by combining two or more existing study
@@ -67,5 +67,5 @@ c(studyOne, studyTwo, studyThree)
 }
 \seealso{
 \code{\link{createStudy}},
-  \code{\link{importStudy}}
+\code{\link{importStudy}}
 }

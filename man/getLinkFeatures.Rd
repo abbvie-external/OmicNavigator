@@ -16,7 +16,7 @@ package.}
 }
 \value{
 Returns a character vector with the features included in both termIDs
-  (i.e. the intersection)
+(i.e. the intersection)
 }
 \description{
 Get the shared features in a network link

@@ -40,9 +40,9 @@ column}
 }
 \value{
 Returns a data frame with the results, similar to
-  \code{\link{getResultsTable}}. Only rows that pass all the filters are
-  included. The new column \code{Set_Membership} is a comma-separated field
-  that includes the testIDs in which the featureID passed the filters.
+\code{\link{getResultsTable}}. Only rows that pass all the filters are
+included. The new column \code{Set_Membership} is a comma-separated field
+that includes the testIDs in which the featureID passed the filters.
 }
 \description{
 getResultsIntersection

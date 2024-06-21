@@ -40,8 +40,8 @@ column}
 }
 \value{
 Returns a data frame with the enrichments, similar to
-  \code{\link{getEnrichmentsTable}}. Only rows that pass all the filters are
-  included.
+\code{\link{getEnrichmentsTable}}. Only rows that pass all the filters are
+included.
 }
 \description{
 getEnrichmentsIntersection

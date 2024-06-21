@@ -21,7 +21,7 @@ system. For example, to download with \code{wget}, pass the argument
 }
 \value{
 A one-element character vector with the absolute path to the
-  directory in which the app files were installed
+directory in which the app files were installed
 }
 \description{
 In order to run the OmicNavigator web app on your local machine, the app must

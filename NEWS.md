@@ -1,3 +1,15 @@
+* Added citation info to package and readme now references journal article
+
+* Update getPlottingData, plotStudy, and addPlots manuals
+
+# 1.13.22
+
+* The release tarball includes version 1.9.4 of the web app
+
+# 1.13.21
+
+* The release tarball includes version 1.9.4 of the web app
+
 # 1.13.20
 
 * The release tarball includes version 1.9.3 of the web app

@@ -106,21 +106,34 @@ contain the same IDs as the corresponding features data frame
 use the modelID "default". All columns will be coerced to character
 strings.}
 
-\item{plots}{Custom plotting functions for the study. The input object is a
-nested list. The first list corresponds to the modelID(s). The second list
-corresponds to the name(s) of the function(s) defined in the current R
-session. The third list provides metadata to describe each plot. The only
-required metadata element is \code{displayName}, which controls how the
-plot will be named in the app. You are encouraged to also specify the
-\code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"},
-\code{"multiTest"}, \code{"multiModel"}. PlotType accepts vector of
-entries, whenever applicable, e.g., plotType = c(\code{"multiFeature"},
-\code{"multiTest"}). If you do not specify the \code{plotType}, the plot
-will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
-Optionally, if the plotting function requires external packages, these can
-be defined in the element \code{packages}. To share plots across multiple
-models, use the modelID "default". To add a plotting function that returns
-an interactive plotly plot, add "plotly" to the \code{plotType} vector.}
+\item{plots}{A nested list containing custom plotting functions and plot
+metadata. The input object is a 3-level nested list. The first, or
+top-level list element name(s) must match the study \code{modelID}(s). The second,
+or mid-level list element name(s) must match the names of the plotting
+function(s) defined in the current R session (see Details below for
+function construction requirements). The third, or bottom-level list
+provides metadata to categorize, display, and support each plot. The
+accepted fields are \code{displayName}, \code{description}, \code{plotType}, \code{models}, and
+\code{packages.} \code{displayName} sets the plot name in the app and the \code{description}
+field will display as a tool tip when hovering over plotting dropdown
+menus. The \code{plotType} field is a character vector that categorizes the plot
+by 1) the number of features it supports (“\code{singleFeature}” or
+“\code{multiFeature}”), 2) the number of test results used by the plotting
+function (“\code{singleTest}”, “\code{multiTest}”), 3) if data from one or more models is
+used (add “\code{multiModel}” to specify that data from two or more models are
+used in the plot; otherwise the plot is assumed to reference only data
+within the model specified by the top-level list element name), and 4) if
+the plot is interactive (add “\code{plotly}” to specify interactive plots built
+using the plotly package; otherwise the plot is assumed to be static).
+e.g., \verb{plotType = c("multiFeature", "multiTest",”plotly”)}. If you do not
+specify the \code{plotType} the plot will be designated as \code{plotType = c("singleFeature", "singleTest")}. The \code{models} field is an optional
+character vector that specifies the models that should be used by the app
+when invoking your custom plotting function. This field is set to ‘all’ by
+default and is only used when \code{plotType} includes “\code{multiModel}”. If this field
+is not included the app will assume all models in the study should be used
+with your plotting function. If the plotting function requires additional
+packages beyond those attached by default to a fresh R session, these must
+be defined in the element \code{packages}.}
 
 \item{mapping}{Feature IDs from models. The input object is a list of named
 data frames. For each data frame, column names indicate model names while
@@ -151,16 +164,18 @@ The input object is a list of lists (one per model). Each sublist must
 contain the element \code{statistic}, which is the column name in the
 results table to use to construct the barcode plot. Each sublist may
 additionally contain any of the following optional elements:
-1) \code{absolute} - Should the statistic be converted to its absolute
+\enumerate{
+\item \code{absolute} - Should the statistic be converted to its absolute
 value (default is \code{TRUE}).
-2) \code{logFoldChange} - The column name in the results table that contains
+\item \code{logFoldChange} - The column name in the results table that contains
 the log fold change values.
-3) \code{labelStat} - The x-axis label to describe the statistic.
-4) \code{labelLow} - The left-side label to describe low values of the statistic.
-5) \code{labelHigh} - The right-side label to describe high values of the statistic.
-6) \code{featureDisplay} - The feature variable to use to label the barcode plot
+\item \code{labelStat} - The x-axis label to describe the statistic.
+\item \code{labelLow} - The left-side label to describe low values of the statistic.
+\item \code{labelHigh} - The right-side label to describe high values of the statistic.
+\item \code{featureDisplay} - The feature variable to use to label the barcode plot
 on hover.
-To share metadata across multiple models, use the modelID "default".}
+To share metadata across multiple models, use the modelID "default".
+}}
 
 \item{reports}{The analysis report(s) that explain how the study results were
 generated. The input object is a list of character vectors (one per model).
@@ -203,7 +218,7 @@ list of key:value pairs. See below for more details.}
 }
 \value{
 Returns a new OmicNavigator study object, which is a named nested
-  list with class \code{onStudy}
+list with class \code{onStudy}
 }
 \description{
 Create a new OmicNavigator study.
@@ -234,21 +249,21 @@ study <- createStudy(name = "ABC",
 }
 \seealso{
 \code{\link{addSamples}},
-  \code{\link{addFeatures}},
-  \code{\link{addModels}},
-  \code{\link{addAssays}},
-  \code{\link{addTests}},
-  \code{\link{addAnnotations}},
-  \code{\link{addResults}},
-  \code{\link{addEnrichments}},
-  \code{\link{addMetaFeatures}},
-  \code{\link{addPlots}},
-  \code{\link{addMapping}},
-  \code{\link{addBarcodes}},
-  \code{\link{addReports}},
-  \code{\link{addResultsLinkouts}},
-  \code{\link{addEnrichmentsLinkouts}},
-  \code{\link{addMetaFeaturesLinkouts}},
-  \code{\link{exportStudy}},
-  \code{\link{installStudy}}
+\code{\link{addFeatures}},
+\code{\link{addModels}},
+\code{\link{addAssays}},
+\code{\link{addTests}},
+\code{\link{addAnnotations}},
+\code{\link{addResults}},
+\code{\link{addEnrichments}},
+\code{\link{addMetaFeatures}},
+\code{\link{addPlots}},
+\code{\link{addMapping}},
+\code{\link{addBarcodes}},
+\code{\link{addReports}},
+\code{\link{addResultsLinkouts}},
+\code{\link{addEnrichmentsLinkouts}},
+\code{\link{addMetaFeaturesLinkouts}},
+\code{\link{exportStudy}},
+\code{\link{installStudy}}
 }

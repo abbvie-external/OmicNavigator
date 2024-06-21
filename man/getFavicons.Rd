@@ -12,7 +12,7 @@ vectors containing the URLs for the table linkouts.}
 }
 \value{
 The URLs to the favicons for each linkout. The output returned will
-  always be the same class and structure as the input.
+always be the same class and structure as the input.
 }
 \description{
 To enhance the display of the linkouts in the app's tables, it can fetch the
@@ -20,5 +20,5 @@ favicon URL for each website.
 }
 \seealso{
 \code{\link{getResultsLinkouts}},
-         \code{\link{getEnrichmentsLinkouts}}
+\code{\link{getEnrichmentsLinkouts}}
 }

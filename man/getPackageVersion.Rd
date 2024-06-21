@@ -8,7 +8,7 @@ getPackageVersion()
 }
 \value{
 Returns a one-element character vector with the version of the
-  currently installed OmicNavigator R package
+currently installed OmicNavigator R package
 }
 \description{
 This is a convenience function for the app. It is easier to always call the

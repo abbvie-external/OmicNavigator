@@ -16,7 +16,7 @@ left as \code{NULL} (the default), then
 }
 \value{
 Returns the \code{onStudy} object imported from the OmicNavigator
-  study package
+study package
 }
 \description{
 Create an onStudy object by importing an installed study package

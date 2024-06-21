@@ -21,8 +21,8 @@ left as \code{NULL} (the default), then
 }
 \value{
 A data frame (if \code{modelID} is specified) or a list of data
-  frames. All the columns will be character strings, even if the values
-  appear numeric.
+frames. All the columns will be character strings, even if the values
+appear numeric.
 }
 \description{
 Get features from a study

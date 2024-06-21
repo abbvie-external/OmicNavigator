@@ -11,7 +11,7 @@ Description:
   deployed online to be explored by collaborators. The dashboard includes
   'sortable' tables, interactive plots including network visualization, and
   fine-grained filtering based on statistical significance.
-Version: 1.13.20
+Version: 1.13.22
 Authors@R: c(
   person("Terrence", "Ernst", role = c("aut"),
          comment = "Web application"),
@@ -59,3 +59,4 @@ Suggests:
   ttdo (>= 0.0.6),
   UpSetR
 RoxygenNote: 7.3.1
+Roxygen: list(markdown = TRUE)

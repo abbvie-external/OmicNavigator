@@ -363,18 +363,20 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 
 #' Add custom plotting functions
 #'
-#' Include custom plots that the app will display when a feature is selected by
-#' the user.
+#' `addPlots()` adds custom plotting functions and plot metadata to an
+#' OmicNavigator study.
 #'
-#' Custom plotting functions are passed a list of data frames: \code{assays}
-#' with the measurements, \code{features} with the feature data,
-#' \code{samples} with the sample data, and \code{results} with test results
-#' data. Note that \code{assays}, \code{features} and \code{results}
-#' only include data for the specified featureID(s) (and
-#' re-ordered so their rows match). Thus your custom plotting function must have
-#' at least one argument. It can have additional arguments if you wish, but
-#' these must be provided with default values, because \code{plotStudy} only
-#' passes the plotting data to the first argument.
+#' Custom plotting functions must be constructed to accept as the first argument
+#' the value returned from `getPlottingData()`. Custom plotting functions can
+#' have additional arguments, but these must be provided with default values.
+#' The end-user should call `getPlottingData()` when testing their custom
+#' plotting function.  The end-user should consider the nature of the plot, i.e.
+#' the `plotType` and (rarely) `models` values (see [getPlottingData()]). For
+#' example, a custom plotting function meant to produce a `multiTest` plot
+#' should accept the output of a `getPlottingData()` call with multiple
+#' `testID`s assigned to the `testID` argument. See the details section of
+#' [plotStudy()] for a description of how `plotType` dictates the way a custom
+#' plotting function is invoked by the app.
 #'
 #' Note that any ggplot2 plots will require extra care. This is because the
 #' plotting code will be inserted into a study package, and thus must follow the
@@ -385,21 +387,36 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #' Fortunately this latter code will also run fine as you interactively develop
 #' the function.
 #'
-#' @param plots Custom plotting functions for the study. The input object is a
-#'   nested list. The first list corresponds to the modelID(s). The second list
-#'   corresponds to the name(s) of the function(s) defined in the current R
-#'   session. The third list provides metadata to describe each plot. The only
-#'   required metadata element is \code{displayName}, which controls how the
-#'   plot will be named in the app. You are encouraged to also specify the
-#'   \code{plotType}, e.g. \code{"singleFeature"}, \code{"multiFeature"},
-#'   \code{"multiTest"}, \code{"multiModel"}. PlotType accepts vector of
-#'   entries, whenever applicable, e.g., plotType = c(\code{"multiFeature"},
-#'   \code{"multiTest"}). If you do not specify the \code{plotType}, the plot
-#'   will be assumed to be \code{"singleFeature"} and \code{"singleTest"}.
-#'   Optionally, if the plotting function requires external packages, these can
-#'   be defined in the element \code{packages}. To share plots across multiple
-#'   models, use the modelID "default". To add a plotting function that returns
-#'   an interactive plotly plot, add "plotly" to the \code{plotType} vector.
+#' @param plots A nested list containing custom plotting functions and plot
+#'   metadata. The input object is a 3-level nested list. The first, or
+#'   top-level list element name(s) must match the study `modelID`(s). The second,
+#'   or mid-level list element name(s) must match the names of the plotting
+#'   function(s) defined in the current R session (see Details below for
+#'   function construction requirements). The third, or bottom-level list
+#'   provides metadata to categorize, display, and support each plot. The
+#'   accepted fields are `displayName`, `description`, `plotType`, `models`, and
+#'   `packages.` `displayName` sets the plot name in the app and the `description`
+#'   field will display as a tool tip when hovering over plotting dropdown
+#'   menus. The `plotType` field is a character vector that categorizes the plot
+#'   by 1) the number of features it supports (“`singleFeature`” or
+#'   “`multiFeature`”), 2) the number of test results used by the plotting
+#'   function (“`singleTest`”, “`multiTest`”), 3) if data from one or more models is
+#'   used (add “`multiModel`” to specify that data from two or more models are
+#'   used in the plot; otherwise the plot is assumed to reference only data
+#'   within the model specified by the top-level list element name), and 4) if
+#'   the plot is interactive (add “`plotly`” to specify interactive plots built
+#'   using the plotly package; otherwise the plot is assumed to be static).
+#'   e.g., `plotType = c("multiFeature", "multiTest",”plotly”)`. If you do not
+#'   specify the `plotType` the plot will be designated as `plotType =
+#'   c("singleFeature", "singleTest")`. The `models` field is an optional
+#'   character vector that specifies the models that should be used by the app
+#'   when invoking your custom plotting function. This field is set to ‘all’ by
+#'   default and is only used when `plotType` includes “`multiModel`”. If this field
+#'   is not included the app will assume all models in the study should be used
+#'   with your plotting function. If the plotting function requires additional
+#'   packages beyond those attached by default to a fresh R session, these must
+#'   be defined in the element `packages`.
+#'
 #' @inherit shared-add
 #'
 #' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
