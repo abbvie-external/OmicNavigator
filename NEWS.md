@@ -1,3 +1,5 @@
+* export of metadata to JSON now follows the convention NA -> null
+
 * Added citation info to package and readme now references journal article
 
 * Update getPlottingData, plotStudy, and addPlots manuals
