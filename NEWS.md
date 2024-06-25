@@ -1,4 +1,4 @@
-* export of metadata to JSON now follows the convention NA -> null
+* export of model metadata to JSON now follows the convention NA -> null
 
 * Added citation info to package and readme now references journal article
 
