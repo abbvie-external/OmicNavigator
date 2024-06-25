@@ -65,7 +65,7 @@ readJson <- function(x, simplifyVector = TRUE, ...) {
 }
 
 writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
-  jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
+    jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
 }
 
 ## Lists -----------------------------------------------------------------------

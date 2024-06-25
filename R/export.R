@@ -70,7 +70,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   dir.create(directoryname, showWarnings = FALSE, recursive = TRUE)
   exportSamples(study, directoryname)
   exportFeatures(study, directoryname)
-  exportModels(study, directoryname)
+  exportModels(study, directoryname, na="null")
   exportAssays(study, directoryname)
   exportTests(study, directoryname)
   exportAnnotations(study, directoryname)
@@ -95,7 +95,8 @@ exportElements <- function(
   path = ".",
   fileType = c("txt", "json"),
   hasRowNames = FALSE,
-  nested = 0
+  nested = 0,
+  ...
 )
 {
   x <- study[[elements]]
@@ -110,7 +111,8 @@ exportElements <- function(
       x,
       path = directory,
       fileType = fileType,
-      hasRowNames = hasRowNames
+      hasRowNames = hasRowNames,
+      ...
     )
   } else if (nested > 0) { # recursive case
     for (i in seq_along(x)) {
@@ -120,7 +122,8 @@ exportElements <- function(
         path = directory,
         fileType = fileType,
         hasRowNames = hasRowNames,
-        nested = nested - 1
+        nested = nested - 1,
+        ...
       )
     }
   } else {
@@ -132,7 +135,8 @@ exportElementsWrite <- function(
   x,
   path = ".",
   fileType = c("txt", "json"),
-  hasRowNames = FALSE
+  hasRowNames = FALSE,
+  ...
 )
 {
   for (i in seq_along(x)) {
@@ -142,7 +146,7 @@ exportElementsWrite <- function(
       writeTable(x[[i]], file = fileName, row.names = hasRowNames)
     } else {
       fileName <- paste0(fileName, ".json")
-      writeJson(x[[i]], file = fileName)
+      writeJson(x[[i]], file = fileName, ...)
     }
   }
 }
@@ -163,12 +167,13 @@ exportFeatures <- function(study, path = ".") {
   )
 }
 
-exportModels <- function(study, path = ".") {
+exportModels <- function(study, path = ".", ...) {
   exportElements(
     study,
     elements = "models",
     path = path,
-    fileType = "json"
+    fileType = "json",
+    ...
   )
 }
 
