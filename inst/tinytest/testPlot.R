@@ -287,7 +287,7 @@ expect_silent_xl(
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
             plotID = "plotBase", testID = "non-existent"),
-  "non-existent"
+  "one feature is not available in the results object for model"
 )
 
 expect_error_xl(
