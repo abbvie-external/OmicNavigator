@@ -246,13 +246,22 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
     )
   }
   if (!all(featureID %in% model_features)) {
-    message(
+    stop(
       sprintf(
         "The provided features list contains at least one feature not present in model '%s' from mapping object.",
         modelID[1]
-      ),
+      )
+    )
+  }
+
+  secondary_mapping  <- mapping[which(mapping[, modelID[1]] %in% featureID), ]
+  secondary_mapping[, modelID[1]]  <- NULL
+  secondary_features <- data.frame(secondary_mapping[rowSums(is.na(secondary_mapping)) != ncol(secondary_mapping),])
+  if (nrow(secondary_features) == 0) {
+    stop(
       sprintf(
-        "\nOnly features available in the mapping object will be shown."
+        "The selected features list contains features available in the selected model '%s' only.",
+        modelID[1]
       )
     )
   }
@@ -264,6 +273,17 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
       "\n",
       sprintf("testID: %s", paste(testID, collapse = ", "))
     )
+  }
+  # Inform user if at least one feature from modelID is not present in secondary models
+  for (ii in colnames(mapping)) {
+    if (ii == modelID[1]) next
+    if (any(is.na(mapping[ii]))) {
+      warning(
+        sprintf("At least one feature from model '%s' is not available in other model(s): e.g., '%s'.",
+                modelID[1], model_features[which(is.na(mapping[ii]))[1]])
+      )
+      break
+    }
   }
 
   # Structuring data for mapping
@@ -385,10 +405,31 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       stop(sprintf("No assays available for modelID \"%s\"\n", model_i),
            "Add assays data with addAssays()")
     } else {
-      featureIDAvailable <- featureID %in% rownames(assays)
-      if (any(!featureIDAvailable)) {
-        stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                     featureID[!featureIDAvailable][1], model_i))
+      # only necessary for singleModel plots - for multiModel the check is done at getMappingPlottingData
+      if (length(modelID) == 1) {
+        if (!is.null(testID)) {
+          featID_tmp <- NULL
+          for (i_testID in testID) {
+            tmp <- getResults(study, modelID = model_i, testID = i_testID, quiet = TRUE,
+                              libraries = libraries)
+            if (is.data.frame(tmp)) {
+              featID_tmp <- unique(c(featID_tmp, tmp[[1]]))
+            }
+          }
+          # featureIDAvailable <- featureID %in% unique(as.vector(as.matrix(sapply(study$results[[model_i]], function(x) x[[1]]))))
+          featureIDAvailable <- featureID %in% featID_tmp
+          if (any(!featureIDAvailable)) {
+            stop(sprintf("At least one feature is not available in the results object for modelID \"%s\": \"%s\"",
+                         model_i, featureID[!featureIDAvailable][1]))
+          }
+        }
+        if (is.null(testID) || (!is.null(testID) && !is.data.frame(tmp))) {
+          featureIDAvailable <- featureID %in% rownames(assays)
+          if (any(!featureIDAvailable)) {
+            stop(sprintf("At least one feature is not available in the assay object for modelID \"%s\": \"%s\"",
+                         model_i, featureID[!featureIDAvailable][1]))
+          }
+        }
       }
       assaysPlotting <- assays[featureID, , drop = FALSE]
     }
