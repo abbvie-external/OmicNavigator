@@ -212,7 +212,7 @@ expect_error_xl(
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 
-expect_silent_xl(
+expect_warning_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,
@@ -233,7 +233,7 @@ expect_error_xl(
   "Plot type \"multiModel\" requires testID to be either NULL \\(default\\) or a vector containing at least 2 testIDs"
 )
 
-expect_message_xl(
+expect_error_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,

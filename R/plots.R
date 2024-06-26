@@ -246,13 +246,22 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
     )
   }
   if (!all(featureID %in% model_features)) {
-    message(
+    stop(
       sprintf(
         "The provided features list contains at least one feature not present in model '%s' from mapping object.",
         modelID[1]
-      ),
+      )
+    )
+  }
+
+  secondary_mapping  <- mapping[which(mapping[, modelID[1]] %in% featureID), ]
+  secondary_mapping[, modelID[1]]  <- NULL
+  secondary_features <- data.frame(secondary_mapping[rowSums(is.na(secondary_mapping)) != ncol(secondary_mapping),])
+  if (nrow(secondary_features) == 0) {
+    stop(
       sprintf(
-        "\nOnly features available in the mapping object will be shown."
+        "The selected features list contains features available in the selected model '%s' only.",
+        modelID[1]
       )
     )
   }
@@ -269,7 +278,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   for (ii in colnames(mapping)) {
     if (ii == modelID[1]) next
     if (any(is.na(mapping[ii]))) {
-      message(
+      warning(
         sprintf("At least one feature from model '%s' is not available in other model(s): e.g., '%s'.",
                 modelID[1], model_features[which(is.na(mapping[ii]))[1]])
       )
