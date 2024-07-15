@@ -248,7 +248,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   if (!all(featureID %in% model_features)) {
     stop(
       sprintf(
-        "The provided features list contains at least one feature not present in model '%s' from mapping object.",
+        "At least one feature is not present in the first model passed, '%s'.",
         modelID[1]
       )
     )
@@ -260,7 +260,7 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
   if (nrow(secondary_features) == 0) {
     stop(
       sprintf(
-        "The selected features list contains features available in the selected model '%s' only.",
+        "The features are only present in the first model passed, '%s'.",
         modelID[1]
       )
     )
@@ -275,15 +275,20 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
     )
   }
   # Inform user if at least one feature from modelID is not present in secondary models
+  incomplete_matches_sec_models = NULL
   for (ii in colnames(mapping)) {
     if (ii == modelID[1]) next
     if (any(is.na(mapping[ii]))) {
-      warning(
-        sprintf("At least one feature from model '%s' is not available in other model(s): e.g., '%s'.",
-                modelID[1], model_features[which(is.na(mapping[ii]))[1]])
-      )
-      break
+      incomplete_matches_sec_models <- trimws(paste(incomplete_matches_sec_models, ii, collapse=' '))
     }
+  }
+  if (!is.null(incomplete_matches_sec_models)) {
+    warning(
+      sprintf("At least one feature from model '%s' is not mapped in other model(s). Model(s) impacted: %s",
+              modelID[1],
+              incomplete_matches_sec_models
+              )
+    )
   }
 
   # Structuring data for mapping
@@ -444,7 +449,6 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
               featID_tmp <- unique(c(featID_tmp, tmp[[1]]))
             }
           }
-          # featureIDAvailable <- featureID %in% unique(as.vector(as.matrix(sapply(study$results[[model_i]], function(x) x[[1]]))))
           featureIDAvailable <- featureID %in% featID_tmp
           if (any(!featureIDAvailable)) {
             stop(sprintf("At least one feature is not available in the results object for modelID \"%s\": \"%s\"",
