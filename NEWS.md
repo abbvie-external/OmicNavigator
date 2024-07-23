@@ -1,3 +1,7 @@
+# 1.14.1
+
+* The release tarball includes version 1.9.5 of the web app
+
 # 1.14.0
 
 * export of model metadata to JSON now follows the convention NA -> null
