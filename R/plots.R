@@ -416,13 +416,31 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     testID_all <- mappingPlottingData$testID_all
     modelID <- mappingPlottingData$modelID
 
-    # Warning if at least one test from modelID[1] is not available in secondary models
+    # Error if test passed to testID associated with modelID[1] is not available in study object
     incomplete_test_matches_sec_models = NULL
     incomplete_test_matches = list()
-    current_model_tests <- names(study$tests[[modelID[1]]])[names(study$tests[[modelID[1]]]) %in% testID]
+    current_model_tests <- testID[modelID %in% modelID[1]]
+    for (i_current_model_tests in current_model_tests) {
+      tmp <- getResults(study, modelID = modelID[1], testID = i_current_model_tests)
+      if (isEmpty(tmp)) {
+        stop(
+          sprintf("Test '%s' from testID is not available in selected model '%s'.",
+                  i_current_model_tests,
+                  modelID[1])
+        )
+      } else { rm(tmp) }
+    }
+
+    # Warning if at least one test from modelID[1] is not available in secondary models
     for (ii in unique(modelID)) {
       if (ii == modelID[1]) next
-      secondary_model_tests <- names(study$tests[[ii]])[names(study$tests[[ii]]) %in% testID]
+      secondary_model_tests = testID[modelID %in% ii]
+      for (i_secondary_model_tests in secondary_model_tests) {
+        tmp <- suppressMessages(getResults(study, modelID = ii, testID = i_secondary_model_tests))
+        if (isEmpty(tmp)) {
+          secondary_model_tests <- secondary_model_tests[!secondary_model_tests %in% i_secondary_model_tests]
+        } else { rm(tmp) }
+      }
       if (isEmpty(secondary_model_tests)) secondary_model_tests <- NULL
       incomplete_test_matches_sec_models = !current_model_tests %in% secondary_model_tests
 
@@ -430,6 +448,8 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
         incomplete_test_matches[[ii]] = current_model_tests[incomplete_test_matches_sec_models]
       }
     }
+
+
     if (!isEmpty(incomplete_test_matches)) {
       unmatched_tests <- NULL
       for (inames in names(incomplete_test_matches)) {
@@ -439,7 +459,6 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       warning(
         sprintf("At least one test from model '%s' is not available in other model(s). Test(s) impacted: %s",
                 modelID[1],
-                # paste(names(study$tests[[modelID[1]]])[!incomplete_test_matches_sec_models], collapse=', ')
                 unmatched_tests)
       )
     }
