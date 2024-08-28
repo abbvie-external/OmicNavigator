@@ -1,3 +1,7 @@
+# 1.14.2
+
+* The release tarball includes version 1.9.6 of the web app
+
 # 1.14.1
 
 * The release tarball includes version 1.9.5 of the web app
