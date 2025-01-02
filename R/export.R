@@ -401,11 +401,17 @@ createPackage <- function(study, directoryname) {
   description_file <- file.path(directoryname, "DESCRIPTION")
   pkgname <- basename(directoryname)
   pkgversion <- if (is.null(study[["version"]])) "0.0.0.9000" else study[["version"]]
-  if (study[["description"]] == study[["name"]]) {
+  if (study[["description"]] == study[["name"]] || isEmpty(study[["description"]])) {
     pkgdescription <- sprintf("The OmicNavigator data package for the study \"%s\"",
                               study[["name"]])
   } else {
-    pkgdescription <- study[["description"]]
+    forbidden_chars <- c('\"', ":")
+    for(forbidden_char in forbidden_chars) {
+      if(grepl(forbidden_char), study[["description"]], fixed = TRUE) {
+        stop("Error: Forbidden character detected in description. ")
+      }
+      pkgdescription <- study[["description"]]
+    }
   }
   if (isEmpty(study[["maintainer"]])) {
     pkgmaintainer <- "Unknown"
