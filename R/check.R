@@ -429,7 +429,7 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    if (!(sum(vapply(mapping[[i]], is.character, logical(1))) == ncol(mapping[[i]]))) {
+    if (!(sum(vapply(mapping[[i]], is.na, logical(1))) == ncol(mapping[[i]]))) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model
