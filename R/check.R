@@ -2,7 +2,8 @@
 checkStudy <- function(study) {
   stopifnot(
     inherits(study, "onStudy"),
-    !is.null(study[["name"]])
+    !is.null(study[["name"]]),
+    is.null(checkAnnotations(study[["annotations"]]))
   )
 }
 
@@ -11,10 +12,10 @@ checkName <- function(name) {
     is.character(name),
     length(name) == 1
   )
-
+  
   # Confirm package name is valid
   regexPackage <- .standard_regexps()[["valid_package_name"]]
-  regexPackage <- paste0("^", regexPackage, "$")
+  regexPackage <- paste0("^", regexPackage, "$", '\"', "\\", "/", ">", "<", ":", "|", "?", "*")
   nameIsValid <- grepl(regexPackage, name)
   if (!nameIsValid) {
     stop("Invalid name for a study package. It must follow these rules:\n",
