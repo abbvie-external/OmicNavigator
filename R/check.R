@@ -17,7 +17,7 @@ checkName <- function(name) {
   regexPackage <- .standard_regexps()[["valid_package_name"]]
   regexPackage <- paste0("^", regexPackage, "$", '\"', "\\", "/", ">", "<", ":", "|", "?", "*")
   nameIsValid <- grepl(regexPackage, name)
-  if (!nameIsValid) {
+  if (!nameIsValid && substr(name, nchar(name)+1, nchar(name)) != ".") {
     stop("Invalid name for a study package. It must follow these rules:\n",
          "* Begin with a letter\n",
          "* End with a letter or a number\n",
@@ -221,11 +221,15 @@ checkFeatures <- function(features) {
 
 checkModels <- function(models) {
   checkList(models)
-
+  invalid_char <- paste0('\"', "\\", "/", ">", "<", ":", "|", "?", "*")
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
-    if (is.character(models[[i]]) && length(models[[i]]) == 1) {
-      next
+    
+    if (is.character(models[[i]]) && length(models[[i]]) == 1 && substr(models[[i]], nchar(models[[i]])+1, nchar(models[[i]])) != ".") {
+      nameIsValid <- grepl(invalid_char, models[[i]])
+      if (nameIsValid) { 
+        next 
+      }
     }
     checkList(models[[i]], allowEmpty = FALSE)
   }
@@ -255,13 +259,17 @@ checkAssays <- function(assays) {
 
 checkTests <- function(tests) {
   checkList(tests)
-
+  invalid_char <- paste0('\"', "\\", "/", ">", "<", ":", "|", "?", "*")
+  
   for (i in seq_along(tests)) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
       # Accepts either a single string or a named list
-      if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
-        next
+      if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1 && substr(tests[[i]][[j]], nchar(tests[[i]][[j]])+1, nchar(tests[[i]][[j]])) != ".") {
+        nameIsValid <- grepl(invalid_char, tests[[i]][[j]])
+        if (nameIsValid) { 
+          next 
+        }
       }
       checkList(tests[[i]][[j]], allowEmpty = FALSE)
     }
