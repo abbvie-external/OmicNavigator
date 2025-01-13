@@ -2,8 +2,7 @@
 checkStudy <- function(study) {
   stopifnot(
     inherits(study, "onStudy"),
-    !is.null(study[["name"]]),
-    is.null(checkAnnotations(study[["annotations"]]))
+    !is.null(study[["name"]])
   )
 }
 
