@@ -303,6 +303,7 @@ addTests <- function(study, tests, reset = FALSE) {
 #'   character vector of featureIDs.
 #' @inherit shared-add
 #'
+#'#' annotations <- list(annot_01 = list(description = "", featureID = "", terms = ""))
 #' @export
 addAnnotations <- function(study, annotations, reset = FALSE) {
   addElements(study, annotations, reset)

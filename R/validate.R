@@ -10,7 +10,7 @@
 #' @export
 validateStudy <- function(study) {
   checkStudy(study)
-
+  checkAnnotations(study)
   emptyElements <- vapply(study, isEmpty, logical(1))
   elements <- names(study)[!emptyElements]
   for (e in elements) {
