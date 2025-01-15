@@ -1,3 +1,15 @@
+# 1.14.2
+
+* The release tarball includes version 1.9.6 of the web app
+
+# 1.14.1
+
+* The release tarball includes version 1.9.5 of the web app
+
+# 1.14.0
+
+* export of model metadata to JSON now follows the convention NA -> null
+
 * Added citation info to package and readme now references journal article
 
 * Update getPlottingData, plotStudy, and addPlots manuals
