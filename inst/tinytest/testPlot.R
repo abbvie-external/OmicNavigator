@@ -569,7 +569,7 @@ expect_true_xl(
 
 rm(plottingData)
 
-# getPlottingData (package, multiModel) -----------------------------------------
+# getPlottingData (package, multiModel) ----------------------------------------
 
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
