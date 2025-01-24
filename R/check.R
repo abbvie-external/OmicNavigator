@@ -416,6 +416,14 @@ checkPlots <- function(plots) {
   return(NULL)
 }
 
+checkNumberRowNAs <- function(row) {
+  if(sum(is.na(row))) {
+    return(TRUE)
+  } else {
+    return(FALSE)
+  }
+}
+
 checkMapping <- function(mapping) {
   checkList(mapping)
 
@@ -429,10 +437,7 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    # if (!(sum(vapply(mapping[[i]], is.na, logical(1))) == ncol(mapping[[i]]))) {
-    #  stop("mapping object requires at least one feature per model")
-    # }
-    if (!(all(vapply(mapping[[i]], is.na, logical(1))))) {
+    if (!(sum(vapply(mapping[[i]], function(x) checkNumberRowNAs(x), logical(1))))) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model
