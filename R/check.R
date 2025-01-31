@@ -416,14 +416,6 @@ checkPlots <- function(plots) {
   return(NULL)
 }
 
-checkNumberRowNAs <- function(row) {
-  if(sum(is.na(row)) == length(row)) {
-    return(FALSE)
-  } else {
-    return(TRUE)
-  }
-}
-
 checkMapping <- function(mapping) {
   checkList(mapping)
 
