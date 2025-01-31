@@ -438,7 +438,9 @@ checkMapping <- function(mapping) {
     }
     # stop if mapping object has all NAs for a given model
     tdf<-as.data.frame(t(mapping[[i]]))
-    if(!all(vapply(tdf, function(x) checkNumberRowNAs(x), logical(1)))) {
+    truth_array <- sum(is.na(tdf)) == ncol(tdf)
+    print(truth_array)
+    if(truth_array) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model

@@ -527,6 +527,7 @@ tempMapping <- list(data.frame(model_01 = c("feature_01", "feature_02"),
                                model_02 = c(NA, NA),
                                stringsAsFactors = FALSE))
 names(tempMapping) <- "default"
+
 expect_error_xl(
   addMapping(study, mapping = tempMapping),
   "mapping object requires at least one feature per model"
