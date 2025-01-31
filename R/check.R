@@ -439,7 +439,6 @@ checkMapping <- function(mapping) {
     # stop if mapping object has all NAs for a given model
     tdf<-as.data.frame(t(mapping[[i]]))
     truth_array <- sum(is.na(tdf)) == ncol(tdf)
-    print(truth_array)
     if(truth_array) {
       stop("mapping object requires at least one feature per model")
     }
