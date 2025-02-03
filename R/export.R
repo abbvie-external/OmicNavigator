@@ -21,7 +21,7 @@ exportStudy <- function(
 {
   if (requireValid) validateStudy(study) else {
     checkStudy(study)
-    checkAnnotations(study)
+    #checkAnnotations(study)
   }
   type <- match.arg(type)
 
