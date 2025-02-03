@@ -290,7 +290,7 @@ checkAnnotations <- function(annotations) {
   checkList(annotations)
 
   for (i in seq_along(annotations)) {
-    checkList(annotations[[i]])
+    checkList(annotations[[i]], allowEmpty = FALSE)
     annotationID <- names(annotations)[i]
     if (is.null(annotations[[i]][["description"]])) {
       stop(sprintf("Missing description for annotation \"%s\"", annotationID))
