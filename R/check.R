@@ -189,7 +189,7 @@ checkList <- function(x, allowEmpty = TRUE) {
     if (allowEmpty) {
       return(NULL)
     } else {
-      stop(sprintf("An empty list is not allowed in this context \"%s\"", listName))
+      stop("An empty list is not allowed in this context")
     }
   }
 
@@ -287,7 +287,7 @@ checkTests <- function(tests) {
 }
 
 checkAnnotations <- function(annotations) {
-  checkList(annotations, allowEmpty = FALSE)
+  checkList(annotations)
 
   for (i in seq_along(annotations)) {
     checkList(annotations[[i]])
