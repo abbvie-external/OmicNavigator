@@ -1,9 +1,23 @@
+checkFeatureName <- function(featureObjectName) {
+  # Check study name, models, and tests
+  name_forbidden_chars <- c('\"', ",", "\\", "/", ">", "<", ":", "|", "?")
+
+
+  for(forbidden_char in name_forbidden_chars) {
+    if(grepl(forbidden_char, featureObjectName, fixed = TRUE)) {
+      stop(sprintf("Error: Forbidden character detected in study %s", attr))
+    } else if (substr(featureObjectName, nchar(featureObjectName)+1, nchar(featureObjectName)) == ".") {
+      stop(sprintf("Error: study %s cannot end in a period", attr))
+    }
+  }
+}
 
 checkStudy <- function(study) {
   stopifnot(
     inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
+  checkFeatureName(study[["name"]])
 }
 
 checkName <- function(name) {
@@ -220,12 +234,14 @@ checkFeatures <- function(features) {
 
 checkModels <- function(models) {
   checkList(models)
-
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
+    model_name = names(models)[i]
+    checkFeatureName(model_name)
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
+
     checkList(models[[i]], allowEmpty = FALSE)
   }
 
@@ -258,6 +274,8 @@ checkTests <- function(tests) {
   for (i in seq_along(tests)) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
+      test_name = names(tests[[i]])[j]
+      checkFeatureName(test_name)
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
@@ -270,7 +288,7 @@ checkTests <- function(tests) {
 }
 
 checkAnnotations <- function(annotations) {
-  checkList(annotations)
+  checkList(annotations, allowEmpty = FALSE)
 
   for (i in seq_along(annotations)) {
     checkList(annotations[[i]], allowEmpty = FALSE)
@@ -429,9 +447,8 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    tdf<-as.data.frame(t(mapping[[i]]))
-    truth_array <- sum(is.na(tdf)) == ncol(tdf)
-    if(truth_array) {
+    truth_array <- sapply(X = tempMapping[[i]], FUN = function(x) sum(is.na(x)) > nrow(tempMapping[[i]]))
+    if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model
