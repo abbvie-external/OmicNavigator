@@ -19,7 +19,10 @@ exportStudy <- function(
   requireValid = TRUE
 )
 {
-  if (requireValid) validateStudy(study) else checkStudy(study)
+  if (requireValid) validateStudy(study) else {
+    checkStudy(study)
+    checkAnnotations(study)
+  }
   type <- match.arg(type)
 
   message(sprintf("Exporting study \"%s\" as an R package", study[["name"]]))
