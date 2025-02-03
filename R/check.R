@@ -237,7 +237,7 @@ checkModels <- function(models) {
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
     model_name = names(models)[i]
-    checkFeatureName(model_name)
+    # checkFeatureName(model_name)
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
