@@ -1,9 +1,23 @@
+checkFeatureName <- function(featureObjectName) {
+  # Check study name, models, and tests
+  forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+  for (forbid in forbidden) {
+    if(grepl(forbid, featureObjectName, fixed=TRUE)) {
+      stop(sprintf("Error: Forbidden character detected in study %s", attr))
+    }
+  }
+  if (substr(featureObjectName, nchar(featureObjectName)+1, nchar(featureObjectName)) == ".") {
+    stop(sprintf("Error: study %s cannot end in a period", attr))
+  }
+
+}
 
 checkStudy <- function(study) {
   stopifnot(
     inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
+  checkFeatureName(study[["name"]])
 }
 
 checkName <- function(name) {
@@ -220,12 +234,14 @@ checkFeatures <- function(features) {
 
 checkModels <- function(models) {
   checkList(models)
-
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
+    model_name = names(models)[i]
+    checkFeatureName(model_name)
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
+
     checkList(models[[i]], allowEmpty = FALSE)
   }
 
@@ -258,6 +274,8 @@ checkTests <- function(tests) {
   for (i in seq_along(tests)) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
+      test_name = names(tests[[i]])[j]
+      checkFeatureName(test_name)
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
@@ -270,10 +288,10 @@ checkTests <- function(tests) {
 }
 
 checkAnnotations <- function(annotations) {
-  checkList(annotations)
+  checkList(annotations, allowEmpty = FALSE)
 
   for (i in seq_along(annotations)) {
-    checkList(annotations[[i]], allowEmpty = FALSE)
+    checkList(annotations[[i]])
     annotationID <- names(annotations)[i]
     if (is.null(annotations[[i]][["description"]])) {
       stop(sprintf("Missing description for annotation \"%s\"", annotationID))
@@ -416,14 +434,6 @@ checkPlots <- function(plots) {
   return(NULL)
 }
 
-checkNumberRowNAs <- function(row) {
-  if(sum(is.na(row)) == length(row)) {
-    return(FALSE)
-  } else {
-    return(TRUE)
-  }
-}
-
 checkMapping <- function(mapping) {
   checkList(mapping)
 
@@ -437,8 +447,8 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    tdf<-as.data.frame(t(mapping[[i]]))
-    if(!all(vapply(tdf, function(x) checkNumberRowNAs(x), logical(1)))) {
+    truth_array <- sapply(X = tempMapping[[i]], FUN = function(x) sum(is.na(x)) > nrow(tempMapping[[i]]))
+    if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model
