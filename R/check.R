@@ -17,7 +17,7 @@ checkStudy <- function(study) {
     inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
-  # checkFeatureName(study[["name"]])
+  checkFeatureName(study[["name"]])
 }
 
 checkName <- function(name) {
@@ -237,7 +237,7 @@ checkModels <- function(models) {
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
     model_name = names(models)[i]
-    # checkFeatureName(model_name)
+    checkFeatureName(model_name)
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
@@ -275,7 +275,7 @@ checkTests <- function(tests) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
       test_name = names(tests[[i]])[j]
-      #checkFeatureName(test_name)
+      checkFeatureName(test_name)
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
