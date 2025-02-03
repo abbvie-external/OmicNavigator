@@ -446,7 +446,7 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    truth_array <- sapply(X = tempMapping[[i]], FUN = function(x) sum(is.na(x)) > nrow(tempMapping[[i]]))
+    truth_array <- sapply(X = mapping[[i]], FUN = function(x) sum(is.na(x)) > nrow(mapping[[i]]))
     if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
