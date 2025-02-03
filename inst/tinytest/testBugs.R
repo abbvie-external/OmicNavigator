@@ -154,49 +154,49 @@ local({
   annotations[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkAnnotations(annotations),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 1"
   )
 
   results <- OmicNavigator:::testResults()
   results[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkResults(results),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 2"
   )
 
   enrichments <- OmicNavigator:::testEnrichments()
   enrichments[[1]][["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkEnrichments(enrichments),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 3"
   )
 
   plots <- OmicNavigator:::testPlots()
   plots[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkPlots(plots),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 4"
   )
 
   barcodes <- OmicNavigator:::testBarcodes()
   barcodes[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkBarcodes(barcodes),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 5"
   )
 
   resultsLinkouts <- OmicNavigator:::testResultsLinkouts()
   resultsLinkouts[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkResultsLinkouts(resultsLinkouts),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 6"
   )
 
   metaFeaturesLinkouts <- OmicNavigator:::testMetaFeaturesLinkouts()
   metaFeaturesLinkouts[["empty"]] <- list()
   expect_error_xl(
     OmicNavigator:::checkMetaFeaturesLinkouts(metaFeaturesLinkouts),
-    "An empty list is not allowed in this context"
+    "An empty list is not allowed in this context 7"
   )
 })
 
