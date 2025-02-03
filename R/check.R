@@ -189,7 +189,7 @@ checkList <- function(x, allowEmpty = TRUE) {
     if (allowEmpty) {
       return(NULL)
     } else {
-      stop("An empty list is not allowed in this context")
+      stop(sprintf("An empty list is not allowed in this context \"%s\" ", attr))
     }
   }
 
