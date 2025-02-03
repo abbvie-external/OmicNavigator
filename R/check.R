@@ -10,6 +10,8 @@ checkFeatureName <- function(featureObjectName) {
     stop(sprintf("Error: study %s cannot end in a period", attr))
   }
 
+  return(NULL)
+
 }
 
 checkStudy <- function(study) {
