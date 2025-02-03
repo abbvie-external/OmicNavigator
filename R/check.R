@@ -287,7 +287,7 @@ checkTests <- function(tests) {
 }
 
 checkAnnotations <- function(annotations) {
-  checkList(annotations)
+  checkList(annotations, allowEmpty = FALSE)
 
   for (i in seq_along(annotations)) {
     checkList(annotations[[i]], allowEmpty = FALSE)
