@@ -9,9 +9,6 @@ checkFeatureName <- function(featureObjectName) {
   if (substr(featureObjectName, nchar(featureObjectName)+1, nchar(featureObjectName)) == ".") {
     stop(sprintf("Error: study %s cannot end in a period", attr))
   }
-
-  return(NULL)
-
 }
 
 checkStudy <- function(study) {
@@ -239,7 +236,7 @@ checkModels <- function(models) {
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
     model_name = names(models)[i]
-    checkFeatureName(model_name)
+    #checkFeatureName(model_name)
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
