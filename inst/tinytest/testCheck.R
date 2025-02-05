@@ -551,6 +551,16 @@ expect_error_xl(
   "does not present any feature mapped to another model"
 )
 
+# check mapping with one model having only numerics
+tempMapping <- list(data.frame(model_01 = c("0123", "0234"),
+                               model_02 = c("0123", "0546"),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+
 # checkBarcodes ----------------------------------------------------------------
 
 expect_error_xl(
