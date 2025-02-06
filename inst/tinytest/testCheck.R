@@ -41,8 +41,18 @@ expect_error_xl(
 
 expect_error_xl(
   createStudy(name = "invalid."),
-  "Invalid name for a study package"
+  "Error: study name cannot end in a period"
 )
+
+# Test error thrown for special characters in study name
+bad_characters <-  c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+for (bad_char in bad_characters) {
+  name_var <- paste0("test", bad_char, "_t")
+  expect_error_xl(
+    createStudy(name = name_var),
+    "Error: Forbidden character detected in study name"
+  )
+}
 expect_error_xl(
   createStudy(name = "0invalid"),
   "Invalid name for a study package"
@@ -207,6 +217,7 @@ expect_error_xl(
   info = "R's DESCRIPTION fields are not allowed"
 )
 
+
 # checkFeatures ----------------------------------------------------------------
 
 expect_error_xl(
@@ -288,6 +299,24 @@ expect_error_xl(
   "must be a list, not a data frame"
 )
 
+# Test error thrown for special characters in test name
+bad_characters <-  c("^", ":", "*", "\\", ">", "<", "$", "|", "?", "/")
+for (bad_char in bad_characters) {
+  test <- list()
+  test[[paste0("model", bad_char, "_01")]] = "tooltip"
+  expect_error_xl(
+    addModels(study, models = test),
+    "Error: Forbidden character detected in model name"
+  )
+}
+
+# Test error thrown for period at end of name
+test <- list("model." = "tooltip")
+expect_error_xl(
+  addModels(study, models = test),
+  "Error: model name cannot end in a period"
+)
+
 # checkAssays ------------------------------------------------------------------
 
 expect_error_xl(
@@ -330,6 +359,24 @@ expect_error_xl(
 expect_error_xl(
   addTests(study, tests = list(model_01 = list(test_01 = data.frame(a = 1)))),
   "must be a list, not a data frame"
+)
+
+# Test error thrown for special characters in test name
+bad_characters <-  c("^", ":", "*", "\\", ">", "<", "$", "|", "?", "/")
+for (bad_char in bad_characters) {
+  test <- list()
+  test[[paste0("test", bad_char, "_01")]] = "tooltip"
+  expect_error_xl(
+      addTests(study, tests = list(model_01 = test)),
+      "Error: Forbidden character detected in test name"
+  )
+}
+
+# Test error thrown for period at end of name
+test <- list("test." = "tooltip")
+expect_error_xl(
+  addTests(study, tests = list(model_01 = test)),
+  "Error: test name cannot end in a period"
 )
 
 # checkAnnotations -------------------------------------------------------------

@@ -1,14 +1,15 @@
-checkFeatureName <- function(featureObjectName) {
+checkFeatureName <- function(featureObjectName, attr) {
   # Check study name, models, and tests
   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
   for (forbid in forbidden) {
     if(grepl(forbid, featureObjectName, fixed=TRUE)) {
-      stop(sprintf("Error: Forbidden character detected in study %s", attr))
+      stop(sprintf("Error: Forbidden character detected in %s", attr))
     }
   }
-  if (substr(featureObjectName, nchar(featureObjectName)+1, nchar(featureObjectName)) == ".") {
-    stop(sprintf("Error: study %s cannot end in a period", attr))
+  if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
+    stop(sprintf("Error: %s cannot end in a period", attr))
   }
+  return(featureObjectName)
 }
 
 checkStudy <- function(study) {
@@ -16,7 +17,6 @@ checkStudy <- function(study) {
     inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
-  checkFeatureName(study[["name"]])
 }
 
 checkName <- function(name) {
@@ -24,6 +24,8 @@ checkName <- function(name) {
     is.character(name),
     length(name) == 1
   )
+
+  checkFeatureName(name, "study name")
 
   # Confirm package name is valid
   regexPackage <- .standard_regexps()[["valid_package_name"]]
@@ -235,8 +237,8 @@ checkModels <- function(models) {
   checkList(models)
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
-    model_name = names(models)[i]
-    checkFeatureName(model_name)
+    model_name = names(models)[[i]]
+    checkFeatureName(model_name, "model name")
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
@@ -273,8 +275,8 @@ checkTests <- function(tests) {
   for (i in seq_along(tests)) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
-      test_name = names(tests[[i]])[j]
-      checkFeatureName(test_name)
+      test_name = names(tests[[i]])[[j]]
+      checkFeatureName(test_name, "test name")
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
