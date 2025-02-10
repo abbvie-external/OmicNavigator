@@ -1,4 +1,4 @@
-checkFeatureName <- function(featureObjectName, attr) {
+checkNamingConvention <- function(featureObjectName, attr) {
   # Check study name, models, and tests
   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
   for (forbid in forbidden) {
@@ -25,7 +25,7 @@ checkName <- function(name) {
     length(name) == 1
   )
 
-  checkFeatureName(name, "study name")
+  checkNamingConvention(name, "study name")
 
   # Confirm package name is valid
   regexPackage <- .standard_regexps()[["valid_package_name"]]
@@ -238,7 +238,7 @@ checkModels <- function(models) {
   for (i in seq_along(models)) {
     # Accepts either a single string or a named list
     model_name = names(models)[[i]]
-    checkFeatureName(model_name, "model name")
+    checkNamingConvention(model_name, "model name")
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
@@ -276,7 +276,7 @@ checkTests <- function(tests) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
       test_name = names(tests[[i]])[[j]]
-      checkFeatureName(test_name, "test name")
+      checkNamingConvention(test_name, "test name")
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next

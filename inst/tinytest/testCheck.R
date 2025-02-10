@@ -367,8 +367,8 @@ for (bad_char in bad_characters) {
   test <- list()
   test[[paste0("test", bad_char, "_01")]] = "tooltip"
   expect_error_xl(
-      addTests(study, tests = list(model_01 = test)),
-      "Error: Forbidden character detected in test name"
+    addTests(study, tests = list(model_01 = test)),
+    "Error: Forbidden character detected in test name"
   )
 }
 
@@ -704,4 +704,3 @@ expect_error_xl(
 expect_error_xl(
   addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = NULL)
 )
-
