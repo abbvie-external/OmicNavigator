@@ -14,8 +14,8 @@ jobs:
     - name: Extract package version from tag reference
       run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
     - uses: actions/checkout@v4
-    - name: Install R packages
-      run: sudo bash scripts/install-dependencies-r2u.sh
+    - name: Package Dependencies
+      run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
     - name: Create diagrams for vignettes
       run: make diagrams
     - name: Install TinyTeX
