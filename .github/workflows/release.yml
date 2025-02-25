@@ -7,13 +7,13 @@ on:
       - 'v*'
 jobs:
   release:
-    runs-on: ubuntu-22.04
+    runs-on: ubuntu-latest
+    container:
+      image: rocker/r2u:22.04
     steps:
     - name: Extract package version from tag reference
       run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
     - uses: actions/checkout@v4
-    - name: Setup r2u
-      run: sudo bash scripts/setup-r2u.sh
     - name: Install R packages
       run: sudo bash scripts/install-dependencies-r2u.sh
     - name: Create diagrams for vignettes
