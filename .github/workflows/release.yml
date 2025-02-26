@@ -14,6 +14,10 @@ jobs:
     - name: Extract package version from tag reference
       run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
     - uses: actions/checkout@v4
+    - name: Clean APT cache and update
+      run: |
+       sudo apt-get clean
+       sudo apt-get update
     - name: Package Dependencies
       run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
     - name: Create diagrams for vignettes
