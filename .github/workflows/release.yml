@@ -18,8 +18,8 @@ jobs:
       run: |
        apt-get clean
        apt-get update
-    - name: Install Precompiled Devtools
-      run: apt-get install -y r-cran-devtools
+    - name: Install Devtools from CRAN
+      run: R -q -e 'install.packages("devtools", repos="https://cloud.r-project.org")'
     - name: Package Dependencies
       run: R -q -e 'remotes::install_deps(".", dependencies=TRUE, type = "source")'
     - name: Create diagrams for vignettes
