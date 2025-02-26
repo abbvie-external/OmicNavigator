@@ -16,21 +16,27 @@ jobs:
     - uses: actions/checkout@v4
     - name: Clean APT cache and update
       run: |
-       apt-get clean
-       apt-get update
-    - name: Install Devtools from CRAN (Force Source)
-      run: R -q -e 'install.packages("devtools", repos="https://cloud.r-project.org", type="source")'
+       sudo apt-get clean
+       sudo apt-get update
     - name: Package Dependencies
-      run: R -q -e 'remotes::install_deps(".", dependencies=TRUE, type = "source")'
+      run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
     - name: Create diagrams for vignettes
       run: make diagrams
+    - name: Install TinyTeX
+      uses: r-lib/actions/setup-tinytex@v2
+      env:
+        # install full prebuilt version
+        TINYTEX_INSTALLER: TinyTeX
     - name: Download app
-      run: R -e 'library(devtools); load_all(); installApp();'
+      run: |
+        devtools::load_all()
+        installApp()
+      shell: Rscript {0}
     - name: Build
       run: R CMD build .
     - name: Install
-      run: R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
-      shell: bash {0}
+      run: sudo R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
+      shell: sudo bash {0}
     - name: Session information
       run: |
         library("OmicNavigator")
