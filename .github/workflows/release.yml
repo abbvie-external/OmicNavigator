@@ -24,8 +24,7 @@ jobs:
       run: make diagrams
     - name: Download app
       run: |
-        devtools::load_all()
-        installApp()
+        Rscript -e 'library(devtools); load_all(); installApp();'
       shell: Rscript {0}
     - name: Build
       run: R CMD build .
