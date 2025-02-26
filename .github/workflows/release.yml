@@ -23,9 +23,7 @@ jobs:
     - name: Create diagrams for vignettes
       run: make diagrams
     - name: Download app
-      run: |
-        Rscript -e 'library(devtools); load_all(); installApp();'
-      shell: Rscript {0}
+      run: R -e 'library(devtools); load_all(); installApp();'
     - name: Build
       run: R CMD build .
     - name: Install
