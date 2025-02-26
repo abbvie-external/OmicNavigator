@@ -19,7 +19,7 @@ jobs:
        apt-get clean
        apt-get update
     - name: Package Dependencies
-      run: R -q -e 'remotes::install_deps(".", dependencies=TRUE)'
+      run: R -q -e 'remotes::install_deps(".", dependencies=TRUE, type = "source")'
     - name: Create diagrams for vignettes
       run: make diagrams
     - name: Install TinyTeX
