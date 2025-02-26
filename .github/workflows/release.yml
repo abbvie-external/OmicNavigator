@@ -22,11 +22,6 @@ jobs:
       run: R -q -e 'remotes::install_deps(".", dependencies=TRUE, type = "source")'
     - name: Create diagrams for vignettes
       run: make diagrams
-    - name: Install TinyTeX
-      uses: r-lib/actions/setup-tinytex@v2
-      env:
-        # install full prebuilt version
-        TINYTEX_INSTALLER: TinyTeX
     - name: Download app
       run: |
         devtools::load_all()
@@ -35,8 +30,8 @@ jobs:
     - name: Build
       run: R CMD build .
     - name: Install
-      run: sudo R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
-      shell: sudo bash {0}
+      run: R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
+      shell: bash {0}
     - name: Session information
       run: |
         library("OmicNavigator")
