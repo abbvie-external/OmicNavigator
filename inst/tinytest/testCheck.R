@@ -637,8 +637,8 @@ tempMapping <- list(data.frame(model_01 = c(0125, 132),
                                model_02 = c(0125, 1111),
                                stringsAsFactors = FALSE))
 names(tempMapping) <- "default"
-expect_silent_xl(
-  addMapping(study, mapping = tempMapping)
+expect_warning_xl(
+  addMapping(study, mapping = tempMapping),  ".+non-character.+model_01.+model_02"
 )
 
 # check mapping with one model having numerics
@@ -646,8 +646,8 @@ tempMapping <- list(data.frame(model_01 = c(0.123, 0.255),
                                model_02 = c(0.123, 22.22),
                                stringsAsFactors = FALSE))
 names(tempMapping) <- "default"
-expect_silent_xl(
-  addMapping(study, mapping = tempMapping)
+expect_warning_xl(
+  addMapping(study, mapping = tempMapping),  ".+non-character.+model_01.+model_02"
 )
 
 # check mapping with one model having only numerics
