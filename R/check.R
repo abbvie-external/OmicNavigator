@@ -452,7 +452,7 @@ checkMapping <- function(mapping) {
     if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
-    
+
     # check if any given model has at least one feature aligned with another model
     mapping_na <- as.data.frame(!sapply(mapping[[i]], is.na),
                                 stringsAsFactors = FALSE)
