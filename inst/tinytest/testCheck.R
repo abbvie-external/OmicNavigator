@@ -566,6 +566,51 @@ expect_error_xl(
   "does not present any feature mapped to another model"
 )
 
+# check mapping with one model having only char numerics
+tempMapping <- list(data.frame(model_01 = c("0123", "0234"),
+                               model_02 = c("0123", "0546"),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with one model having  mixed content
+tempMapping <- list(data.frame(model_01 = c("ch23", "ch0234", 123),
+                               model_02 = c("0123", "0.546", 234),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with one model having integers
+tempMapping <- list(data.frame(model_01 = c(0125, 132),
+                               model_02 = c(0125, 1111),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with one model having numerics
+tempMapping <- list(data.frame(model_01 = c(0.123, 0.255),
+                               model_02 = c(0.123, 22.22),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
+# check mapping with one model having only numerics
+tempMapping <- list(data.frame(model_01 = c("0123", "0234"),
+                               model_02 = c("0123", "0546"),
+                               stringsAsFactors = FALSE))
+names(tempMapping) <- "default"
+expect_silent_xl(
+  addMapping(study, mapping = tempMapping)
+)
+
 # checkBarcodes ----------------------------------------------------------------
 
 expect_error_xl(
