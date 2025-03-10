@@ -290,7 +290,7 @@ checkTests <- function(tests) {
 
 checkAnnotations <- function(annotations) {
   checkList(annotations)
-
+  if(annotations == "") stop(sprintf("The annotations list cannot be empty"))
   for (i in seq_along(annotations)) {
     checkList(annotations[[i]], allowEmpty = FALSE)
     annotationID <- names(annotations)[i]
