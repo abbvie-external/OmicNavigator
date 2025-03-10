@@ -290,7 +290,7 @@ checkTests <- function(tests) {
 
 checkAnnotations <- function(annotations) {
   checkList(annotations)
-  if(annotations == "") stop(sprintf("The annotations list cannot be empty"))
+
   for (i in seq_along(annotations)) {
     checkList(annotations[[i]], allowEmpty = FALSE)
     annotationID <- names(annotations)[i]
@@ -300,7 +300,7 @@ checkAnnotations <- function(annotations) {
     if (is.null(annotations[[i]][["featureID"]])) {
       stop(sprintf("Missing featureID for annotation \"%s\"", annotationID))
     }
-    if (is.null(annotations[[i]][["terms"]])) {
+    if (is.null(annotations[[i]][["terms"]]) || annotations[[i]][["terms"]] == "") {
       stop(sprintf("Missing the list of terms for \"%s\"", annotationID))
     }
     terms <- annotations[[i]][["terms"]]
