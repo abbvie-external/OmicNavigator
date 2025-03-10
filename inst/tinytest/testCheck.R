@@ -403,7 +403,7 @@ expect_error_xl(
 
 expect_error_xl(
   addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = ""))),
-  'An empty list is not allowed in this context'
+  'Missing the list of terms for "annotation_01"'
 )
 
 expect_error_xl(
