@@ -17,8 +17,6 @@ checkStudy <- function(study) {
     inherits(study, "onStudy"),
     !is.null(study[["name"]])
   )
-    
-  checkNamingConvention(name, "study name")
 }
 
 checkName <- function(name) {
@@ -26,6 +24,8 @@ checkName <- function(name) {
     is.character(name),
     length(name) == 1
   )
+
+  checkNamingConvention(name, "study name")
 
   # Confirm package name is valid
   regexPackage <- .standard_regexps()[["valid_package_name"]]
