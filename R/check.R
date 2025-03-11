@@ -1,15 +1,15 @@
 checkNamingConvention <- function(featureObjectName, attr) {
-  # Check study name, models, and tests
-  forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
-  for (forbid in forbidden) {
-    if(grepl(forbid, featureObjectName, fixed=TRUE)) {
-      stop(sprintf("Error: Forbidden character detected in %s", attr))
-    }
-  }
-  if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
-    stop(sprintf("Error: %s cannot end in a period", attr))
-  }
-  return(featureObjectName)
+   # Check study name, models, and tests
+   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+   for (forbid in forbidden) {
+     if(grepl(forbid, featureObjectName, fixed=TRUE)) {
+       stop(sprintf("Error: Forbidden character detected in %s", attr))
+     }
+   }
+   if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
+     stop(sprintf("Error: %s cannot end in a period", attr))
+   }
+   return(featureObjectName)
 }
 
 checkStudy <- function(study) {
