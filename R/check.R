@@ -305,7 +305,7 @@ checkAnnotations <- function(annotations) {
     }
     terms <- annotations[[i]][["terms"]]
     checkList(terms, allowEmpty = FALSE)
-    if (!all(lapply(terms, is.na))) {
+    if (sum(is.na(terms)) > 0) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
     }
