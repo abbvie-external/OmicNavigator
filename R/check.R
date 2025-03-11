@@ -305,9 +305,21 @@ checkAnnotations <- function(annotations) {
     }
     terms <- annotations[[i]][["terms"]]
     checkList(terms, allowEmpty = FALSE)
-    if (!all(vapply(terms, is.character, logical(1))) || !all(vapply(terms, function(x) { !isEmpty(x) && x != ""}, logical(1)))) {
+    if (!all(vapply(terms, is.character, logical(1)))) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
+    }
+    for (j in seq_along(terms)) {
+      term <- terms[[j]]
+      checkList(term, allowEmpty = FALSE)
+      # if (is.null(names(term))) {
+      #   stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
+      #                annotationID))
+      # }
+      # if (!all(vapply(term, is.character, logical(1)))) {
+      #   stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
+      #                annotationID))
+      # }
     }
   }
 
