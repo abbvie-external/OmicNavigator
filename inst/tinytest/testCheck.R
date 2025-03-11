@@ -388,7 +388,7 @@ expect_error_xl(
 # Check for empty annotation terms
 expect_error_xl(
   addAnnotations(study, annotations = ""), 
-  "The annotations list cannot be empty"
+  'The object "annotations" must be a list'
 )
 
 expect_error_xl(
