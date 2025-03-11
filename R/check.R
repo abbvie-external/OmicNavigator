@@ -1,3 +1,16 @@
+checkNamingConvention <- function(featureObjectName, attr) {
+   # Check study name, models, and tests
+   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+   for (forbid in forbidden) {
+     if(grepl(forbid, featureObjectName, fixed=TRUE)) {
+       stop(sprintf("Error: Forbidden character detected in %s", attr))
+     }
+   }
+   if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
+     stop(sprintf("Error: %s cannot end in a period", attr))
+   }
+   return(featureObjectName)
+}
 
 checkStudy <- function(study) {
   stopifnot(
@@ -11,6 +24,8 @@ checkName <- function(name) {
     is.character(name),
     length(name) == 1
   )
+
+  checkNamingConvention(name, "study name")
 
   # Confirm package name is valid
   regexPackage <- .standard_regexps()[["valid_package_name"]]
@@ -222,6 +237,8 @@ checkModels <- function(models) {
   checkList(models)
 
   for (i in seq_along(models)) {
+    model_name = names(models)[[i]]
+    checkNamingConvention(model_name, "model name")
     # Accepts either a single string or a named list
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
@@ -258,6 +275,8 @@ checkTests <- function(tests) {
   for (i in seq_along(tests)) {
     checkList(tests[[i]], allowEmpty = FALSE)
     for (j in seq_along(tests[[i]])) {
+      test_name = names(tests[[i]])[[j]]
+      checkNamingConvention(test_name, "test name")
       # Accepts either a single string or a named list
       if (is.character(tests[[i]][[j]]) && length(tests[[i]][[j]]) == 1) {
         next
@@ -429,7 +448,8 @@ checkMapping <- function(mapping) {
       stop("mapping object requires at least two models and one feature")
     }
     # stop if mapping object has all NAs for a given model
-    if (!(sum(vapply(mapping[[i]], is.na, logical(1))) == ncol(mapping[[i]]))) {
+    truth_array <- sapply(X = mapping[[i]], FUN = function(x) sum(is.na(x)) == nrow(mapping[[i]]))
+    if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
     # check if any given model has at least one feature aligned with another model
