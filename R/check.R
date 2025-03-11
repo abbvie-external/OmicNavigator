@@ -1,15 +1,15 @@
 checkNamingConvention <- function(featureObjectName, attr) {
-   # Check study name, models, and tests
-   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
-   for (forbid in forbidden) {
-     if(grepl(forbid, featureObjectName, fixed=TRUE)) {
-       stop(sprintf("Error: Forbidden character detected in %s", attr))
-     }
-   }
-   if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
-     stop(sprintf("Error: %s cannot end in a period", attr))
-   }
-   return(featureObjectName)
+  # Check study name, models, and tests
+  forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+  for (forbid in forbidden) {
+    if(grepl(forbid, featureObjectName, fixed=TRUE)) {
+      stop(sprintf("Error: Forbidden character detected in %s", attr))
+    }
+  }
+  if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
+    stop(sprintf("Error: %s cannot end in a period", attr))
+  }
+  return(featureObjectName)
 }
 
 checkStudy <- function(study) {
@@ -235,14 +235,16 @@ checkFeatures <- function(features) {
 
 checkModels <- function(models) {
   checkList(models)
-
   for (i in seq_along(models)) {
     model_name = names(models)[[i]]
     checkNamingConvention(model_name, "model name")
     # Accepts either a single string or a named list
+    model_name = names(models)[[i]]
+    checkNamingConvention(model_name, "model name")
     if (is.character(models[[i]]) && length(models[[i]]) == 1) {
       next
     }
+
     checkList(models[[i]], allowEmpty = FALSE)
   }
 
@@ -452,6 +454,7 @@ checkMapping <- function(mapping) {
     if(any(truth_array)) {
       stop("mapping object requires at least one feature per model")
     }
+
     # check if any given model has at least one feature aligned with another model
     mapping_na <- as.data.frame(!sapply(mapping[[i]], is.na),
                                 stringsAsFactors = FALSE)
