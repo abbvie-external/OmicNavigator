@@ -311,7 +311,7 @@ checkAnnotations <- function(annotations) {
     }
     for (j in seq_along(terms)) {
       term <- terms[[j]]
-      if(isEmpty(term) || term == "") {
+      if(isEmpty(term) && !term) {
         stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                      annotationID))
       }
