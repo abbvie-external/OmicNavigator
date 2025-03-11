@@ -236,6 +236,8 @@ checkFeatures <- function(features) {
 checkModels <- function(models) {
   checkList(models)
   for (i in seq_along(models)) {
+    model_name = names(models)[[i]]
+    checkNamingConvention(model_name, "model name")
     # Accepts either a single string or a named list
     model_name = names(models)[[i]]
     checkNamingConvention(model_name, "model name")
@@ -305,7 +307,7 @@ checkAnnotations <- function(annotations) {
     }
     terms <- annotations[[i]][["terms"]]
     checkList(terms, allowEmpty = FALSE)
-    if (!all(vapply(terms, is.character, logical(1)))) {
+    if (!all(vapply(terms, is.character, logical(1))) || sum(is.null(terms)) > 0 || sum(!grepl("\\S", terms)) > 0) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
     }

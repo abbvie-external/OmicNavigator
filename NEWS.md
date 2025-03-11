@@ -1,3 +1,67 @@
+# 1.14.18
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.17
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.16
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.15
+
+* The release tarball includes version .1.9.7 of the web app
+
+# 1.14.14
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.13
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.12
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.11
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.10
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.9
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.8
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.7
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.6
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.5
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.4
+
+* The release tarball includes version 1.9.7 of the web app
+
+# 1.14.3
+
+* The release tarball includes version 1.9.7 of the web app
+
 # 1.14.2
 
 * The release tarball includes version 1.9.6 of the web app
