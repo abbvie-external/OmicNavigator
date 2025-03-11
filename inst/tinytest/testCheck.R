@@ -42,6 +42,7 @@ expect_error_xl(
 expect_error_xl(
   createStudy(name = "invalid."),
   "Error: study name cannot end in a period"
+)
 
 # Test error thrown for special characters in study name
 bad_characters <-  c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
