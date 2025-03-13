@@ -338,6 +338,26 @@ expect_error_xl(
   addAnnotations(study, annotations = NULL)
 )
 
+# Check for empty annotation terms
+expect_error_xl(
+   addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = NULL))),
+   'Missing the list of terms for "annotation_01"'
+)
+ 
+expect_error_xl(
+   addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = list()))),
+   'An empty list is not allowed in this context'
+)
+
+expect_error_xl(
+  addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = list("term_01" = "")))),
+  'The terms for "annotation_01" must be a named list of character vectors'
+)
+
+expect_error_xl(
+   addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01"))),
+   'Missing the list of terms for "annotation_01"'
+)
 # checkResults -----------------------------------------------------------------
 
 expect_error_xl(
