@@ -333,7 +333,7 @@ validateMapping <- function(study) {
       }
       # Check whether mapping features match results features
       mappingFeatures <- mapping[[i]][!is.na(mapping[[i]][,ii]),ii]
-      modelFeatures   <- results[[grep(mappingID, models)]][1][[1]][,1]
+      modelFeatures   <- results[[grep(paste0("^",mappingID,"$"), models)]][1][[1]][,1]
       if (!length(intersect(mappingFeatures, modelFeatures)) > 0) {
         stop("Mapping features for modelID do not match features from modelID results table\n",
              sprintf("modelID: %s", mappingID))
