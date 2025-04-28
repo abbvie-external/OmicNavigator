@@ -262,6 +262,35 @@ validatePlots <- function(study) {
     modelID <- models[i]
     modelPlots <- getPlots(study, modelID, quiet = TRUE)
     if (isEmpty(modelPlots)) next
+    # Validate concordance between plots field models (when models != 'all') and
+    # model names from mapping object
+    for (q in seq_along(modelPlots)) {
+      plotEntry <- names(modelPlots[[q]])
+      if (any(plotEntry %in% 'models')) {
+        plotModelNames <- modelPlots[[q]][['models']]
+
+        if (plotModelNames == 'all') next
+
+        mappingNames <- names(study[["mapping"]])
+        if (modelID %in% mappingNames) {
+          mapName <- modelID
+        } else {
+          mapName <- 'default'
+        }
+        map <- study[["mapping"]][[mapName]]
+        mapModelNames <- colnames(map)
+        if (any(!plotModelNames %in% mapModelNames)) {
+          stop(
+            sprintf("The custom plot \"%s\" has invalid model(s).\n", names(modelPlots)[q]),
+            sprintf("At least one element from field models (\"%s\") is not found in the mapping object \"%s\" column names (\"%s\").",
+                    paste(c(plotModelNames), collapse=', '),
+                    mapName,
+                    paste(mapModelNames, collapse=', '))
+          )
+        }
+      }
+    }
+
     # Custom plots no longer require assays, since they can plot columns from
     # the results table. If assays are unavailable, send a message and then
     # skip the rest of the validation between assays with
@@ -308,9 +337,7 @@ validatePlots <- function(study) {
       stop("Some of the column names of the assays table are missing from the sampleID column in the samples table\n",
            sprintf("modelID: %s", modelID))
     }
-
   } # outer loop of modelIDs
-
   return(invisible(TRUE))
 }
 
