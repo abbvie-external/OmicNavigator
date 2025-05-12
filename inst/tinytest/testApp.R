@@ -84,7 +84,7 @@ expect_identical_xl(
 )
 
 expect_identical_xl(
-  c("Package", "Title", "Version", "Maintainer", "Description", "OmicNavigatorVersion",
+  c("Package", "Title", "Version", "Maintainer", "Description", "OmicNavigatorVersion", "Encoding",
     names(OmicNavigator:::testStudyMeta()), "Imports", "Built", "description"),
   names(studies[[1]][["package"]]),
   info = "listStudies() returns DESCRIPTION"
