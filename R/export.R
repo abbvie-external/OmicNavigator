@@ -426,6 +426,7 @@ createPackage <- function(study, directoryname) {
     Maintainer = pkgmaintainer,
     Description = pkgdescription,
     OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
+    Encoding = "UTF-8",
     stringsAsFactors = FALSE
   )
   if (!isEmpty(study[["studyMeta"]])) {
