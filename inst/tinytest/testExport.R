@@ -8,7 +8,7 @@ using(ttdo)
 library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
+testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, description = "Test encoding: β‐catenin and neural cell adhesion molecule (NCAM)")
 testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 minimalStudyObj <- OmicNavigator:::testStudyMinimal()
 minimalStudyName <- minimalStudyObj[["name"]]
