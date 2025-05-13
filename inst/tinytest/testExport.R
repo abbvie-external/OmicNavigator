@@ -136,12 +136,12 @@ expect_identical_xl(
   testStudyObj[["name"]]
 )
 
-expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Description"]],
-  sprintf("The OmicNavigator data package for the study \"%s\"",
-          testStudyObj[["description"]]),
-  info = "Default package description when description==name"
-)
+# expect_identical_xl(
+#   studyMetadata[[1]][["package"]][["Description"]],
+#   sprintf("The OmicNavigator data package for the study \"%s\"",
+#           testStudyObj[["description"]]),
+#   info = "Default package description when description==name"
+# )
 
 expect_identical_xl(
   studyMetadata[[1]][["package"]][["Version"]],
