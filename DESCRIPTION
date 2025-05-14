@@ -32,6 +32,7 @@ Authors@R: c(
          comment = "Improved plotting capabilities"),
   person("Joe", "LoGrasso", role = c("aut"),
          comment = "Support for plotly"),
+  person("Elyse", "Geoffroy", role = c("ctb")),
   person(given = "AbbVie Inc.", role = c("cph", "fnd"))
   )
 URL: https://github.com/abbvie-external/OmicNavigator
