@@ -20,6 +20,18 @@ dir.create(tmplibSpace)
 tmplibQuote <- file.path(tempdir(), "project's results")
 dir.create(tmplibQuote)
 
+# Export with special encoding description ------------------------------------
+
+testStudyObj2 <- OmicNavigator:::testStudy(name = testStudyName, description = "Test encoding: β‐catenin and neural cell adhesion molecule (NCAM)")
+testStudyObj2 <- addPlots(testStudyObj2, OmicNavigator:::testPlots())
+minimalStudyObj2 <- OmicNavigator:::testStudyMinimal()
+minimalStudyName2 <- minimalStudyObj2[["name"]]
+
+observed <- exportStudy(testStudyObj2, type = "package", path = tmplib)
+expected <- file.path(tmplib, OmicNavigator:::studyToPkg(testStudyName))
+expect_identical_xl(observed, expected, info = "Export as package directory")
+expect_true_xl(dir.exists(expected))
+
 # Export as package directory --------------------------------------------------
 
 observed <- exportStudy(testStudyObj, type = "package", path = tmplib)
