@@ -22,7 +22,7 @@ dir.create(tmplibQuote)
 
 # Export with special encoding description ------------------------------------
 
-specialDesc <- "Test encoding: β‐catenin and neural cell adhesion molecule (NCAM)"
+specialDesc <- "β‐catenin and neural cell adhesion molecule (NCAM)"
 specialTestStudyObj <- OmicNavigator:::testStudy(name = "ABCspecial",
                                                  description = specialDesc)
 
