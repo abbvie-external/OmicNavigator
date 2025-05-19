@@ -108,26 +108,18 @@ if (at_home()) {
 
   # Return warning message if package fails to build
   pkgDir <- tempfile(pattern = OmicNavigator:::getPrefix())
-  e <- new.env(parent = emptyenv())
-  # This function gets added to the package with an incomplete Rd file, which
-  # causes an error during the build
-  e$x <- function() 1 + 1
-  suppressMessages(
-    utils::package.skeleton(
-      name = basename(pkgDir),
-      path = tempdir(),
-      environment = e
-    )
-  )
+  dir.create(pkgDir, showWarnings = FALSE, recursive = TRUE)
+  # Use invalid package name to trigger build failure
+  writeLines("Package: 1pkg", con = file.path(pkgDir, "DESCRIPTION"))
 
   expect_warning_xl(
     OmicNavigator:::buildPkg(pkgDir),
-    "ERROR: package installation failed",
+    "Malformed package name",
     info = "Return warning message for failed package build"
   )
 
-  # Remove the problematic man file
-  file.remove(file.path(pkgDir, "man", "x.Rd"))
+  # Fix the problematic package name
+  writeLines("Package: onepkg", con = file.path(pkgDir, "DESCRIPTION"))
 
   expect_silent_xl(
     tarball <- OmicNavigator:::buildPkg(pkgDir)
