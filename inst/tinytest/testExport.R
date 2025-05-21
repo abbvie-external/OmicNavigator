@@ -62,9 +62,10 @@ expect_true_xl(dir.exists(expected))
 # Export as package tarball ----------------------------------------------------
 
 # These tests fail on all CRAN macOS machines and most CRAN Linux machines. I
-# have no idea why. The call to `R CMD build` looks fine, so I don't know what
-# more I could do on my end to fix the failed tarball creation. I skip them on
-# CRAN but still continue to test locally and on GitHub Actions.
+# have no idea why. They also fail in GitHub Actions. The call to `R CMD build`
+# looks fine, so I don't know what more I could do on my end to fix the failed
+# tarball creation. They are only tested locally when running
+# tinytest::test_all() or tinytest::run_test_file()
 
 if (at_home()) {
   tarball <- exportStudy(testStudyObj, type = "tarball", path = tmplib)

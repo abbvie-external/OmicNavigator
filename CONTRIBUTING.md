@@ -180,6 +180,11 @@ output too much, you can wrap the tinytest function call with
 `suppressMessages()`. This will suppress the messages from the OmicNavigator
 functions but still display the test results.
 
+* Note that the tests wrapped in `at_home()` are only executed when running
+`tinytest::test_all()` or `tinytest::run_test_file()`. They are skipped when
+running `test_package()` (which is what is called by `R CMD check`), and thus
+these tests are not run in GitHub Actions or on CRAN servers.
+
 Lastly, if you are making a large contribution, it can be helpful to evaluate
 the comprehensiveness of your tests by calculating the test coverage. The covr
 package runs the package tests and creates a report that details which lines

@@ -38,8 +38,6 @@ jobs:
         sessionInfo()
       shell: Rscript {0}
     - name: Test
-      env:
-        TT_AT_HOME: TRUE
       run: suppressMessages(tinytest::test_package("OmicNavigator", ncpu = 2))
       shell: Rscript {0}
     - name: Run vignettes
