@@ -65,4 +65,4 @@ writeLines(git, gitScript)
 
 message("\nRun the following Git commands:\n")
 message(paste(git, collapse = "\n"))
-message(sprintf("\nOr run: bash %s", gitScript))
+message(sprintf("\nOr run: bash -x %s", gitScript))
