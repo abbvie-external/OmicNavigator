@@ -70,7 +70,6 @@ jobs:
         env:
           R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-          TT_AT_HOME: TRUE
         run: R CMD check --no-manual --as-cran OmicNavigator_*.tar.gz
       - name: Test results
         if: always()
