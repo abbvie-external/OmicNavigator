@@ -91,6 +91,12 @@ If you’re on Windows or macOS, I recommend using the R package
 [tinytex](https://cran.r-project.org/package=tinytex) to install the
 minimal [TinyTex](https://yihui.org/tinytex/) distribution.
 
+```R
+install.packages("tinytex")
+tinytex::install_tinytex()
+tinytex:::install_yihui_pkgs()
+```
+
 To install the app for local testing, the easiest method is to install it once
 in the source directory, so that the app is always installed whenever you build
 the package locally. You can do this by first loading the package with devtools
