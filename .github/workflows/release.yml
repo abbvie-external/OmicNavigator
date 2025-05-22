@@ -5,13 +5,30 @@ on:
   push:
     tags:
       - 'v*'
+  # The manual trigger is a dry run. No release will be made. Nothing will be
+  # deployed. This is for testing only. If the workflow triggered by pushing the
+  # tag fails and cannot be fixed with a restart, then you will need to fix the
+  # workflow (troubleshoot with the manual trigger). Once it is ready, delete
+  # the previous Git tag and then tag this new version with the fixed workflow.
+  workflow_dispatch:
+    inputs:
+      pkgRef:
+        description: >-
+          The Git tag in the OmicNavigator repository to release. Must be of the form
+          "refs/tags/vX.X.X" to function correctly. For testing purposes only.
+        required: true
+        default: refs/tags/vX.X.X
 jobs:
   release:
     runs-on: ubuntu-22.04
     steps:
     - name: Extract package version from tag reference
-      run: echo "version=${GITHUB_REF#refs/tags/v}" >> $GITHUB_ENV
+      env:
+        pkgRef: ${{ github.event.inputs.pkgRef || github.ref }}
+      run: echo "version=${pkgRef#refs/tags/v}" >> $GITHUB_ENV
     - uses: actions/checkout@v4
+      with:
+        ref: ${{ github.event.inputs.pkgRef || github.ref }}
     - name: Setup r2u
       run: sudo bash scripts/setup-r2u.sh
     - name: Set CRAN mirror
@@ -58,8 +75,10 @@ jobs:
       run: |
         releaseNotes <- utils::news(query = Version=="${{ env.version }}", package = "OmicNavigator")
         writeLines(releaseNotes[["HTML"]], con = "RELEASE-NOTES.html")
+        writeLines(releaseNotes[["Text"]])
       shell: Rscript {0}
     - name: Create Release
+      if: github.repository == 'abbvie-external/OmicNavigator' && startsWith(github.ref, 'refs/tags/v')
       id: create_release
       uses: actions/create-release@v1
       env:
@@ -71,6 +90,7 @@ jobs:
         draft: false
         prerelease: false
     - name: Upload package tarball as release asset
+      if: github.repository == 'abbvie-external/OmicNavigator' && startsWith(github.ref, 'refs/tags/v')
       id: upload-release-asset-tarball
       uses: actions/upload-release-asset@v1
       env:
@@ -81,6 +101,7 @@ jobs:
           asset_name: OmicNavigator_${{ env.version }}.tar.gz
           asset_content_type: application/gzip
     - name: Upload User's Guide PDF as release asset
+      if: github.repository == 'abbvie-external/OmicNavigator' && startsWith(github.ref, 'refs/tags/v')
       id: upload-release-asset-users-guide
       uses: actions/upload-release-asset@v1
       env:
@@ -91,6 +112,7 @@ jobs:
           asset_name: OmicNavigatorUsersGuide_${{ env.version }}.pdf
           asset_content_type: application/pdf
     - name: Upload API PDF as release asset
+      if: github.repository == 'abbvie-external/OmicNavigator' && startsWith(github.ref, 'refs/tags/v')
       id: upload-release-asset-api
       uses: actions/upload-release-asset@v1
       env:
@@ -102,7 +124,10 @@ jobs:
           asset_content_type: application/pdf
   deploy-release:
     needs: release
-    if: ${{ github.repository == 'abbvie-external/OmicNavigator' && github.event_name != 'pull_request' }}
+    if: >-
+      github.repository == 'abbvie-external/OmicNavigator' &&
+      github.event_name != 'pull_request' &&
+      startsWith(github.ref, 'refs/tags/v')
     runs-on: ubuntu-latest
     steps:
       - name: Deploy release dispatch
