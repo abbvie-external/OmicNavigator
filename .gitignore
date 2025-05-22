@@ -19,3 +19,4 @@ vignettes/*pdf
 vignettes/*tex
 vignettes/*toc
 scripts/commit-tag-push.sh
+.vscode/

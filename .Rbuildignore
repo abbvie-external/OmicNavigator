@@ -21,3 +21,4 @@
 ^vignettes/.*\.toc$
 ^Deployment\.md$
 ^DockerDeploy$
+^\.vscode$
