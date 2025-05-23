@@ -24,7 +24,9 @@ jobs:
     steps:
     - uses: actions/checkout@v4
     - name: Setup r2u
-      run: sudo bash scripts/setup-r2u.sh
+      uses: eddelbuettel/github-actions/r2u-setup@master
+      with:
+        bspm-version-check: "FALSE"
     - name: Install R packages
       run: sudo bash scripts/install-dependencies-r2u.sh
     - name: Build OmicNavigator
