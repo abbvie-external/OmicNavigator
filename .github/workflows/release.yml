@@ -31,8 +31,6 @@ jobs:
         ref: ${{ github.event.inputs.pkgRef || github.ref }}
     - name: Setup r2u
       run: sudo bash scripts/setup-r2u.sh
-    - name: Set CRAN mirror
-      run: echo 'options(repos = c(CRAN = "https://cran.r-project.org"))' > ~/.Rprofile
     - name: Install R packages
       run: sudo bash scripts/install-dependencies-r2u.sh
     - name: Create diagrams for vignettes
@@ -51,7 +49,6 @@ jobs:
       run: R CMD build .
     - name: Install
       run: sudo R CMD INSTALL --no-multiarch --with-keep.source OmicNavigator_*.tar.gz
-      shell: sudo bash {0}
     - name: Session information
       run: |
         library("OmicNavigator")
