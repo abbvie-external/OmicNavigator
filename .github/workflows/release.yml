@@ -30,7 +30,9 @@ jobs:
       with:
         ref: ${{ github.event.inputs.pkgRef || github.ref }}
     - name: Setup r2u
-      run: sudo bash scripts/setup-r2u.sh
+      uses: eddelbuettel/github-actions/r2u-setup@master
+      with:
+        bspm-version-check: "FALSE"
     - name: Install R packages
       run: sudo bash scripts/install-dependencies-r2u.sh
     - name: Create diagrams for vignettes
