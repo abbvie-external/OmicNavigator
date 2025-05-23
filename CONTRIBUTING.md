@@ -334,8 +334,8 @@ Run the following additional tests prior to CRAN submission, and then update
 
 ```R
 devtools::check_win_devel()
-rhub::validate_email()
-rhub::check_for_cran(platform = "ubuntu-gcc-devel")
+rhub::rhub_doctor()
+rhub::rhub_check(platforms = "r-devel-linux-x86_64-debian-gcc")
 ```
 
 Next build the tarball (first delete `inst/www/` if you have the app installed
