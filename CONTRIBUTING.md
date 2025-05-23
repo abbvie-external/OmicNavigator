@@ -336,6 +336,7 @@ Run the following additional tests prior to CRAN submission, and then update
 devtools::check_win_devel()
 rhub::rhub_doctor()
 rhub::rhub_check(platforms = "r-devel-linux-x86_64-debian-gcc")
+rhub::rhub_check(platforms = "r-devel-windows-x86_64")
 ```
 
 Next build the tarball (first delete `inst/www/` if you have the app installed

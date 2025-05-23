@@ -4,6 +4,7 @@
 
 * R-hub
     * r-devel-linux-x86_64-debian-gcc
+    * r-devel-windows-x86_64
 
 * GitHub Actions
     * windows-latest (release)
