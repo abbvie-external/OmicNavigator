@@ -3,7 +3,7 @@
 * win-builder (devel)
 
 * R-hub
-    * ubuntu-gcc-devel
+    * r-devel-linux-x86_64-debian-gcc
 
 * GitHub Actions
     * windows-latest (release)
