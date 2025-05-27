@@ -221,7 +221,9 @@ xml2 | libxml-2.0 | Solaris | libxml2_dev
 
 ## Deployment with Docker
 
-If you would like to serve OmicNavigator please refer to the [Deployment](./Deployment.md) document. The instructions within this document outline the fastest way to prepare the OmicNavigator software for deployment using a [Docker](https://www.docker.com/) container. It also includes instructions for installing your custom OmicNavigator studies within the container. 
+If you would like to serve OmicNavigator please refer to the [Deployment][deployment] document. The instructions within this document outline the fastest way to prepare the OmicNavigator software for deployment using a [Docker](https://www.docker.com/) container. It also includes instructions for installing your custom OmicNavigator studies within the container.
+
+[deployment]: https://github.com/abbvie-external/OmicNavigator/blob/main/Deployment.md
 
 ## Acknowledgements
 
