@@ -343,7 +343,7 @@ locally), and [submit the tarball][cran].
 
 [cran]: https://cran.r-project.org/submit.html
 
-```R
+```sh
 rm -r inst/www/
 R CMD build .
 ```
