@@ -237,17 +237,16 @@ installing the dependencies on your local machine.
 ```sh
 # Build the image
 docker build -t omicnavigator .
-# Run the image
-docker run --name onapp -t -p 8004:8004 omicnavigator
+# Run the image interactively
+docker run --rm -it -p 5656:5656 omicnavigator
 ```
 
-Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator/
-
-When you're finished, stop and delete the container:
+Once inside the container, you can run the OmicNavigator app via the OpenCPU
+single-user server and access the app in your browser at
+http://localhost:5656/ocpu/library/OmicNavigator/
 
 ```sh
-docker stop onapp
-docker rm onapp
+Rscript -e 'OmicNavigator::startApp()'
 ```
 
 ## Tag a new release

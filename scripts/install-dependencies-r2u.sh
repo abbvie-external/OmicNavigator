@@ -26,12 +26,14 @@ suggests="\
 # * commonmark - for utils::news() to create release notes
 # * devtools - for load_all() to run installApp()
 # * roxygen2 - to build documentation
+# * unix - to run the OpenCPU single-user server to run the app locally
 # * xml2 - for utils::news() to create release notes
 dev="\
   graphviz \
   r-cran-commonmark \
   r-cran-devtools \
   r-cran-roxygen2 \
+  r-cran-unix \
   r-cran-xml2 \
 "
 
