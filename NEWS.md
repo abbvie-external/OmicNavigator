@@ -1,3 +1,7 @@
+# 1.15.1
+
+* The release tarball includes version 1.9.9 of the web app
+
 # 1.15.0
 
 * Check for invalid names and fix check for empty mapping
