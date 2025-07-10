@@ -83,3 +83,10 @@ appPackages <- c(
 # Make the internal package functions "data.table aware"
 # https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
 .datatable.aware <- TRUE
+
+# Avoid NOTE from `R CMD check`: no visible binding for global variable '.data'
+.data <- NULL
+# Used by {ggplot2} for example plots in tests.R. The official guidance is to
+# import rlang::.data into the NAMESPACE, but it's not worth adding {rlang} to
+# Imports for this minor test usage.
+# https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function
