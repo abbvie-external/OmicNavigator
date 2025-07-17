@@ -15,6 +15,9 @@ minimalStudyName <- minimalStudyObj[["name"]]
 
 tmplib <- tempfile()
 dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
+
 tmplibSpace <- file.path(tempdir(), "a space")
 dir.create(tmplibSpace)
 tmplibQuote <- file.path(tempdir(), "project's results")
@@ -243,6 +246,53 @@ expect_error_xl(validateStudy(invalidStudy))
 expect_error_xl(installStudy(invalidStudy, library = tmplib))
 expect_silent_xl(installStudy(invalidStudy, requireValid = FALSE, library = tmplib))
 
+# Shared plotting functions across models --------------------------------------
+
+# In general it is best practice to use `modelID = "default"` to share custom
+# plotting functions across models. However, if you have more complex
+# requirements (eg share across only a subset of the models), or prefer to be
+# more explicit, it is now possible to share plotting functions.
+
+# This example study shares a plot across models 1 and 2 but not 3
+sharedPlot <- function(x) plot(1:10)
+sharedPlotList <- list(
+  model_01 = list(
+    sharedPlot = list(
+      displayName = "Plot for model 1",
+      plotType = "singleFeature"
+    )
+  ),
+  model_02 = list(
+    sharedPlot = list(
+      displayName = "Plot for model 2",
+      plotType = "singleFeature"
+    )
+  )
+)
+studyWithSharedPlots <- OmicNavigator:::testStudy(name = "sharedPlots")
+studyWithSharedPlots <- addPlots(studyWithSharedPlots, sharedPlotList)
+tmpExportDir <- tempfile()
+exportStudy(studyWithSharedPlots, type = "package", path = tmpExportDir)
+
+# Ensure only a single copy of the plot function is exported to the package
+namespace <- readLines(file.path(tmpExportDir, "ONstudysharedPlots", "NAMESPACE"))
+expect_identical_xl(namespace, "export(sharedPlot)")
+plotsr <- readLines(file.path(tmpExportDir, "ONstudysharedPlots", "R", "plots.R"))
+expect_identical_xl(plotsr, c("sharedPlot <- function (x) ", "plot(1:10)"))
+
+# Ensure the plot is available for models 1 and 2 but not 3
+installStudy(studyWithSharedPlots)
+rm(sharedPlot) # Not necessary; just to be extra safe package function is called
+plotStudy("sharedPlots", modelID = "model_01", featureID = "feature_0001", plotID = "sharedPlot")
+plotStudy("sharedPlots", modelID = "model_02", featureID = "feature_0001", plotID = "sharedPlot")
+expect_error_xl(
+  plotStudy("sharedPlots", modelID = "model_03", featureID = "feature_0001", plotID = "sharedPlot"),
+  'The plot "sharedPlot" is not available.'
+)
+
 # Teardown ---------------------------------------------------------------------
 
-unlink(c(tmplib, tmplibSpace, tmplibQuote), recursive = TRUE, force = TRUE)
+# todo: plotStudy() should unload study package namespace if it wasn't already loaded
+unloadNamespace("ONstudysharedPlots")
+unlink(c(tmplib, tmplibSpace, tmplibQuote, tmpExportDir), recursive = TRUE, force = TRUE)
+.libPaths(libOrig)

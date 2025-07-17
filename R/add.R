@@ -387,6 +387,14 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #' Fortunately this latter code will also run fine as you interactively develop
 #' the function.
 #'
+#' Note that the plotting functions are written to the R package when the study
+#' is exported via \code{\link{exportStudy}} or installed via
+#' \code{\link{installStudy}}, not when \code{addPlots} is invoked. In other
+#' words, if you add a custom plotting function to your study object via
+#' \code{addPlots}, but then subsequently update the function in the global
+#' environment prior to installing the study, this latest version will be saved
+#' in the R package and executed when run in the app.
+#'
 #' @param plots A nested list containing custom plotting functions and plot
 #'   metadata. The input object is a 3-level nested list. The first, or
 #'   top-level list element name(s) must match the study `modelID`(s). The second,
@@ -406,8 +414,8 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   within the model specified by the top-level list element name), and 4) if
 #'   the plot is interactive (add “`plotly`” to specify interactive plots built
 #'   using the plotly package; otherwise the plot is assumed to be static).
-#'   e.g., `plotType = c("multiFeature", "multiTest",”plotly”)`. If you do not
-#'   specify the `plotType` the plot will be designated as `plotType =
+#'   e.g., `plotType = c("multiFeature", "multiTest", "plotly")`. If you do not
+#'   specify the `plotType`, the plot will be designated as `plotType =
 #'   c("singleFeature", "singleTest")`. The `models` field is an optional
 #'   character vector that specifies the models that should be used by the app
 #'   when invoking your custom plotting function. This field is set to ‘all’ by
@@ -415,7 +423,11 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'   is not included the app will assume all models in the study should be used
 #'   with your plotting function. If the plotting function requires additional
 #'   packages beyond those attached by default to a fresh R session, these must
-#'   be defined in the element `packages`.
+#'   be defined in the element `packages`. To share a plotting functions across
+#'   multiple models, use the modelID "default". Alternatively, to share a plot
+#'   across a specific subset of models, you can explicitly add the same
+#'   plotting function to each model (option available as of OmicNavigator
+#'   1.16.0).
 #'
 #' @inherit shared-add
 #'
