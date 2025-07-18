@@ -993,6 +993,7 @@ expect_error(
 
 # Teardown ---------------------------------------------------------------------
 
+# todo: plotStudy() should unload study package namespace if it wasn't already loaded
 unloadNamespace(testPkgName)
 unlink(tmplib, recursive = TRUE, force = TRUE)
 .libPaths(libOrig)

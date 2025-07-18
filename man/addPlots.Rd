@@ -28,15 +28,19 @@ used in the plot; otherwise the plot is assumed to reference only data
 within the model specified by the top-level list element name), and 4) if
 the plot is interactive (add “\code{plotly}” to specify interactive plots built
 using the plotly package; otherwise the plot is assumed to be static).
-e.g., \verb{plotType = c("multiFeature", "multiTest",”plotly”)}. If you do not
-specify the \code{plotType} the plot will be designated as \code{plotType = c("singleFeature", "singleTest")}. The \code{models} field is an optional
+e.g., \code{plotType = c("multiFeature", "multiTest", "plotly")}. If you do not
+specify the \code{plotType}, the plot will be designated as \code{plotType = c("singleFeature", "singleTest")}. The \code{models} field is an optional
 character vector that specifies the models that should be used by the app
 when invoking your custom plotting function. This field is set to ‘all’ by
 default and is only used when \code{plotType} includes “\code{multiModel}”. If this field
 is not included the app will assume all models in the study should be used
 with your plotting function. If the plotting function requires additional
 packages beyond those attached by default to a fresh R session, these must
-be defined in the element \code{packages}.}
+be defined in the element \code{packages}. To share a plotting functions across
+multiple models, use the modelID "default". Alternatively, to share a plot
+across a specific subset of models, you can explicitly add the same
+plotting function to each model (option available as of OmicNavigator
+1.16.0).}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data
@@ -72,6 +76,14 @@ columns of the data frame, e.g. \code{aes(x = group)}, you need to prefix it
 with \code{.data$}, so that it becomes \code{aes(x = .data$group)}.
 Fortunately this latter code will also run fine as you interactively develop
 the function.
+
+Note that the plotting functions are written to the R package when the study
+is exported via \code{\link{exportStudy}} or installed via
+\code{\link{installStudy}}, not when \code{addPlots} is invoked. In other
+words, if you add a custom plotting function to your study object via
+\code{addPlots}, but then subsequently update the function in the global
+environment prior to installing the study, this latest version will be saved
+in the R package and executed when run in the app.
 }
 \seealso{
 \code{\link{getPlottingData}}, \code{\link{plotStudy}}
