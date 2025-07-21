@@ -459,13 +459,13 @@ getElements.character <- function(
   ...
 )
 {
-  oaDirectory <- getDirectory(study, libraries)
-  if (oaDirectory == "") {
+  onDirectory <- getDirectory(study, libraries)
+  if (onDirectory == "") {
     stop(sprintf("The study \"%s\" is not installed\n", study),
          "Did you run installStudy()?\n")
   }
 
-  elementsDirectory <- file.path(oaDirectory, elements)
+  elementsDirectory <- file.path(onDirectory, elements)
   if (!dir.exists(elementsDirectory)) {
     if (!quiet) message(sprintf("Study \"%s\" does not have any elements named \"%s\"",
                                 study, elements))

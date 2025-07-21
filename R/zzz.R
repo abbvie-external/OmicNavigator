@@ -22,17 +22,17 @@ appPackages <- c(
 # Configure OmicNavigator options when package is loaded
 .onLoad <- function(libname, pkgname) {
   # Default options
-  oaOptions <- list(
+  onOptions <- list(
     OmicNavigator.prefix = OmicNavigatorPrefix
   )
 
   # Only set defaults for OmicNavigator options that have not been set by user
-  for (i in seq_along(oaOptions)) {
-    optionName <- names(oaOptions)[i]
-    optionValue <- oaOptions[i]
+  for (i in seq_along(onOptions)) {
+    optionName <- names(onOptions)[i]
+    optionValue <- onOptions[i]
     optionCurrent <- getOption(optionName)
     if (is.null(optionCurrent)) {
-      options(oaOptions[i])
+      options(onOptions[i])
     }
   }
 
