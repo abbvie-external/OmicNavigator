@@ -4,10 +4,13 @@
 \alias{installStudy}
 \title{Install a study as an R package}
 \usage{
-installStudy(study, library = .libPaths()[1])
+installStudy(study, requireValid = TRUE, library = .libPaths()[1])
 }
 \arguments{
 \item{study}{An OmicNavigator study to install (class \code{onStudy})}
+
+\item{requireValid}{Require that study is valid before installing (passed to
+\code{\link{exportStudy}}, which runs \code{\link{validateStudy}})}
 
 \item{library}{Directory to install package. Defaults to first directory
 returned by \code{\link{.libPaths}}.}
@@ -18,4 +21,16 @@ to the argument \code{study}
 }
 \description{
 Install a study as an R package
+}
+\details{
+Note that \code{installStudy} is only intended for directly
+installing an OmicNavigator study object loaded in your current R session.
+If you have already exported your study to a package tarball via
+\code{\link{exportStudy}}, then you can install it with
+\code{\link[utils]{install.packages}}, for example:
+
+\preformatted{
+  tarball <- exportStudy(myStudy)
+  install.packages(tarball, repos = NULL)
+  }
 }

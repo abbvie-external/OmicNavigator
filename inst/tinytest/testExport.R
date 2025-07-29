@@ -233,6 +233,16 @@ expect_error_xl(
   "Couldn't find"
 )
 
+# Install invalid study object -------------------------------------------------
+
+# Create invalid study due to an invalid column name for featureID
+invalidStudy <- testStudyObj
+colnames(invalidStudy[["results"]][[1]][[1]])[1] <- "wrongFeatureID"
+expect_error_xl(validateStudy(invalidStudy))
+
+expect_error_xl(installStudy(invalidStudy, library = tmplib))
+expect_silent_xl(installStudy(invalidStudy, requireValid = FALSE, library = tmplib))
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(c(tmplib, tmplibSpace, tmplibQuote), recursive = TRUE, force = TRUE)

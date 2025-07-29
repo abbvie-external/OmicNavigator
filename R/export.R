@@ -4,7 +4,8 @@
 #' @param type Export study as a package tarball ("tarball") or as a package
 #'   directory ("package")
 #' @param path Optional file path to save the object
-#' @param requireValid Require that study is valid before exporting
+#' @param requireValid Require that study is valid before exporting (via
+#'   \code{\link{validateStudy}})
 #'
 #' @return Invisibly returns the name of the tarball file ("tarball") or the
 #'   path to the package directory ("package")
@@ -525,19 +526,33 @@ createPackage <- function(study, directoryname) {
 #' Install a study as an R package
 #'
 #' @param study An OmicNavigator study to install (class \code{onStudy})
+#' @param requireValid Require that study is valid before installing (passed to
+#'   \code{\link{exportStudy}}, which runs \code{\link{validateStudy}})
 #' @param library Directory to install package. Defaults to first directory
 #'   returned by \code{\link{.libPaths}}.
 #'
 #' @return Invisibly returns the original \code{onStudy} object that was passed
 #'   to the argument \code{study}
 #'
+#' @details Note that \code{installStudy} is only intended for directly
+#'   installing an OmicNavigator study object loaded in your current R session.
+#'   If you have already exported your study to a package tarball via
+#'   \code{\link{exportStudy}}, then you can install it with
+#'   \code{\link[utils]{install.packages}}, for example:
+#'
+#'   \preformatted{
+#'   tarball <- exportStudy(myStudy)
+#'   install.packages(tarball, repos = NULL)
+#'   }
+#'
 #' @export
-installStudy <- function(study, library = .libPaths()[1]) {
+installStudy <- function(study, requireValid = TRUE, library = .libPaths()[1]) {
   stopifnot(inherits(study, "onStudy"), dir.exists(library))
   message(sprintf("Installing study \"%s\" in %s", study[["name"]], library))
 
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
-  tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
+  tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath,
+                           requireValid = requireValid)
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
   optionWarn <- getOption("warn", default = 0)
   on.exit(options(warn = optionWarn), add = TRUE)
