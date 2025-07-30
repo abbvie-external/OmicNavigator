@@ -558,3 +558,10 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
   return(NULL)
 }
 
+checkMetaAssays <- function(metaAssays) {
+  checkList(metaAssays)
+
+  # todo: metaAssays
+
+  return(NULL)
+}
