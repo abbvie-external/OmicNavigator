@@ -418,6 +418,26 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       row.names(featuresPlotting) <- NULL # reset row numbers after filtering
     }
 
+    metaFeatures <- getMetaFeatures(study, modelID = model_i, quiet = TRUE,
+                                    libraries = libraries)
+    if (isEmpty(metaFeatures)) {
+      metaFeaturesPlotting <- metaFeatures
+    } else {
+      metaFeaturesPlotting <- metaFeatures[featureID == metaFeatures[[1]], , drop = FALSE]
+      row.names(metaFeaturesPlotting) <- NULL # reset row numbers after filtering
+    }
+
+    metaAssays <- getMetaAssays(study, modelID = model_i, quiet = TRUE,
+                                libraries = libraries)
+    if (isEmpty(metaAssays)) {
+      metaAssaysPlotting <- metaAssays
+    } else {
+      metaAssaysPlotting <- metaAssays[metaFeaturesPlotting[[2]], , drop = FALSE]
+      if (nrow(metaAssaysPlotting) == 0) {
+        warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
+      }
+    }
+
     if (!isEmpty(testID)) {
       resultsPlotting <- vector("list", length(testID))
       for (i in seq_along(testID)) {
@@ -444,7 +464,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
         temp_model <- list(
           assays = assaysPlotting,
           samples = samplesPlotting,
-          features = featuresPlotting
+          features = featuresPlotting,
+          metaFeatures = metaFeaturesPlotting,
+          metaAssays = metaAssaysPlotting
         )
         if (!isEmpty(testID)) temp_model <- c(temp_model, list(results = stats::setNames(list(resultsPlotting), testID)))
         plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
@@ -462,7 +484,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       plottingData <- list(
         assays = assaysPlotting,
         samples = samplesPlotting,
-        features = featuresPlotting
+        features = featuresPlotting,
+        metaFeatures = metaFeaturesPlotting,
+        metaAssays = metaAssaysPlotting
       )
       if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
     }
