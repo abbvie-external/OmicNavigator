@@ -470,11 +470,8 @@ createPackage <- function(study, directoryname) {
 
   # Plots
   if (!isEmpty(study[["plots"]])) {
-    # Can't have duplicate plots in different models
-    plotsAll <- lapply(study[["plots"]], function(x) names(x))
-    if (length(plotsAll) != length(unique(plotsAll))) {
-      stop("Cannot have duplicate plots in different studies")
-    }
+    # If plotting functions are shared across models, only export to package once
+    plots_already_exported <- c()
     namespace_file <- file.path(directoryname, "NAMESPACE")
     r_dir <- file.path(directoryname, "R")
     dir.create(r_dir, showWarnings = FALSE)
@@ -485,6 +482,7 @@ createPackage <- function(study, directoryname) {
     for (i in seq_along(study[["plots"]])) {
       for (j in seq_along(study[["plots"]][[i]])) {
         plotID <- names(study[["plots"]][[i]])[j]
+        if (plotID %in% plots_already_exported) next
         plotDependencies <- study[["plots"]][[i]][[j]][["packages"]]
         # Base plotting functions like plot, boxplot, barplot, etc. rely on the
         # graphics package. It's a recommended package that is automatically
@@ -505,6 +503,7 @@ createPackage <- function(study, directoryname) {
         plot_code <- deparse(plotFunction)
         plot_code[1] <- paste(plotID, "<-", plot_code[1])
         code <- c(code, plot_code)
+        plots_already_exported <- c(plots_already_exported, plotID)
       }
     }
     if ("ggplot2" %in% dependencies) {
