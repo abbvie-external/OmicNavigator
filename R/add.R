@@ -37,6 +37,7 @@
 #' @inheritParams addResultsLinkouts
 #' @inheritParams addEnrichmentsLinkouts
 #' @inheritParams addMetaFeaturesLinkouts
+#' @inheritParams addMetaAssays
 #'
 #' @return Returns a new OmicNavigator study object, which is a named nested
 #'   list with class \code{onStudy}
@@ -58,6 +59,7 @@
 #'   \code{\link{addResultsLinkouts}},
 #'   \code{\link{addEnrichmentsLinkouts}},
 #'   \code{\link{addMetaFeaturesLinkouts}},
+#'   \code{\link{addMetaAssays}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -94,6 +96,7 @@ createStudy <- function(name,
                         resultsLinkouts = list(),
                         enrichmentsLinkouts = list(),
                         metaFeaturesLinkouts = list(),
+                        metaAssays = list(),
                         version = NULL,
                         maintainer = NULL,
                         maintainerEmail = NULL,
@@ -124,6 +127,7 @@ createStudy <- function(name,
                 resultsLinkouts = list(),
                 enrichmentsLinkouts = list(),
                 metaFeaturesLinkouts = list(),
+                metaAssays = list(),
                 overlaps = list(),
                 version = version,
                 maintainer = maintainer,
@@ -147,6 +151,7 @@ createStudy <- function(name,
   study <- addResultsLinkouts(study, resultsLinkouts = resultsLinkouts)
   study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts)
   study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = metaFeaturesLinkouts)
+  suppressWarnings(study <- addMetaAssays(study, metaAssays = metaAssays))
 
   return(study)
 }
@@ -656,6 +661,22 @@ addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
 #' @export
 addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) {
   addElements(study, metaFeaturesLinkouts, reset)
+}
+
+#' Add metaAssays
+#'
+#' Experimental. Add metaAssay measurements that map to the features in the
+#' assays data.
+#'
+#' @param metaAssays The metaAssays from the study (one per model).
+#' @inheritParams shared-add
+#'
+#' @seealso \code{\link{addAssays}}, \code{\link{addMetaFeatures}}
+#'
+#' @export
+addMetaAssays <- function(study, metaAssays, reset = FALSE) {
+  warning("Support for metaAssays is highly experimental")
+  addElements(study, metaAssays, reset)
 }
 
 addElements <- function(study, elements, reset = FALSE) {
