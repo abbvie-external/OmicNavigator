@@ -1,3 +1,13 @@
+# 1.16.0
+
+* Add support for sharing a custom plotting function across any subset of models
+of a study
+* Add argument `requireValid` to `installStudy()`
+* OmicNavigatorWebApp:
+  * Fix bug that caused enrichments tab to go blank (version 1.9.9)
+  * Restore support for custom plotting functions that were shared across models
+  using the special modelID "default" (version 2.0.0)
+
 # 1.15.2
 
 * The release tarball includes version 2.0.0 of the web app
