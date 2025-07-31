@@ -464,11 +464,15 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
         temp_model <- list(
           assays = assaysPlotting,
           samples = samplesPlotting,
-          features = featuresPlotting,
-          metaFeatures = metaFeaturesPlotting,
-          metaAssays = metaAssaysPlotting
+          features = featuresPlotting
         )
-        if (!isEmpty(testID)) temp_model <- c(temp_model, list(results = stats::setNames(list(resultsPlotting), testID)))
+        if (!isEmpty(testID)) {
+          temp_model <- c(temp_model, list(results = stats::setNames(list(resultsPlotting), testID)))
+        }
+        if (!isEmpty(metaAssaysPlotting)) {
+          plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
+                                               metaAssays = metaAssaysPlotting))
+        }
         plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
 
       } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
@@ -484,11 +488,15 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       plottingData <- list(
         assays = assaysPlotting,
         samples = samplesPlotting,
-        features = featuresPlotting,
-        metaFeatures = metaFeaturesPlotting,
-        metaAssays = metaAssaysPlotting
+        features = featuresPlotting
       )
-      if (!isEmpty(testID)) plottingData <- c(plottingData, list(results = resultsPlotting))
+      if (!isEmpty(testID)) {
+        plottingData <- c(plottingData, list(results = resultsPlotting))
+      }
+      if (!isEmpty(metaAssaysPlotting)) {
+        plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
+                                             metaAssays = metaAssaysPlotting))
+      }
     }
   }
 
