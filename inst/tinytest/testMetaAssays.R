@@ -58,6 +58,14 @@ testStudyObj <- addMetaAssays(testStudyObj, list(crispr = metaAssays))
 
 x <- getPlottingData(testStudyObj, modelID = "crispr", featureID = "gene2")
 
+expect_identical_xl(
+  names(x),
+  c("assays", "samples", "features", "metaFeatures", "metaAssays")
+)
+expect_identical(row.names(x$assays), "gene2")
+expect_identical(row.names(x$metaAssays), c("guide2", "guide3"))
+
+
 plotGeneWithGuides <- function(x) {
   geneWithGuides <- rbind(x[["assays"]], x[["metaAssays"]])
   geneName <- x[["features"]][["name"]]
