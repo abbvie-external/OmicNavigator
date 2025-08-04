@@ -23,6 +23,7 @@ createStudy(
   resultsLinkouts = list(),
   enrichmentsLinkouts = list(),
   metaFeaturesLinkouts = list(),
+  metaAssays = list(),
   version = NULL,
   maintainer = NULL,
   maintainerEmail = NULL,
@@ -125,15 +126,19 @@ used in the plot; otherwise the plot is assumed to reference only data
 within the model specified by the top-level list element name), and 4) if
 the plot is interactive (add “\code{plotly}” to specify interactive plots built
 using the plotly package; otherwise the plot is assumed to be static).
-e.g., \verb{plotType = c("multiFeature", "multiTest",”plotly”)}. If you do not
-specify the \code{plotType} the plot will be designated as \code{plotType = c("singleFeature", "singleTest")}. The \code{models} field is an optional
+e.g., \code{plotType = c("multiFeature", "multiTest", "plotly")}. If you do not
+specify the \code{plotType}, the plot will be designated as \code{plotType = c("singleFeature", "singleTest")}. The \code{models} field is an optional
 character vector that specifies the models that should be used by the app
 when invoking your custom plotting function. This field is set to ‘all’ by
 default and is only used when \code{plotType} includes “\code{multiModel}”. If this field
 is not included the app will assume all models in the study should be used
 with your plotting function. If the plotting function requires additional
 packages beyond those attached by default to a fresh R session, these must
-be defined in the element \code{packages}.}
+be defined in the element \code{packages}. To share a plotting functions across
+multiple models, use the modelID "default". Alternatively, to share a plot
+across a specific subset of models, you can explicitly add the same
+plotting function to each model (option available as of OmicNavigator
+1.16.0).}
 
 \item{mapping}{Feature IDs from models. The input object is a list of named
 data frames. For each data frame, column names indicate model names while
@@ -203,6 +208,8 @@ is a named list of character vectors. The names of this nested list must
 correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
 linkouts across multiple models, use the modelID "default".}
 
+\item{metaAssays}{The metaAssays from the study (one per model).}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -264,6 +271,7 @@ study <- createStudy(name = "ABC",
 \code{\link{addResultsLinkouts}},
 \code{\link{addEnrichmentsLinkouts}},
 \code{\link{addMetaFeaturesLinkouts}},
+\code{\link{addMetaAssays}},
 \code{\link{exportStudy}},
 \code{\link{installStudy}}
 }

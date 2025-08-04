@@ -4,7 +4,8 @@
 #' @param type Export study as a package tarball ("tarball") or as a package
 #'   directory ("package")
 #' @param path Optional file path to save the object
-#' @param requireValid Require that study is valid before exporting
+#' @param requireValid Require that study is valid before exporting (via
+#'   \code{\link{validateStudy}})
 #'
 #' @return Invisibly returns the name of the tarball file ("tarball") or the
 #'   path to the package directory ("package")
@@ -86,6 +87,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportResultsLinkouts(study, directoryname)
   exportEnrichmentsLinkouts(study, directoryname)
   exportMetaFeaturesLinkouts(study, directoryname)
+  exportMetaAssays(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
@@ -295,6 +297,14 @@ exportMetaFeaturesLinkouts <- function(study, path = ".") {
   )
 }
 
+exportMetaAssays <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "metaAssays",
+    path = path
+  )
+}
+
 exportSummary <- function(x, path = ".") {
 
   resultsModels <- names(x[["results"]])
@@ -428,6 +438,7 @@ createPackage <- function(study, directoryname) {
     Maintainer = pkgmaintainer,
     Description = pkgdescription,
     OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
+    Encoding = "UTF-8",
     stringsAsFactors = FALSE
   )
   if (!isEmpty(study[["studyMeta"]])) {
@@ -470,11 +481,8 @@ createPackage <- function(study, directoryname) {
 
   # Plots
   if (!isEmpty(study[["plots"]])) {
-    # Can't have duplicate plots in different models
-    plotsAll <- lapply(study[["plots"]], function(x) names(x))
-    if (length(plotsAll) != length(unique(plotsAll))) {
-      stop("Cannot have duplicate plots in different studies")
-    }
+    # If plotting functions are shared across models, only export to package once
+    plots_already_exported <- c()
     namespace_file <- file.path(directoryname, "NAMESPACE")
     r_dir <- file.path(directoryname, "R")
     dir.create(r_dir, showWarnings = FALSE)
@@ -485,6 +493,7 @@ createPackage <- function(study, directoryname) {
     for (i in seq_along(study[["plots"]])) {
       for (j in seq_along(study[["plots"]][[i]])) {
         plotID <- names(study[["plots"]][[i]])[j]
+        if (plotID %in% plots_already_exported) next
         plotDependencies <- study[["plots"]][[i]][[j]][["packages"]]
         # Base plotting functions like plot, boxplot, barplot, etc. rely on the
         # graphics package. It's a recommended package that is automatically
@@ -505,6 +514,7 @@ createPackage <- function(study, directoryname) {
         plot_code <- deparse(plotFunction)
         plot_code[1] <- paste(plotID, "<-", plot_code[1])
         code <- c(code, plot_code)
+        plots_already_exported <- c(plots_already_exported, plotID)
       }
     }
     if ("ggplot2" %in% dependencies) {
@@ -526,19 +536,33 @@ createPackage <- function(study, directoryname) {
 #' Install a study as an R package
 #'
 #' @param study An OmicNavigator study to install (class \code{onStudy})
+#' @param requireValid Require that study is valid before installing (passed to
+#'   \code{\link{exportStudy}}, which runs \code{\link{validateStudy}})
 #' @param library Directory to install package. Defaults to first directory
 #'   returned by \code{\link{.libPaths}}.
 #'
 #' @return Invisibly returns the original \code{onStudy} object that was passed
 #'   to the argument \code{study}
 #'
+#' @details Note that \code{installStudy} is only intended for directly
+#'   installing an OmicNavigator study object loaded in your current R session.
+#'   If you have already exported your study to a package tarball via
+#'   \code{\link{exportStudy}}, then you can install it with
+#'   \code{\link[utils]{install.packages}}, for example:
+#'
+#'   \preformatted{
+#'   tarball <- exportStudy(myStudy)
+#'   install.packages(tarball, repos = NULL)
+#'   }
+#'
 #' @export
-installStudy <- function(study, library = .libPaths()[1]) {
+installStudy <- function(study, requireValid = TRUE, library = .libPaths()[1]) {
   stopifnot(inherits(study, "onStudy"), dir.exists(library))
   message(sprintf("Installing study \"%s\" in %s", study[["name"]], library))
 
   tmpPath <- if (getRversion() >= "3.5.0") tempdir(check = TRUE) else tempdir()
-  tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath)
+  tmpPkgDir <- exportStudy(study, type = "package", path = tmpPath,
+                           requireValid = requireValid)
   on.exit(unlink(tmpPkgDir, recursive = TRUE, force = TRUE), add = TRUE)
   optionWarn <- getOption("warn", default = 0)
   on.exit(options(warn = optionWarn), add = TRUE)

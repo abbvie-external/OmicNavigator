@@ -3,12 +3,13 @@
 * win-builder (devel)
 
 * R-hub
-    * ubuntu-gcc-devel
+    * r-devel-linux-x86_64-debian-gcc
+    * r-devel-windows-x86_64
 
 * GitHub Actions
     * windows-latest (release)
     * macOS-latest (release)
-    * ubuntu-20.04 (4.0.5)
+    * ubuntu-22.04 (4.0.5)
 
 ## R CMD check results
 

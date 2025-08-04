@@ -1,15 +1,15 @@
 checkNamingConvention <- function(featureObjectName, attr) {
-  # Check study name, models, and tests
-  forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
-  for (forbid in forbidden) {
-    if(grepl(forbid, featureObjectName, fixed=TRUE)) {
-      stop(sprintf("Error: Forbidden character detected in %s", attr))
-    }
-  }
-  if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
-    stop(sprintf("Error: %s cannot end in a period", attr))
-  }
-  return(featureObjectName)
+   # Check study name, models, and tests
+   forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
+   for (forbid in forbidden) {
+     if(grepl(forbid, featureObjectName, fixed=TRUE)) {
+       stop(sprintf("Error: Forbidden character detected in %s", attr))
+     }
+   }
+   if (substr(featureObjectName, nchar(featureObjectName), nchar(featureObjectName)) == ".") {
+     stop(sprintf("Error: %s cannot end in a period", attr))
+   }
+   return(featureObjectName)
 }
 
 checkStudy <- function(study) {
@@ -236,6 +236,8 @@ checkFeatures <- function(features) {
 checkModels <- function(models) {
   checkList(models)
   for (i in seq_along(models)) {
+    model_name = names(models)[[i]]
+    checkNamingConvention(model_name, "model name")
     # Accepts either a single string or a named list
     model_name = names(models)[[i]]
     checkNamingConvention(model_name, "model name")
@@ -305,7 +307,7 @@ checkAnnotations <- function(annotations) {
     }
     terms <- annotations[[i]][["terms"]]
     checkList(terms, allowEmpty = FALSE)
-    if (!all(vapply(terms, is.character, logical(1)))) {
+    if (!all(vapply(terms, is.character, logical(1))) || sum(is.null(terms)) > 0 || sum(!grepl("\\S", terms)) > 0) {
       stop(sprintf("The terms for \"%s\" must be a named list of character vectors",
                    annotationID))
     }
@@ -560,3 +562,10 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
   return(NULL)
 }
 
+checkMetaAssays <- function(metaAssays) {
+  checkList(metaAssays)
+
+  # todo: metaAssays
+
+  return(NULL)
+}

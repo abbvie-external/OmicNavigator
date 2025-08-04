@@ -91,6 +91,12 @@ If you’re on Windows or macOS, I recommend using the R package
 [tinytex](https://cran.r-project.org/package=tinytex) to install the
 minimal [TinyTex](https://yihui.org/tinytex/) distribution.
 
+```R
+install.packages("tinytex")
+tinytex::install_tinytex()
+tinytex:::install_yihui_pkgs()
+```
+
 To install the app for local testing, the easiest method is to install it once
 in the source directory, so that the app is always installed whenever you build
 the package locally. You can do this by first loading the package with devtools
@@ -180,6 +186,11 @@ output too much, you can wrap the tinytest function call with
 `suppressMessages()`. This will suppress the messages from the OmicNavigator
 functions but still display the test results.
 
+* Note that the tests wrapped in `at_home()` are only executed when running
+`tinytest::test_all()` or `tinytest::run_test_file()`. They are skipped when
+running `test_package()` (which is what is called by `R CMD check`), and thus
+these tests are not run in GitHub Actions or on CRAN servers.
+
 Lastly, if you are making a large contribution, it can be helpful to evaluate
 the comprehensiveness of your tests by calculating the test coverage. The covr
 package runs the package tests and creates a report that details which lines
@@ -213,7 +224,7 @@ the "main" branch.
 
 If you wish to skip all automated CI, e.g. you are trying something experimental
 that you know will break the tests, you can put "skip" anywhere in the branch
-name. Also note that the continuous integrations jobs are only triggered if a
+name. Also note that the continuous integration jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
 
@@ -226,17 +237,16 @@ installing the dependencies on your local machine.
 ```sh
 # Build the image
 docker build -t omicnavigator .
-# Run the image
-docker run --name onapp -t -p 8004:8004 omicnavigator
+# Run the image interactively
+docker run --rm -it -p 5656:5656 omicnavigator
 ```
 
-Open the app in your browser at http://localhost:8004/ocpu/library/OmicNavigator/
-
-When you're finished, stop and delete the container:
+Once inside the container, you can run the OmicNavigator app via the OpenCPU
+single-user server and access the app in your browser at
+http://localhost:5656/ocpu/library/OmicNavigator/
 
 ```sh
-docker stop onapp
-docker rm onapp
+Rscript -e 'OmicNavigator::startApp()'
 ```
 
 ## Tag a new release
@@ -244,11 +254,15 @@ docker rm onapp
 Follow these steps to tag a new release:
 
 * Bump the version in `DESCRIPTION`. Make sure it only has 3 components
-(major.minor.patch)
+(major.minor.patch) and follows the principles of [Semantic Versioning][semver]
 
 * Update `NEWS.md`. Manually add the section header `# major.minor.patch`
 
 * Commit the changes
+
+    ```sh
+     git commit -am "Bump to #.#.#"
+    ```
 
 * Tag the release
 
@@ -268,6 +282,7 @@ tag][gh-actions-release]. It will create a new release, copy-paste the section
 from `NEWS.md` to use as the release notes, build and upload the PDF vignettes,
 and build and upload a tarball with the app pre-bundled
 
+[semver]: https://semver.org
 [gh-actions-release]: https://github.com/abbvie-external/OmicNavigator/actions/workflows/release.yml
 
 ## How to review and merge Pull Requests
@@ -323,8 +338,9 @@ Run the following additional tests prior to CRAN submission, and then update
 
 ```R
 devtools::check_win_devel()
-rhub::validate_email()
-rhub::check_for_cran(platform = "ubuntu-gcc-devel")
+rhub::rhub_doctor()
+rhub::rhub_check(platforms = "r-devel-linux-x86_64-debian-gcc")
+rhub::rhub_check(platforms = "r-devel-windows-x86_64")
 ```
 
 Next build the tarball (first delete `inst/www/` if you have the app installed
@@ -332,7 +348,7 @@ locally), and [submit the tarball][cran].
 
 [cran]: https://cran.r-project.org/submit.html
 
-```R
+```sh
 rm -r inst/www/
 R CMD build .
 ```

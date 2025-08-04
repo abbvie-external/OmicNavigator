@@ -10,7 +10,7 @@ OmicNavigatorPrefix <- "ONstudy"
 
 # The R package is meant to be used with a specific version of the app. If a
 # user has an older or newer version installed, send a warning.
-versionAppPinned <- "1.9.6"
+versionAppPinned <- "2.0.0"
 
 # The extra packages required to run the app
 appPackages <- c(
@@ -22,17 +22,17 @@ appPackages <- c(
 # Configure OmicNavigator options when package is loaded
 .onLoad <- function(libname, pkgname) {
   # Default options
-  oaOptions <- list(
+  onOptions <- list(
     OmicNavigator.prefix = OmicNavigatorPrefix
   )
 
   # Only set defaults for OmicNavigator options that have not been set by user
-  for (i in seq_along(oaOptions)) {
-    optionName <- names(oaOptions)[i]
-    optionValue <- oaOptions[i]
+  for (i in seq_along(onOptions)) {
+    optionName <- names(onOptions)[i]
+    optionValue <- onOptions[i]
     optionCurrent <- getOption(optionName)
     if (is.null(optionCurrent)) {
-      options(oaOptions[i])
+      options(onOptions[i])
     }
   }
 
@@ -83,3 +83,10 @@ appPackages <- c(
 # Make the internal package functions "data.table aware"
 # https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
 .datatable.aware <- TRUE
+
+# Avoid NOTE from `R CMD check`: no visible binding for global variable '.data'
+.data <- NULL
+# Used by {ggplot2} for example plots in tests.R. The official guidance is to
+# import rlang::.data into the NAMESPACE, but it's not worth adding {rlang} to
+# Imports for this minor test usage.
+# https://ggplot2.tidyverse.org/articles/ggplot2-in-packages.html#using-aes-and-vars-in-a-package-function

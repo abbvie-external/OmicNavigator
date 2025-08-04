@@ -1,6 +1,6 @@
-citHeader("Please use the following citation for OmicNavigator:")
-
-citEntry(entry="article",
+bibentry(
+  bibtype = "article",
+  header = "Please use the following citation for OmicNavigator:",
 	author = c(person(c("Terrence","R"),"Ernst"),
 	           person(c("John","D"),"Blischak"),
 	           person("Paul","Nordlund"),

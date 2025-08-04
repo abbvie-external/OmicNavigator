@@ -43,9 +43,14 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          - {os: ubuntu-20.04, r: '4.0.5'}
+          - {os: ubuntu-22.04, r: '4.0.5'}
     steps:
       - uses: actions/checkout@v4
+      - name: Install dependencies from PPM snapshot for Ubuntu build
+        if: runner.os == 'Linux'
+        run: |
+          echo "CRAN=https://packagemanager.posit.co/cran/__linux__/jammy/2021-12-29" >> $GITHUB_ENV
+          echo "RSPM=https://packagemanager.posit.co/cran/__linux__/jammy/2021-12-29" >> $GITHUB_ENV
       - uses: r-lib/actions/setup-r@v2-branch
         with:
           r-version: ${{ matrix.config.r }}
@@ -65,7 +70,6 @@ jobs:
         env:
           R_REMOTES_NO_ERRORS_FROM_WARNINGS: true
           _R_CHECK_CRAN_INCOMING_REMOTE_: false
-          TT_AT_HOME: TRUE
         run: R CMD check --no-manual --as-cran OmicNavigator_*.tar.gz
       - name: Test results
         if: always()

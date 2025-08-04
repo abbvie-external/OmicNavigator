@@ -29,7 +29,7 @@ A subset of the object \code{cam.BasalvsML} from Bioconductor workflow RNAseq123
 }
 \references{
 Law CW, Alhamdoosh M, Su S, Dong X, Tian L, Smyth GK, Ritchie ME.
-\href{https://f1000research.com/articles/5-1408/v3}{RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR \link{version 3; peer review: 3 approved}.}
+\href{https://f1000research.com/articles/5-1408/v3}{RNA-seq analysis is easy as 1-2-3 with limma, Glimma and edgeR [version 3; peer review: 3 approved].}
 F1000Research 2018, 5:1408
 \doi{10.12688/f1000research.9005.3}
 

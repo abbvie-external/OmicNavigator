@@ -19,7 +19,8 @@ directory ("package")}
 
 \item{path}{Optional file path to save the object}
 
-\item{requireValid}{Require that study is valid before exporting}
+\item{requireValid}{Require that study is valid before exporting (via
+\code{\link{validateStudy}})}
 }
 \value{
 Invisibly returns the name of the tarball file ("tarball") or the

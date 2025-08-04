@@ -258,8 +258,10 @@ testPlots <- function() {
     featureMedian <- stats::median(plotPoints)
     plotTitle <- sprintf("%s, median: %0.2f", x[["features"]][["customID"]],
                          featureMedian)
-    ggplot2::qplot(seq_along(plotPoints), plotPoints, main = plotTitle,
-                   xlab = "Samples", ylab = "Expression level")
+    d <- data.frame(i = seq_along(plotPoints), plotPoints)
+    ggplot2::ggplot(d, ggplot2::aes(x = .data$i, y = .data$plotPoints)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(x = "Samples", y = "Expression level", title = plotTitle)
   }
   assign("plotGg", plotGg, envir = parent.frame())
   plotMultiFeature <- function(x) {
@@ -329,8 +331,10 @@ testPlots <- function() {
     featureMedian <- stats::median(plotPoints)
     plotTitle <- sprintf("%s, median: %0.2f", x[["features"]][["customID"]],
                          featureMedian)
-    p <- ggplot2::qplot(seq_along(plotPoints), plotPoints, main = plotTitle,
-                   xlab = "Samples", ylab = "Expression level")
+    d <- data.frame(i = seq_along(plotPoints), plotPoints)
+    p <- ggplot2::ggplot(d, ggplot2::aes(x = .data$i, y = .data$plotPoints)) +
+      ggplot2::geom_point() +
+      ggplot2::labs(x = "Samples", y = "Expression level", title = plotTitle)
     plotly::ggplotly(p)
   }
   assign("plotPlotly", plotPlotly, envir = parent.frame())

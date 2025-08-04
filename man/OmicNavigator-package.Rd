@@ -43,6 +43,7 @@ Authors:
 
 Other contributors:
 \itemize{
+  \item Elyse Geoffroy [contributor]
   \item AbbVie Inc. [copyright holder, funder]
 }
 

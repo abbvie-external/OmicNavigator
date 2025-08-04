@@ -53,6 +53,7 @@ for (bad_char in bad_characters) {
     "Error: Forbidden character detected in study name"
   )
 }
+
 expect_error_xl(
   createStudy(name = "0invalid"),
   "Invalid name for a study package"

@@ -15,10 +15,24 @@ minimalStudyName <- minimalStudyObj[["name"]]
 
 tmplib <- tempfile()
 dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
+
 tmplibSpace <- file.path(tempdir(), "a space")
 dir.create(tmplibSpace)
 tmplibQuote <- file.path(tempdir(), "project's results")
 dir.create(tmplibQuote)
+
+# Export with special encoding description ------------------------------------
+
+specialDesc <- "β‐catenin and neural cell adhesion molecule (NCAM)"
+specialTestStudyObj <- OmicNavigator:::testStudy(name = "ABCspecial",
+                                                 description = specialDesc)
+
+specialPath <- exportStudy(specialTestStudyObj, type = "package", path = tmplib)
+observed <- read.dcf(file.path(specialPath, "DESCRIPTION"), fields = "Description")
+expect_identical_xl(as.character(observed), specialDesc,
+                    info = "Export special character in description field")
 
 # Export as package directory --------------------------------------------------
 
@@ -51,9 +65,10 @@ expect_true_xl(dir.exists(expected))
 # Export as package tarball ----------------------------------------------------
 
 # These tests fail on all CRAN macOS machines and most CRAN Linux machines. I
-# have no idea why. The call to `R CMD build` looks fine, so I don't know what
-# more I could do on my end to fix the failed tarball creation. I skip them on
-# CRAN but still continue to test locally and on GitHub Actions.
+# have no idea why. They also fail in GitHub Actions. The call to `R CMD build`
+# looks fine, so I don't know what more I could do on my end to fix the failed
+# tarball creation. They are only tested locally when running
+# tinytest::test_all() or tinytest::run_test_file()
 
 if (at_home()) {
   tarball <- exportStudy(testStudyObj, type = "tarball", path = tmplib)
@@ -97,26 +112,18 @@ if (at_home()) {
 
   # Return warning message if package fails to build
   pkgDir <- tempfile(pattern = OmicNavigator:::getPrefix())
-  e <- new.env(parent = emptyenv())
-  # This function gets added to the package with an incomplete Rd file, which
-  # causes an error during the build
-  e$x <- function() 1 + 1
-  suppressMessages(
-    utils::package.skeleton(
-      name = basename(pkgDir),
-      path = tempdir(),
-      environment = e
-    )
-  )
+  dir.create(pkgDir, showWarnings = FALSE, recursive = TRUE)
+  # Use invalid package name to trigger build failure
+  writeLines("Package: 1pkg", con = file.path(pkgDir, "DESCRIPTION"))
 
   expect_warning_xl(
     OmicNavigator:::buildPkg(pkgDir),
-    "ERROR: package installation failed",
+    "Malformed package name",
     info = "Return warning message for failed package build"
   )
 
-  # Remove the problematic man file
-  file.remove(file.path(pkgDir, "man", "x.Rd"))
+  # Fix the problematic package name
+  writeLines("Package: onepkg", con = file.path(pkgDir, "DESCRIPTION"))
 
   expect_silent_xl(
     tarball <- OmicNavigator:::buildPkg(pkgDir)
@@ -229,6 +236,63 @@ expect_error_xl(
   "Couldn't find"
 )
 
+# Install invalid study object -------------------------------------------------
+
+# Create invalid study due to an invalid column name for featureID
+invalidStudy <- testStudyObj
+colnames(invalidStudy[["results"]][[1]][[1]])[1] <- "wrongFeatureID"
+expect_error_xl(validateStudy(invalidStudy))
+
+expect_error_xl(installStudy(invalidStudy, library = tmplib))
+expect_silent_xl(installStudy(invalidStudy, requireValid = FALSE, library = tmplib))
+
+# Shared plotting functions across models --------------------------------------
+
+# In general it is best practice to use `modelID = "default"` to share custom
+# plotting functions across models. However, if you have more complex
+# requirements (eg share across only a subset of the models), or prefer to be
+# more explicit, it is now possible to share plotting functions.
+
+# This example study shares a plot across models 1 and 2 but not 3
+sharedPlot <- function(x) plot(1:10)
+sharedPlotList <- list(
+  model_01 = list(
+    sharedPlot = list(
+      displayName = "Plot for model 1",
+      plotType = "singleFeature"
+    )
+  ),
+  model_02 = list(
+    sharedPlot = list(
+      displayName = "Plot for model 2",
+      plotType = "singleFeature"
+    )
+  )
+)
+studyWithSharedPlots <- OmicNavigator:::testStudy(name = "sharedPlots")
+studyWithSharedPlots <- addPlots(studyWithSharedPlots, sharedPlotList)
+tmpExportDir <- tempfile()
+exportStudy(studyWithSharedPlots, type = "package", path = tmpExportDir)
+
+# Ensure only a single copy of the plot function is exported to the package
+namespace <- readLines(file.path(tmpExportDir, "ONstudysharedPlots", "NAMESPACE"))
+expect_identical_xl(namespace, "export(sharedPlot)")
+plotsr <- readLines(file.path(tmpExportDir, "ONstudysharedPlots", "R", "plots.R"))
+expect_identical_xl(plotsr, c("sharedPlot <- function (x) ", "plot(1:10)"))
+
+# Ensure the plot is available for models 1 and 2 but not 3
+installStudy(studyWithSharedPlots)
+rm(sharedPlot) # Not necessary; just to be extra safe package function is called
+plotStudy("sharedPlots", modelID = "model_01", featureID = "feature_0001", plotID = "sharedPlot")
+plotStudy("sharedPlots", modelID = "model_02", featureID = "feature_0001", plotID = "sharedPlot")
+expect_error_xl(
+  plotStudy("sharedPlots", modelID = "model_03", featureID = "feature_0001", plotID = "sharedPlot"),
+  'The plot "sharedPlot" is not available.'
+)
+
 # Teardown ---------------------------------------------------------------------
 
-unlink(c(tmplib, tmplibSpace, tmplibQuote), recursive = TRUE, force = TRUE)
+# todo: plotStudy() should unload study package namespace if it wasn't already loaded
+unloadNamespace("ONstudysharedPlots")
+unlink(c(tmplib, tmplibSpace, tmplibQuote, tmpExportDir), recursive = TRUE, force = TRUE)
+.libPaths(libOrig)

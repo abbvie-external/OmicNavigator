@@ -9,27 +9,59 @@ name: Pin the app to the latest release version
 on:
   repository_dispatch:
     types: [app-release]
+  workflow_dispatch:
+    inputs:
+      appRef:
+        description: >-
+          The Git tag of OmicNavigatorWebApp to bundle in the R package. Must be of the form
+          "refs/tags/vX.X.X" to function correctly.
+        required: true
+        default: refs/tags/vX.X.X
 
 jobs:
   dev:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     steps:
       - uses: actions/checkout@v4
         with:
-          token: ${{ secrets.REPO_ACCESS_TOKEN }}
+          # Using the default github.token as a fallback enables testing the
+          # workflow on a fork
+          token: ${{ secrets.REPO_ACCESS_TOKEN || github.token }}
 
       - name: Extract app version from event payload
         env:
-          appRef: ${{ github.event.client_payload.ref }}
+          appRef: ${{ github.event.client_payload.ref || github.event.inputs.appRef }}
         run: echo "appVersion=${appRef#refs/tags/v}" >> $GITHUB_ENV
 
       - name: Configure Git
         run: |
           git config --local user.name 'GitHub Actions'
-          # I purposefully want to simply use auto-generated email for now
+          git config user.email runneradmin@users.noreply.github.com
 
       - name: Bump pinned app version in R package
         run: Rscript scripts/bump-app-version.R ${{ env.appVersion }}
 
       - name: Commit, tag, and push
-        run: bash scripts/commit-tag-push.sh
+        # Only push commit to the repository if the following conditions are
+        # satisfied:
+        #
+        # 1) The workflow is running in the original repository
+        # AND
+        # 2) One of the following two conditions are satisfied:
+        #   A) The workflow was triggered by a repository_dispatch event
+        #   OR
+        #   B) The workflow was triggered by a workflow_dispatch event
+        #      running on the main branch
+        if: >-
+          github.repository == 'abbvie-external/OmicNavigator'
+          &&
+          (
+            github.event_name == 'repository_dispatch'
+            ||
+            (
+              github.event_name == 'workflow_dispatch'
+              &&
+              github.ref == 'refs/heads/main'
+            )
+          )
+        run: bash -x scripts/commit-tag-push.sh

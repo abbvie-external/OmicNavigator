@@ -1,3 +1,46 @@
+# 1.16.0
+
+* Add support for sharing a custom plotting function across any subset of models
+of a study
+* Add argument `requireValid` to `installStudy()`
+* OmicNavigatorWebApp:
+  * Fix bug that caused enrichments tab to go blank (version 1.9.9)
+  * Restore support for custom plotting functions that were shared across models
+  using the special modelID "default" (version 2.0.0)
+
+# 1.15.2
+
+* The release tarball includes version 2.0.0 of the web app
+
+# 1.15.1
+
+* The release tarball includes version 1.9.9 of the web app
+
+# 1.15.0
+
+* Check for invalid names and fix check for empty mapping
+(implemented by [Elyse Geoffroy](https://github.com/ElyseGeoffroy) in [PR #45](https://github.com/abbvie-external/OmicNavigator/pull/45))
+* Check for empty annotation terms
+(implemented by [Elyse Geoffroy](https://github.com/ElyseGeoffroy) in [PR #49](https://github.com/abbvie-external/OmicNavigator/pull/49))
+* Use UTF-8 encoding in study packages to support special characters in description
+(implemented by [Elyse Geoffroy](https://github.com/ElyseGeoffroy) in [PR #52](https://github.com/abbvie-external/OmicNavigator/pull/52))
+* Refresh documentation, tests, and CI workflows
+([John Blischak](https://github.com/jdblischak))
+* Include latest version of web app
+([1.9.8](https://github.com/abbvie-external/OmicNavigatorWebApp/releases/tag/v1.9.8))
+
+# 1.14.19
+
+* The release tarball includes version 1.9.8 of the web app
+
+# 1.14.4 - 1.14.18
+
+* For troubleshooting only
+
+# 1.14.3
+
+* The release tarball includes version 1.9.7 of the web app
+
 # 1.14.2
 
 * The release tarball includes version 1.9.6 of the web app
