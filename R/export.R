@@ -319,7 +319,8 @@ exportMetaAssays <- function(study, path = ".") {
   exportElements(
     study,
     elements = "metaAssays",
-    path = path
+    path = path,
+    hasRowNames = TRUE
   )
 }
 

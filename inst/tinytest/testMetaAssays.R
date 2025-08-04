@@ -10,6 +10,11 @@ library(OmicNavigator)
 testStudyName <- "toyCrispr"
 testStudyObj <- createStudy(testStudyName, description = "Test metaAssays")
 
+tmplib <- tempfile()
+dir.create(tmplib)
+libOrig <- .libPaths()
+.libPaths(c(tmplib, libOrig))
+
 # Add toy CRISPR data ----------------------------------------------------------
 
 # 1 model
@@ -88,3 +93,17 @@ testStudyObj <- addPlots(testStudyObj, plots)
 plotStudy(testStudyObj, modelID = "crispr", featureID = "gene1", plotID = "plotGeneWithGuides")
 plotStudy(testStudyObj, modelID = "crispr", featureID = "gene2", plotID = "plotGeneWithGuides")
 plotStudy(testStudyObj, modelID = "crispr", featureID = "gene3", plotID = "plotGeneWithGuides")
+
+# Export and import metaAssays -------------------------------------------------
+
+suppressMessages(installStudy(testStudyObj, requireValid = FALSE))
+metaAssaysFromPkg <- getMetaAssays(testStudyName, modelID = "crispr")
+
+expect_equal_xl(metaAssaysFromPkg, metaAssays)
+
+# Teardown ---------------------------------------------------------------------
+
+testPkgName <- paste0(OmicNavigator:::getPrefix(), testStudyName)
+unloadNamespace(testPkgName)
+unlink(tmplib, recursive = TRUE, force = TRUE)
+.libPaths(libOrig)
