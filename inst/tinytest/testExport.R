@@ -128,6 +128,9 @@ if (at_home()) {
   expect_silent_xl(
     tarball <- OmicNavigator:::buildPkg(pkgDir)
   )
+  expect_identical_xl(tarball, "onepkg_NA.tar.gz")
+  # note: The NA in the tarball name is because I only provided this minimal
+  # package with a name but not a version in DESCRIPTION
 
   unlink(pkgDir, recursive = TRUE, force = TRUE)
   file.remove(tarball)

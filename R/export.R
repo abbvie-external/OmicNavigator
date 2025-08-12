@@ -56,13 +56,22 @@ buildPkg <- function(pkgDir) {
     stdout = TRUE,
     stderr = NULL
   )
+
   # Display stdout if anything went wrong
   if (!is.null(attr(stdout, "status"))) {
     warning(paste(stdout, collapse = "\n"))
   }
-  regex <- sprintf("%s.*\\.tar\\.gz", getPrefix())
+
+  # Extract the tarball name from the last line of stdout returned by `R CMD build`
+  #
+  # * building '{Package}_{Version}.tar.gz'
+  regex <- "[^']*\\.tar\\.gz"
   regexMatch <- regexpr(regex, stdout[length(stdout)])
   tarball <- regmatches(stdout[length(stdout)], regexMatch)
+  if (isEmpty(tarball)) {
+    warning("Unable to determine name of tarball when installing ", pkgDir)
+  }
+
   return(invisible(tarball))
 }
 
