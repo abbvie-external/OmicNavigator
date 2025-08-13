@@ -56,14 +56,34 @@ buildPkg <- function(pkgDir) {
     stdout = TRUE,
     stderr = NULL
   )
+
   # Display stdout if anything went wrong
   if (!is.null(attr(stdout, "status"))) {
     warning(paste(stdout, collapse = "\n"))
   }
-  regex <- sprintf("%s.*\\.tar\\.gz", getPrefix())
+
+  tarball <- extractTarballName(stdout)
+  return(invisible(tarball))
+}
+
+# Extract the tarball name from the last line of stdout returned by `R CMD build`
+#
+# eg
+#
+# * building '{Package}_{Version}.tar.gz'
+#
+# The format of the output string is very stable!
+# https://github.com/r-devel/r-svn/blob/2377495b7f412888abb81f7b5658bdf5e5f4c6c2/src/library/tools/R/build.R#L1252
+extractTarballName <- function(stdout) {
+  regex <- "[^']*\\.tar\\.gz"
   regexMatch <- regexpr(regex, stdout[length(stdout)])
   tarball <- regmatches(stdout[length(stdout)], regexMatch)
-  return(invisible(tarball))
+
+  if (isEmpty(tarball)) {
+    warning("Unable to determine name of tarball after build")
+  }
+
+  return(tarball)
 }
 
 createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {

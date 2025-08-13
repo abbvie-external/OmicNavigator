@@ -128,10 +128,33 @@ if (at_home()) {
   expect_silent_xl(
     tarball <- OmicNavigator:::buildPkg(pkgDir)
   )
+  expect_identical_xl(tarball, "onepkg_NA.tar.gz")
+  # note: The NA in the tarball name is because I only provided this minimal
+  # package with a name but not a version in DESCRIPTION
 
   unlink(pkgDir, recursive = TRUE, force = TRUE)
   file.remove(tarball)
 }
+
+expect_identical_xl(
+  OmicNavigator:::extractTarballName("* building 'ONstudyABC_0.0.0.9000.tar.gz'"),
+  "ONstudyABC_0.0.0.9000.tar.gz"
+)
+
+expect_identical_xl(
+  OmicNavigator:::extractTarballName("* building 'onepkg_NA.tar.gz'"),
+  "onepkg_NA.tar.gz"
+)
+
+expect_identical_xl(
+  OmicNavigator:::extractTarballName("* building 'OmicNavigator_1.16.0.tar.gz'"),
+  "OmicNavigator_1.16.0.tar.gz"
+)
+
+expect_warning_xl(
+  OmicNavigator:::extractTarballName(""),
+  "Unable to determine name of tarball after build"
+)
 
 # Check package metadata -------------------------------------------------------
 
