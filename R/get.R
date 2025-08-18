@@ -369,6 +369,25 @@ getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, librar
   )
 }
 
+#' Get metaAssays from a study
+#'
+#' @inherit shared-get
+#' @inheritParams listStudies
+#'
+#' @export
+getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
+  getElements(
+    study,
+    elements = "metaAssays",
+    filters = list(modelID = modelID),
+    default = "default",
+    quiet = quiet,
+    libraries = libraries,
+    hasRowNames = TRUE,
+    colClasses = list(character = 1)
+  )
+}
+
 # ... Arguments passed to either data.table::fread() or jsonlite::read_json()
 getElements <- function(
   study,

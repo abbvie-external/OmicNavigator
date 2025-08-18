@@ -105,6 +105,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportResultsLinkouts(study, directoryname)
   exportEnrichmentsLinkouts(study, directoryname)
   exportMetaFeaturesLinkouts(study, directoryname)
+  exportMetaAssays(study, directoryname)
   exportSummary(study, directoryname)
   if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
@@ -311,6 +312,15 @@ exportMetaFeaturesLinkouts <- function(study, path = ".") {
     elements = "metaFeaturesLinkouts",
     path = path,
     fileType = "json"
+  )
+}
+
+exportMetaAssays <- function(study, path = ".") {
+  exportElements(
+    study,
+    elements = "metaAssays",
+    path = path,
+    hasRowNames = TRUE
   )
 }
 

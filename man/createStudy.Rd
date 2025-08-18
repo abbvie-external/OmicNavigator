@@ -23,6 +23,7 @@ createStudy(
   resultsLinkouts = list(),
   enrichmentsLinkouts = list(),
   metaFeaturesLinkouts = list(),
+  metaAssays = list(),
   version = NULL,
   maintainer = NULL,
   maintainerEmail = NULL,
@@ -207,6 +208,8 @@ is a named list of character vectors. The names of this nested list must
 correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
 linkouts across multiple models, use the modelID "default".}
 
+\item{metaAssays}{The metaAssays from the study (one per model).}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -268,6 +271,7 @@ study <- createStudy(name = "ABC",
 \code{\link{addResultsLinkouts}},
 \code{\link{addEnrichmentsLinkouts}},
 \code{\link{addMetaFeaturesLinkouts}},
+\code{\link{addMetaAssays}},
 \code{\link{exportStudy}},
 \code{\link{installStudy}}
 }
