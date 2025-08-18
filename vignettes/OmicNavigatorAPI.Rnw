@@ -84,7 +84,7 @@ local({
   tmpReport <- tempfile(fileext = ".html")
   writeLines("<p>example</p>", tmpReport)
   abc <- addReports(abc, list(model_02 = tmpReport))
-  OmicNavigator::installStudy(abc)
+  installStudy(abc)
 })
 @
 
