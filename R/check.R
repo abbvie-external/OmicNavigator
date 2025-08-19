@@ -269,6 +269,26 @@ checkAssays <- function(assays) {
   return(NULL)
 }
 
+checkMetaAssays <- function(metaAssays) {
+  checkList(metaAssays)
+
+  for (i in seq_along(metaAssays)) {
+    stopifnot(
+      inherits(metaAssays[[i]], "data.frame"),
+      nrow(metaAssays[[i]]) > 0,
+      ncol(metaAssays[[i]]) > 0
+    )
+    # All the columns must be numeric
+    colsAllNum <- all(vapply(metaAssays[[i]], is.numeric, logical(1)))
+    if (!colsAllNum) {
+      stop("The columns of the metaAssays data frame must all be numeric.\n",
+           sprintf("Problematic modelID: %s", names(metaAssays)[i]))
+    }
+  }
+
+  return(NULL)
+}
+
 checkTests <- function(tests) {
   checkList(tests)
 
@@ -554,14 +574,6 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
       stopifnot(is.character(metaFeaturesLinkouts[[i]][[j]]))
     }
   }
-
-  return(NULL)
-}
-
-checkMetaAssays <- function(metaAssays) {
-  checkList(metaAssays)
-
-  # todo: metaAssays
 
   return(NULL)
 }

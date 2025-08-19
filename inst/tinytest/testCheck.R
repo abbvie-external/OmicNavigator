@@ -43,7 +43,7 @@ expect_error_xl(
   createStudy(name = "invalid."),
   "Error: study name cannot end in a period"
  )
- 
+
 # Test error thrown for special characters in study name
 bad_characters <-  c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
 for (bad_char in bad_characters) {
@@ -309,7 +309,7 @@ for (bad_char in bad_characters) {
     "Error: Forbidden character detected in model name"
   )
 }
- 
+
 # Test error thrown for period at end of name
 test <- list("model." = "tooltip")
 expect_error_xl(
@@ -331,7 +331,26 @@ assaysWithNonNumeric <- list(
 )
 
 expect_error_xl(
-  addAssays(study, assays = assaysWithNonNumeric)
+  addAssays(study, assays = assaysWithNonNumeric),
+  "The columns of the assays data frame must all be numeric."
+)
+
+# checkMetaAssays ------------------------------------------------------------------
+
+expect_error_xl(
+  addMetaAssays(study, metaAssays = NULL)
+)
+
+metaAssaysWithNonNumeric <- list(
+  default = data.frame(
+    one = letters,
+    two = 1:26
+  )
+)
+
+expect_error_xl(
+  addMetaAssays(study, metaAssays = metaAssaysWithNonNumeric),
+  "The columns of the metaAssays data frame must all be numeric."
 )
 
 # checkTests -------------------------------------------------------------------
@@ -371,7 +390,7 @@ for (bad_char in bad_characters) {
     "Error: Forbidden character detected in test name"
   )
 }
- 
+
 # Test error thrown for period at end of name
 test <- list("test." = "tooltip")
 expect_error_xl(
@@ -390,7 +409,7 @@ expect_error_xl(
    addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = NULL))),
    'Missing the list of terms for "annotation_01"'
 )
- 
+
 expect_error_xl(
    addAnnotations(study, annotations = list(annotation_01 = list("description" = 'hi', "featureID" = "feature_01", "terms" = list()))),
    'An empty list is not allowed in this context'
