@@ -1,3 +1,7 @@
+# 1.16.1
+
+* The release tarball includes version 2.0.1 of the web app
+
 # 1.16.0
 
 * Add support for sharing a custom plotting function across any subset of models
