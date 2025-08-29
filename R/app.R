@@ -63,6 +63,9 @@ listStudies <- function(libraries = NULL) {
     }
 
     studySummary <- readJson(studySummaryFile, simplifyVector = FALSE)
+    # Remove plotting information to reduce size of return object. The app now
+    # obtains plots directly via getPlots()
+    studySummary <- studySummary[c("results", "enrichments")]
     output[[i]] <- c(output[[i]], studySummary)
   }
 

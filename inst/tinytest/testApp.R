@@ -75,7 +75,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(studies[[1]]),
-  c("name", "package", "results", "enrichments", "plots")
+  c("name", "package", "results", "enrichments")
 )
 
 expect_identical_xl(
@@ -110,37 +110,6 @@ expect_identical_xl(
   vapply(studies[[1]][["enrichments"]][[1]][["annotations"]],
          function(x) x[["annotationID"]], character(1)),
   names(getEnrichments(testStudyObj, modelID = testModelName))
-)
-
-expect_identical_xl(
-  vapply(studies[[1]][["plots"]], function(x) x[["modelID"]], character(1)),
-  names(getModels(testStudyObj))
-)
-
-expect_identical_xl(
-  vapply(studies[[1]][["plots"]][[1]][["plots"]],
-         function(x) x[["plotID"]], character(1)),
-  names(getPlots(testStudyObj, modelID = testModelName))
-)
-
-expect_identical_xl(
-  studies[[1]][["plots"]][[1]][["plots"]][[1]][["plotType"]],
-  "singleFeature"
-)
-
-expect_identical_xl(
-  studies[[1]][["plots"]][[1]][["plots"]][[2]][["plotType"]],
-  "multiFeature"
-)
-
-expect_identical_xl(
-  studies[[1]][["plots"]][[1]][["plots"]][[3]][["plotType"]],
-  "multiTest"
-)
-
-expect_identical_xl(
-  studies[[1]][["plots"]][[1]][["plots"]][[4]][["plotType"]],
-  list("multiFeature", "multiTest")
 )
 
 # If there are no OmicNavigator study packages installed, return an empty list.
