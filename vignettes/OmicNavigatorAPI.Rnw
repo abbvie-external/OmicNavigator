@@ -91,11 +91,7 @@ local({
 \section{List studies}
 \label{sec:list-studies}
 
-List all the available studies along with their models, tests, annotations, and
-plots.
-
-\textbf{Update:} The \texttt{plotType} may be a single string or a nested list
-of multiple plot types (e.g. ``singleFeature'' and ``multiTest'')
+List all the available studies along with their models, tests, and annotations.
 
 <<list-studies, eval=FALSE>>=
 studies <- listStudies()
@@ -228,6 +224,22 @@ toJSON(linkFeatures[1:4], pretty = TRUE)
 
 \section{Custom plots}
 \label{sec:custom-plots}
+
+Obtain
+
+For a given study and model, return a list of any custom plots for that study
+with \texttt{getPlots()}.
+
+\textbf{Update:} The \texttt{plotType} may be a single string or a nested list
+of multiple plot types (e.g. ``singleFeature'' and ``multiTest'')
+
+<<getPlots>>=
+plots <- getPlots(
+  study = "ABC",
+  modelID = "model_01"
+)
+toJSON(plots, auto_unbox = TRUE, pretty = TRUE)
+@
 
 Display the custom plots provided by the user with \texttt{plotStudy()}. Provided a
 study, model, feature, test, and plot, \texttt{plotStudy()} generates the custom plot.

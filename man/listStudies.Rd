@@ -20,7 +20,6 @@ study package. Each study package entry has the following sublist components:
 \item{package}{(list) The fields from \code{DESCRIPTION}}
 \item{results}{(nested list) The testIDs available for each modelID}
 \item{enrichments}{(nested list) The annotationIDs available for each modelID}
-\item{plots}{(nested list) The plotIDs available for each modelID}
 }
 \description{
 List available studies and their metadata

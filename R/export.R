@@ -328,14 +328,10 @@ exportSummary <- function(x, path = ".") {
 
   resultsModels <- names(x[["results"]])
   enrichmentsModels <- names(x[["enrichments"]])
-  # Plots can be shared across models using modelID "default". Thus need to
-  # consider all models that have inference results or enrichments available.
-  plotsModels <- unique(c(resultsModels, enrichmentsModels))
 
   output <- list(
     results = vector("list", length(resultsModels)),
-    enrichments = vector("list", length(enrichmentsModels)),
-    plots = vector("list", length(plotsModels))
+    enrichments = vector("list", length(enrichmentsModels))
   )
 
   for (i in seq_along(resultsModels)) {
@@ -384,30 +380,6 @@ exportSummary <- function(x, path = ".") {
       output[["enrichments"]][[i]][["annotations"]][[j]] <- list(
         annotationID = annotationID,
         annotationDisplay = annotationDisplay
-      )
-    }
-  }
-
-  for (i in seq_along(plotsModels)) {
-    modelID <- plotsModels[i]
-    modelDisplay <- getModels(x, modelID = modelID, quiet = TRUE)
-    if (isEmpty(modelDisplay)) modelDisplay <- modelID
-    output[["plots"]][[i]] <- list(
-      modelID = modelID,
-      modelDisplay = modelDisplay
-    )
-    modelPlots <- getPlots(x, modelID = modelID, quiet = TRUE)
-    output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
-    for (j in seq_along(modelPlots)) {
-      plotID <- names(modelPlots)[j]
-      plotDisplay = modelPlots[[j]][["displayName"]]
-      if (isEmpty(plotDisplay)) plotDisplay <- plotID
-      plotType <- modelPlots[[j]][["plotType"]]
-      if (isEmpty(plotType)) plotType <- "singleFeature"
-      output[["plots"]][[i]][["plots"]][[j]] <- list(
-        plotID = plotID,
-        plotDisplay = plotDisplay,
-        plotType = plotType
       )
     }
   }

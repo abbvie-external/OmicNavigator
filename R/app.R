@@ -14,7 +14,6 @@
 #'   \item{package}{(list) The fields from \code{DESCRIPTION}}
 #'   \item{results}{(nested list) The testIDs available for each modelID}
 #'   \item{enrichments}{(nested list) The annotationIDs available for each modelID}
-#'   \item{plots}{(nested list) The plotIDs available for each modelID}
 #'
 #' @export
 listStudies <- function(libraries = NULL) {
@@ -63,9 +62,26 @@ listStudies <- function(libraries = NULL) {
     }
 
     studySummary <- readJson(studySummaryFile, simplifyVector = FALSE)
-    # Remove plotting information to reduce size of return object. The app now
-    # obtains plots directly via getPlots()
+
+    # Explanation: OmicNavigator 1.16 and earlier included the plots for each
+    # study in the output of listStudies() (via exportSummary() in export.R).
+    # However, the plots were removed because 1) a new field "description" was
+    # added to addPlots()/getPlots()/WebApp but not added to listStudies(), and
+    # 2) the size of the listStudies() return object was hurting the app's
+    # performance as the number of installed study packages increased.
+    #
+    # https://github.com/abbvie-external/OmicNavigator/commit/46bb2bdf8af5042bdb66848c5b0ffb768752290b
+    # https://github.com/abbvie-external/OmicNavigatorWebApp/commit/dfb9a8797b434ac19f5ead72f398c495f75549e3
+    #
+    # Thus instead of adding "description" to listStudies(), since the app was
+    # already refactored to call getPlots(), we removed plots from listStudies()
+    # and exportSummary().
+    #
+    # To maintain backwards compatibility with study packages created with
+    # OmicNavigator 1.16 and earlier, the line below explicitly only includes
+    # the results and enrichments. This removes any plots if they exist.
     studySummary <- studySummary[c("results", "enrichments")]
+
     output[[i]] <- c(output[[i]], studySummary)
   }
 
