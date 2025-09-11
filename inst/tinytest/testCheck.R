@@ -695,12 +695,9 @@ expect_error_xl(
   addReports(study, reports = NULL)
 )
 
-expect_silent_xl(
+expect_error_xl(
   addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
-)
-
-expect_silent_xl(
-  addReports(study, reports = list(modelID = "https://www.domain.com/report.html")),
+  "is.character"
 )
 
 expect_silent_xl(
