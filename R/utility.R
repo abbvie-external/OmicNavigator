@@ -22,6 +22,28 @@ pkgToStudy <- function(pkg) {
   return(study)
 }
 
+studiesWithElements <- function(studies, elements) {
+  filteredStudies <- studies
+  for (study in filteredStudies) {
+    hasAllElements <- TRUE
+    for (element in elements) {
+      if (!element %in% c("metaFeatures", "results", "enrichments", "reports", "plots", "assays", "samples", "features", "resultsLinkouts", "metaAssays")) {
+        stop(sprintf("Invalid element: %s. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'", element),
+             call. = FALSE)
+      }
+      package_files <- list.files(system.file(package = study), recursive = TRUE)
+      if (any(grepl(element, package_files))) {
+        hasAllElements <- TRUE
+      } else {
+        hasAllElements <- FALSE
+        filteredStudies <- filteredStudies[filteredStudies != study]
+        next
+      }
+    }
+  }
+  return(filteredStudies)
+}
+
 ## I/O -------------------------------------------------------------------------
 
 readTable <- function(

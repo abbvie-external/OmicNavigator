@@ -7,11 +7,15 @@
 #'   packages
 #'
 #' @export
-getInstalledStudies <- function(libraries = NULL) {
+getInstalledStudies <- function(libraries = NULL, elements = NULL) {
+
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
   names(pkgsAll) <- NULL
   regex <- getPrefix(regex = TRUE)
   pkgsOa <- grep(regex, pkgsAll, value = TRUE)
+  if (!isEmpty(elements)) {
+    studies <- studiesWithElements(pkgsOa, elements)
+  }
   studies <- pkgToStudy(pkgsOa)
   studies <- sort(studies)
 
