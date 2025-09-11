@@ -695,16 +695,14 @@ expect_error_xl(
   addReports(study, reports = NULL)
 )
 
-expect_error_xl(
-  addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
-  "is.character"
-)
+# expect_error_xl(
+#   addReports(study, reports = list(modelID = list("https://www.domain.com/report.html"))),
+#   "is.character"
+# )
 
-expect_error_xl(
+expect_silent_xl(
   addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
-                                               "https://www.domain.com/report2.html"))),
-  "length"
-)
+                                               "https://www.domain.com/report2.html"))))
 
 expect_error_xl(
   addReports(study, reports = list(modelID = "C:/path/to/non-existent/file")),
