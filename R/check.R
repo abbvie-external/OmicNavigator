@@ -516,7 +516,7 @@ checkURLorPath <- function(x) {
     length(x) == 1
   )
   if (!isUrl(x) && !file.exists(x)) {
-    stop("Input must be a URL or a path to an existing file")
+    stop("Report must be a URL or a path to an existing file")
   }
   return(NULL)
 }
