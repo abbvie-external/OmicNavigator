@@ -526,7 +526,7 @@ checkReports <- function(reports) {
 
   for (i in seq_along(reports)) {
     report <- reports[[i]]
-    if (is.list(report)) {
+    if (length(report) > 1) {
       for (j in seq_along(report)) {
         checkURLorPath(report[[j]])
       }
