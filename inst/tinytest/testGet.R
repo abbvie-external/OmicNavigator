@@ -44,8 +44,9 @@ expect_error_xl(
 ) 
 
 # Test that elements argument filters studies.
-expect_silent_xl(
-  getInstalledStudies(elements = c("metaFeatures", "results", "plots"))
+expect_identical_xl(
+  getInstalledStudies(elements = c("metaFeatures", "results", "plots"), libraries = tmplib),
+  testStudyName
 )
 
 # getSamples -------------------------------------------------------------------
