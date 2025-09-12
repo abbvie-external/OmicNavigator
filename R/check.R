@@ -510,29 +510,14 @@ checkBarcodes <- function(barcodes) {
   return(NULL)
 }
 
-checkURLorPath <- function(x) {
-  stopifnot(
-    is.character(x),
-    length(x) == 1
-  )
-  if (!isUrl(x) && !file.exists(x)) {
-    stop("Report must be a URL or a path to an existing file")
-  }
-  return(NULL)
-}
-
 checkReports <- function(reports) {
   checkList(reports)
 
   for (i in seq_along(reports)) {
     report <- reports[[i]]
-    if (length(report) > 1) {
       for (j in seq_along(report)) {
-        checkURLorPath(report[[j]])
+        isUrlOrPath(report[[j]])
       }
-    } else {
-      checkURLorPath(report)
-    }
   }
 
   return(NULL)
