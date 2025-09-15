@@ -31,8 +31,8 @@ studiesWithElements <- function(studies, elements, libraries = NULL) {
         stop(sprintf("Invalid element: %s. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'", element),
              call. = FALSE)
       }
-      package_files <- list.files(system.file(package = study, lib.loc = libraries), recursive = TRUE)
-      if (any(grepl(element, package_files))) {
+      packageElements <- list.files(system.file(package = study, lib.loc = libraries), recursive = TRUE)
+      if (any(grepl(element, packageElements))) {
         hasAllElements <- TRUE
       } else {
         hasAllElements <- FALSE

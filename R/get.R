@@ -19,7 +19,7 @@ getInstalledStudies <- function(elements = NULL, libraries = NULL) {
   regex <- getPrefix(regex = TRUE)
   pkgsOn <- grep(regex, pkgsAll, value = TRUE)
   if (!isEmpty(elements)) {
-    studies <- studiesWithElements(pkgsOn, elements)
+    pkgsOn <- studiesWithElements(pkgsOn, elements, libraries = libraries)
   }
   studies <- pkgToStudy(pkgsOn)
   studies <- sort(studies)
