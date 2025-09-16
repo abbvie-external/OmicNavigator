@@ -146,6 +146,10 @@ nrow(resultsTableTerm)
 toJSON(resultsTableTerm[1:2, ], pretty = TRUE)
 @
 
+Optional descriptions of each column to be displayed as tooltips can be obtained
+via a call to \texttt{getTests()} with the corresponding \texttt{modelID} and
+\texttt{testID}.
+
 \section{Enrichments table}
 \label{sec:enrichments-table}
 
