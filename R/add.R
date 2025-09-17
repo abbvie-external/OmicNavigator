@@ -359,9 +359,11 @@ addEnrichments <- function(study, enrichments, reset = FALSE) {
 #'   the study. The input object is a list of data frames (one per model). The
 #'   first column of each data frame is used as the featureID, so it must
 #'   contain the same IDs as the corresponding features data frame
-#'   (\code{\link{addFeatures}}). To share a data frame across multiple models,
-#'   use the modelID "default". All columns will be coerced to character
-#'   strings.
+#'   (\code{\link{addFeatures}}). The second column of each data frame is used
+#'   as the metaFeatureID, and thus should match the row names of any metaAssays
+#'   added via \code{\link{addMetaAssays}}. To share a data frame across
+#'   multiple models, use the modelID "default". All columns will be coerced to
+#'   character strings.
 #' @inherit shared-add
 #'
 #' @export
@@ -671,7 +673,13 @@ addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) 
 #' Experimental. Add metaAssay measurements that map to the features in the
 #' assays data.
 #'
-#' @param metaAssays The metaAssays from the study (one per model).
+#' @param metaAssays The metaAssays from the study. The input object is a list
+#'   of data frames (one per model). The row names should correspond to the
+#'   metaFeatureIDs (second column of data frame added via
+#'   \code{\link{addMetaFeatures}}). The column names should correspond to the
+#'   sampleIDs (\code{\link{addSamples}}). The data frame should only contain
+#'   numeric values. To share a data frame across multiple models, use the
+#'   modelID "default".
 #' @inheritParams shared-add
 #'
 #' @seealso \code{\link{addAssays}}, \code{\link{addMetaFeatures}}
