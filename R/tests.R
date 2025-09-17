@@ -34,6 +34,7 @@ testStudy <- function(name,
                        metaFeaturesLinkouts = testMetaFeaturesLinkouts(),
                        mapping = testMapping(seed = seed, nFeatures = nFeatures,
                                              numericFeatureID = numericFeatureID),
+                       metaAssays = testMetaAssays(),
                        version = version,
                        maintainer = maintainer,
                        maintainerEmail = maintainerEmail,
@@ -479,6 +480,25 @@ testMetaFeaturesLinkouts <- function(n = 3) {
     )
   )
   return(metaFeaturesLinkouts)
+}
+
+# Like testMetaFeatures(), assigns 3 metaFeatures to each feature
+testMetaAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
+  set.seed(seed)
+  metaAssays <- vector(mode = "list", length = n)
+  names(metaAssays) <- sprintf("model_%02d", seq_len(n))
+  metaFeatureID <- sprintf("metaFeature_%04d", seq_len(rows * 3))
+  sampleID <- sprintf("sample_%04d", seq_len(cols))
+  for (i in seq_len(n)) {
+    metaAssays[[i]] <- matrix(
+      sample(seq(-2, 2, by = 0.0001), size = rows * 3 * cols, replace = TRUE),
+      nrow = rows * 3, ncol = cols
+    )
+    rownames(metaAssays[[i]]) <- metaFeatureID
+    colnames(metaAssays[[i]]) <- sampleID
+    metaAssays[[i]] <- as.data.frame(metaAssays[[i]])
+  }
+  return(metaAssays)
 }
 
 testStudyMeta <- function() {

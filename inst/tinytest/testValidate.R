@@ -274,3 +274,39 @@ expect_error_xl(
   validateStudy(invalidMapping),
   "Mapping features for modelID do not match features from modelID results table\n"
 )
+
+# metaAssays -----------------------------------------------------------------------
+
+# Column names should match sampleIDs
+invalidMetaAssaysCols <- testStudyObj
+colnames(invalidMetaAssaysCols[["metaAssays"]][[1]])[1] <- "non-existent"
+
+expect_message_xl(
+  validateStudy(invalidMetaAssaysCols),
+  "Some of the sampleIDs in the samples table are missing from the columns in the metaAssays table"
+)
+
+colnames(invalidMetaAssaysCols[["metaAssays"]][[1]]) <-
+  sprintf("overwrite-all-colnames-%d", seq_along(invalidMetaAssaysCols[["metaAssays"]][[1]]))
+
+expect_error_xl(
+  validateStudy(invalidMetaAssaysCols),
+  "The sampleIDs in the samples table do not match the column names in the metaAssays table"
+)
+
+# Row names should match metaFeatureIDs
+invalidMetaAssaysRows <- testStudyObj
+rownames(invalidMetaAssaysRows[["metaAssays"]][[1]])[1] <- "non-existent"
+
+expect_message_xl(
+  validateStudy(invalidMetaAssaysRows),
+  "Some of the metaFeatureIDs in the metaFeatures table are missing from the rows in the metaAssays table"
+)
+
+rownames(invalidMetaAssaysRows[["metaAssays"]][[1]]) <-
+  sprintf("overwrite-all-rownames-%d", seq_len(nrow(invalidMetaAssaysRows[["metaAssays"]][[1]])))
+
+expect_error_xl(
+  validateStudy(invalidMetaAssaysRows),
+  "The metaFeatureIDs in the metaFeatures table do not match the row names in the metaAssays table"
+)
