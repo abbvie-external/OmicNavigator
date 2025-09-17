@@ -68,7 +68,10 @@ names should be the testIDs. The value should be a single character string
 describing the testID. To share tests across multiple models, use the
 modelID "default". Instead of a single character string, you can provide a
 list of metadata fields about each test. The field "description" will be
-used to derive the tooltip displayed in the app.}
+used to derive the tooltip displayed in the app. Furthermore, any fields
+that match the column names in the results table (added via
+\code{\link{addFeatures}} or \code{\link{addResults}}) will be used to
+derive tooltips for those columns.}
 
 \item{annotations}{The annotations used for the enrichment analyses. The
 input is a nested list. The top-level list contains one entry per
