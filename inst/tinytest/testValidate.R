@@ -137,18 +137,35 @@ expect_error_xl(
 
 # metaFeatures -----------------------------------------------------------------
 
-# metaFeatures table contains a row with a featureID not in features table
-invalidMetaFeatures <- testStudyObj
-invalidMetaFeatures[["metaFeatures"]][[1]] <- rbind(
-  invalidMetaFeatures[["metaFeatures"]][[1]][1, ],
-  invalidMetaFeatures[["metaFeatures"]][[1]]
+# Ok if metaFeatures table contains a row with a featureID not in features table
+extraFeatureInMetaFeatures <- testStudyObj
+extraFeatureInMetaFeatures[["metaFeatures"]][[1]] <- rbind(
+  extraFeatureInMetaFeatures[["metaFeatures"]][[1]][1, ],
+  extraFeatureInMetaFeatures[["metaFeatures"]][[1]]
 )
-invalidMetaFeatures[["metaFeatures"]][[1]][1, 1] <- "missingInFeaturesTable"
+extraFeatureInMetaFeatures[["metaFeatures"]][[1]][1, 1] <- "missingInFeaturesTable"
 
-# This is ok now. Extra rows in the metaFeatures table won't affect anything in
-# the app
-expect_true_xl(
-  validateStudy(invalidMetaFeatures)
+# Extra rows in the metaFeatures table won't affect anything in the app
+expect_true_xl(validateStudy(extraFeatureInMetaFeatures))
+
+# Fail if completely mismatched featureIDs between features and metaFeatures
+# tables
+mismatchedFeaturesInMetaFeatures <- testStudyObj
+mismatchedFeaturesInMetaFeatures[["metaFeatures"]][[1]][[1]] <- "mismatched"
+
+expect_error_xl(
+  validateStudy(mismatchedFeaturesInMetaFeatures),
+  "The features in the results table do not match the featureID column in the metaFeatures table"
+)
+
+# Message if featureID in results table is missing from metaFeatures table
+missingFeatureInMetaFeatures <- testStudyObj
+missingFeatureInMetaFeatures[["metaFeatures"]][[1]] <-
+  subset(missingFeatureInMetaFeatures[["metaFeatures"]][[1]], customID != "feature_0001")
+
+expect_message_xl(
+  validateStudy(missingFeatureInMetaFeatures),
+  "Some of the features in the results table are missing from the featureID column in the metaFeatures table"
 )
 
 # Results Linkouts -------------------------------------------------------------
