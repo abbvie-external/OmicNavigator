@@ -32,7 +32,6 @@ studiesWithElements <- function(studies, elements, libraries = NULL) {
              call. = FALSE)
       }
       if (!any(grepl(element, packageElements))) {
-        hasAllElements <- FALSE
         filteredStudies <- filteredStudies[filteredStudies != study]
         next
       }
