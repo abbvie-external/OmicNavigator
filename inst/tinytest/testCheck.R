@@ -9,29 +9,6 @@ library(OmicNavigator)
 
 study <- createStudy(name = "test")
 
-testStudyName <- "ABC"
-testStudyObj <- OmicNavigator:::testStudy(name = testStudyName)
-results <- OmicNavigator:::testResults()
-testStudyObj <- addResults(testStudyObj, results = results)
-
-enrichments <- OmicNavigator:::testEnrichments()
-testStudyObj <- addEnrichments(testStudyObj, enrichments = enrichments)
-testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
-minimalStudyObj <- OmicNavigator:::testStudyMinimal()
-minimalStudyName <- minimalStudyObj[["name"]]
-tmplib <- tempfile()
-dir.create(tmplib)
-
-x <- OmicNavigator:::testStudyMinimal()
-installStudy(x, library = tmplib)
-
-getInstalledStudies(libraries = tmplib)
-## [1] "minimal"
-getInstalledStudies(elements = c("results", "enrichments"), libraries = tmplib)
-## [1] "minimal"
-# The below should return `character(0)`
-getInstalledStudies(elements = c("results", "enrichments", "plots"), libraries = tmplib)
-## [1] "minimal"
 # checkStudy -------------------------------------------------------------------
 
 invalidStudy <- list(nameIncorrect = "incorrect")
