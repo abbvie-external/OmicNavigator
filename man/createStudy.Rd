@@ -106,9 +106,11 @@ adjusting for multiple testing). Any additional columns are ignored.}
 the study. The input object is a list of data frames (one per model). The
 first column of each data frame is used as the featureID, so it must
 contain the same IDs as the corresponding features data frame
-(\code{\link{addFeatures}}). To share a data frame across multiple models,
-use the modelID "default". All columns will be coerced to character
-strings.}
+(\code{\link{addFeatures}}). The second column of each data frame is used
+as the metaFeatureID, and thus should match the row names of any metaAssays
+added via \code{\link{addMetaAssays}}. To share a data frame across
+multiple models, use the modelID "default". All columns will be coerced to
+character strings.}
 
 \item{plots}{A nested list containing custom plotting functions and plot
 metadata. The input object is a 3-level nested list. The first, or
@@ -211,7 +213,13 @@ is a named list of character vectors. The names of this nested list must
 correspond to the column names of the matching metaFeatures table (\code{\link{addMetaFeatures}}). To share
 linkouts across multiple models, use the modelID "default".}
 
-\item{metaAssays}{The metaAssays from the study (one per model).}
+\item{metaAssays}{The metaAssays from the study. The input object is a list
+of data frames (one per model). The row names should correspond to the
+metaFeatureIDs (second column of data frame added via
+\code{\link{addMetaFeatures}}). The column names should correspond to the
+sampleIDs (\code{\link{addSamples}}). The data frame should only contain
+numeric values. To share a data frame across multiple models, use the
+modelID "default".}
 
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is

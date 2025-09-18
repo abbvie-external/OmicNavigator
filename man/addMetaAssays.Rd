@@ -9,7 +9,13 @@ addMetaAssays(study, metaAssays, reset = FALSE)
 \arguments{
 \item{study}{An OmicNavigator study created with \code{\link{createStudy}}}
 
-\item{metaAssays}{The metaAssays from the study (one per model).}
+\item{metaAssays}{The metaAssays from the study. The input object is a list
+of data frames (one per model). The row names should correspond to the
+metaFeatureIDs (second column of data frame added via
+\code{\link{addMetaFeatures}}). The column names should correspond to the
+sampleIDs (\code{\link{addSamples}}). The data frame should only contain
+numeric values. To share a data frame across multiple models, use the
+modelID "default".}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data
