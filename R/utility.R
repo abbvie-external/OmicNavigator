@@ -22,6 +22,24 @@ pkgToStudy <- function(pkg) {
   return(study)
 }
 
+studiesWithElements <- function(studies, elements, libraries = NULL) {
+  filteredStudies <- studies
+  for (study in filteredStudies) {
+    packageElements <- list.files(system.file("OmicNavigator", package = study, lib.loc = libraries), include.dirs = TRUE)
+    for (element in elements) {
+      if (!element %in% c("metaFeatures", "results", "enrichments", "reports", "plots", "assays", "samples", "features", "resultsLinkouts", "metaAssays")) {
+        stop(sprintf("Invalid element: %s. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'", element),
+             call. = FALSE)
+      }
+      if (!any(grepl(element, packageElements))) {
+        filteredStudies <- filteredStudies[filteredStudies != study]
+        next
+      }
+    }
+  }
+  return(filteredStudies)
+}
+
 ## I/O -------------------------------------------------------------------------
 
 readTable <- function(
