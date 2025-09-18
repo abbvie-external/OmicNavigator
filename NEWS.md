@@ -1,3 +1,6 @@
+* The output from `listStudies()` no longer includes the plots in each study.
+The app now calls `getPlots()` as needed to obtain this information.
+
 # 1.16.3
 
 * The release tarball includes version 2.0.3 of the web app
