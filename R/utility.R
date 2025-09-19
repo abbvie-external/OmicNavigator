@@ -209,7 +209,7 @@ isUrlOrPath <- function(x) {
   stopifnot(
     is.character(x)
   )
-  if (!isUrl(x) && !file.exists(x)) {
+  if (any(!isUrl(x) & !file.exists(x))) {
     stop("Report must be a URL or a path to an existing file")
   }
   return(NULL)
