@@ -719,6 +719,12 @@ expect_error_xl(
   "Report must be a URL or a path to an existing file"
 )
 
+expect_error_xl(
+  addReports(study, reports = list(modelID = c("hts://www.domain.com/report1.html",
+                                               "C:/path/to/non-existent/file"))),
+  "Report must be a URL or a path to an existing file"
+)
+
 # checkResultsLinkouts ---------------------------------------------------------
 
 expect_error_xl(
