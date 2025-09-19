@@ -24,6 +24,7 @@ validateStudy <- function(study) {
   validateEnrichmentsLinkouts(study)
   validatePlots(study)
   validateMapping(study)
+  validateMetaAssays(study)
 
   return(invisible(TRUE))
 }
@@ -343,3 +344,50 @@ validateMapping <- function(study) {
   return(invisible(TRUE))
 }
 
+validateMetaAssays <- function(study) {
+  metaAssays <- study[["metaAssays"]]
+
+  # metaAssays aren't required
+  if (isEmpty(metaAssays)) return(invisible(NA))
+
+  results <- getResults(study)
+  models  <- names(study[["results"]])
+  for (i in seq_along(models)) {
+    modelID <- models[i]
+    # Need to re-pull in case using modelID "default"
+    modelMetaAssays <- getMetaAssays(study, modelID, quiet = TRUE)
+    if (isEmpty(modelMetaAssays)) next
+
+    # Validate that column names match samples
+    modelSamples <- getSamples(study, modelID, quiet = TRUE)
+    if (!isEmpty(modelSamples)) {
+      samplesInMetaAssays <- modelSamples[[1]] %in% colnames(modelMetaAssays)
+      if (sum(samplesInMetaAssays) == 0) {
+        stop("The sampleIDs in the samples table do not match the column names in the metaAssays table\n",
+             sprintf("modelID: %s", modelID))
+      }
+      if (!all(samplesInMetaAssays)) {
+        message("Validation: ",
+                "Some of the sampleIDs in the samples table are missing from the columns in the metaAssays table\n",
+                sprintf("modelID: %s", modelID))
+      }
+    }
+
+    # Validate that row names match metaFeatures
+    modelMetaFeatures <- getMetaFeatures(study, modelID, quiet = TRUE)
+    if (!isEmpty(modelMetaFeatures)) {
+      metaFeaturesInMetaAssays <- modelMetaFeatures[[2]] %in% rownames(modelMetaAssays)
+      if (sum(metaFeaturesInMetaAssays) == 0) {
+        stop("The metaFeatureIDs in the metaFeatures table do not match the row names in the metaAssays table\n",
+             sprintf("modelID: %s", modelID))
+      }
+      if (!all(metaFeaturesInMetaAssays)) {
+        message("Validation: ",
+                "Some of the metaFeatureIDs in the metaFeatures table are missing from the rows in the metaAssays table\n",
+                sprintf("modelID: %s", modelID))
+      }
+    }
+  }
+
+  return(invisible(TRUE))
+}

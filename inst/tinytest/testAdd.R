@@ -60,6 +60,9 @@ study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts
 metaFeaturesLinkouts <- OmicNavigator:::testMetaFeaturesLinkouts()
 study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = metaFeaturesLinkouts)
 
+metaAssays <- OmicNavigator:::testMetaAssays()
+study <- addMetaAssays(study, metaAssays = metaAssays)
+
 expect_identical_xl(
   study,
   OmicNavigator:::testStudy(name = "test")
