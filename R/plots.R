@@ -423,7 +423,10 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(metaFeatures)) {
       metaFeaturesPlotting <- metaFeatures
     } else {
-      metaFeaturesPlotting <- metaFeatures[featureID == metaFeatures[[1]], , drop = FALSE]
+      metaFeaturesPlotting <- metaFeatures[metaFeatures[[1]] %in% featureID, , drop = FALSE]
+      # Sort according to input featureID
+      metaFeaturesOrder <- order(factor(metaFeaturesPlotting[[1]], levels = featureID))
+      metaFeaturesPlotting <- metaFeaturesPlotting[metaFeaturesOrder, ]
       row.names(metaFeaturesPlotting) <- NULL # reset row numbers after filtering
     }
 

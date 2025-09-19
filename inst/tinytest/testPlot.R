@@ -689,6 +689,18 @@ needsSortingAssays <- as.data.frame(needsSortingAssays)
 row.names(needsSortingAssays) <- paste0("f", 1:5)
 names(needsSortingAssays) <- c("one", "two", "three")
 needsSorting <- addAssays(needsSorting, list(main = needsSortingAssays))
+needsSortingMetaFeatures <- data.frame(
+  featureID = c("f4", "f5", "f1", "f3", "f2", "f4", "f5", "f1", "f3", "f2"),
+  metaFeatureID = sprintf("metaFeature_%d", 1:10),
+  MetaFeatureVar = letters[1:10],
+  stringsAsFactors = FALSE
+)
+needsSorting <- addMetaFeatures(needsSorting, list(default = needsSortingMetaFeatures))
+needsSortingMetaAssays <- matrix(rnorm(10 * 3), nrow = 10, ncol = 3)
+needsSortingMetaAssays <- as.data.frame(needsSortingMetaAssays)
+row.names(needsSortingMetaAssays) <- sprintf("metaFeature_%d", 1:10)
+names(needsSortingMetaAssays) <- c("one", "two", "three")
+needsSorting <- addMetaAssays(needsSorting, list(main = needsSortingMetaAssays))
 
 sortedPlottingData <- getPlottingData(
   needsSorting,
@@ -712,6 +724,18 @@ expect_identical_xl(
   rownames(sortedPlottingData[["assays"]]),
   c("f2", "f1", "f3"),
   info = "Assays rows for plotting are sorted according to input featureIDs"
+)
+
+expect_identical_xl(
+  sortedPlottingData[["metaFeatures"]][[1]],
+  c("f2", "f2", "f1", "f1", "f3", "f3"),
+  info = "metaFeatures for plotting are sorted according to input featureIDs"
+)
+
+expect_identical_xl(
+  rownames(sortedPlottingData[["metaAssays"]]),
+  sortedPlottingData[["metaFeatures"]][["metaFeatureID"]],
+  info = "metaAssays rows for plotting are sorted according to input featureIDs"
 )
 
 # getPlottingData() should send warning if featureID or sampleID is missing
