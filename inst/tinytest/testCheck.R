@@ -700,14 +700,28 @@ expect_error_xl(
   "is.character"
 )
 
-expect_error_xl(
+expect_silent_xl(
   addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
-                                               "https://www.domain.com/report2.html"))),
-  "length"
-)
+                                               "https://www.domain.com/report2.html"))))
+# Test duplicate URLs for same modelID
+expect_silent_xl(
+  addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
+                                               "https://www.domain.com/report1.html"))))
+
+expect_silent_xl(
+  addReports(study, reports = list(modelID = c("https://www.domain.com/report1.html",
+                                               "https://www.domain.com/report2.html"),
+                                     modelID2 = c("https://www.domain.com/report1.html",
+                                                  "https://www.domain.com/report2.html"))))
 
 expect_error_xl(
   addReports(study, reports = list(modelID = "C:/path/to/non-existent/file")),
+  "Report must be a URL or a path to an existing file"
+)
+
+expect_error_xl(
+  addReports(study, reports = list(modelID = c("hts://www.domain.com/report1.html",
+                                               "C:/path/to/non-existent/file"))),
   "Report must be a URL or a path to an existing file"
 )
 

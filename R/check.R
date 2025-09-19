@@ -515,13 +515,9 @@ checkReports <- function(reports) {
 
   for (i in seq_along(reports)) {
     report <- reports[[i]]
-    stopifnot(
-      is.character(report),
-      length(report) == 1
-    )
-    if (!isUrl(report) && !file.exists(report)) {
-      stop("Report must be a URL or a path to an existing file")
-    }
+      for (j in seq_along(report)) {
+        isUrlOrPath(report[[j]])
+      }
   }
 
   return(NULL)
