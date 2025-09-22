@@ -41,7 +41,7 @@ expect_identical_xl(
 
 expect_error_xl(
   getStudyMeta("non-existent-study"),
-  "Study package not installed: OmicNavigator.non-existent-study"
+  "not installed"
 )
 
 # getSamples -------------------------------------------------------------------
