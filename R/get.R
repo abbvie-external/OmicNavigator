@@ -18,6 +18,28 @@ getInstalledStudies <- function(libraries = NULL) {
   return(studies)
 }
 
+#' Get study metadata from the study name
+#' 
+#' @param name Name of the study (without the OmicNavigator prefix)
+#' @return A list containing the study metadata
+#' 
+#' @export
+getStudyMeta <- function(name) {
+  stopifnot(is.character(name), length(name) == 1)
+  pkg <- paste0(getPrefix(), name)
+  if (!requireNamespace(pkg, quietly = TRUE)) {
+    stop(sprintf("The study \"%s\" is not installed\n", name),
+         "Did you run installStudy()?\n")
+  }
+  study <- importStudy(name)
+  meta <- study[["studyMeta"]]
+  meta[["description"]] <- study[["description"]]
+  meta[["version"]] <- study[["version"]]
+  meta[["maintainer"]] <- study[["maintainer"]]
+  meta[["maintainerEmail"]] <- study[["maintainerEmail"]]
+  return(meta)
+}
+
 #' Shared parameters for get functions
 #'
 #' @name shared-get
