@@ -13,11 +13,11 @@
 #'
 #' @export
 getInstalledStudies <- function(elements = NULL, libraries = NULL) {
-
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
   names(pkgsAll) <- NULL
   regex <- getPrefix(regex = TRUE)
   pkgsOn <- grep(regex, pkgsAll, value = TRUE)
+
   if (!isEmpty(elements)) {
     pkgsOn <- studiesWithElements(pkgsOn, elements, libraries = libraries)
   }

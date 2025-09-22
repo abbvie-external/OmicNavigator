@@ -43,10 +43,15 @@ expect_error_xl(
   "Invalid element: invalidElement. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'"
 ) 
 
+minimalStudyObj <- OmicNavigator:::testStudyMinimal()
+minimalStudyName <- minimalStudyObj[["name"]]
+
+# after `tmplib` has been added to `.libPaths()`
+suppressMessages(installStudy(minimalStudyObj))
 # Test that elements argument filters studies.
 expect_identical_xl(
-  getInstalledStudies(elements = c("metaFeatures", "results", "plots"), libraries = tmplib),
-  testStudyName
+  getInstalledStudies(elements = c("results", "enrichments"), libraries = tmplib),
+  c(testStudyName, minimalStudyName)
 )
 
 # getSamples -------------------------------------------------------------------
