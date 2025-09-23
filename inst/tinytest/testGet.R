@@ -42,18 +42,18 @@ expect_identical_xl(
 
 # Test that only valid elements are accepted.
 expect_error_xl(
-  getInstalledStudies(elements = c("metaFeatures", "invalidElement")),
+  getInstalledStudies(hasElements = c("metaFeatures", "invalidElement")),
   "Invalid element: invalidElement. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'"
 )
 
 expect_identical_xl(
-  getInstalledStudies(elements = c("results", "enrichments"), libraries = tmplib),
+  getInstalledStudies(hasElements = c("results", "enrichments"), libraries = tmplib),
   c(testStudyName, minimalStudyName)
 )
 
 # The example minimal study has no plots
 expect_identical_xl(
-  getInstalledStudies(elements = c("results", "enrichments", "plots"), libraries = tmplib),
+  getInstalledStudies(hasElements = c("results", "enrichments", "plots"), libraries = tmplib),
   testStudyName
 )
 

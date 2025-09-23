@@ -4,14 +4,14 @@
 \alias{getInstalledStudies}
 \title{Get installed OmicNavigator studies}
 \usage{
-getInstalledStudies(elements = NULL, libraries = NULL)
+getInstalledStudies(hasElements = NULL, libraries = NULL)
 }
 \arguments{
-\item{elements}{Character vector of elements that must be present in the
+\item{hasElements}{Character vector of elements that must be present in the
 study packages. Valid elements are 'metaFeatures', 'results',
 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features',
-'resultsLinkouts', and 'metaAssays'. If \code{NULL} (default), then all installed
-OmicNavigator studies are returned, regardless of their contents.}
+'resultsLinkouts', and 'metaAssays'. If \code{NULL} (default), then all
+installed OmicNavigator studies are returned, regardless of their contents.}
 
 \item{libraries}{Character vector of library directories to search for study
 packages. If \code{NULL}, uses \code{.libPaths}.}
