@@ -515,9 +515,7 @@ checkReports <- function(reports) {
 
   for (i in seq_along(reports)) {
     report <- reports[[i]]
-      for (j in seq_along(report)) {
-        isUrlOrPath(report[[j]])
-      }
+    isUrlOrPath(report)
   }
 
   return(NULL)
