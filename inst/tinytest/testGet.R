@@ -14,12 +14,15 @@ testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
+minimalStudyObj <- OmicNavigator:::testStudyMinimal()
+minimalStudyName <- minimalStudyObj[["name"]]
 
 tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(installStudy(testStudyObj))
+suppressMessages(installStudy(minimalStudyObj))
 
 emptyStudy <- createStudy(name = "empty")
 
@@ -28,13 +31,30 @@ emptyStudy <- createStudy(name = "empty")
 installedStudies <- getInstalledStudies(libraries = tmplib)
 expect_identical_xl(
   installedStudies,
-  testStudyName
+  c(testStudyName, minimalStudyName)
 )
 
 # If there are no OmicNavigator study packages installed, return an empty list.
 expect_identical_xl(
   listStudies(libraries = tempfile()),
   list()
+)
+
+# Test that only valid elements are accepted.
+expect_error_xl(
+  getInstalledStudies(hasElements = c("metaFeatures", "invalidElement")),
+  "Invalid element: invalidElement. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'"
+)
+
+expect_identical_xl(
+  getInstalledStudies(hasElements = c("results", "enrichments"), libraries = tmplib),
+  c(testStudyName, minimalStudyName)
+)
+
+# The example minimal study has no plots
+expect_identical_xl(
+  getInstalledStudies(hasElements = c("results", "enrichments", "plots"), libraries = tmplib),
+  testStudyName
 )
 
 # getSamples -------------------------------------------------------------------

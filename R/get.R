@@ -1,5 +1,10 @@
 #' Get installed OmicNavigator studies
 #'
+#' @param hasElements Character vector of elements that must be present in the
+#'   study packages. Valid elements are 'metaFeatures', 'results',
+#'   'enrichments', 'reports', 'plots', 'assays', 'samples', 'features',
+#'   'resultsLinkouts', and 'metaAssays'. If \code{NULL} (default), then all
+#'   installed OmicNavigator studies are returned, regardless of their contents.
 #' @param libraries Character vector of library directories to search for study
 #'   packages. If \code{NULL}, uses \code{.libPaths}.
 #'
@@ -7,12 +12,16 @@
 #'   packages
 #'
 #' @export
-getInstalledStudies <- function(libraries = NULL) {
+getInstalledStudies <- function(hasElements = NULL, libraries = NULL) {
   pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
   names(pkgsAll) <- NULL
   regex <- getPrefix(regex = TRUE)
-  pkgsOa <- grep(regex, pkgsAll, value = TRUE)
-  studies <- pkgToStudy(pkgsOa)
+  pkgsOn <- grep(regex, pkgsAll, value = TRUE)
+
+  if (!isEmpty(hasElements)) {
+    pkgsOn <- studiesWithElements(pkgsOn, hasElements, libraries = libraries)
+  }
+  studies <- pkgToStudy(pkgsOn)
   studies <- sort(studies)
 
   return(studies)
