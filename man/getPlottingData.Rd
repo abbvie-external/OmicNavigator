@@ -22,7 +22,7 @@ left as \code{NULL} (the default), then
 \code{\link{.libPaths}}.}
 }
 \value{
-Returns a list of at least 4 objects:
+Returns a list of at least 3 elements:
 
 \item{\code{assays}}{A data frame that contains the assay measurements,
 filtered to only include the row(s) corresponding to the input featureID(s)
@@ -40,24 +40,41 @@ filtered to only include the row(s) corresponding to the input featureID(s)
 rows are reordered to match the order of this input (and thus match the
 order of the assays data frame).}
 
+If a testID is passed, the data frame \code{results} is also returned (by
+default the app will always pass the currently selected testID):
+
 \item{\code{results}}{A data frame that contains the test results, filtered
 to only include the row(s) corresponding to the input featureID(s). If
 multiple featureIDs are requested, the rows are reordered to match the
 order of this input. The column order is unchanged. If multiple testIDs are
 provided, they are stored in a list object.}
 
-\item{\code{mapping}}{A data frame that contains the featureID(s) from each
-model. This is the filtered mapping object. This data frame is returned when
-multiple models are passed as arguments}
+If multiple models are passed:
 
-The data frame \code{results} is only returned if you pass a testID. By
-default the app will always pass the currently selected testID.
+\item{\code{mapping}}{A data frame that contains the featureID(s) from each
+model. This is the filtered mapping object.}
+
+If the study has metaAssays available that map to the input featureID(s),
+then \code{metaFeatures} and \code{metaAssays} are returned:
+
+\item{\code{metaFeatures}}{A data frame that contains the metaFeature
+metadata, filtered to only include the row(s) corresponding to the input
+featureID(s) (see \code{\link{getMetaFeatures}}). If multiple featureIDs
+are requested, the rows are reordered to match the order of this input (and
+thus match the order of the metaAssays data frame).}
+
+\item{\code{metaAssays}}{A data frame that contains the metaAssay
+measurements, filtered to only include the row(s) corresponding to the
+input featureID(s) (see \code{\link{getMetaAssays}}). If multiple
+featureIDs are requested, the rows are reordered to match the order of this
+input. The column order is unchanged.}
 }
 \description{
-Returns \code{assay}, \code{sample}, \code{feature}, and \code{result} data that may be used for
+Returns \code{assays}, \code{samples}, and \code{features} data that may be used for
 plotting. This function is called by \code{plotStudy()} and the output is passed
 to custom plotting functions. It should be used directly when interactively
-creating custom plotting functions.
+creating custom plotting functions. Optionally, it can also return data for
+\code{results}, \code{metaFeatures}, \code{metaAssays}.
 }
 \details{
 The end-user should call this function and populate the first argument of
