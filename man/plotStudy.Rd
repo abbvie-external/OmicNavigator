@@ -24,44 +24,45 @@ left as \code{NULL} (the default), then
 \code{\link{.libPaths}}.}
 }
 \value{
-This function is called for the side effect of creating a plot. It invisibly
-returns the result from the custom plotting function specified by \code{plotID}.
-Previously it invisibly returned the study object. It's unlikely you relied
-on this behavior. For a ggplot2 plot, the return value will be the plotting
-object with class \code{"ggplot"}. For a plotly plot, the return value will be
-the json schema used for plotting with class \verb{“json”}.
+This function is called for the side effect of creating a plot. It
+invisibly returns the result from the custom plotting function specified by
+\code{plotID}. Previously it invisibly returned the study object. It's unlikely
+you relied on this behavior. For a ggplot2 plot, the return value will be
+the plotting object with class \code{"ggplot"}. For a plotly plot, the return
+value will be the json schema used for plotting with class \verb{“json”}.
 }
 \description{
-\code{plotStudy()} invokes a custom plotting function saved within an OmicNavigator
-study. This function is called by the app using the study-model-test
-selection, feature selections, and plotting function metadata (see
-\code{\link[=addPlots]{addPlots()}}) to define arguments.
+\code{plotStudy()} invokes a custom plotting function saved within an
+OmicNavigator study. This function is called by the app using the
+study-model-test selection, feature selections, and plotting function
+metadata (see \code{\link[=addPlots]{addPlots()}}) to define arguments.
 }
 \details{
 The arguments \code{study}, \code{modelID}, \code{featureID}, and
 \code{testID} are passed to the function \code{\link[=getPlottingData]{getPlottingData()}}. The list returned
 by \code{getPlottingData()} is passed as the first argument to a custom plotting
-function. Some custom \code{plotTypes} (see \code{\link[=addPlots]{addPlots()}}) require care when being
-invoked and attention should be paid to how a custom plot will be rendered
-by the app. Custom plots with \verb{plotType = c(‘multiModel’, ‘singleTest’)}
-accept a \code{modelID} vector of length n and a vector of \code{testID}s length n,
-where n is the number of models. Custom plots with \verb{plotType = c(‘multiModel’, ‘multiTest’)} accept \code{modelID} and \code{testID} vectors of
-length m, where m is the total number of tests considered across all models
-(note \code{testID}s are often repeated across models). Note that the index
-positions of these two vectors should correspond. That is, \code{testID} position
-1 should be found in the model specified by \code{modelID} position 1, etc.
+function. Some custom \code{plotTypes} (see \code{\link[=addPlots]{addPlots()}}) require care when
+being invoked and attention should be paid to how a custom plot will be
+rendered by the app. Custom plots with \verb{plotType = c(‘multiModel’, ‘singleTest’)} accept a \code{modelID} vector of length n and a vector of
+\code{testID}s length n, where n is the number of models. Custom plots with
+\verb{plotType = c(‘multiModel’, ‘multiTest’)} accept \code{modelID} and \code{testID}
+vectors of length m, where m is the total number of tests considered across
+all models (note \code{testID}s are often repeated across models). Note that the
+index positions of these two vectors should correspond. That is, \code{testID}
+position 1 should be found in the model specified by \code{modelID} position 1,
+etc.
 
 The app will invoke custom plotting functions via \code{plotStudy()} using the
 current menu selections and plot metadata (see \code{\link[=addPlots]{addPlots()}}). Plots with
-\verb{plotType = ‘multiTest’} will be invoked with all \code{testID}s found within the
-currently selected model. Plots with \verb{plotType = c(‘multiModel’,‘singleTest’)} will be invoked with all \code{modelID}s within the
-study (unless the plot has specified a list of models via \code{models}) and the
-currently selected \code{testID} (an error will result if the currently selected
-\code{testID} is not present in all relevant models for the plot). Plots with
-\verb{plotType = c(‘multiModel’, ‘multiTest’)} will be invoked with all
-\code{modelID}s within the study (unless the plot has specified a list of models
-via \code{models}) and all identical \code{testID}s across models (if there are no
-matching testIDs across models an error will result).
+\verb{plotType = ‘multiTest’} will be invoked with all \code{testID}s found within
+the currently selected model. Plots with \verb{plotType = c(‘multiModel’,‘singleTest’)} will be invoked with all \code{modelID}s within
+the study (unless the plot has specified a list of models via \code{models}) and
+the currently selected \code{testID} (an error will result if the currently
+selected \code{testID} is not present in all relevant models for the plot).
+Plots with \verb{plotType = c(‘multiModel’, ‘multiTest’)} will be invoked with
+all \code{modelID}s within the study (unless the plot has specified a list of
+models via \code{models}) and all identical \code{testID}s across models (if there
+are no matching testIDs across models an error will result).
 }
 \seealso{
 \code{\link{addPlots}}, \code{\link{getPlottingData}}
