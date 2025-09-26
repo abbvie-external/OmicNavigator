@@ -1121,6 +1121,10 @@ The metaFeatures table has the following requirements:
   be included, the order does not matter, and it is expected that the
   featureIDs will be repeated.
 
+  \item If providing metaAssays (see Section \ref{sec:metaAssays} below), the
+  second column should contain the metaFeatureIDs that correspond to the row
+  names of the metaAssays data frame.
+
   \item The remaining columns must be character vectors.
 
 \end{itemize}
@@ -1128,6 +1132,32 @@ The metaFeatures table has the following requirements:
 Adding the metaFeatures table is similar to the features table. Use a nested
 list to assign the table(s) to a modelID, then use \texttt{addMetaFeatures()}.
 For more details, run \texttt{?addMetaFeatures}.
+
+\subsection{MetaAssays}
+\label{sec:metaAssays}
+
+If the study metaFeatures have associated measurements, you can store these in
+metaAssays via \texttt{addMetaAssays()}. Examples include multiple peptide
+measurements for a single protein or multiple CRISPR guides that map to a single
+gene. These data will then be made available for custom plots (Section
+\ref{sec:create-custom-plots}).
+
+The requirements for the metaAssays data frame are similar to those for the
+assays data frame (Section \ref{sec:assays}):
+
+\begin{itemize}
+
+  \item The row names should match the metaFeatureIDs in the second column of
+  the metaFeatures table (order doesn't matter)
+
+  \item The column names should match the sampleIDs in the first column of the
+  samples table (order doesn't matter)
+
+  \item The columns should all be numeric
+
+\end{itemize}
+
+For more details, run \texttt{?addMetaAssays}.
 
 \subsection{Reports}
 
@@ -1366,7 +1396,7 @@ Click on the links to be taken to the relevant section.
   \hline
   Enrichments barcode & Barcodes (\ref{sec:barcodes}), Enrichments (\ref{sec:enrichments}),  Results (\ref{sec:results}) &   \\
   \hline
-  Custom plots & Plots (\ref{sec:plots}), Assays (\ref{sec:assays}), Samples (\ref{sec:samples})  &   \\
+  Custom plots & Plots (\ref{sec:plots}), Assays (\ref{sec:assays}) & Features (\ref{sec:features}), Samples (\ref{sec:samples}), Results (\ref{sec:results}), metaFeatures (\ref{sec:metaFeatures}), metaAssays (\ref{sec:metaAssays}) \\
   \hline
   MetaFeatures table & metaFeatures (\ref{sec:metaFeatures}) & metaFeaturesLinkouts (\ref{sec:metaFeaturesLinkouts}) \\
   \hline
