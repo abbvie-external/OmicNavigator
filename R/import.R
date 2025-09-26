@@ -54,7 +54,7 @@ importStudy <- function(study, libraries = NULL) {
   # Make paths to reports absolute
   reports <- getReports(study, quiet = TRUE, libraries = libraries)
   reports <- lapply(reports, function(x) {
-    if (isUrl(x)) x else file.path(dirname(pathToPkg), x)
+    ifelse(isUrl(x), x, file.path(dirname(pathToPkg), x))
   })
 
   onStudy <- createStudy(
