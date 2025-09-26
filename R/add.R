@@ -670,8 +670,8 @@ addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) 
 
 #' Add metaAssays
 #'
-#' Experimental. Add metaAssay measurements that map to the features in the
-#' assays data.
+#' Experimental. Add metaAssay measurements that map to the metaFeatureIDs in
+#' the metaFeatures table.
 #'
 #' @param metaAssays The metaAssays from the study. The input object is a list
 #'   of data frames (one per model). The row names should correspond to the

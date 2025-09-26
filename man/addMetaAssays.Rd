@@ -23,8 +23,8 @@ modelID "default".}
 data you no longer want to include in the study.}
 }
 \description{
-Experimental. Add metaAssay measurements that map to the features in the
-assays data.
+Experimental. Add metaAssay measurements that map to the metaFeatureIDs in
+the metaFeatures table.
 }
 \seealso{
 \code{\link{addAssays}}, \code{\link{addMetaFeatures}}

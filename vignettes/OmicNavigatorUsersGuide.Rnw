@@ -1157,7 +1157,8 @@ assays data frame (Section \ref{sec:assays}):
 
 \end{itemize}
 
-For more details, run \texttt{?addMetaAssays}.
+For more details, run \texttt{?addMetaAssays}. Note that this feature is still
+experimental, and the data format may change in the future.
 
 \subsection{Reports}
 
