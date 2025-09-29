@@ -440,7 +440,7 @@ testBarcodes <- function(n = 3) {
 testReports <- function(n = 3) {
   reports <- list(
     default = "https://www.domain.com/default.html",
-    model_03 = "https://www.domain.com/model_03.html"
+    model_03 = c("https://www.domain.com/model_03a.html", "https://www.domain.com/model_03b.html")
   )
   return(reports)
 }
