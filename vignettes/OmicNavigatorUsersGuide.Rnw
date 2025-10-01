@@ -397,10 +397,11 @@ For more details, run \texttt{?addResults}.
 % does exactly what I wanted.
 % https://en.wikibooks.org/wiki/LaTeX/Boxes#framebox_and_fbox
 \begin{framed}
-\textbf{Important:} You can stop here! The minimal required data for a valid
-OmicNavigator study is a single results table. Any additional data you add enables
-more features in the app for exploring your study. See Section \ref{sec:mapping}
-for the mapping between data elements and app features.
+\textbf{Important:} You can stop here! With only a single results table, you can
+already start using the app to interactively investigate your study. Any
+additional data you add enables more features in the app for further
+exploration. See Section \ref{sec:mapping} for the mapping between data elements
+and app features.
 \end{framed}
 
 \subsection{Enrichments}

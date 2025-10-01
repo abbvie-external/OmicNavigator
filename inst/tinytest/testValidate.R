@@ -26,10 +26,10 @@ expect_true_xl(
   info = "A minimal study should pass"
 )
 
-expect_error_xl(
+expect_warning_xl(
   validateStudy(emptyStudy),
   "No results",
-  info = "A valid study requires at least one results table"
+  info = "The Differential tab in the app requires at least one results table"
 )
 
 # Throw warning if no common columns across tests of a model
