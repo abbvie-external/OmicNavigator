@@ -313,6 +313,31 @@ expect_error_xl(
   'The plot "sharedPlot" is not available.'
 )
 
+# Minimal study ----------------------------------------------------------------
+
+emptyStudyObj <- createStudy(name = "empty")
+
+expect_warning_xl(
+  exportStudy(emptyStudyObj, type = "package", path = tempdir()),
+  "No results"
+)
+
+expect_true_xl(
+  dir.exists(file.path(tempdir(), "ONstudyempty/inst/OmicNavigator/"))
+)
+
+assaysOnly <- createStudy(name = "assaysOnly")
+assaysOnly <- addAssays(assaysOnly, OmicNavigator:::testAssays())
+
+expect_warning_xl(
+  exportStudy(assaysOnly, type = "package", path = tempdir()),
+  "No results"
+)
+
+expect_true_xl(
+  dir.exists(file.path(tempdir(), "ONstudyassaysOnly/inst/OmicNavigator/assays"))
+)
+
 # Teardown ---------------------------------------------------------------------
 
 # todo: plotStudy() should unload study package namespace if it wasn't already loaded

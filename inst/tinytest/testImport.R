@@ -22,12 +22,21 @@ testAnnotationName <- names(testStudyObj[["annotations"]])[1]
 minimalStudyObj <- OmicNavigator:::testStudyMinimal()
 minimalStudyName <- minimalStudyObj[["name"]]
 
+emptyStudyObj <- createStudy(name = "empty", description = "An empty study")
+emptyStudyName <- emptyStudyObj[["name"]]
+
+assaysOnlyStudyObj <- createStudy(name = "assaysOnly", description = "A study with only assays")
+assaysOnlyStudyName <- assaysOnlyStudyObj[["name"]]
+assaysOnlyStudyObj <- addAssays(assaysOnlyStudyObj, OmicNavigator:::testAssays())
+
 tmplib <- tempfile()
 dir.create(tmplib)
 libOrig <- .libPaths()
 .libPaths(c(tmplib, libOrig))
 suppressMessages(installStudy(testStudyObj))
 suppressMessages(installStudy(minimalStudyObj))
+suppressMessages(installStudy(emptyStudyObj))
+suppressMessages(installStudy(assaysOnlyStudyObj))
 
 # importStudy ------------------------------------------------------------------
 
@@ -233,6 +242,27 @@ expect_identical_xl(
 expect_identical_xl(
   importedMinimal[["maintainerEmail"]],
   "unknown@unknown"
+)
+
+# importStudy - empty ----------------------------------------------------------
+
+importedEmpty <- importStudy(emptyStudyName)
+
+# These elements are assigned a default value on export
+elementsWithDefaults <- c("version", "maintainer", "maintainerEmail", "studyMeta")
+
+expect_identical_xl(
+  importedEmpty[!names(importedEmpty) %in% elementsWithDefaults],
+  emptyStudyObj[!names(emptyStudyObj) %in% elementsWithDefaults]
+)
+
+# importStudy - assays only ----------------------------------------------------
+
+importedAssaysOnly <- importStudy(assaysOnlyStudyName)
+
+expect_equal_xl(
+  importedAssaysOnly[["assays"]],
+  assaysOnlyStudyObj[["assays"]]
 )
 
 # Teardown ---------------------------------------------------------------------

@@ -24,7 +24,7 @@ libOrig <- .libPaths()
 suppressMessages(installStudy(testStudyObj))
 suppressMessages(installStudy(minimalStudyObj))
 
-emptyStudy <- createStudy(name = "empty")
+emptyStudyObj <- createStudy(name = "empty")
 
 # installedStudies -------------------------------------------------------------
 
@@ -101,7 +101,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getSamples(emptyStudy),
+  getSamples(emptyStudyObj),
   "No samples available"
 )
 
@@ -153,7 +153,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getFeatures(emptyStudy),
+  getFeatures(emptyStudyObj),
   "No features available"
 )
 
@@ -195,7 +195,7 @@ expect_message_xl(
 )
 
 expect_message_xl(
-  getAssays(emptyStudy),
+  getAssays(emptyStudyObj),
   "No assays available"
 )
 
@@ -237,7 +237,7 @@ expect_message_xl(
 )
 
 expect_message_xl(
-  getModels(emptyStudy),
+  getModels(emptyStudyObj),
   "No models available"
 )
 
@@ -289,7 +289,7 @@ expect_error_xl(
 )
 
 expect_message_xl(
-  getTests(emptyStudy),
+  getTests(emptyStudyObj),
   "No tests available"
 )
 
@@ -321,7 +321,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getAnnotations(emptyStudy),
+  getAnnotations(emptyStudyObj),
   "No annotations available"
 )
 
@@ -363,7 +363,7 @@ expect_error_xl(
 )
 
 expect_message_xl(
-  getResults(emptyStudy),
+  getResults(emptyStudyObj),
   "No results available"
 )
 
@@ -460,7 +460,7 @@ expect_error_xl(
 )
 
 expect_message_xl(
-  getEnrichments(emptyStudy),
+  getEnrichments(emptyStudyObj),
   "No enrichments available"
 )
 
@@ -567,7 +567,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getMetaFeatures(emptyStudy),
+  getMetaFeatures(emptyStudyObj),
   "No metaFeatures available"
 )
 
@@ -594,7 +594,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getPlots(emptyStudy),
+  getPlots(emptyStudyObj),
   "No plots available"
 )
 
@@ -631,7 +631,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getMapping(emptyStudy),
+  getMapping(emptyStudyObj),
   "No mapping available"
 )
 
@@ -664,7 +664,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getBarcodes(emptyStudy),
+  getBarcodes(emptyStudyObj),
   "No barcodes available"
 )
 
@@ -708,7 +708,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getReports(emptyStudy),
+  getReports(emptyStudyObj),
   "No reports available"
 )
 
@@ -747,7 +747,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getResultsLinkouts(emptyStudy),
+  getResultsLinkouts(emptyStudyObj),
   "No resultsLinkouts available"
 )
 
@@ -786,7 +786,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getEnrichmentsLinkouts(emptyStudy),
+  getEnrichmentsLinkouts(emptyStudyObj),
   "No enrichmentsLinkouts available"
 )
 
@@ -825,7 +825,7 @@ expect_identical_xl(
 )
 
 expect_message_xl(
-  getMetaFeaturesLinkouts(emptyStudy),
+  getMetaFeaturesLinkouts(emptyStudyObj),
   "No metaFeaturesLinkouts available"
 )
 
