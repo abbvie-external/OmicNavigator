@@ -315,10 +315,10 @@ expect_error_xl(
 
 # Minimal study ----------------------------------------------------------------
 
-emptyStudy <- createStudy(name = "empty")
+emptyStudyObj <- createStudy(name = "empty")
 
 expect_warning_xl(
-  exportStudy(emptyStudy, type = "package", path = tempdir()),
+  exportStudy(emptyStudyObj, type = "package", path = tempdir()),
   "No results"
 )
 

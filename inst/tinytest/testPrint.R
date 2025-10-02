@@ -7,19 +7,19 @@ using(ttdo)
 
 library(OmicNavigator)
 
-emptyStudy <- createStudy(name = "empty", description = "An empty study")
-testStudy <- OmicNavigator:::testStudy(name = "test", description = "A test study")
-testStudyPlots <- addPlots(testStudy, OmicNavigator:::testPlots())
+emptyStudyObj <- createStudy(name = "empty", description = "An empty study")
+testStudyObj <- OmicNavigator:::testStudy(name = "test", description = "A test study")
+testStudyPlots <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 
 # Test print.onStudy() ---------------------------------------------------------
 
 expect_stdout(
-  print(emptyStudy),
+  print(emptyStudyObj),
   "0 models"
 )
 
 expect_stdout(
-  print(testStudy),
+  print(testStudyObj),
   "3 models"
 )
 

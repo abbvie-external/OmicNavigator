@@ -12,7 +12,7 @@ testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
 testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 minimalStudyObj <- OmicNavigator:::testStudyMinimal()
-emptyStudy <- createStudy(name = "empty", description = "An empty study")
+emptyStudyObj <- createStudy(name = "empty", description = "An empty study")
 
 # Results ----------------------------------------------------------------------
 
@@ -27,7 +27,7 @@ expect_true_xl(
 )
 
 expect_warning_xl(
-  validateStudy(emptyStudy),
+  validateStudy(emptyStudyObj),
   "No results",
   info = "The Differential tab in the app requires at least one results table"
 )
