@@ -7,7 +7,7 @@
 importStudy(study, libraries = NULL)
 }
 \arguments{
-\item{study}{Named of an installed OmicNavigator study}
+\item{study}{Name of an installed OmicNavigator study}
 
 \item{libraries}{The directories to search for installed study packages. If
 left as \code{NULL} (the default), then

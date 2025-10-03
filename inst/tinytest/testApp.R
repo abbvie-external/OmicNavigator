@@ -8,7 +8,13 @@ using(ttdo)
 library(OmicNavigator)
 
 testStudyName <- "ABC"
-testStudyObj <- OmicNavigator:::testStudy(name = testStudyName, version = "0.3")
+testStudyObj <- OmicNavigator:::testStudy(
+  name = testStudyName,
+  description = "A test study package for testApp.R",
+  maintainer = "testApp.R",
+  maintainerEmail = "testApp@R",
+  version = "0.3"
+)
 testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]][[1]])[1]
@@ -147,6 +153,43 @@ expect_identical_xl(
 expect_identical_xl(
   listStudies(libraries = tempfile()),
   list()
+)
+
+# getStudyMeta -----------------------------------------------------------------
+
+studyMeta <- getStudyMeta(testStudyName, libraries = tmplib)
+
+expect_false_xl(
+  OmicNavigator:::studyToPkg(testStudyName) %in% loadedNamespaces()
+)
+
+expect_identical_xl(
+  studyMeta[["description"]],
+  testStudyObj[["description"]]
+)
+expect_identical_xl(
+  studyMeta[["version"]],
+  testStudyObj[["version"]]
+)
+
+expect_identical_xl(
+  studyMeta[["maintainer"]],
+  testStudyObj[["maintainer"]]
+)
+
+expect_identical_xl(
+  studyMeta[["maintainerEmail"]],
+  testStudyObj[["maintainerEmail"]]
+)
+
+expect_identical_xl(
+  studyMeta[["studyMeta"]],
+  c(list(OmicNavigatorVersion = getPackageVersion()), testStudyObj[["studyMeta"]])
+)
+
+expect_error_xl(
+  getStudyMeta("missing"),
+  "The package ONstudymissing is not installed"
 )
 
 # getResultsTable --------------------------------------------------------------
