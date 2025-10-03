@@ -112,6 +112,8 @@ toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 \section{Study metadata}
 \label{sec:get-study-meta}
 
+\textbf{Update: Added in OmicNavigator 1.17.0}
+
 For a given study, return the description, version, maintainer, maintainer
 email, and any extra custom metadata added by the analyst.
 

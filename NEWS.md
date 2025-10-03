@@ -1,3 +1,16 @@
+# 1.17.0
+
+* Add experimental support for metaAssays, numeric measurements of metaFeatures
+(implemented by [John Blischak](https://github.com/jdblischak) and [Elyse Geoffroy](https://github.com/ElyseGeoffroy) in [PR #73](https://github.com/abbvie-external/OmicNavigator/pull/73))
+* Add new flag `hasElements` to `getInstalledStudies()` that filters the studies
+based on the study package content
+(implemented by [Elyse Geoffroy](https://github.com/ElyseGeoffroy) and [John Blischak](https://github.com/jdblischak) in [PR #80](https://github.com/abbvie-external/OmicNavigator/pull/80))
+* Support exporting studies without a results table. Now a study can be empty
+or have other elements other than a results table, and still be exported to a
+study package
+* Add new function `getStudyMeta()` to return the description, version,
+maintainer, maintainer email, and any extra custom metadata added by the analyst
+
 # 1.16.3
 
 * The release tarball includes version 2.0.3 of the web app
