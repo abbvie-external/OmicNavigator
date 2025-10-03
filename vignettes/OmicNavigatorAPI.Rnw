@@ -109,6 +109,17 @@ studies <- listStudies(libraries = .tmplib)
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 @
 
+\section{Study metadata}
+\label{sec:get-study-meta}
+
+For a given study, return the description, version, maintainer, maintainer
+email, and any extra custom metadata added by the analyst.
+
+<<study-metadata>>=
+studyMeta <- getStudyMeta(study = "ABC")
+toJSON(studyMeta, auto_unbox = TRUE, pretty = TRUE)
+@
+
 \section{Results table}
 \label{sec:results-table}
 

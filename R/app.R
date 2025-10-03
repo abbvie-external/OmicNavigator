@@ -69,6 +69,72 @@ listStudies <- function(libraries = NULL) {
   return(output)
 }
 
+#' Get study metadata
+#'
+#' Get the study description, version, maintainer, maintainer email, and any
+#' extra metadata added via the argument \code{studyMeta} of
+#' \code{\link{createStudy}}.
+#'
+#' @inheritParams importStudy
+#'
+#' @return Returns a list with the following components:
+#'
+#'   \item{description}{(character) Study description}
+#'   \item{version}{(character) Study version}
+#'   \item{maintainer}{(character) Study maintainer}
+#'   \item{maintainerEmail}{(character) Study maintainer email}
+#'   \item{studyMeta}{(list) Additional study metadata added via the argument
+#'                    \code{studyMeta} of \code{\link{createStudy})}}
+#'
+#' @seealso \code{\link{createStudy}}
+#'
+#' @export
+getStudyMeta <- function(study, libraries = NULL) {
+  pkg <- studyToPkg(study)
+  if (!requireNamespace(pkg, lib.loc = libraries, quietly = TRUE)) {
+    stop("The package ", pkg, " is not installed")
+  }
+  # Need to unload package namespace so that it doesn't interfere with find.package()
+  on.exit(unloadNamespace(pkg), add = TRUE)
+
+  # Import info from DESCRIPTION
+  description <- utils::packageDescription(pkg, lib.loc = libraries)
+  if (is.null(description[["Maintainer"]])) {
+    description[["Maintainer"]] <- "Unknown <unknown@unknown>"
+    message(
+      "This study package didn't have a maintainer listed",
+      "\nUsing the placeholder: ", description[["Maintainer"]],
+      "\nHighly recommended to update this with your own name and email:",
+      "\n<name of study object>$maintainer <- \"<Your Name>\"",
+      "\n<name of study object>$maintainer <- \"<youremail@domain.com>\"",
+      "\n(replace the text in between the brackets; make sure to delete the brackets)"
+    )
+  }
+  maintainerField <- strsplit(description[["Maintainer"]], "<|>")[[1]]
+  maintainer <- sub("[[:space:]]$", "", maintainerField[1])
+  maintainerEmail <- maintainerField[2]
+  descriptionFieldsReservedFile <- system.file(
+    "extdata/description-fields-reserved.txt",
+    package = "OmicNavigator",
+    mustWork = TRUE
+  )
+  descriptionFieldsReserved <- scan(
+    file = descriptionFieldsReservedFile,
+    what = character(),
+    quiet = TRUE
+  )
+  studyMeta <- description[setdiff(names(description), descriptionFieldsReserved)]
+
+  studyMeta <- c(
+    description = description[["Description"]],
+    version = description[["Version"]],
+    maintainer = maintainer,
+    maintainerEmail = maintainerEmail,
+    studyMeta = list(studyMeta)
+  )
+  return(studyMeta)
+}
+
 #' Get results table from a study
 #'
 #' @inheritParams shared-get
