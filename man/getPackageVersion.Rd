@@ -4,7 +4,11 @@
 \alias{getPackageVersion}
 \title{Get version of OmicNavigator package}
 \usage{
-getPackageVersion()
+getPackageVersion(libraries = NULL)
+}
+\arguments{
+\item{libraries}{Directory path(s) to R package library(ies). Passed to
+the argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.}
 }
 \value{
 Returns a one-element character vector with the version of the
@@ -14,4 +18,7 @@ currently installed OmicNavigator R package
 This is a convenience function for the app. It is easier to always call the
 OmicNavigator package functions via OpenCPU than to call the utils package
 for this one endpoint.
+}
+\seealso{
+\code{\link[utils]{packageVersion}}
 }

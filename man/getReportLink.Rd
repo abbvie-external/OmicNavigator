@@ -4,13 +4,18 @@
 \alias{getReportLink}
 \title{Get link to report}
 \usage{
-getReportLink(study, modelID)
+getReportLink(study, modelID, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
+
+\item{libraries}{The directories to search for installed study packages. If
+left as \code{NULL} (the default), then
+\code{\link[utils]{installed.packages}} will use the result of
+\code{\link{.libPaths}}.}
 }
 \value{
 Returns a one-element character vector with either a path to a report

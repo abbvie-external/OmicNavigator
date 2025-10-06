@@ -341,6 +341,7 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' @param termID1,termID2 Linked terms to find overlapping features
 #' @inheritParams getNodeFeatures
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @return Returns a character vector with the features included in both termIDs
 #'   (i.e. the intersection)
@@ -348,10 +349,10 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' @seealso \code{\link{getNodeFeatures}}
 #'
 #' @export
-getLinkFeatures <- function(study, annotationID, termID1, termID2) {
+getLinkFeatures <- function(study, annotationID, termID1, termID2, libraries = NULL) {
 
-  nodeFeatures1 <- getNodeFeatures(study, annotationID, termID1)
-  nodeFeatures2 <- getNodeFeatures(study, annotationID, termID2)
+  nodeFeatures1 <- getNodeFeatures(study, annotationID, termID1, libraries = libraries)
+  nodeFeatures2 <- getNodeFeatures(study, annotationID, termID2, libraries = libraries)
 
   linkFeatures <- sort(intersect(nodeFeatures1, nodeFeatures2))
 
@@ -361,6 +362,7 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 #' Get metaFeatures for a given feature
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @return Returns a data frame with the metaFeatures for the provided
 #'   featureID. If the featureID is not found in the metaFeatures table, the
@@ -369,8 +371,8 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2) {
 #' @seealso \code{\link{addMetaFeatures}}, \code{\link{getMetaFeatures}}
 #'
 #' @export
-getMetaFeaturesTable <- function(study, modelID, featureID) {
-  metaFeatures <- getMetaFeatures(study, modelID = modelID)
+getMetaFeaturesTable <- function(study, modelID, featureID, libraries = NULL) {
+  metaFeatures <- getMetaFeatures(study, modelID = modelID, libraries = libraries)
   if (isEmpty(metaFeatures)) return(data.frame())
 
   metaFeaturesTable <- metaFeatures[metaFeatures[, 1] == featureID, ]
@@ -387,6 +389,7 @@ getMetaFeaturesTable <- function(study, modelID, featureID) {
 #' Get data for barcode and violin plots
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @return A list with the following components:
 #'
@@ -404,11 +407,11 @@ getMetaFeaturesTable <- function(study, modelID, featureID) {
 #' @seealso \code{\link{addBarcodes}}, \code{\link{getBarcodes}}
 #'
 #' @export
-getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
+getBarcodeData <- function(study, modelID, testID, annotationID, termID, libraries = NULL) {
 
-  resultsTable <- getResultsTable(study, modelID = modelID, testID = testID)
+  resultsTable <- getResultsTable(study, modelID = modelID, testID = testID, libraries = libraries)
   if (isEmpty(resultsTable)) return(list())
-  barcodes <- getBarcodes(study, modelID = modelID)
+  barcodes <- getBarcodes(study, modelID = modelID, libraries = libraries)
   if (isEmpty(barcodes)) return(list())
 
   # Default barcode settings. See ?addBarcodes
@@ -436,7 +439,7 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
          barcodes[["statistic"]]))
   }
 
-  annotations <- getAnnotations(study, annotationID = annotationID)
+  annotations <- getAnnotations(study, annotationID = annotationID, libraries = libraries)
   if (isEmpty(annotations)) return(list())
   if (!termID %in% names(annotations[["terms"]])) {
     stop(sprintf("The term \"%s\" is not available for the annotation \"%s\"",
@@ -519,20 +522,21 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID) {
 #' Get link to report
 #'
 #' @inheritParams shared-get
+#' @inheritParams listStudies
 #'
 #' @return Returns a one-element character vector with either a path to a report
 #'   file or a URL to a report web page. If no report is available for the
 #'   modelID, an empty character vector is returned.
 #'
 #' @export
-getReportLink <- function(study, modelID) {
-  report <- getReports(study, modelID = modelID)
+getReportLink <- function(study, modelID, libraries = NULL) {
+  report <- getReports(study, modelID = modelID, libraries = libraries)
   if (isEmpty(report)) return(character())
 
   if (isUrl(report)) return(report)
 
   pkgName <- studyToPkg(study)
-  installationDir <- dirname(find.package(package = pkgName))
+  installationDir <- dirname(find.package(package = pkgName, lib.loc = libraries))
   reportFile <- file.path(installationDir, report)
   if (!file.exists(reportFile)) {
     stop(sprintf("The requested report file does not exist: %s", reportFile))
@@ -547,12 +551,17 @@ getReportLink <- function(study, modelID) {
 #' OmicNavigator package functions via OpenCPU than to call the utils package
 #' for this one endpoint.
 #'
+#' @param libraries Directory path(s) to R package library(ies). Passed to
+#' the argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.
+#'
 #' @return Returns a one-element character vector with the version of the
 #'   currently installed OmicNavigator R package
 #'
+#' @seealso \code{\link[utils]{packageVersion}}
+#'
 #' @export
-getPackageVersion <- function() {
-  as.character(utils::packageVersion("OmicNavigator"))
+getPackageVersion <- function(libraries = NULL) {
+  as.character(utils::packageVersion("OmicNavigator", lib.loc = libraries))
 }
 
 #' Get favicon URLs for table linkouts
