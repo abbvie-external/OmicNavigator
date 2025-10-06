@@ -7,8 +7,8 @@
 getPackageVersion(libraries = NULL)
 }
 \arguments{
-\item{libraries}{Directory path(s) to R package library(ies). Passed to
-the argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.}
+\item{libraries}{Directory path(s) to R package library(ies). Passed to the
+argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.}
 }
 \value{
 Returns a one-element character vector with the version of the

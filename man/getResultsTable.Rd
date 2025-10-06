@@ -25,10 +25,8 @@ or the name of an installed study package.}
 
 \item{termID}{Filter by termID}
 
-\item{libraries}{The directories to search for installed study packages. If
-left as \code{NULL} (the default), then
-\code{\link[utils]{installed.packages}} will use the result of
-\code{\link{.libPaths}}.}
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 A data frame which includes the columns from the features table

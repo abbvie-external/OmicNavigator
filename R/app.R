@@ -138,7 +138,6 @@ getStudyMeta <- function(study, libraries = NULL) {
 #' Get results table from a study
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return A data frame which includes the columns from the features table
 #'   followed by the columns from the results table. All the columns from the
@@ -179,7 +178,6 @@ getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID 
 #'
 #' @inheritParams shared-get
 #' @inheritParams shared-upset
-#' @inheritParams listStudies
 #'
 #' @return A data frame of enrichments with the following columns:
 #'
@@ -210,7 +208,6 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #' Get enrichments network from a study
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a list with the following components:
 #'
@@ -303,7 +300,6 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 #' @param study An OmicNavigator study. Only accepts name of installed study
 #'   package.
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a character vector with the features in the termID
 #'
@@ -341,7 +337,6 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' @param termID1,termID2 Linked terms to find overlapping features
 #' @inheritParams getNodeFeatures
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a character vector with the features included in both termIDs
 #'   (i.e. the intersection)
@@ -362,7 +357,6 @@ getLinkFeatures <- function(study, annotationID, termID1, termID2, libraries = N
 #' Get metaFeatures for a given feature
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a data frame with the metaFeatures for the provided
 #'   featureID. If the featureID is not found in the metaFeatures table, the
@@ -389,7 +383,6 @@ getMetaFeaturesTable <- function(study, modelID, featureID, libraries = NULL) {
 #' Get data for barcode and violin plots
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return A list with the following components:
 #'
@@ -522,7 +515,6 @@ getBarcodeData <- function(study, modelID, testID, annotationID, termID, librari
 #' Get link to report
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a one-element character vector with either a path to a report
 #'   file or a URL to a report web page. If no report is available for the
@@ -551,8 +543,8 @@ getReportLink <- function(study, modelID, libraries = NULL) {
 #' OmicNavigator package functions via OpenCPU than to call the utils package
 #' for this one endpoint.
 #'
-#' @param libraries Directory path(s) to R package library(ies). Passed to
-#' the argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.
+#' @param libraries Directory path(s) to R package library(ies). Passed to the
+#'   argument \code{lib.loc} of \code{\link[utils]{packageVersion}}.
 #'
 #' @return Returns a one-element character vector with the version of the
 #'   currently installed OmicNavigator R package

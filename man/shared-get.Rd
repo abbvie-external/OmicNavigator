@@ -20,6 +20,9 @@ or the name of an installed study package.}
 \item{plotID}{Filter by plotID}
 
 \item{quiet}{Suppress messages (default: \code{FALSE})}
+
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 The object returned depends on the data available and any filters

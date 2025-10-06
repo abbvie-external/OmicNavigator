@@ -5,8 +5,7 @@
 #'   'enrichments', 'reports', 'plots', 'assays', 'samples', 'features',
 #'   'resultsLinkouts', and 'metaAssays'. If \code{NULL} (default), then all
 #'   installed OmicNavigator studies are returned, regardless of their contents.
-#' @param libraries Character vector of library directories to search for study
-#'   packages. If \code{NULL}, uses \code{.libPaths}.
+#' @inheritParams shared-get
 #'
 #' @return Returns a character vector of the installed OmicNavigator study
 #'   packages
@@ -40,6 +39,8 @@ getInstalledStudies <- function(hasElements = NULL, libraries = NULL) {
 #' @param featureID Filter by featureID
 #' @param plotID Filter by plotID
 #' @param quiet Suppress messages (default: \code{FALSE})
+#' @param libraries Character vector of library directories to search for study
+#'   packages. If \code{NULL}, uses \code{.libPaths}.
 #'
 #' @return The object returned depends on the data available and any filters
 #'   (e.g. the argument  \code{modelID}):
@@ -59,7 +60,6 @@ NULL
 #' Get models from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getModels <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -76,7 +76,6 @@ getModels <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get samples from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getSamples <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -93,7 +92,6 @@ getSamples <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get features from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @return A data frame (if \code{modelID} is specified) or a list of data
 #'   frames. All the columns will be character strings, even if the values
@@ -115,7 +113,6 @@ getFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) 
 #' Get assays from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -137,7 +134,6 @@ getAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get tests from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getTests <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
@@ -159,7 +155,6 @@ getTests <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, librar
 #' Get annotations from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getAnnotations <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
@@ -176,7 +171,6 @@ getAnnotations <- function(study, annotationID = NULL, quiet = FALSE, libraries 
 #' Get overlaps from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getOverlaps <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
@@ -192,7 +186,6 @@ getOverlaps <- function(study, annotationID = NULL, quiet = FALSE, libraries = N
 #' Get results from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
@@ -213,7 +206,6 @@ getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libr
 #' Get enrichments from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
@@ -239,7 +231,6 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
 #' Get metaFeatures from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getMetaFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -257,7 +248,6 @@ getMetaFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NU
 #' Get plots from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -275,7 +265,6 @@ getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get mapping object from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -292,7 +281,6 @@ getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get barcodes from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getBarcodes <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -310,7 +298,6 @@ getBarcodes <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) 
 #' Get reports from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -328,7 +315,6 @@ getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get results table linkouts from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -346,7 +332,6 @@ getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries =
 #' Get enrichments table linkouts from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getEnrichmentsLinkouts <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
@@ -363,7 +348,6 @@ getEnrichmentsLinkouts <- function(study, annotationID = NULL, quiet = FALSE, li
 #' Get metaFeatures table linkouts from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -381,7 +365,6 @@ getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, librar
 #' Get metaAssays from a study
 #'
 #' @inherit shared-get
-#' @inheritParams listStudies
 #'
 #' @export
 getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {

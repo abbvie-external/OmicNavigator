@@ -6,7 +6,6 @@
 #' metadata (see [addPlots()]) to define arguments.
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @details The arguments \code{study}, \code{modelID}, \code{featureID}, and
 #'   `testID` are passed to the function [getPlottingData()]. The list returned
@@ -314,7 +313,6 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'
 #'
 #' @inheritParams shared-get
-#' @inheritParams listStudies
 #'
 #' @return Returns a list of at least 3 elements:
 #'

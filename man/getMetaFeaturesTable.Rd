@@ -14,10 +14,8 @@ or the name of an installed study package.}
 
 \item{featureID}{Filter by featureID}
 
-\item{libraries}{The directories to search for installed study packages. If
-left as \code{NULL} (the default), then
-\code{\link[utils]{installed.packages}} will use the result of
-\code{\link{.libPaths}}.}
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 Returns a data frame with the metaFeatures for the provided

@@ -3,7 +3,7 @@
 #' Create an onStudy object by importing an installed study package
 #'
 #' @param study Name of an installed OmicNavigator study
-#' @inheritParams listStudies
+#' @inheritParams shared-get
 #'
 #' @return Returns the \code{onStudy} object imported from the OmicNavigator
 #'   study package
