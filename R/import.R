@@ -19,7 +19,7 @@ importStudy <- function(study, libraries = NULL) {
   # Export plotting functions to global environment
   functions <- getNamespaceExports(pkg)
   for (fname in functions) {
-    f <- utils::getFromNamespace(fname, pkg)
+    f <- getFromNamespace(fname, pkg)
     assign(fname, f, envir = parent.frame())
   }
 

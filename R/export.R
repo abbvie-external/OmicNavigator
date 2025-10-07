@@ -456,7 +456,7 @@ createPackage <- function(study, directoryname) {
     Version = pkgversion,
     Maintainer = pkgmaintainer,
     Description = pkgdescription,
-    OmicNavigatorVersion = utils::packageVersion("OmicNavigator"),
+    OmicNavigatorVersion = packageVersion("OmicNavigator"),
     Encoding = "UTF-8",
     stringsAsFactors = FALSE
   )
@@ -479,7 +479,7 @@ createPackage <- function(study, directoryname) {
       if (!isUrl(report)) {
         newPath <- file.path(reportsdir, modelID)
         dir.create(newPath, showWarnings = FALSE, recursive = TRUE)
-        fileExtension <- tools::file_ext(report)
+        fileExtension <- file_ext(report)
         newFile <- paste0("report.", fileExtension)
         newPath <- file.path(newPath, newFile)
         file.copy(report, newPath)
@@ -586,7 +586,7 @@ installStudy <- function(study, requireValid = TRUE, library = .libPaths()[1]) {
   optionWarn <- getOption("warn", default = 0)
   on.exit(options(warn = optionWarn), add = TRUE)
   options(warn = 2) # warnings are errors
-  utils::install.packages(
+  install.packages(
     tmpPkgDir,
     lib = library,
     repos = NULL,
@@ -635,7 +635,7 @@ removeStudy <- function(study, library = .libPaths()[1]) {
     message("Removing study package ", packagePath)
   }
 
-  utils::remove.packages(
+  remove.packages(
     pkgs = package,
     lib = library
   )

@@ -96,8 +96,8 @@ installApp <- function(version = NULL, overwrite = FALSE, lib.loc = NULL, ...) {
   message("  URL: ", zipurl)
   message("  Installing to ", dirAppFinal)
 
-  utils::download.file(url = zipurl, destfile = zipfile, quiet = TRUE, ...)
-  utils::unzip(zipfile, exdir = installDir)
+  download.file(url = zipurl, destfile = zipfile, quiet = TRUE, ...)
+  unzip(zipfile, exdir = installDir)
   unlink(zipfile)
 
   dirAppTmp <- file.path(installDir, "build")

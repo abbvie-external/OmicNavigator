@@ -15,7 +15,7 @@ validateStudy <- function(study) {
   elements <- names(study)[!emptyElements]
   for (e in elements) {
     checkFunctionName <- paste0("check", capitalize(e))
-    checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicNavigator")
+    checkFunction <- getFromNamespace(checkFunctionName, ns = "OmicNavigator")
     checkFunction(study[[e]])
   }
 

@@ -41,7 +41,7 @@ appPackages <- c(
 
 # Report versions of package and app when package is first attached
 .onAttach <- function(libname, pkgname) {
-  versionPackage <- utils::packageVersion("OmicNavigator")
+  versionPackage <- packageVersion("OmicNavigator")
   versionPackageMessage <- sprintf("OmicNavigator R package version: %s",
                                    versionPackage)
   packageStartupMessage(versionPackageMessage)
@@ -49,7 +49,7 @@ appPackages <- c(
   appDir <- system.file("www", package = "OmicNavigator")
   manifestFile <- file.path(appDir, "manifest.json")
   if (file.exists(manifestFile)) {
-    manifest <- jsonlite::read_json(manifestFile)
+    manifest <- read_json(manifestFile)
     versionApp <- manifest[["version"]]
   } else {
     versionApp <- NA_character_
@@ -78,11 +78,18 @@ appPackages <- c(
 #' options(OmicNavigator.prefix = "OmicNavigatorStudy")
 #' }
 #'
+#' @importFrom data.table ":=" "%chin%" .N as.data.table chmatch data.table
+#'   dcast.data.table fread fwrite melt merge.data.table setcolorder setDF setDT
+#'   setnames setorderv
+#' @importFrom graphics barplot par plot text
+#' @importFrom jsonlite read_json write_json
+#' @importFrom stats median pnorm prcomp rnorm runif setNames
+#' @importFrom tools file_ext
+#' @importFrom utils capture.output download.file getFromNamespace head
+#'   install.packages installed.packages modifyList packageDescription
+#'   packageVersion remove.packages unzip
+#'
 "_PACKAGE"
-
-# Make the internal package functions "data.table aware"
-# https://rdatatable.gitlab.io/data.table/articles/datatable-importing.html#data-table-in-imports-but-nothing-imported-1
-.datatable.aware <- TRUE
 
 # Avoid NOTE from `R CMD check`: no visible binding for global variable '.data'
 .data <- NULL

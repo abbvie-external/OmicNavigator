@@ -161,7 +161,7 @@ plotStudy <- function(study, modelID, featureID, plotID, testID = NULL, librarie
 
   # Setup for the plot and ensure everything is properly reset after the
   # function returns.
-  originalParSettings <- graphics::par(no.readonly = TRUE)
+  originalParSettings <- par(no.readonly = TRUE)
   on.exit(resetPar(originalParSettings), add = TRUE)
   pkgNamespacesToDetach <- character()
   on.exit(resetSearch(pkgNamespacesToDetach), add = TRUE)
@@ -203,7 +203,7 @@ getPlotFunction <- function(plotID, study = NULL) {
     f <- dynGet(plotID, ifnotfound = list(NA), inherits = TRUE)
   } else {
     pkg <- paste0(getPrefix(), study)
-    f <- utils::getFromNamespace(plotID, ns = pkg)
+    f <- getFromNamespace(plotID, ns = pkg)
   }
 
   stopifnot(is.function(f))
@@ -213,9 +213,9 @@ getPlotFunction <- function(plotID, study = NULL) {
 
 # Only reset par() if the settings have changed
 resetPar <- function(originalParSettings) {
-  currentParSettings <- graphics::par(no.readonly = TRUE)
+  currentParSettings <- par(no.readonly = TRUE)
   if (!identical(currentParSettings, originalParSettings)) {
-    graphics::par(originalParSettings)
+    par(originalParSettings)
   }
   return(NULL)
 }
@@ -487,13 +487,13 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
           features = featuresPlotting
         )
         if (!isEmpty(testID)) {
-          temp_model <- c(temp_model, list(results = stats::setNames(list(resultsPlotting), testID)))
+          temp_model <- c(temp_model, list(results = setNames(list(resultsPlotting), testID)))
         }
         if (!isEmpty(metaAssaysPlotting)) {
           plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
                                                metaAssays = metaAssaysPlotting))
         }
-        plottingData <- c(plottingData, stats::setNames(list(temp_model), model_i))
+        plottingData <- c(plottingData, setNames(list(temp_model), model_i))
 
       } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
         resultsPlotting <- list(resultsPlotting)
@@ -502,7 +502,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       }
 
       if (ii == length(modelID)) {
-        plottingData <- c(plottingData, stats::setNames(list(mapping_features), "mapping"))
+        plottingData <- c(plottingData, setNames(list(mapping_features), "mapping"))
       }
     } else {
       plottingData <- list(
