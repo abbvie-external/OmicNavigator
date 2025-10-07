@@ -51,7 +51,7 @@ readTable <- function(
   keepLeadingZeros = TRUE,
   ...
 ) {
-  d <- data.table::fread(
+  d <- fread(
     file = x,
     sep = sep,
     header = header,
@@ -68,7 +68,7 @@ readTable <- function(
 }
 
 writeTable <- function(x, file, sep = "\t", quote = TRUE, ...) {
-  data.table::fwrite(
+  fwrite(
     x,
     file = file,
     sep = sep,
@@ -79,11 +79,11 @@ writeTable <- function(x, file, sep = "\t", quote = TRUE, ...) {
 }
 
 readJson <- function(x, simplifyVector = TRUE, ...) {
-  jsonlite::read_json(x, simplifyVector = simplifyVector, ...)
+  read_json(x, simplifyVector = simplifyVector, ...)
 }
 
 writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
-    jsonlite::write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
+    write_json(x, path = file, auto_unbox = auto_unbox, pretty = pretty, ...)
 }
 
 ## Lists -----------------------------------------------------------------------
@@ -128,12 +128,12 @@ hasUniqueIdColumn <- function(x) {
 }
 
 enrichmentsToWide <- function(x, type) {
-  output <- data.table::dcast.data.table(
-    data = data.table::as.data.table(x),
+  output <- dcast.data.table(
+    data = as.data.table(x),
     formula = termID + description ~ testID,
     value.var = type
   )
-  data.table::setDF(output)
+  setDF(output)
   return(output)
 }
 
@@ -154,8 +154,8 @@ warnIfNonCharacterCols <- function(x) {
   characterColsFilter <- vapply(x, is.character, logical(1))
   nonCharacterCols <- colnames(x)[!characterColsFilter]
   if (!isEmpty(nonCharacterCols)) {
-    nonCharacterColsPreview <- utils::capture.output(
-      utils::head(x[, nonCharacterCols, drop = FALSE])
+    nonCharacterColsPreview <- capture.output(
+      head(x[, nonCharacterCols, drop = FALSE])
     )
     if (nrow(x) > 6) {
       nonCharacterColsPreview <- c(nonCharacterColsPreview, "...")

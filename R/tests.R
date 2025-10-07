@@ -160,13 +160,13 @@ testResults <- function(nModels = 3, nTests = 2, nFeatures = 100, seed = 12345L,
     results[[i]] <- vector(mode = "list", length = nTests)
     names(results[[i]]) <- sprintf("test_%02d", seq_len(nTests))
     for (j in seq_len(nTests)) {
-      beta <- stats::rnorm(n = nFeatures, sd = 1.5)
-      beta_x <- stats::rnorm(n = nFeatures, sd = 1.5)
+      beta <- rnorm(n = nFeatures, sd = 1.5)
+      beta_x <- rnorm(n = nFeatures, sd = 1.5)
       # Calculate the p-value from the beta so that they are concordant,
       # otherwise UpSet filters often don't make sense.
-      beta_se <- stats::runif(nFeatures, min = 0.90, max = 1.10)
+      beta_se <- runif(nFeatures, min = 0.90, max = 1.10)
       z <- beta / beta_se
-      p_val <- stats::pnorm(-abs(z)) * 2
+      p_val <- pnorm(-abs(z)) * 2
       tmpResults <- data.frame(
         customID = featureID,
         beta = beta,
@@ -246,17 +246,17 @@ testPlots <- function() {
                          x[["features"]][1, "featureVar01"],
                          x[["features"]][1, "customID"])
     plotLabels <- x[["samples"]][["sampleVar01"]]
-    graphics::par(cex.main = 2)
-    graphics::plot(x = plotPoints,
+    par(cex.main = 2)
+    plot(x = plotPoints,
                    main = plotTitle,
                    xlab = "Samples",
                    ylab = "Expression level")
-    graphics::text(x = plotPoints, labels = plotLabels, pos = 4)
+    text(x = plotPoints, labels = plotLabels, pos = 4)
   }
   assign("plotBase", plotBase, envir = parent.frame())
   plotGg <- function(x) {
     plotPoints <- as.numeric(x[["assays"]][1, ])
-    featureMedian <- stats::median(plotPoints)
+    featureMedian <- median(plotPoints)
     plotTitle <- sprintf("%s, median: %0.2f", x[["features"]][["customID"]],
                          featureMedian)
     d <- data.frame(i = seq_along(plotPoints), plotPoints)
@@ -269,41 +269,41 @@ testPlots <- function() {
     if (nrow(x[["assays"]]) < 2) {
       stop("This plotting function requires at least 2 features")
     }
-    pca <- stats::prcomp(t(x[["assays"]]), scale. = TRUE)$x
-    graphics::plot(pca[, 1], pca[, 2], col = as.factor(x$samples$sampleVar01),
+    pca <- prcomp(t(x[["assays"]]), scale. = TRUE)$x
+    plot(pca[, 1], pca[, 2], col = as.factor(x$samples$sampleVar01),
                    xlab = "PC 1", ylab = "PC 2", main = "PCA")
   }
   assign("plotMultiFeature", plotMultiFeature, envir = parent.frame())
   plotMultiTestSf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
-    var_x <- data.table::data.table(features = rownames(var_x), var_x)
-    var_x <- data.table::melt(var_x, measure.vars = c(2,3))
+    var_x <- data.table(features = rownames(var_x), var_x)
+    var_x <- melt(var_x, measure.vars = c(2,3))
 
     var_y <- data.frame(lapply(x$results, `[`, 3))
     colnames(var_y) <- names(x$results)
-    var_y <- data.table::data.table(features = rownames(var_y), var_y)
-    var_y <- data.table::melt(var_y, measure.vars = c(2,3))
+    var_y <- data.table(features = rownames(var_y), var_y)
+    var_y <- melt(var_y, measure.vars = c(2,3))
 
     df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
+    plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTestSf", plotMultiTestSf, envir = parent.frame())
   plotMultiTestMf <- function(x) {
     var_x <- data.frame(lapply(x$results, `[`, 2))
     colnames(var_x)<- names(x$results)
-    var_x <- data.table::data.table(features = rownames(var_x), var_x)
-    var_x <- data.table::melt(var_x, measure.vars = c(2,3))
+    var_x <- data.table(features = rownames(var_x), var_x)
+    var_x <- melt(var_x, measure.vars = c(2,3))
 
     var_y <- data.frame(lapply(x$results, `[`, 3))
     colnames(var_y) <- names(x$results)
-    var_y <- data.table::data.table(features = rownames(var_y), var_y)
-    var_y <- data.table::melt(var_y, measure.vars = c(2,3))
+    var_y <- data.table(features = rownames(var_y), var_y)
+    var_y <- melt(var_y, measure.vars = c(2,3))
 
     df <- merge(var_x, var_y, by=c("variable", "features"))
 
-    graphics::plot(df$value.x ~ df$value.y, col = factor(df$variable))
+    plot(df$value.x ~ df$value.y, col = factor(df$variable))
   }
   assign("plotMultiTestMf", plotMultiTestMf, envir = parent.frame())
 
@@ -312,7 +312,7 @@ testPlots <- function() {
       var1 = x[[1]]$results[[1]][,"beta"],
       var2 = x[[2]]$results[[1]][,"beta"]
     )
-    graphics::plot(x = ggdf$var1, y = ggdf$var2)
+    plot(x = ggdf$var1, y = ggdf$var2)
   }
   assign("multiModel_scatterplot", multiModel_scatterplot, envir = parent.frame())
   multiModel_barplot_sf <- function(x) {
@@ -320,7 +320,7 @@ testPlots <- function() {
       name  = names(x)[1:length(x)-1],
       beta = c(x[[1]]$results[[1]][,"beta"], x[[2]]$results[[1]][,"beta"])
     )
-    graphics::barplot(height = df$beta, names = df$name,
+    barplot(height = df$beta, names = df$name,
                       xlab=x[[1]]$results[[1]]$features_id,
                       ylim=c(ifelse(min(df$beta) < 0, min(df$beta)*1.5, -min(df$beta)*1.5),
                              max(df$beta)*1.5))
@@ -329,7 +329,7 @@ testPlots <- function() {
 
   plotPlotly <- function(x){
     plotPoints <- as.numeric(x[["assays"]][1, ])
-    featureMedian <- stats::median(plotPoints)
+    featureMedian <- median(plotPoints)
     plotTitle <- sprintf("%s, median: %0.2f", x[["features"]][["customID"]],
                          featureMedian)
     d <- data.frame(i = seq_along(plotPoints), plotPoints)

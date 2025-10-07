@@ -12,7 +12,7 @@
 #'
 #' @export
 getInstalledStudies <- function(hasElements = NULL, libraries = NULL) {
-  pkgsAll <- rownames(utils::installed.packages(lib.loc = libraries))
+  pkgsAll <- rownames(installed.packages(lib.loc = libraries))
   names(pkgsAll) <- NULL
   regex <- getPrefix(regex = TRUE)
   pkgsOn <- grep(regex, pkgsAll, value = TRUE)
@@ -380,7 +380,7 @@ getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL
   )
 }
 
-# ... Arguments passed to either data.table::fread() or jsonlite::read_json()
+# ... Arguments passed to either fread() or read_json()
 getElements <- function(
   study,
   elements,
@@ -532,7 +532,7 @@ getFiles <- function(path, fileType = "txt") {
     contentsNames <- basename(contents)
     extensionRegEx <- sprintf("\\.%s$", fileType)
     contentsNames <- sub(extensionRegEx, "", contentsNames)
-    stats::setNames(lapply(contents, getFiles, fileType = fileType), contentsNames)
+    setNames(lapply(contents, getFiles, fileType = fileType), contentsNames)
   } else {
     path
   }

@@ -74,7 +74,7 @@ combineStudies <- function(...) {
 
 # The workhorse function that combines two studies at a time. Only really needed
 # because default NULL elements like version/maintainer/maintainerEmail are
-# difficult to combine intelligently using utils::modifyList() alone
+# difficult to combine intelligently using modifyList() alone
 combineStudiesPair <- function(studyOne, studyTwo) {
   studyCombined <- studyOne
   elements <- names(studyOne)
@@ -82,7 +82,7 @@ combineStudiesPair <- function(studyOne, studyTwo) {
     if (is.null(studyTwo[[e]])) {
       next
     } else if (is.list(studyTwo[[e]])) {
-      studyCombined[[e]] <- utils::modifyList(studyOne[[e]], studyTwo[[e]])
+      studyCombined[[e]] <- modifyList(studyOne[[e]], studyTwo[[e]])
     }
     else {
       studyCombined[[e]] <- studyTwo[[e]]

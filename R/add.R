@@ -700,17 +700,17 @@ addElements <- function(study, elements, reset = FALSE) {
   # but it also seems like a lot simply to internally dispatch these functions
   # here and also in validateStudy().
   checkFunctionName <- paste0("check", capitalize(elementsName))
-  checkFunction <- utils::getFromNamespace(checkFunctionName, ns = "OmicNavigator")
+  checkFunction <- getFromNamespace(checkFunctionName, ns = "OmicNavigator")
   checkFunction(elements)
   sanitizeFunctionName <- paste0("sanitize", capitalize(elementsName))
-  sanitizeFunction <- utils::getFromNamespace(sanitizeFunctionName, ns = "OmicNavigator")
+  sanitizeFunction <- getFromNamespace(sanitizeFunctionName, ns = "OmicNavigator")
   elements <- sanitizeFunction(elements)
 
   if (reset) {
     study[[elementsName]] <- list()
   }
 
-  study[[elementsName]] <- utils::modifyList(study[[elementsName]], elements)
+  study[[elementsName]] <- modifyList(study[[elementsName]], elements)
 
   return(study)
 }

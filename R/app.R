@@ -28,7 +28,7 @@ listStudies <- function(libraries = NULL) {
 
     # package metadata
     pkgName <- studyToPkg(studyName)
-    pkgDescription <- utils::packageDescription(pkgName, lib.loc = libraries)
+    pkgDescription <- packageDescription(pkgName, lib.loc = libraries)
     pkgDescription <- unclass(pkgDescription)
     attr(pkgDescription, "file") <- NULL
     output[[i]][["package"]] <- pkgDescription
@@ -46,7 +46,7 @@ listStudies <- function(libraries = NULL) {
         sprintf("Study \"%s\" was created with version %s\n", studyName,
                 pkgDescription[["OmicNavigatorVersion"]]),
         sprintf("OmicNavigator version %s is currently installed\n",
-                utils::packageVersion("OmicNavigator")),
+                packageVersion("OmicNavigator")),
         sprintf("It requires study packages to be created with a minimum OmicNavigator version of %s\n",
                 minVersionCompatible),
         sprintf("Reinstall the study to avoid any potential issues\n"),
@@ -98,7 +98,7 @@ getStudyMeta <- function(study, libraries = NULL) {
   on.exit(unloadNamespace(pkg), add = TRUE)
 
   # Import info from DESCRIPTION
-  description <- utils::packageDescription(pkg, lib.loc = libraries)
+  description <- packageDescription(pkg, lib.loc = libraries)
   if (is.null(description[["Maintainer"]])) {
     description[["Maintainer"]] <- "Unknown <unknown@unknown>"
     message(
@@ -217,7 +217,6 @@ getEnrichmentsTable <- function(study, modelID, annotationID, type = "nominal", 
 #'   \item{links}{(list) The statistics for each pairwise overlap between the
 #'   annotation terms (i.e. nodes)}
 #'
-#' @importFrom data.table ":=" "%chin%" .N
 #' @export
 getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL) {
 
@@ -233,7 +232,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     message(sprintf("No terms available for annotationID \"%s\"", annotationID))
     return(list())
   }
-  terms <- data.table::data.table(
+  terms <- data.table(
     termID = names(termsVec),
     geneSetSize = lengths(termsVec)
   )
@@ -241,9 +240,9 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
   enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
   if (isEmpty(enrichments)) return(list())
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
-  data.table::setDT(enrichmentsTable)
+  setDT(enrichmentsTable)
 
-  nodesLong <- data.table::merge.data.table(
+  nodesLong <- merge.data.table(
     x = enrichmentsTable,
     y = terms,
     by = "termID",
@@ -251,7 +250,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     all.y = FALSE,
     sort = FALSE
   )
-  data.table::setorderv(nodesLong, cols = "testID")
+  setorderv(nodesLong, cols = "testID")
 
   tests <- unique(nodesLong[["testID"]])
 
@@ -262,7 +261,7 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     by = c("termID", "description", "geneSetSize")
   ]
   nodes[, id := seq_len(.N)]
-  data.table::setcolorder(nodes, "id")
+  setcolorder(nodes, "id")
 
   overlaps <- getOverlaps(
     study,
@@ -271,8 +270,8 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
   )
   if (isEmpty(overlaps)) return(list())
 
-  links <- data.table::setDT(overlaps)
-  data.table::setnames(
+  links <- setDT(overlaps)
+  setnames(
     links,
     old = c("term1", "term2"),
     new = c("source", "target")
@@ -280,16 +279,16 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
   links <- links[links[["source"]] %chin% nodes[["termID"]] &
                    links[["target"]] %chin% nodes[["termID"]], ]
   links[, id := seq_len(.N)]
-  data.table::setcolorder(links, "id")
+  setcolorder(links, "id")
 
   # Use node IDs with links
-  links[["source"]] <- data.table::chmatch(links[["source"]], nodes[["termID"]])
-  links[["target"]] <- data.table::chmatch(links[["target"]], nodes[["termID"]])
+  links[["source"]] <- chmatch(links[["source"]], nodes[["termID"]])
+  links[["target"]] <- chmatch(links[["target"]], nodes[["termID"]])
 
   enrichmentsNetwork <- list(
     tests = tests,
-    nodes = data.table::setDF(nodes),
-    links = data.table::setDF(links)
+    nodes = setDF(nodes),
+    links = setDF(links)
   )
 
   return(enrichmentsNetwork)
@@ -553,7 +552,7 @@ getReportLink <- function(study, modelID, libraries = NULL) {
 #'
 #' @export
 getPackageVersion <- function(libraries = NULL) {
-  as.character(utils::packageVersion("OmicNavigator", lib.loc = libraries))
+  as.character(packageVersion("OmicNavigator", lib.loc = libraries))
 }
 
 #' Get favicon URLs for table linkouts
