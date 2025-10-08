@@ -43,7 +43,12 @@ expect_identical_xl(
 # Test that only valid elements are accepted.
 expect_error_xl(
   getInstalledStudies(hasElements = c("metaFeatures", "invalidElement")),
-  "Invalid element: invalidElement. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'"
+  "invalidElement"
+)
+
+expect_error_xl(
+  getInstalledStudies(hasElements = c("invalidElement1", "invalidElement2")),
+  "invalidElement1, invalidElement2"
 )
 
 expect_identical_xl(

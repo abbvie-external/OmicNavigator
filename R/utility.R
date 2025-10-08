@@ -22,22 +22,38 @@ pkgToStudy <- function(pkg) {
   return(study)
 }
 
-studiesWithElements <- function(studies, elements, libraries = NULL) {
-  filteredStudies <- studies
-  for (study in filteredStudies) {
-    packageElements <- list.files(system.file("OmicNavigator", package = study, lib.loc = libraries), include.dirs = TRUE)
-    for (element in elements) {
-      if (!element %in% c("metaFeatures", "results", "enrichments", "reports", "plots", "assays", "samples", "features", "resultsLinkouts", "metaAssays")) {
-        stop(sprintf("Invalid element: %s. Valid elements are 'metaFeatures', 'results', 'enrichments', 'reports', 'plots', 'assays', 'samples', 'features', 'resultsLinkouts', and 'metaAssays'", element),
-             call. = FALSE)
-      }
-      if (!any(grepl(element, packageElements))) {
-        filteredStudies <- filteredStudies[filteredStudies != study]
-        next
-      }
-    }
+getStudiesWithElements <- function(studies, elements, libraries = NULL) {
+  elementsValid <- c(
+    "annotations", "assays", "barcodes", "enrichments", "enrichmentsLinkouts",
+    "features", "mapping", "metaAssays", "metaFeatures", "metaFeaturesLinkouts",
+    "models", "plots", "reports", "results", "resultsLinkouts", "samples",
+    "tests"
+  )
+  elementsInvalid <- elements[!elements %in% elementsValid]
+  if (length(elementsInvalid) > 0) {
+    invalidElementsMsg <- sprintf(
+      "Invalid element(s): %s\n\nValid elements are %s",
+      paste(elementsInvalid, collapse = ", "),
+      paste(elementsValid, collapse = ", ")
+    )
+    stop(invalidElementsMsg, call. = FALSE)
   }
-  return(filteredStudies)
+
+  studyPackageElements <- Map(getStudyPackageElements, studies)
+  studyPackageElementsFiltered <- Filter(
+    function(x) all(elements %in% x),
+    studyPackageElements
+  )
+  studiesWithElements <- names(studyPackageElementsFiltered)
+
+  return(studiesWithElements)
+}
+
+# Study should already have package prefix
+getStudyPackageElements <- function(study, libraries = NULL) {
+  studyPackageDir <- system.file("OmicNavigator", package = study, lib.loc = libraries)
+  studyPackageElements <- list.files(studyPackageDir, include.dirs = TRUE)
+  return(studyPackageElements)
 }
 
 ## I/O -------------------------------------------------------------------------

@@ -18,7 +18,7 @@ getInstalledStudies <- function(hasElements = NULL, libraries = NULL) {
   pkgsOn <- grep(regex, pkgsAll, value = TRUE)
 
   if (!isEmpty(hasElements)) {
-    pkgsOn <- studiesWithElements(pkgsOn, hasElements, libraries = libraries)
+    pkgsOn <- getStudiesWithElements(pkgsOn, hasElements, libraries = libraries)
   }
   studies <- pkgToStudy(pkgsOn)
   studies <- sort(studies)
