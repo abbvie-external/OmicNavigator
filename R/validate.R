@@ -1,3 +1,15 @@
+# The validateX() functions are run when a study has been finalized and is being
+# exported and/or installed. They validate that the elements are concordant with
+# each other, for example, that the featureIDs are consistent between the
+# results, features, and metaFeatures tables.
+#
+# In general, the goal is to assist the user to create a valid study that will
+# work as intended when investigated via the app. Errors are only thrown when
+# a large problem is detected. For less severe problems, only a message/warning
+# is emitted to alert the user.
+#
+# Because all the elements are optional, some of the validations may be
+# redundant.
 
 #' Validate a study
 #'

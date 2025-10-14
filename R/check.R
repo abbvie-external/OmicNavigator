@@ -1,3 +1,10 @@
+# The checkX() functions are executed when a new element is added via the
+# corresponding addX() function. Since elements can be added to a study in any
+# arbitrary order, the checks only focus on the current element. Thus they check
+# for structural characteristics like the class and dimensions. The concordance
+# between elements is validated by the validateX() functions in validate.R when
+# the study is exported/installed.
+
 checkNamingConvention <- function(featureObjectName, attr) {
    # Check study name, models, and tests
    forbidden <- c("^", ":", "*", "\\",  ">", "<", "$", "|", "?", "/")
