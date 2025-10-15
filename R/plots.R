@@ -452,7 +452,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(metaAssays)) {
       metaAssaysPlotting <- metaAssays
     } else {
-      metaAssaysPlotting <- metaAssays[metaFeaturesPlotting[[2]], , drop = FALSE]
+      metaAssaysPlotting <- metaAssays[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
       if (nrow(metaAssaysPlotting) == 0) {
         warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
       }

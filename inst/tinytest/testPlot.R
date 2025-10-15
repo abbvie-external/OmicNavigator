@@ -812,6 +812,25 @@ expect_identical_xl(
   "feature_0001"
 )
 
+# Properly subset metaAssays when there are duplicate metaFeatureIDs in 2nd
+# column of metaFeatures table
+dupMetaFeaturesObj <- testStudyObj
+dupMetaFeaturesObj[["metaFeatures"]][["default"]] <- rbind(
+  cbind(dupMetaFeaturesObj[["metaFeatures"]][["default"]], construct = "c1"),
+  cbind(dupMetaFeaturesObj[["metaFeatures"]][["default"]], construct = "c2")
+)
+
+dupMetaFeaturesPlottingData <- getPlottingData(
+  dupMetaFeaturesObj,
+  modelID = testModelName,
+  featureID = "feature_0001"
+)
+
+expect_equal_xl(
+  rownames(dupMetaFeaturesPlottingData[["metaAssays"]]),
+  unique(dupMetaFeaturesPlottingData[["metaFeatures"]][["metaFeatureID"]])
+)
+
 # getPlottingData (object, testID) ---------------------------------------------
 
 plottingData <- getPlottingData(
