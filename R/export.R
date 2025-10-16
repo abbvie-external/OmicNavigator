@@ -106,6 +106,7 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportEnrichmentsLinkouts(study, directoryname)
   exportMetaFeaturesLinkouts(study, directoryname)
   exportMetaAssays(study, directoryname)
+  exportObjects(study, directoryname)
   if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
 }
@@ -114,7 +115,7 @@ exportElements <- function(
   study,
   elements,
   path = ".",
-  fileType = c("txt", "json"),
+  fileType = c("txt", "json", "rds"),
   hasRowNames = FALSE,
   nested = 0,
   ...
@@ -155,19 +156,23 @@ exportElements <- function(
 exportElementsWrite <- function(
   x,
   path = ".",
-  fileType = c("txt", "json"),
+  fileType = c("txt", "json", "rds"),
   hasRowNames = FALSE,
   ...
 )
 {
+  fileType <- match.arg(fileType)
   for (i in seq_along(x)) {
     fileName <- file.path(path, names(x)[i])
     if (fileType == "txt") {
       fileName <- paste0(fileName, ".txt")
       writeTable(x[[i]], file = fileName, row.names = hasRowNames)
-    } else {
+    } else if (fileType == "json") {
       fileName <- paste0(fileName, ".json")
       writeJson(x[[i]], file = fileName, ...)
+    } else if (fileType == "rds") {
+      fileName <- paste0(fileName, ".rds")
+      saveRDS(x[[i]], file = fileName, ...)
     }
   }
 }
@@ -328,6 +333,16 @@ exportOverlaps <- function(study, path = ".") {
     study,
     elements = "overlaps",
     path = path
+  )
+}
+
+exportObjects <- function(study, path = ".", ...) {
+  exportElements(
+    study,
+    elements = "objects",
+    path = path,
+    fileType = "rds",
+    ...
   )
 }
 

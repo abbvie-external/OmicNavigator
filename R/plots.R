@@ -458,6 +458,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       }
     }
 
+    objectsPlotting <- getObjects(study, modelID = model_i, quiet = TRUE,
+                                  libraries = libraries)
+
     if (!isEmpty(testID)) {
       resultsPlotting <- vector("list", length(testID))
       for (i in seq_along(testID)) {
@@ -493,6 +496,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
           temp_model <- c(temp_model, list(metaFeatures = metaFeaturesPlotting,
                                            metaAssays = metaAssaysPlotting))
         }
+        if (!isEmpty(objectsPlotting)) {
+          plottingData <- c(plottingData, list(objects = objectsPlotting))
+        }
         plottingData <- c(plottingData, setNames(list(temp_model), model_i))
 
       } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
@@ -516,6 +522,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       if (!isEmpty(metaAssaysPlotting)) {
         plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
                                              metaAssays = metaAssaysPlotting))
+      }
+      if (!isEmpty(objectsPlotting)) {
+        plottingData <- c(plottingData, list(objects = objectsPlotting))
       }
     }
   }

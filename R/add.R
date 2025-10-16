@@ -38,6 +38,7 @@
 #' @inheritParams addEnrichmentsLinkouts
 #' @inheritParams addMetaFeaturesLinkouts
 #' @inheritParams addMetaAssays
+#' @inheritParams addObjects
 #'
 #' @return Returns a new OmicNavigator study object, which is a named nested
 #'   list with class \code{onStudy}
@@ -60,6 +61,7 @@
 #'   \code{\link{addEnrichmentsLinkouts}},
 #'   \code{\link{addMetaFeaturesLinkouts}},
 #'   \code{\link{addMetaAssays}},
+#'   \code{\link{addObjects}},
 #'   \code{\link{exportStudy}},
 #'   \code{\link{installStudy}}
 #'
@@ -97,6 +99,7 @@ createStudy <- function(name,
                         enrichmentsLinkouts = list(),
                         metaFeaturesLinkouts = list(),
                         metaAssays = list(),
+                        objects = list(),
                         version = NULL,
                         maintainer = NULL,
                         maintainerEmail = NULL,
@@ -128,6 +131,7 @@ createStudy <- function(name,
                 enrichmentsLinkouts = list(),
                 metaFeaturesLinkouts = list(),
                 metaAssays = list(),
+                objects = list(),
                 overlaps = list(),
                 version = version,
                 maintainer = maintainer,
@@ -152,6 +156,7 @@ createStudy <- function(name,
   study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts = enrichmentsLinkouts)
   study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = metaFeaturesLinkouts)
   suppressWarnings(study <- addMetaAssays(study, metaAssays = metaAssays))
+  suppressWarnings(study <- addObjects(study, objects = objects))
 
   return(study)
 }
@@ -688,6 +693,25 @@ addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) 
 addMetaAssays <- function(study, metaAssays, reset = FALSE) {
   warning("Support for metaAssays is highly experimental")
   addElements(study, metaAssays, reset)
+}
+
+#' Add objects
+#'
+#' Experimental. Add arbitrary R objects to a study. These will be exported via
+#' \code{\link[base]{saveRDS}} and imported via \code{\link[base]{readRDS}}.
+#' This allows preserving the exact structure of complex R objects.
+#'
+#' @param objects Any arbitrary R objects from the study. The input object is a
+#'   list of objects (one per model). To share an object across multiple models,
+#'   use the modelID "default".
+#' @inheritParams shared-add
+#'
+#' @seealso \code{\link[base]{saveRDS}},\code{\link[base]{readRDS}}
+#'
+#' @export
+addObjects <- function(study, objects, reset = FALSE) {
+  warning("Support for objects is highly experimental")
+  addElements(study, objects, reset)
 }
 
 addElements <- function(study, elements, reset = FALSE) {

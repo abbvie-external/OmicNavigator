@@ -501,6 +501,19 @@ testMetaAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
   return(metaAssays)
 }
 
+testObjects <- function(n = 3) {
+  objects <- list()
+  for (i in seq_len(n)) {
+    name <- sprintf("model_%02d", i)
+    value <- structure(
+      list(a = 1, b = 2, c = sprintf("example for Model %d", i)),
+      class = "customClass"
+    )
+    objects[[name]] <- value
+  }
+  return(objects)
+}
+
 testStudyMeta <- function() {
   list(
     department = "immunology",

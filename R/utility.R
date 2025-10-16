@@ -26,8 +26,8 @@ getStudiesWithElements <- function(studies, elements, libraries = NULL) {
   elementsValid <- c(
     "annotations", "assays", "barcodes", "enrichments", "enrichmentsLinkouts",
     "features", "mapping", "metaAssays", "metaFeatures", "metaFeaturesLinkouts",
-    "models", "plots", "reports", "results", "resultsLinkouts", "samples",
-    "tests"
+    "models", "objects", "plots", "reports", "results", "resultsLinkouts",
+    "samples", "tests"
   )
   elementsInvalid <- elements[!elements %in% elementsValid]
   if (length(elementsInvalid) > 0) {
