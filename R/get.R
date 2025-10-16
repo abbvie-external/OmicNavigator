@@ -380,13 +380,30 @@ getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL
   )
 }
 
-# ... Arguments passed to either fread() or read_json()
+#' Get objects from a study
+#'
+#' @inherit shared-get
+#'
+#' @export
+getObjects <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
+  getElements(
+    study,
+    elements = "objects",
+    filters = list(modelID = modelID),
+    default = "default",
+    fileType = "rds",
+    quiet = quiet,
+    libraries = libraries
+  )
+}
+
+# ... Arguments passed to either fread() or read_json() or readRDS()
 getElements <- function(
   study,
   elements,
   filters = list(),
   default = NULL,
-  fileType = c("txt", "json"),
+  fileType = c("txt", "json", "rds"),
   quiet = FALSE,
   libraries = NULL,
   ...
@@ -422,7 +439,7 @@ getElements.onStudy <- function(
   elements,
   filters = list(),
   default = NULL,
-  fileType = c("txt", "json"),
+  fileType = c("txt", "json", "rds"),
   quiet = FALSE,
   libraries = NULL,
   ...
@@ -464,7 +481,7 @@ getElements.character <- function(
   elements,
   filters = list(),
   default = NULL,
-  fileType = c("txt", "json"),
+  fileType = c("txt", "json", "rds"),
   quiet = FALSE,
   libraries = NULL,
   ...
@@ -482,7 +499,7 @@ getElements.character <- function(
                                 study, elements))
     return(list())
   }
-  fileType <- match.arg(fileType, c("txt", "json"))
+  fileType <- match.arg(fileType)
   elementsFiles <- getFiles(elementsDirectory, fileType = fileType)
 
   if (isEmpty(elementsFiles)) {
@@ -510,7 +527,7 @@ getElements.character <- function(
     }
   }
 
-  readFunction <- if (fileType == "txt") readTable else readJson
+  readFunction <- switch(fileType, txt = readTable, json = readJson, rds = readRDS)
   if (is.list(elementsFiles)) {
     object <- rapply(elementsFiles, readFunction, how = "replace", ...)
   } else {
