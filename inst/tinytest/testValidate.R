@@ -275,6 +275,22 @@ expect_error_xl(
   "Mapping features for modelID do not match features from modelID results table\n"
 )
 
+# Bug fix: allow model names to be subset of one another
+mappingModelNameSubset <- createStudy("mappingModelNameSubset")
+mappingModelNameSubset <- addResults(
+  mappingModelNameSubset,
+  OmicNavigator:::testResults(nModels = 2)
+)
+mappingModelNameSubset <- addMapping(
+  mappingModelNameSubset,
+  OmicNavigator:::testMapping()
+)
+modelNamesSubset <- c("model_01", "model_01_subset")
+names(mappingModelNameSubset[["results"]]) <- modelNamesSubset
+names(mappingModelNameSubset[["mapping"]][["default"]]) <- modelNamesSubset
+
+expect_true_xl(validateStudy(mappingModelNameSubset))
+
 # metaAssays -----------------------------------------------------------------------
 
 # Column names should match sampleIDs
