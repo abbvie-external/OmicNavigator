@@ -1,3 +1,7 @@
+# 1.17.2
+
+* The release tarball includes version 2.1.0 of the web app
+
 # 1.17.1
 
 * The release tarball includes version refs/tags/2.1.0 of the web app
