@@ -584,3 +584,15 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
 
   return(NULL)
 }
+
+checkObjects <- function(objects) {
+  checkList(objects)
+
+  for (i in seq_along(objects)) {
+    if (length(objects[i]) != 1) {
+      stop("Only one object is allowed per modelID")
+    }
+  }
+
+  return(NULL)
+}

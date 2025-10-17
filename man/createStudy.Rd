@@ -24,6 +24,7 @@ createStudy(
   enrichmentsLinkouts = list(),
   metaFeaturesLinkouts = list(),
   metaAssays = list(),
+  objects = list(),
   version = NULL,
   maintainer = NULL,
   maintainerEmail = NULL,
@@ -221,6 +222,10 @@ sampleIDs (\code{\link{addSamples}}). The data frame should only contain
 numeric values. To share a data frame across multiple models, use the
 modelID "default".}
 
+\item{objects}{Any arbitrary R objects from the study. The input object is a
+list of objects (one per model). To share an object across multiple models,
+use the modelID "default".}
+
 \item{version}{(Optional) Include a version number to track the updates to
 your study package. If you export the study to a package, the version is
 used as the package version.}
@@ -283,6 +288,7 @@ study <- createStudy(name = "ABC",
 \code{\link{addEnrichmentsLinkouts}},
 \code{\link{addMetaFeaturesLinkouts}},
 \code{\link{addMetaAssays}},
+\code{\link{addObjects}},
 \code{\link{exportStudy}},
 \code{\link{installStudy}}
 }
