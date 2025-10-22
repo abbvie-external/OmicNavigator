@@ -50,6 +50,7 @@ importStudy <- function(study, libraries = NULL) {
     resultsLinkouts = getResultsLinkouts(study, quiet = TRUE, libraries = libraries),
     enrichmentsLinkouts = getEnrichmentsLinkouts(study, quiet = TRUE, libraries = libraries),
     metaFeaturesLinkouts = getMetaFeaturesLinkouts(study, quiet = TRUE, libraries = libraries),
+    metaAssays = getMetaAssays(study, quiet = TRUE, libraries = libraries),
     version = studyMeta[["version"]],
     maintainer = studyMeta[["maintainer"]],
     maintainerEmail = studyMeta[["maintainerEmail"]],
