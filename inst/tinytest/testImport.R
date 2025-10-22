@@ -123,6 +123,11 @@ expect_identical_xl(
   testStudyObj[["metaFeaturesLinkouts"]]
 )
 
+expect_equal_xl(
+  imported[["metaAssays"]],
+  testStudyObj[["metaAssays"]]
+)
+
 expect_identical_xl(
   imported[["version"]],
   testStudyObj[["version"]]
