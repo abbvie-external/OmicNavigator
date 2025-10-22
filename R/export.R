@@ -495,8 +495,10 @@ createPackage <- function(study, directoryname) {
   # Data
   datadir <- file.path(directoryname, "inst", "OmicNavigator")
   dir.create(datadir, showWarnings = FALSE, recursive = TRUE)
-  annotations <- study[["annotations"]]
-  createTextFiles(study, datadir, calcOverlaps = !isEmpty(annotations))
+  # Only calculate overlaps if annotations are available and overlaps have
+  # not been pre-calculated
+  calcOverlaps = !isEmpty(study[["annotations"]]) && isEmpty(study[["overlaps"]])
+  createTextFiles(study, datadir, calcOverlaps = calcOverlaps)
 
   # Plots
   if (!isEmpty(study[["plots"]])) {
