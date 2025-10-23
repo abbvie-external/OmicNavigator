@@ -10,6 +10,7 @@ library(OmicNavigator)
 testStudyName <- "ABC"
 testStudyObj <- OmicNavigator:::testStudy(
   name = testStudyName,
+  description = "A test study for testImport.R",
   version = "0.1.0",
   maintainer = "My Name",
   maintainerEmail = "me@domain.com"
@@ -153,6 +154,13 @@ expect_identical_xl(
 expect_identical_xl(
   imported[["studyMeta"]][-1],
   testStudyObj[["studyMeta"]]
+)
+
+# Test everything except studyMeta
+expect_equal_xl(
+  imported[names(imported) != "studyMeta"],
+  testStudyObj[names(testStudyObj) != "studyMeta"],
+  info = "Did you forget to add a new element to importStudy?"
 )
 
 # importStudy() - minimal ------------------------------------------------------
