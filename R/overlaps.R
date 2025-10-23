@@ -108,6 +108,7 @@ addOverlaps <- function(study, reset = FALSE) {
     }
     overlaps <- calc_pairwise_overlaps(terms)
     overlaps <- overlaps[overlaps[["overlapSize"]] > 0, ]
+    row.names(overlaps) <- NULL # reset row names post-filtering
     overlapsList[[annotationID]] <- overlaps
   }
 

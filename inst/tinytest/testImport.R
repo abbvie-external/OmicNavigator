@@ -18,6 +18,7 @@ testStudyObj <- addPlots(testStudyObj, OmicNavigator:::testPlots())
 testModelName <- names(testStudyObj[["models"]])[1]
 testTestName <- names(testStudyObj[["tests"]][[1]])[1]
 testAnnotationName <- names(testStudyObj[["annotations"]])[1]
+testStudyObj <- addOverlaps(testStudyObj)
 
 minimalStudyObj <- OmicNavigator:::testStudyMinimal()
 minimalStudyName <- minimalStudyObj[["name"]]
@@ -126,6 +127,11 @@ expect_identical_xl(
 expect_equal_xl(
   imported[["metaAssays"]],
   testStudyObj[["metaAssays"]]
+)
+
+expect_equal_xl(
+  imported[["overlaps"]],
+  testStudyObj[["overlaps"]]
 )
 
 expect_identical_xl(
