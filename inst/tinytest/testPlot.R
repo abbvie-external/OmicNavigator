@@ -531,13 +531,13 @@ expect_true_xl(
 )
 
 expect_identical_xl(
-  names(plottingData)[1:2],
-  mmodel
+  names(plottingData),
+  c(mmodel, "mapping")
 )
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
 )
 
 expect_identical_xl(
@@ -547,7 +547,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
 )
 
 expect_identical_xl(
@@ -601,13 +601,13 @@ expect_true_xl(
 )
 
 expect_identical_xl(
-  names(plottingData)[1:2],
-  mmodel
+  names(plottingData),
+  c(mmodel, "mapping")
 )
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
 )
 
 expect_identical_xl(
@@ -617,7 +617,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
 )
 
 expect_identical_xl(
