@@ -490,8 +490,8 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
           temp_model <- c(temp_model, list(results = setNames(list(resultsPlotting), testID)))
         }
         if (!isEmpty(metaAssaysPlotting)) {
-          plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
-                                               metaAssays = metaAssaysPlotting))
+          temp_model <- c(temp_model, list(metaFeatures = metaFeaturesPlotting,
+                                           metaAssays = metaAssaysPlotting))
         }
         plottingData <- c(plottingData, setNames(list(temp_model), model_i))
 
