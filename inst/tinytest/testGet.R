@@ -26,7 +26,7 @@ suppressMessages(installStudy(minimalStudyObj))
 
 emptyStudyObj <- createStudy(name = "empty")
 
-# installedStudies -------------------------------------------------------------
+# getInstalledStudies ----------------------------------------------------------
 
 installedStudies <- getInstalledStudies(libraries = tmplib)
 expect_identical_xl(
@@ -34,10 +34,10 @@ expect_identical_xl(
   c(testStudyName, minimalStudyName)
 )
 
-# If there are no OmicNavigator study packages installed, return an empty list.
+# If there are no OmicNavigator study packages installed, return an empty vector
 expect_identical_xl(
-  listStudies(libraries = tempfile()),
-  list()
+  getInstalledStudies(libraries = tempfile()),
+  character(0)
 )
 
 # Test that only valid elements are accepted.

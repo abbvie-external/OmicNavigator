@@ -106,7 +106,6 @@ createTextFiles <- function(study, directoryname, calcOverlaps = FALSE) {
   exportEnrichmentsLinkouts(study, directoryname)
   exportMetaFeaturesLinkouts(study, directoryname)
   exportMetaAssays(study, directoryname)
-  exportSummary(study, directoryname)
   if (calcOverlaps) study <- addOverlaps(study)
   exportOverlaps(study, directoryname)
 }
@@ -322,98 +321,6 @@ exportMetaAssays <- function(study, path = ".") {
     path = path,
     hasRowNames = TRUE
   )
-}
-
-exportSummary <- function(x, path = ".") {
-
-  resultsModels <- names(x[["results"]])
-  enrichmentsModels <- names(x[["enrichments"]])
-  # Plots can be shared across models using modelID "default". Thus need to
-  # consider all models that have inference results or enrichments available.
-  plotsModels <- unique(c(resultsModels, enrichmentsModels))
-
-  output <- list(
-    results = vector("list", length(resultsModels)),
-    enrichments = vector("list", length(enrichmentsModels)),
-    plots = vector("list", length(plotsModels))
-  )
-
-  for (i in seq_along(resultsModels)) {
-    modelID <- resultsModels[i]
-    modelDisplay <- getModels(x, modelID = modelID, quiet = TRUE)
-    # The tooltip is either added as a single string per modelID, or as a named
-    # list with other metadata fields, where the field "description" is the
-    # metadata field
-    if (is.list(modelDisplay)) modelDisplay <- modelDisplay[["description"]]
-    if (isEmpty(modelDisplay)) modelDisplay <- modelID
-    output[["results"]][[i]] <- list(
-      modelID = modelID,
-      modelDisplay = modelDisplay
-    )
-    modelTests <- names(x[["results"]][[modelID]])
-    output[["results"]][[i]][["tests"]] <- vector("list", length(modelTests))
-    for (j in seq_along(modelTests)) {
-      testID <- modelTests[j]
-      testDisplay <- getTests(x, modelID = modelID, testID = testID, quiet = TRUE)
-      # The tooltip is either added as a single string per testID, or as a named
-      # list with other metadata fields, where the field "description" is the
-      # metadata field
-      if (is.list(testDisplay)) testDisplay <- testDisplay[["description"]]
-      if (isEmpty(testDisplay)) testDisplay <- testID
-      output[["results"]][[i]][["tests"]][[j]] <- list(
-        testID = testID,
-        testDisplay = testDisplay
-      )
-    }
-  }
-
-  for (i in seq_along(enrichmentsModels)) {
-    modelID <- enrichmentsModels[i]
-    modelDisplay <- getModels(x, modelID = modelID, quiet = TRUE)
-    if (isEmpty(modelDisplay)) modelDisplay <- modelID
-    output[["enrichments"]][[i]] <- list(
-      modelID = modelID,
-      modelDisplay = modelDisplay
-    )
-    modelAnnotations <- names(x[["enrichments"]][[modelID]])
-    output[["enrichments"]][[i]][["annotations"]] <- vector("list", length(modelAnnotations))
-    for (j in seq_along(modelAnnotations)) {
-      annotationID <- modelAnnotations[j]
-      annotationDisplay <- getAnnotations(x, annotationID = annotationID, quiet = TRUE)[["description"]]
-      if (isEmpty(annotationDisplay)) annotationDisplay <- annotationID
-      output[["enrichments"]][[i]][["annotations"]][[j]] <- list(
-        annotationID = annotationID,
-        annotationDisplay = annotationDisplay
-      )
-    }
-  }
-
-  for (i in seq_along(plotsModels)) {
-    modelID <- plotsModels[i]
-    modelDisplay <- getModels(x, modelID = modelID, quiet = TRUE)
-    if (isEmpty(modelDisplay)) modelDisplay <- modelID
-    output[["plots"]][[i]] <- list(
-      modelID = modelID,
-      modelDisplay = modelDisplay
-    )
-    modelPlots <- getPlots(x, modelID = modelID, quiet = TRUE)
-    output[["plots"]][[i]][["plots"]] <- vector("list", length(modelPlots))
-    for (j in seq_along(modelPlots)) {
-      plotID <- names(modelPlots)[j]
-      plotDisplay = modelPlots[[j]][["displayName"]]
-      if (isEmpty(plotDisplay)) plotDisplay <- plotID
-      plotType <- modelPlots[[j]][["plotType"]]
-      if (isEmpty(plotType)) plotType <- "singleFeature"
-      output[["plots"]][[i]][["plots"]][[j]] <- list(
-        plotID = plotID,
-        plotDisplay = plotDisplay,
-        plotType = plotType
-      )
-    }
-  }
-
-  fileName <- file.path(path, "summary.json")
-  writeJson(output, file = fileName)
 }
 
 exportOverlaps <- function(study, path = ".") {

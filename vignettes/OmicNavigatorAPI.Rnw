@@ -91,21 +91,33 @@ local({
 \section{List studies}
 \label{sec:list-studies}
 
-List all the available studies along with their models, tests, annotations, and
-plots.
+\textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
 
-\textbf{Update:} The \texttt{plotType} may be a single string or a nested list
-of multiple plot types (e.g. ``singleFeature'' and ``multiTest'')
+List all the available studies.
 
 <<list-studies, eval=FALSE>>=
-studies <- listStudies()
+studies <- getInstalledStudies()
 @
 
 <<list-studies-hidden, echo=FALSE>>=
-studies <- listStudies(libraries = .tmplib)
+studies <- getInstalledStudies(libraries = .tmplib)
 @
 
 <<list-studies-json>>=
+toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
+@
+
+Or limit to those studies that have particular elements.
+
+<<list-studies-filtered, eval=FALSE>>=
+studies <- getInstalledStudies(hasElements = c("enrichments", "plots"))
+@
+
+<<list-studies-filtered-hidden, echo=FALSE>>=
+studies <- getInstalledStudies(hasElements = c("enrichments", "plots"), libraries = .tmplib)
+@
+
+<<list-studies-filtered-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 @
 
@@ -120,6 +132,68 @@ email, and any extra custom metadata added by the analyst.
 <<study-metadata>>=
 studyMeta <- getStudyMeta(study = "ABC")
 toJSON(studyMeta, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Models}
+\label{sec:models}
+
+For a given study, return the models and their descriptions.
+
+<<models>>=
+models <- getModels(study = "ABC")
+toJSON(models, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Tests}
+\label{sec:tests}
+
+For a given study and model, return the tests and their descriptions.
+
+<<tests>>=
+tests <- getTests(study = "ABC", modelID = "model_01")
+toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Annotations}
+\label{sec:annotations}
+
+For a given study, return the annotations and their metadata.
+
+<<annotations>>=
+annotations <- getAnnotations(study = "ABC")
+names(annotations)
+# Full output not shown
+@
+
+Limit to a specific annotation with the \texttt{annotationID}.
+
+<<annotations-annotationID>>=
+annotations <- getAnnotations(study = "ABC", annotationID = "annotation_01")
+# Truncating the terms for display purposes only
+annotationsTrunc <- annotations
+annotationsTrunc[["terms"]] <- annotationsTrunc[["terms"]][1:3]
+toJSON(annotationsTrunc, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Plots}
+\label{sec:plots}
+
+For a given study and model, return the plots and their metadata.
+
+\begin{itemize}
+
+  \item \texttt{displayName} Name to be displayed in the app
+
+  \item \texttt{plotType} One or more labels that describe the type of plot
+
+  \item \texttt{packages} Packages that must be installed and loaded for plot
+    code to execute
+
+\end{itemize}
+
+<<plots>>=
+plots <- getPlots(study = "ABC", modelID = "model_01")
+toJSON(plots, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Results table}
@@ -243,7 +317,7 @@ linkFeatures <- getLinkFeatures(
 toJSON(linkFeatures[1:4], pretty = TRUE)
 @
 
-\section{Custom plots}
+\section{Display custom plots}
 \label{sec:custom-plots}
 
 Display the custom plots provided by the user with \texttt{plotStudy()}. Provided a
@@ -251,8 +325,8 @@ study, model, feature, test, and plot, \texttt{plotStudy()} generates the custom
 
 The featureID is obtained from the first column returned by
 \texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining arguments
-are obtained from the output from \texttt{listStudies()}
-(Section \ref{sec:list-studies}).
+are obtained from the output from \texttt{getModels()}(Section \ref{sec:models})
+and \texttt{getTests()} (Section \ref{sec:tests}).
 
 <<plotStudy-plotBase, fig=TRUE>>=
 plotStudy(
@@ -276,8 +350,8 @@ plotStudy(
 
 The study can also provide ``multiFeature'' plots, which accept more than one
 featureID. These can be distinguished from ``singleFeature'' plots via the
-field \texttt{plotType} in the output from \texttt{listStudies()} (Section
-\ref{sec:list-studies}).
+field \texttt{plotType} in the output from \texttt{getPlots()} (Section
+\ref{sec:plots}).
 
 <<plotStudy-plotMultiFeature, fig=TRUE>>=
 plotStudy(
@@ -291,7 +365,7 @@ plotStudy(
 
 In addition, the study can provide ``multiTest'' plots, which accept more than
 one testID. These can be provided via the field \texttt{plotType} in the output
-from \texttt{listStudies()} (Section \ref{sec:list-studies}). Note that plotType
+from \texttt{getPlots()} (Section \ref{sec:plots}). Note that plotType
 for ``multiTest'' may be provided in a vector,
 e.g. plotType = c(``multiFeature'', ``multiTest''). A call for plotType =
 ``multiTest'' is set to default to plotType = c(``singleFeature'', ``multiTest'')
@@ -308,8 +382,8 @@ plotStudy(
 
 Finally, the study can provide ``multiModel'' plots, which accept more than
 one modelID and one or more testIDs per modelID. These can be provided via the
-field \texttt{plotType} in the output from \texttt{listStudies()} (Section
-\ref{sec:list-studies}). Note that for plotType = ``multiModel'', testID and
+field \texttt{plotType} in the output from \texttt{getPlots()} (Section
+\ref{sec:plots}). Note that for plotType = ``multiModel'', testID and
 modelID should be vectors of same length, where the index position indicate
 which test in testID relate to which model in modelID.
 
@@ -430,7 +504,9 @@ returns the data required to create the barcode and violin plots.
 
 The \texttt{termID} is obtained from \texttt{getEnrichmentsTable()} (Section
 \ref{sec:enrichments-table}). The remaining arguments are obtained from the
-output from \texttt{listStudies()} (Section \ref{sec:list-studies}).
+output from \texttt{getModels()}(Section \ref{sec:models}), \texttt{getTests()}
+(Section \ref{sec:tests}), and \texttt{getAnnotations()}
+(Section \ref{sec:annotations}).
 
 The elements of the \texttt{data} array are sorted by the value of \texttt{statistic} (highest
 to lowest).

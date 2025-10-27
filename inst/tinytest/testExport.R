@@ -159,40 +159,41 @@ expect_warning_xl(
 # Check package metadata -------------------------------------------------------
 
 suppressMessages(installStudy(testStudyObj, library = tmplib))
-studyMetadata <- listStudies(libraries = tmplib)
+studyMetadata <- getStudyMeta(testStudyName, libraries = tmplib)
 
 expect_identical_xl(
-  studyMetadata[[1]][["name"]],
-  testStudyObj[["name"]]
-)
-
-expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Description"]],
+  studyMetadata[["description"]],
   sprintf("The OmicNavigator data package for the study \"%s\"",
           testStudyObj[["description"]]),
   info = "Default package description when description==name"
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Version"]],
+  studyMetadata[["version"]],
   "0.0.0.9000",
   info = "Default package version used when version=NULL"
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Maintainer"]],
-  "Unknown <unknown@unknown>",
+  studyMetadata[["maintainer"]],
+  "Unknown",
   info = "Default package maintainer"
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["department"]],
+  studyMetadata[["maintainerEmail"]],
+  "unknown@unknown",
+  info = "Default package maintainer email"
+)
+
+expect_identical_xl(
+  studyMetadata[["studyMeta"]][["department"]],
   "immunology",
   info = "Custom study metadata passed via studyMeta"
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["organism"]],
+  studyMetadata[["studyMeta"]][["organism"]],
   "Mus musculus",
   info = "Custom study metadata passed via studyMeta"
 )
@@ -204,27 +205,26 @@ updatedStudyObj[["maintainer"]] <- "My Name"
 updatedStudyObj[["maintainerEmail"]] <- "me@email.com"
 
 suppressMessages(installStudy(updatedStudyObj, library = tmplib))
-studyMetadata <- listStudies(libraries = tmplib)
+studyMetadata <- getStudyMeta(testStudyName, libraries = tmplib)
 
 expect_identical_xl(
-  studyMetadata[[1]][["name"]],
-  updatedStudyObj[["name"]]
-)
-
-expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Description"]],
+  studyMetadata[["description"]],
   updatedStudyObj[["description"]]
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Version"]],
+  studyMetadata[["version"]],
   updatedStudyObj[["version"]]
 )
 
 expect_identical_xl(
-  studyMetadata[[1]][["package"]][["Maintainer"]],
-  sprintf("%s <%s>", updatedStudyObj[["maintainer"]],
-          updatedStudyObj[["maintainerEmail"]])
+  studyMetadata[["maintainer"]],
+  updatedStudyObj[["maintainer"]]
+)
+
+expect_identical_xl(
+  studyMetadata[["maintainerEmail"]],
+  updatedStudyObj[["maintainerEmail"]]
 )
 
 # Remove installed study -------------------------------------------------------
