@@ -107,30 +107,6 @@ expect_identical_xl(
   tests[["default"]][["test_01"]]
 )
 
-# Tooltips returned to listStudies() -------------------------------------------
-
-listed <- listStudies(libraries = tmplib)
-
-expect_identical_xl(
-  listed[[1]][["results"]][[1]][["modelDisplay"]],
-  models[["model_01"]][["description"]]
-)
-
-expect_identical_xl(
-  listed[[1]][["results"]][[2]][["modelDisplay"]],
-  models[["model_02"]][["description"]]
-)
-
-expect_identical_xl(
-  listed[[1]][["results"]][[1]][["tests"]][[1]][["testDisplay"]],
-  tests[["default"]][["test_01"]][["description"]]
-)
-
-expect_identical_xl(
-  listed[[1]][["results"]][[1]][["tests"]][[2]][["testDisplay"]],
-  tests[["default"]][["test_02"]][["description"]]
-)
-
 # Extra metadata imported from installed study package -------------------------
 
 imported <- importStudy(testStudyName)

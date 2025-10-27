@@ -1,74 +1,3 @@
-# Functions called directly by the app
-
-#' List available studies and their metadata
-#'
-#' @param libraries The directories to search for installed study packages. If
-#'   left as \code{NULL} (the default), then
-#'   \code{\link[utils]{installed.packages}} will use the result of
-#'   \code{\link{.libPaths}}.
-#'
-#' @return Returns a nested list with one element per installed OmicNavigator
-#'   study package. Each study package entry has the following sublist components:
-#'
-#'   \item{name}{(character) Name of the study}
-#'   \item{package}{(list) The fields from \code{DESCRIPTION}}
-#'   \item{results}{(nested list) The testIDs available for each modelID}
-#'   \item{enrichments}{(nested list) The annotationIDs available for each modelID}
-#'   \item{plots}{(nested list) The plotIDs available for each modelID}
-#'
-#' @export
-listStudies <- function(libraries = NULL) {
-  studies <- getInstalledStudies(libraries = libraries)
-
-  output <- vector(mode = "list", length = length(studies))
-  for (i in seq_along(studies)) {
-    output[[i]] <- list()
-    studyName <- studies[i]
-    output[[i]][["name"]] <- studyName
-
-    # package metadata
-    pkgName <- studyToPkg(studyName)
-    pkgDescription <- packageDescription(pkgName, lib.loc = libraries)
-    pkgDescription <- unclass(pkgDescription)
-    attr(pkgDescription, "file") <- NULL
-    output[[i]][["package"]] <- pkgDescription
-    # For temporary backwards compatibility. The app currently reads
-    # "description"
-    output[[i]][["package"]] <- c(
-      output[[i]][["package"]],
-      list(description = pkgDescription[["Description"]])
-    )
-
-    if (as.package_version(pkgDescription[["OmicNavigatorVersion"]]) <
-        as.package_version(minVersionCompatible)) {
-      warning(
-        "OmicNavigator version incompatibility\n",
-        sprintf("Study \"%s\" was created with version %s\n", studyName,
-                pkgDescription[["OmicNavigatorVersion"]]),
-        sprintf("OmicNavigator version %s is currently installed\n",
-                packageVersion("OmicNavigator")),
-        sprintf("It requires study packages to be created with a minimum OmicNavigator version of %s\n",
-                minVersionCompatible),
-        sprintf("Reinstall the study to avoid any potential issues\n"),
-        immediate. = TRUE
-      )
-    }
-
-    studyDirectory <- getDirectory(studyName, libraries)
-    studySummaryFile <- file.path(studyDirectory, "summary.json")
-    if (!file.exists(studySummaryFile)) {
-      warning(sprintf("Unable to import package %s", pkgName),
-              immediate. = TRUE)
-      next
-    }
-
-    studySummary <- readJson(studySummaryFile, simplifyVector = FALSE)
-    output[[i]] <- c(output[[i]], studySummary)
-  }
-
-  return(output)
-}
-
 #' Get study metadata
 #'
 #' Get the study description, version, maintainer, maintainer email, and any
@@ -99,6 +28,7 @@ getStudyMeta <- function(study, libraries = NULL) {
 
   # Import info from DESCRIPTION
   description <- packageDescription(pkg, lib.loc = libraries)
+  checkMinVersionCompatible(study, description[["OmicNavigatorVersion"]])
   if (is.null(description[["Maintainer"]])) {
     description[["Maintainer"]] <- "Unknown <unknown@unknown>"
     message(

@@ -1,7 +1,23 @@
 # The minimum version of OmicNavigator that is still compatible with the current
 # version. If a study package is created with a version less than this minimum
-# version, then listStudies() will throw a warning.
-minVersionCompatible <- "0.24.0"
+# version, then getStudyMeta() throws a warning.
+checkMinVersionCompatible <- function(study, studyPackageVersion, minVersionCompatible = "0.24.0") {
+  studyPackageVersion <- as.package_version(studyPackageVersion)
+  minVersionCompatible <- as.package_version(minVersionCompatible)
+  if (studyPackageVersion < minVersionCompatible) {
+    warning(
+      "OmicNavigator version incompatibility\n",
+      sprintf("Study \"%s\" was created with version %s\n",
+              study, studyPackageVersion),
+      sprintf("OmicNavigator version %s is currently installed\n",
+              packageVersion("OmicNavigator")),
+      sprintf("It requires study packages to be created with a minimum OmicNavigator version of %s\n",
+              minVersionCompatible),
+      sprintf("Reinstall the study to avoid any potential issues\n"),
+      immediate. = TRUE
+    )
+  }
+}
 
 # The default prefix added to OmicNavigator study packages. Used by .onLoad()
 # below and by getPrefix() in utility.R. The default is overriden by setting
