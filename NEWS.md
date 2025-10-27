@@ -1,3 +1,13 @@
+# 1.18.0
+
+* Bug fix: Update importStudy() to return "metaAssays"
+* Bug fix: Do not re-calculate overlaps if they were pre-calculated
+* Bug fix: Reset the row names of the overlaps data frame post-filtering
+* Bug fix: Fix getPlottingData() to return nested metaAssays for multiModel
+plots
+* Remove `listStudies()` and exported summary file (requires version 2.1.1 of
+the web app)
+
 # 1.17.3
 
 * The release tarball includes version 2.1.1 of the web app
@@ -5,10 +15,6 @@
 # 1.17.2
 
 * The release tarball includes version 2.1.0 of the web app
-
-# 1.17.1
-
-* The release tarball includes version refs/tags/2.1.0 of the web app
 
 # 1.17.0
 

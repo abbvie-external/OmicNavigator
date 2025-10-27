@@ -261,7 +261,7 @@ Follow these steps to tag a new release:
 * Commit the changes
 
     ```sh
-     git commit -am "Bump to #.#.#"
+    git commit -am "Bump to #.#.#"
     ```
 
 * Tag the release
