@@ -23,6 +23,14 @@ Experimental. Add arbitrary R objects to a study. These will be exported via
 \code{\link[base]{saveRDS}} and imported via \code{\link[base]{readRDS}}.
 This allows preserving the exact structure of complex R objects.
 }
+\details{
+The main purpose of adding a custom object to your study package is to use it
+in custom plots in the app. If available, they will be returned by
+\code{\link{getPlottingData}}. If the custom package requires additional R
+packages to be available to use, make sure to list these packages in the
+field \code{packages} when adding the custom plotting function via
+\code{\link{addPlots}}.
+}
 \seealso{
 \code{\link[base]{saveRDS}},\code{\link[base]{readRDS}}
 }

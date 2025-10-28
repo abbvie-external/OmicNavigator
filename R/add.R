@@ -701,6 +701,13 @@ addMetaAssays <- function(study, metaAssays, reset = FALSE) {
 #' \code{\link[base]{saveRDS}} and imported via \code{\link[base]{readRDS}}.
 #' This allows preserving the exact structure of complex R objects.
 #'
+#' The main purpose of adding a custom object to your study package is to use it
+#' in custom plots in the app. If available, they will be returned by
+#' \code{\link{getPlottingData}}. If the custom package requires additional R
+#' packages to be available to use, make sure to list these packages in the
+#' field \code{packages} when adding the custom plotting function via
+#' \code{\link{addPlots}}.
+#'
 #' @param objects Any arbitrary R objects from the study. The input object is a
 #'   list of objects (one per model). To share an object across multiple models,
 #'   use the modelID "default".

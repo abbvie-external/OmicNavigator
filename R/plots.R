@@ -361,6 +361,14 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   featureIDs are requested, the rows are reordered to match the order of this
 #'   input. The column order is unchanged.}
 #'
+#' If the study has objects available that map to the input modelID(s),
+#' then \code{objects} is returned. It is not possible to filter by featureID(s)
+#' since the structure of the custom object is unknown (and thus will need to
+#' be filtered by the plotting function code).
+#'
+#'   \item{\code{objects}}{A custom object that was added to the modelID
+#'   (\code{\link{addObjects}})}
+#'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export
