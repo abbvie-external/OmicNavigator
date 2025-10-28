@@ -508,7 +508,7 @@ testObjects <- function(n = 3) {
     name <- sprintf("model_%02d", i)
     value <- structure(
       list(a = 1, b = 2, c = sprintf("example for Model %d", i)),
-      class = "customClass"
+      class = c("customClass", "list")
     )
     objects[[name]] <- value
   }
