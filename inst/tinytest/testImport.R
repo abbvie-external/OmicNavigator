@@ -131,6 +131,11 @@ expect_equal_xl(
 )
 
 expect_equal_xl(
+  imported[["objects"]],
+  testStudyObj[["objects"]]
+)
+
+expect_equal_xl(
   imported[["overlaps"]],
   testStudyObj[["overlaps"]]
 )

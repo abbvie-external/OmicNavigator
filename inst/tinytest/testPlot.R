@@ -351,7 +351,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(
@@ -381,7 +381,7 @@ expect_equal_xl(
   features[features[[1]] == "feature_0001", ]
 )
 
-# Without MetaAssays, only assays/samples/features are returned
+# Without MetaAssays
 testStudyObjNoMetaAssays <- testStudyObj
 testStudyObjNoMetaAssays[["metaAssays"]] <- list()
 plottingDataNoMetaAssays <- getPlottingData(
@@ -392,7 +392,21 @@ plottingDataNoMetaAssays <- getPlottingData(
 
 expect_identical_xl(
   names(plottingDataNoMetaAssays),
-  c("assays", "samples", "features")
+  c("assays", "samples", "features", "objects")
+)
+
+# Without objects
+testStudyObjNoObjects <- testStudyObj
+testStudyObjNoObjects[["objects"]] <- list()
+plottingDataNoObjects <- getPlottingData(
+  testStudyObjNoObjects,
+  modelID = testModelName,
+  featureID = "feature_0001"
+)
+
+expect_identical_xl(
+  names(plottingDataNoObjects),
+  c("assays", "samples", "features", "metaFeatures", "metaAssays")
 )
 
 # getPlottingData (package) ----------------------------------------------------
@@ -409,7 +423,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(
@@ -453,7 +467,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(
@@ -537,7 +551,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_identical_xl(
@@ -547,7 +561,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_identical_xl(
@@ -607,7 +621,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[1]]),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_identical_xl(
@@ -617,7 +631,7 @@ expect_identical_xl(
 
 expect_identical_xl(
   names(plottingData[[2]]),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_identical_xl(
@@ -851,7 +865,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(
@@ -905,7 +919,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(
@@ -959,7 +973,7 @@ expect_true_xl(
 
 expect_identical_xl(
   names(plottingData),
-  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays")
+  c("assays", "samples", "features", "results", "metaFeatures", "metaAssays", "objects")
 )
 
 expect_true_xl(

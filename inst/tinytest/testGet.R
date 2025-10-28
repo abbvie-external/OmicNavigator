@@ -850,6 +850,48 @@ expect_identical_xl(
   info = "Confirm model-specific metaFeatures table linkouts returned"
 )
 
+# getObjects --------------------------------------------------------------
+
+expect_identical_xl(
+  getObjects(testStudyObj),
+  testStudyObj[["objects"]]
+)
+
+expect_identical_xl(
+  getObjects(testStudyObj, modelID = testModelName),
+  testStudyObj[["objects"]][[testModelName]]
+)
+
+expect_message_xl(
+  getObjects(testStudyObj, modelID = "non-existent-model"),
+  "No objects available for modelID \"non-existent-model\""
+)
+
+expect_identical_xl(
+  getObjects(testStudyName),
+  testStudyObj[["objects"]]
+)
+
+expect_identical_xl(
+  getObjects(testStudyName, modelID = testModelName),
+  testStudyObj[["objects"]][[testModelName]]
+)
+
+expect_message_xl(
+  getObjects(testStudyName, modelID = "non-existent-model"),
+  "No objects available for modelID \"non-existent-model\""
+)
+
+expect_message_xl(
+  getObjects(emptyStudyObj),
+  "No objects available"
+)
+
+expect_error_xl(
+  getObjects(1),
+  "No method for object of class \"numeric\""
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

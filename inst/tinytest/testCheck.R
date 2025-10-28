@@ -729,3 +729,16 @@ expect_error_xl(
   addMetaFeaturesLinkouts(study, metaFeaturesLinkouts = NULL)
 )
 
+# checkObjects -----------------------------------------------------------------
+
+expect_error_xl(
+  addObjects(study, objects = NULL)
+)
+
+objects <- OmicNavigator:::testObjects()
+objects[["model_04"]] <- list(a = 1, b = 2, c = 3)
+
+expect_error_xl(
+  addObjects(study, objects = objects),
+  "modelID model_04: The object must have a custom class to distinguish it from a list"
+)

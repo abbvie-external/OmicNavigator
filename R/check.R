@@ -589,8 +589,13 @@ checkObjects <- function(objects) {
   checkList(objects)
 
   for (i in seq_along(objects)) {
-    if (length(objects[i]) != 1) {
-      stop("Only one object is allowed per modelID")
+    # If in the future we want to support a list of objects per modelID, then
+    # the object itself can't be a simple list object
+    if (class(objects[[i]]) == "list") {
+      stop(sprintf(
+        "modelID %s: The object must have a custom class to distinguish it from a list",
+        names(objects)[i]
+      ))
     }
   }
 
