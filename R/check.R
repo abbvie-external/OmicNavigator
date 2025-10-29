@@ -584,3 +584,20 @@ checkMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
 
   return(NULL)
 }
+
+checkObjects <- function(objects) {
+  checkList(objects)
+
+  for (i in seq_along(objects)) {
+    # If in the future we want to support a list of objects per modelID, then
+    # the object itself can't be a simple list object
+    if (inherits(objects[[i]], "list", which = TRUE) == 1) {
+      stop(sprintf(
+        "modelID %s: The object must have a custom class to distinguish it from a list",
+        names(objects)[i]
+      ))
+    }
+  }
+
+  return(NULL)
+}

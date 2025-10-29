@@ -35,6 +35,7 @@ testStudy <- function(name,
                        mapping = testMapping(seed = seed, nFeatures = nFeatures,
                                              numericFeatureID = numericFeatureID),
                        metaAssays = testMetaAssays(),
+                       objects = testObjects(),
                        version = version,
                        maintainer = maintainer,
                        maintainerEmail = maintainerEmail,
@@ -499,6 +500,19 @@ testMetaAssays <- function(n = 3, rows = 100, cols = 10, seed = 12345L) {
     metaAssays[[i]] <- as.data.frame(metaAssays[[i]])
   }
   return(metaAssays)
+}
+
+testObjects <- function(n = 3) {
+  objects <- list()
+  for (i in seq_len(n)) {
+    name <- sprintf("model_%02d", i)
+    value <- structure(
+      list(a = 1, b = 2, c = sprintf("example for Model %d", i)),
+      class = c("customClass", "list")
+    )
+    objects[[name]] <- value
+  }
+  return(objects)
 }
 
 testStudyMeta <- function() {

@@ -66,6 +66,14 @@ measurements, filtered to only include the row(s) corresponding to the
 input featureID(s) (see \code{\link{getMetaAssays}}). If multiple
 featureIDs are requested, the rows are reordered to match the order of this
 input. The column order is unchanged.}
+
+If the study has objects available that map to the input modelID(s),
+then \code{objects} is returned. It is not possible to filter by featureID(s)
+since the structure of the custom object is unknown (and thus will need to
+be filtered by the plotting function code).
+
+\item{\code{objects}}{A custom object that was added to the modelID
+(\code{\link{addObjects}})}
 }
 \description{
 Returns \code{assays}, \code{samples}, and \code{features} data that may be used for

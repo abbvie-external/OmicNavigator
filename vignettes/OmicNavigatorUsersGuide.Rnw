@@ -1281,6 +1281,17 @@ should be a single value.
 
 For more details, run \texttt{?createStudy}.
 
+\subsection{Objects}
+\label{sec:objects}
+
+If your analysis used a complex R object from a Bioconductor package, {Seurat},
+etc., and you would like to be able to use it when creating custom plots in the
+app (Section \ref{sec:create-custom-plots}), you can add it to a modelID using
+\texttt{addObjects()}.
+
+For more details, run \texttt{?addObjects}. Note that this feature is still
+experimental, and the data format may change in the future.
+
 \section{More information}
 
 This section contains more information about OmicNavigator studies.
@@ -1398,7 +1409,7 @@ Click on the links to be taken to the relevant section.
   \hline
   Enrichments barcode & Barcodes (\ref{sec:barcodes}), Enrichments (\ref{sec:enrichments}),  Results (\ref{sec:results}) &   \\
   \hline
-  Custom plots & Plots (\ref{sec:plots}), Assays (\ref{sec:assays}) & Features (\ref{sec:features}), Samples (\ref{sec:samples}), Results (\ref{sec:results}), metaFeatures (\ref{sec:metaFeatures}), metaAssays (\ref{sec:metaAssays}) \\
+  Custom plots & Plots (\ref{sec:plots}), Assays (\ref{sec:assays}) & Features (\ref{sec:features}), Samples (\ref{sec:samples}), Results (\ref{sec:results}), metaFeatures (\ref{sec:metaFeatures}), metaAssays (\ref{sec:metaAssays}), objects (\ref{sec:objects}) \\
   \hline
   MetaFeatures table & metaFeatures (\ref{sec:metaFeatures}) & metaFeaturesLinkouts (\ref{sec:metaFeaturesLinkouts}) \\
   \hline

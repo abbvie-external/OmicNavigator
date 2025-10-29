@@ -361,6 +361,14 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   featureIDs are requested, the rows are reordered to match the order of this
 #'   input. The column order is unchanged.}
 #'
+#' If the study has objects available that map to the input modelID(s),
+#' then \code{objects} is returned. It is not possible to filter by featureID(s)
+#' since the structure of the custom object is unknown (and thus will need to
+#' be filtered by the plotting function code).
+#'
+#'   \item{\code{objects}}{A custom object that was added to the modelID
+#'   (\code{\link{addObjects}})}
+#'
 #' @seealso \code{\link{addPlots}}, \code{\link{plotStudy}}
 #'
 #' @export
@@ -458,6 +466,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       }
     }
 
+    objectsPlotting <- getObjects(study, modelID = model_i, quiet = TRUE,
+                                  libraries = libraries)
+
     if (!isEmpty(testID)) {
       resultsPlotting <- vector("list", length(testID))
       for (i in seq_along(testID)) {
@@ -493,6 +504,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
           temp_model <- c(temp_model, list(metaFeatures = metaFeaturesPlotting,
                                            metaAssays = metaAssaysPlotting))
         }
+        if (!isEmpty(objectsPlotting)) {
+          temp_model <- c(temp_model, list(objects = objectsPlotting))
+        }
         plottingData <- c(plottingData, setNames(list(temp_model), model_i))
 
       } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
@@ -516,6 +530,9 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       if (!isEmpty(metaAssaysPlotting)) {
         plottingData <- c(plottingData, list(metaFeatures = metaFeaturesPlotting,
                                              metaAssays = metaAssaysPlotting))
+      }
+      if (!isEmpty(objectsPlotting)) {
+        plottingData <- c(plottingData, list(objects = objectsPlotting))
       }
     }
   }
