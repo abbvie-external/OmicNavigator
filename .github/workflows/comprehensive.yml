@@ -43,7 +43,7 @@ jobs:
         config:
           - {os: windows-latest, r: 'release'}
           - {os: macOS-latest, r: 'release'}
-          - {os: ubuntu-22.04, r: '4.0.5'}
+          - {os: ubuntu-22.04, r: '4.1.2'}
     steps:
       - uses: actions/checkout@v4
       - name: Install dependencies from PPM snapshot for Ubuntu build
