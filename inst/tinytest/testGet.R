@@ -850,6 +850,48 @@ expect_identical_xl(
   info = "Confirm model-specific metaFeatures table linkouts returned"
 )
 
+# getMetaAssays --------------------------------------------------------------------
+
+expect_identical_xl(
+  getMetaAssays(testStudyObj),
+  testStudyObj[["metaAssays"]]
+)
+
+expect_identical_xl(
+  getMetaAssays(testStudyObj, modelID = testModelName),
+  testStudyObj[["metaAssays"]][[testModelName]]
+)
+
+expect_message_xl(
+  getMetaAssays(testStudyObj, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_equal_xl(
+  getMetaAssays(testStudyName),
+  testStudyObj[["metaAssays"]]
+)
+
+expect_equal_xl(
+  getMetaAssays(testStudyName, modelID = testModelName),
+  testStudyObj[["metaAssays"]][[testModelName]]
+)
+
+expect_message_xl(
+  getMetaAssays(testStudyName, modelID = "non-existent-model"),
+  "non-existent-model"
+)
+
+expect_message_xl(
+  getMetaAssays(emptyStudyObj),
+  "No metaAssays available"
+)
+
+expect_error_xl(
+  getMetaAssays(1),
+  "No method for object of class \"numeric\""
+)
+
 # getObjects --------------------------------------------------------------
 
 expect_identical_xl(
