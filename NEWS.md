@@ -1,3 +1,7 @@
+# 1.18.1
+
+* The release tarball includes version 2.2.0 of the web app
+
 # 1.18.0
 
 * Bug fix: Update importStudy() to return "metaAssays"
