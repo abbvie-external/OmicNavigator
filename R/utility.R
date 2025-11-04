@@ -166,6 +166,8 @@ coerceColsToCharacter <- function(x) {
 
 warnIfNonCharacterCols <- function(x) {
   stopifnot(is.data.frame(x))
+  # Explicitly convert to a simple data frame (eg to support data table input)
+  x <- as.data.frame(x)
 
   characterColsFilter <- vapply(x, is.character, logical(1))
   nonCharacterCols <- colnames(x)[!characterColsFilter]

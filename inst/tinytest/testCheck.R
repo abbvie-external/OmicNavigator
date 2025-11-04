@@ -238,6 +238,14 @@ expect_warning_xl(
   ".+non-character.+x.+z"
 )
 
+# Support warning about non-character columns for data table input
+nonCharacterFeaturesDt <- nonCharacterFeatures
+nonCharacterFeaturesDt[[1]] <- data.table::as.data.table(nonCharacterFeaturesDt[[1]])
+expect_warning_xl(
+  addFeatures(study, features = nonCharacterFeaturesDt),
+  ".+non-character.+x.+z"
+)
+
 featuresMissing <-  list(
   default = data.frame(
     x = c("a", NA, "c"),
