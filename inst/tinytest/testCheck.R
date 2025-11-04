@@ -343,6 +343,28 @@ expect_error_xl(
   "The columns of the assays data frame must all be numeric."
 )
 
+# Throw warning for missing row names
+assaysWithoutRownames <- list(
+  default = data.frame(
+    one = 11:20,
+    two = 21:30
+  )
+)
+
+expect_warning_xl(
+  addAssays(study, assays = assaysWithoutRownames),
+  "The row names of the assays data frame should be the featureIDs."
+)
+
+# Warn that data table input is missing row names
+dtAssays <- OmicNavigator:::testAssays()
+dtAssays <- lapply(dtAssays, function(x) data.table::as.data.table(x))
+
+expect_warning_xl(
+  addAssays(study, assays = dtAssays),
+  "The row names of the assays data frame should be the featureIDs."
+)
+
 # checkMetaAssays ------------------------------------------------------------------
 
 expect_error_xl(

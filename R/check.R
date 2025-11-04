@@ -265,6 +265,14 @@ checkAssays <- function(assays) {
       nrow(assays[[i]]) > 0,
       ncol(assays[[i]]) > 0
     )
+    # Warn if row names are unlikely to be the featureIDs
+    rows <- row.names(assays[[i]])
+    if (identical(rows, as.character(seq_along(rows)))) {
+      warning(
+        "The row names of the assays data frame should be the featureIDs.\n",
+        sprintf("Problematic modelID: %s", names(assays)[i])
+      )
+    }
     # All the columns must be numeric
     colsAllNum <- all(vapply(assays[[i]], is.numeric, logical(1)))
     if (!colsAllNum) {
