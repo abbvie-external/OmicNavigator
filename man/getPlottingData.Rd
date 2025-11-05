@@ -47,11 +47,6 @@ multiple featureIDs are requested, the rows are reordered to match the
 order of this input. The column order is unchanged. If multiple testIDs are
 provided, they are stored in a list object.}
 
-If multiple models are passed:
-
-\item{\code{mapping}}{A data frame that contains the featureID(s) from each
-model. This is the filtered mapping object.}
-
 If the study has metaAssays available that map to the input featureID(s),
 then \code{metaFeatures} and \code{metaAssays} are returned:
 
@@ -74,6 +69,14 @@ be filtered by the plotting function code).
 
 \item{\code{objects}}{A custom object that was added to the modelID
 (\code{\link{addObjects}})}
+
+If multiple models are passed, then the top-level elements correspond to the
+names of the modelIDs, and the above elements are each nested within their
+respective modelID. Furthermore, an additional top-level element
+\code{mapping} is returned:
+
+\item{\code{mapping}}{A data frame that contains the featureID(s) from each
+model. This is the filtered mapping object.}
 }
 \description{
 Returns \code{assays}, \code{samples}, and \code{features} data that may be used for
