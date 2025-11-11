@@ -464,6 +464,17 @@ checkPlots <- function(plots) {
       if (is.null(plotEntry[["displayName"]])) {
         stop(sprintf("Must define displayName for plot \"%s\"", plotID))
       }
+      # For multiModel plots, check if field 'models' is available and, if so,
+      # check if models != 'all' is associated with plotType multiModel
+      if (!is.null(plotEntry[["models"]])) {
+        models <- plotEntry[["models"]]
+        if ((length(models) > 1 || models != 'all') && !any(plotEntry[["plotType"]] %in% "multiModel")) {
+          stop(
+            sprintf("For field models != 'all' plotType field requires 'multiModel'.\n"),
+            sprintf("The custom plot \"%s\" has models \"%s\" and plotType \"%s\".", plotID, paste(c(models), collapse=', '), paste(c(plotEntry[["plotType"]]), collapse=', '))
+          )
+        }
+      }
     }
   }
 
