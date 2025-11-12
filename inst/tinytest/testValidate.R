@@ -255,6 +255,33 @@ expect_true_xl(
   info = "Samples not required to plot assays data"
 )
 
+# Test validation of optional field "models" for multiModel plots
+studyPlotModels <- testStudyObj
+studyPlotModels[["plots"]][["default"]][["multiModel_scatterplot"]][["models"]] <-
+  "all"
+
+expect_silent_xl(
+  validateStudy(studyPlotModels),
+  info = "multiModel plot with models='all'"
+)
+
+studyPlotModels[["plots"]][["default"]][["multiModel_scatterplot"]][["models"]] <-
+  c("model_01", "model_02")
+
+expect_silent_xl(
+  validateStudy(studyPlotModels),
+  info = "multiModel plot with models=c(valid models)"
+)
+
+studyPlotModels[["plots"]][["default"]][["multiModel_scatterplot"]][["models"]] <-
+  c("model_01", "model_z")
+
+expect_error_xl(
+  validateStudy(studyPlotModels),
+  "has invalid model\\(s\\)",
+  info = "multiModel plot with models=c(invalid models)"
+)
+
 # Mapping ----------------------------------------------------------------------
 
 # Check if model names from mapping are not matching model names from results

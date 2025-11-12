@@ -608,6 +608,39 @@ if (getRversion() > "4") {
   )
 }
 
+# Test optional field "models" for multiModel plots
+ftmp <- function(x) NULL
+ptmpSingleAll <-
+  list(m1 = list(ftmp = list(displayName = "test", models = "all")))
+ptmpSingleModels <-
+  list(m1 = list(ftmp = list(displayName = "test", models = c("m1", "m2"))))
+ptmpMultiAll <-
+  list(m1 = list(ftmp = list(displayName = "test", plotType = "multiModel", models = "all")))
+ptmpMultiModels <-
+  list(m1 = list(ftmp = list(displayName = "test",plotType = "multiModel",
+                             models = c("m1", "m2"))))
+expect_silent_xl(
+  OmicNavigator:::checkPlots(ptmpSingleAll),
+  info = "Any plot type can specify models='all'"
+)
+
+expect_error_xl(
+  OmicNavigator:::checkPlots(ptmpSingleModels),
+  "For field models != 'all' plotType field requires 'multiModel'.",
+  info = "Only a multiModel plot can specify specific models"
+)
+
+expect_silent_xl(
+  OmicNavigator:::checkPlots(ptmpMultiAll),
+  info = "A multiModel plot type can specify models='all'"
+)
+
+expect_silent_xl(
+  OmicNavigator:::checkPlots(ptmpMultiAll),
+  info = "A multiModel plot type can specify specific models"
+)
+rm(ftmp)
+
 # checkMapping -----------------------------------------------------------------
 
 expect_error_xl(
