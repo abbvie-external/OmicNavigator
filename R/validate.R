@@ -282,7 +282,7 @@ validatePlots <- function(study) {
       if (any(plotEntry %in% 'models')) {
         plotModelNames <- modelPlots[[q]][['models']]
 
-        if (plotModelNames == 'all') next
+        if (identical(plotModelNames, "all")) next
 
         mappingNames <- names(study[["mapping"]])
         if (modelID %in% mappingNames) {
