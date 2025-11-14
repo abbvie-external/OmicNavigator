@@ -212,7 +212,7 @@ expect_error_xl(
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 
-expect_silent_xl(
+expect_warning_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,
@@ -233,7 +233,7 @@ expect_error_xl(
   "Plot type \"multiModel\" requires testID to be either NULL \\(default\\) or a vector containing at least 2 testIDs"
 )
 
-expect_message_xl(
+expect_error_xl(
   plotStudy(
     testStudyName,
     modelID = mmodel,
@@ -241,7 +241,7 @@ expect_message_xl(
     plotID = "multiModel_scatterplot",
     testID = c("test_01", "test_02")
   ),
-  "The provided features list contains at least one feature not present in model"
+  "At least one feature is not present in the first model passed"
 )
 
 expect_error_xl(
@@ -287,7 +287,7 @@ expect_silent_xl(
 expect_error_xl(
   plotStudy(testStudyName, modelID = "model_01", featureID = "feature_0001",
             plotID = "plotBase", testID = "non-existent"),
-  "non-existent"
+  "one feature is not available in the results object for model"
 )
 
 expect_error_xl(
@@ -533,12 +533,12 @@ rm(plottingData)
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 
-plottingData <- getPlottingData(
+suppressWarnings(plottingData <- getPlottingData(
   testStudyObj,
   modelID = mmodel,
   featureID = c("feature_0010", "feature_0020"),
   testID = mmtestID
-)
+))
 
 expect_true_xl(
   inherits(plottingData, "list")
@@ -597,18 +597,18 @@ expect_true_xl(
 
 rm(plottingData)
 
-# getPlottingData (package, multiModel) -----------------------------------------
+# getPlottingData (package, multiModel) ----------------------------------------
 
 mmodel <- names(testStudyObj[["models"]])[1:2]
 mmtestID <- c("test_01", "test_02")
 names(mmtestID) <- mmodel
 
-plottingData <- getPlottingData(
+suppressWarnings(plottingData <- getPlottingData(
   testStudyName,
   modelID = mmodel,
   featureID = c("feature_0010", "feature_0020"),
   testID = mmtestID
-)
+))
 
 expect_true_xl(
   inherits(plottingData, "list")
