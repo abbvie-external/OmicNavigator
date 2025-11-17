@@ -26,7 +26,7 @@ OmicNavigatorPrefix <- "ONstudy"
 
 # The R package is meant to be used with a specific version of the app. If a
 # user has an older or newer version installed, send a warning.
-versionAppPinned <- "2.2.3"
+versionAppPinned <- "2.2.4"
 
 # The extra packages required to run the app
 appPackages <- c(
