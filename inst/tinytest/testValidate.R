@@ -104,7 +104,7 @@ invalidAssaysRow <- testStudyObj
 row.names(invalidAssaysRow[["assays"]][[1]]) <- NULL
 
 expect_error_xl(
-  validateStudy(invalidAssaysRow),
+  suppressWarnings(validateStudy(invalidAssaysRow)),
   "The featureID column in the results table does not match the row names of the assays table"
 )
 
