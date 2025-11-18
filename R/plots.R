@@ -274,22 +274,6 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
       sprintf("testID: %s", paste(testID, collapse = ", "))
     )
   }
-  # Inform user if at least one feature from modelID is not present in secondary models
-  incomplete_matches_sec_models = NULL
-  for (ii in colnames(mapping)) {
-    if (ii == modelID[1]) next
-    if (any(is.na(mapping[ii]))) {
-      incomplete_matches_sec_models <- trimws(paste(incomplete_matches_sec_models, ii, collapse=' '))
-    }
-  }
-  if (!is.null(incomplete_matches_sec_models)) {
-    warning(
-      sprintf("At least one feature from model '%s' is not mapped in other model(s). Model(s) impacted: %s",
-              modelID[1],
-              incomplete_matches_sec_models
-              )
-    )
-  }
 
   # Structuring data for mapping
   mappingdf <- as.data.frame(mapping, stringsAsFactors = FALSE)
