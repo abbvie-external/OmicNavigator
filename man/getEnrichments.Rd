@@ -44,3 +44,6 @@ If no data is available, an empty list is returned (\code{list()}).
 \description{
 Get enrichments from a study
 }
+\seealso{
+\code{\link{addEnrichments}}
+}

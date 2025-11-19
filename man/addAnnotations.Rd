@@ -33,3 +33,6 @@ Returns the original \code{onStudy} object passed to the argument
 \description{
 Add annotations
 }
+\seealso{
+\code{\link{getAnnotations}}
+}

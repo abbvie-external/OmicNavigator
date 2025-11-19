@@ -49,3 +49,6 @@ Add models
   )
 
 }
+\seealso{
+\code{\link{getModels}}
+}

@@ -41,3 +41,6 @@ If no data is available, an empty list is returned (\code{list()}).
 \description{
 Get results from a study
 }
+\seealso{
+\code{\link{addResults}}
+}

@@ -33,3 +33,6 @@ If no data is available, an empty list is returned (\code{list()}).
 \description{
 Get mapping object from a study
 }
+\seealso{
+\code{\link{addMapping}}
+}

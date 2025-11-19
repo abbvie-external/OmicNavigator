@@ -27,3 +27,6 @@ Returns the original \code{onStudy} object passed to the argument
 \description{
 Add sample metadata
 }
+\seealso{
+\code{\link{getSamples}}
+}

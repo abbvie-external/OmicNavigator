@@ -86,5 +86,7 @@ environment prior to installing the study, this latest version will be saved
 in the R package and executed when run in the app.
 }
 \seealso{
-\code{\link{getPlottingData}}, \code{\link{plotStudy}}
+\code{\link{getPlots}},
+\code{\link{getPlottingData}},
+\code{\link{plotStudy}}
 }

@@ -186,6 +186,8 @@ NULL
 #'   modelID "default".
 #' @inherit shared-add
 #'
+#' @seealso \code{\link{getSamples}}
+#'
 #' @export
 addSamples <- function(study, samples, reset = FALSE) {
   addElements(study, samples, reset)
@@ -199,6 +201,8 @@ addSamples <- function(study, samples, reset = FALSE) {
 #'   unique values. To share a data frame across multiple models, use the
 #'   modelID "default". All columns will be coerced to character strings.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getFeatures}}
 #'
 #' @export
 addFeatures <- function(study, features, reset = FALSE) {
@@ -214,6 +218,8 @@ addFeatures <- function(study, features, reset = FALSE) {
 #'   model. The field "description" will be used to derive the tooltip displayed
 #'   in the app.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getModels}}
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -250,6 +256,8 @@ addModels <- function(study, models, reset = FALSE) {
 #'   modelID "default".
 #' @inherit shared-add
 #'
+#' @seealso \code{\link{getAssays}}
+#'
 #' @export
 addAssays <- function(study, assays, reset = FALSE) {
   addElements(study, assays, reset)
@@ -269,6 +277,8 @@ addAssays <- function(study, assays, reset = FALSE) {
 #'   \code{\link{addFeatures}} or \code{\link{addResults}}) will be used to
 #'   derive tooltips for those columns.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getTests}}
 #'
 #' @examples
 #'   study <- createStudy("example")
@@ -316,6 +326,8 @@ addTests <- function(study, tests, reset = FALSE) {
 #'   character vector of featureIDs.
 #' @inherit shared-add
 #'
+#' @seealso \code{\link{getAnnotations}}
+#'
 #' @export
 addAnnotations <- function(study, annotations, reset = FALSE) {
   addElements(study, annotations, reset)
@@ -329,6 +341,8 @@ addAnnotations <- function(study, annotations, reset = FALSE) {
 #'   results, one for each test. In each data frame, the featureID must be in
 #'   the first column, and all other columns must be numeric.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getResults}}
 #'
 #' @export
 addResults <- function(study, results, reset = FALSE) {
@@ -348,6 +362,8 @@ addResults <- function(study, results, reset = FALSE) {
 #'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
 #'   adjusting for multiple testing). Any additional columns are ignored.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getEnrichments}}
 #'
 #' @export
 addEnrichments <- function(study, enrichments, reset = FALSE) {
@@ -370,6 +386,8 @@ addEnrichments <- function(study, enrichments, reset = FALSE) {
 #'   multiple models, use the modelID "default". All columns will be coerced to
 #'   character strings.
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getMetaFeatures}}
 #'
 #' @export
 addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
@@ -446,7 +464,10 @@ addMetaFeatures <- function(study, metaFeatures, reset = FALSE) {
 #'
 #' @inherit shared-add
 #'
-#' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
+#' @seealso
+#'   \code{\link{getPlots}},
+#'   \code{\link{getPlottingData}},
+#'   \code{\link{plotStudy}}
 #'
 #' @export
 addPlots <- function(study, plots, reset = FALSE) {
@@ -480,7 +501,10 @@ addPlots <- function(study, plots, reset = FALSE) {
 #' are found in the same row.
 #' @inherit shared-add
 #'
-#' @seealso \code{\link{getPlottingData}}, \code{\link{plotStudy}}
+#' @seealso
+#'   \code{\link{getMapping}},
+#'   \code{\link{getPlottingData}},
+#'   \code{\link{plotStudy}}
 #'
 #' @export
 addMapping <- function(study, mapping, reset = FALSE) {
@@ -510,6 +534,8 @@ addMapping <- function(study, mapping, reset = FALSE) {
 #'   To share metadata across multiple models, use the modelID "default".
 #' @inherit shared-add
 #'
+#' @seealso \code{\link{getBarcodes}}
+#'
 #' @export
 addBarcodes <- function(study, barcodes, reset = FALSE) {
   addElements(study, barcodes, reset)
@@ -527,6 +553,8 @@ addBarcodes <- function(study, barcodes, reset = FALSE) {
 #'   package. To share a report across multiple models, use the modelID
 #'   "default".
 #' @inherit shared-add
+#'
+#' @seealso \code{\link{getReports}}
 #'
 #' @export
 addReports <- function(study, reports, reset = FALSE) {
@@ -574,7 +602,9 @@ addReports <- function(study, reports, reset = FALSE) {
 #'   )
 #'   study <- addResultsLinkouts(study, resultsLinkouts)
 #'
-#' @seealso \code{\link{addFeatures}}
+#' @seealso
+#'   \code{\link{getResultsLinkouts}},
+#'   \code{\link{addFeatures}}
 #'
 #' @export
 addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
@@ -618,7 +648,10 @@ addResultsLinkouts <- function(study, resultsLinkouts, reset = FALSE) {
 #'   )
 #'   study <- addEnrichmentsLinkouts(study, enrichmentsLinkouts)
 #'
-#' @seealso \code{\link{addAnnotations}}, \code{\link{addEnrichments}}
+#' @seealso
+#'   \code{\link{getEnrichmentsLinkouts}},
+#'   \code{\link{addAnnotations}},
+#'   \code{\link{addEnrichments}}
 #'
 #' @export
 addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
@@ -666,7 +699,9 @@ addEnrichmentsLinkouts <- function(study, enrichmentsLinkouts, reset = FALSE) {
 #'   )
 #'   study <- addMetaFeaturesLinkouts(study, metaFeaturesLinkouts)
 #'
-#' @seealso \code{\link{addMetaFeatures}}
+#' @seealso
+#'   \code{\link{getMetaFeaturesLinkouts}},
+#'   \code{\link{addMetaFeatures}}
 #'
 #' @export
 addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) {
@@ -687,7 +722,10 @@ addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) 
 #'   modelID "default".
 #' @inheritParams shared-add
 #'
-#' @seealso \code{\link{addAssays}}, \code{\link{addMetaFeatures}}
+#' @seealso
+#'   \code{\link{getMetaAssays}},
+#'   \code{\link{addAssays}},
+#'   \code{\link{addMetaFeatures}}
 #'
 #' @export
 addMetaAssays <- function(study, metaAssays, reset = FALSE) {
@@ -713,7 +751,10 @@ addMetaAssays <- function(study, metaAssays, reset = FALSE) {
 #'   use the modelID "default".
 #' @inheritParams shared-add
 #'
-#' @seealso \code{\link[base]{saveRDS}},\code{\link[base]{readRDS}}
+#' @seealso
+#'   \code{\link{getObjects}},
+#'   \code{\link[base]{saveRDS}},
+#'   \code{\link[base]{readRDS}}
 #'
 #' @export
 addObjects <- function(study, objects, reset = FALSE) {

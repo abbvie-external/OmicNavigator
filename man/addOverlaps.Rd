@@ -26,3 +26,6 @@ installing or exporting an OmicNavigator study. If you'd like, you can
 manually calculate these pairwise overlaps by calling \code{addOverlaps}
 prior to installing or exporting your study.
 }
+\seealso{
+\code{\link{getOverlaps}}
+}

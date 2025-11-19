@@ -35,3 +35,6 @@ If no data is available, an empty list is returned (\code{list()}).
 \description{
 Get tests from a study
 }
+\seealso{
+\code{\link{addTests}}
+}

@@ -60,5 +60,6 @@ Note that you can provide more than one linkout per column.
 
 }
 \seealso{
+\code{\link{getMetaFeaturesLinkouts}},
 \code{\link{addMetaFeatures}}
 }

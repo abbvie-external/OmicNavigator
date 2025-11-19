@@ -32,5 +32,7 @@ field \code{packages} when adding the custom plotting function via
 \code{\link{addPlots}}.
 }
 \seealso{
-\code{\link[base]{saveRDS}},\code{\link[base]{readRDS}}
+\code{\link{getObjects}},
+\code{\link[base]{saveRDS}},
+\code{\link[base]{readRDS}}
 }

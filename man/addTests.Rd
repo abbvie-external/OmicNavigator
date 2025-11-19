@@ -60,3 +60,6 @@ Add tests
   )
 
 }
+\seealso{
+\code{\link{getTests}}
+}

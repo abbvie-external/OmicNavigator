@@ -33,3 +33,6 @@ The meta-features table is useful anytime there are metadata variables that
 cannot be mapped 1:1 to your features. For example, a peptide may be
 associated with multiple proteins.
 }
+\seealso{
+\code{\link{getMetaFeatures}}
+}

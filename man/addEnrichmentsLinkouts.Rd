@@ -56,5 +56,7 @@ Note that you can provide more than one linkout per termID.
 
 }
 \seealso{
-\code{\link{addAnnotations}}, \code{\link{addEnrichments}}
+\code{\link{getEnrichmentsLinkouts}},
+\code{\link{addAnnotations}},
+\code{\link{addEnrichments}}
 }

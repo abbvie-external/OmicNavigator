@@ -41,3 +41,6 @@ The app can display a barcode plot of the enrichment results for a given
 annotation term. The metadata in \code{barcodes} instructs the app how to create
 and label the barcode plot.
 }
+\seealso{
+\code{\link{getBarcodes}}
+}

@@ -27,5 +27,7 @@ Experimental. Add metaAssay measurements that map to the metaFeatureIDs in
 the metaFeatures table.
 }
 \seealso{
-\code{\link{addAssays}}, \code{\link{addMetaFeatures}}
+\code{\link{getMetaAssays}},
+\code{\link{addAssays}},
+\code{\link{addMetaFeatures}}
 }

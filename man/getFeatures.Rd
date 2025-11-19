@@ -25,3 +25,6 @@ appear numeric.
 \description{
 Get features from a study
 }
+\seealso{
+\code{\link{addFeatures}}
+}

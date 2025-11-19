@@ -29,3 +29,6 @@ Returns the original \code{onStudy} object passed to the argument
 You can include reports of the analyses you performed to generate the
 results.
 }
+\seealso{
+\code{\link{getReports}}
+}

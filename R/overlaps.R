@@ -79,6 +79,8 @@ calc_pairwise_overlaps <- function(sets) {
 #'
 #' @inherit shared-add
 #'
+#' @seealso \code{\link{getOverlaps}}
+#'
 #' @export
 addOverlaps <- function(study, reset = FALSE) {
   checkStudy(study)

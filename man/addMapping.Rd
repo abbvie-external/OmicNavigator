@@ -46,5 +46,7 @@ Returns the original \code{onStudy} object passed to the argument
 Add mapping object
 }
 \seealso{
-\code{\link{getPlottingData}}, \code{\link{plotStudy}}
+\code{\link{getMapping}},
+\code{\link{getPlottingData}},
+\code{\link{plotStudy}}
 }

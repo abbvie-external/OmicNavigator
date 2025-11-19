@@ -28,3 +28,6 @@ Returns the original \code{onStudy} object passed to the argument
 \description{
 Add assays
 }
+\seealso{
+\code{\link{getAssays}}
+}

@@ -61,6 +61,8 @@ NULL
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addModels}}
+#'
 #' @export
 getModels <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -76,6 +78,8 @@ getModels <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get samples from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addSamples}}
 #'
 #' @export
 getSamples <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -97,6 +101,8 @@ getSamples <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #'   frames. All the columns will be character strings, even if the values
 #'   appear numeric.
 #'
+#' @seealso \code{\link{addFeatures}}
+#'
 #' @export
 getFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -113,6 +119,8 @@ getFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) 
 #' Get assays from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addAssays}}
 #'
 #' @export
 getAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -135,6 +143,8 @@ getAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addTests}}
+#'
 #' @export
 getTests <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
   if (is.null(modelID) && !is.null(testID)) {
@@ -156,6 +166,8 @@ getTests <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, librar
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addAnnotations}}
+#'
 #' @export
 getAnnotations <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -172,6 +184,8 @@ getAnnotations <- function(study, annotationID = NULL, quiet = FALSE, libraries 
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addOverlaps}}
+#'
 #' @export
 getOverlaps <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -186,6 +200,8 @@ getOverlaps <- function(study, annotationID = NULL, quiet = FALSE, libraries = N
 #' Get results from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addResults}}
 #'
 #' @export
 getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
@@ -206,6 +222,8 @@ getResults <- function(study, modelID = NULL, testID = NULL, quiet = FALSE, libr
 #' Get enrichments from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addEnrichments}}
 #'
 #' @export
 getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = NULL, quiet = FALSE, libraries = NULL) {
@@ -232,6 +250,8 @@ getEnrichments <- function(study, modelID = NULL, annotationID = NULL, testID = 
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addMetaFeatures}}
+#'
 #' @export
 getMetaFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -248,6 +268,8 @@ getMetaFeatures <- function(study, modelID = NULL, quiet = FALSE, libraries = NU
 #' Get plots from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addPlots}}
 #'
 #' @export
 getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -266,6 +288,8 @@ getPlots <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addMapping}}
+#'
 #' @export
 getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -281,6 +305,8 @@ getMapping <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get barcodes from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addBarcodes}}
 #'
 #' @export
 getBarcodes <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -299,6 +325,8 @@ getBarcodes <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) 
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addReports}}
+#'
 #' @export
 getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -315,6 +343,8 @@ getReports <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
 #' Get results table linkouts from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addResultsLinkouts}}
 #'
 #' @export
 getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -333,6 +363,8 @@ getResultsLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries =
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addEnrichmentsLinkouts}}
+#'
 #' @export
 getEnrichmentsLinkouts <- function(study, annotationID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -348,6 +380,8 @@ getEnrichmentsLinkouts <- function(study, annotationID = NULL, quiet = FALSE, li
 #' Get metaFeatures table linkouts from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addMetaFeaturesLinkouts}}
 #'
 #' @export
 getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
@@ -366,6 +400,8 @@ getMetaFeaturesLinkouts <- function(study, modelID = NULL, quiet = FALSE, librar
 #'
 #' @inherit shared-get
 #'
+#' @seealso \code{\link{addMetaAssays}}
+#'
 #' @export
 getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
   getElements(
@@ -383,6 +419,8 @@ getMetaAssays <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL
 #' Get objects from a study
 #'
 #' @inherit shared-get
+#'
+#' @seealso \code{\link{addObjects}}
 #'
 #' @export
 getObjects <- function(study, modelID = NULL, quiet = FALSE, libraries = NULL) {
