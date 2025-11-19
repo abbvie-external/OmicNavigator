@@ -135,6 +135,75 @@ expect_silent_xl(
   )
 )
 
+# Test UpSet endpoints ---------------------------------------------------------
+
+testTestsAll <- names(testStudyObj[["tests"]][[1]])
+
+expect_silent_xl(
+  resultsIntersection <- getResultsIntersection(
+    study = testStudyName,
+    modelID = testModelName,
+    anchor = testTestName,
+    mustTests = testTestsAll,
+    notTests = c(),
+    sigValue = .5,
+    operator = "<",
+    column = "p_val",
+    libraries = tmplib
+  )
+)
+
+expect_silent_xl(
+  getEnrichmentsIntersection(
+    study = testStudyName,
+    modelID = testModelName,
+    annotationID = testAnnotationName,
+    mustTests = testTestsAll,
+    notTests = c(),
+    sigValue = c(.05, .02),
+    operator = c("<", ">"),
+    type = "adjusted",
+    libraries = tmplib
+  )
+)
+
+expect_silent_xl(
+  # Suppress warnings from UpSetR about ggplot2 deprecations
+  suppressWarnings(
+    getResultsUpset(
+      study = testStudyName,
+      modelID = testModelName,
+      sigValue = c(.5, 1),
+      operator = c("<", ">"),
+      column = c("p_val", "beta"),
+      libraries = tmplib
+    )
+  )
+)
+
+expect_silent_xl(
+  # Suppress warnings from UpSetR about ggplot2 deprecations
+  suppressWarnings(
+    getEnrichmentsUpset(
+      study = testStudyName,
+      modelID = testModelName,
+      annotationID = testAnnotationName,
+      sigValue = .05,
+      operator = "<",
+      type = "adjusted",
+      libraries = tmplib
+    )
+  )
+)
+
+expect_silent_xl(
+  getUpsetCols(
+    testStudyName,
+    testModelName,
+    libraries = tmplib
+  )
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

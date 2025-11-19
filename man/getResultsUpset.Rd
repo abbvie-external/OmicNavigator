@@ -4,7 +4,15 @@
 \alias{getResultsUpset}
 \title{getResultsUpset}
 \usage{
-getResultsUpset(study, modelID, sigValue, operator, column, legacy = FALSE)
+getResultsUpset(
+  study,
+  modelID,
+  sigValue,
+  operator,
+  column,
+  legacy = FALSE,
+  libraries = NULL
+)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
@@ -20,6 +28,9 @@ column}
 \item{column}{The columns to apply the filters}
 
 \item{legacy}{Use legacy code (for testing purposes only)}
+
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 Invisibly returns the output from \code{\link[UpSetR]{upset}}

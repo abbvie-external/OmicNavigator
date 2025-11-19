@@ -12,7 +12,8 @@ getResultsIntersection(
   notTests,
   sigValue,
   operator,
-  column
+  column,
+  libraries = NULL
 )
 }
 \arguments{
@@ -37,6 +38,9 @@ column}
 \item{operator}{The comparison operators for each column, e.g. \code{"<"}}
 
 \item{column}{The columns to apply the filters}
+
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 Returns a data frame with the results, similar to

@@ -41,10 +41,11 @@ getResultsIntersection <- function(
   notTests,
   sigValue,
   operator,
-  column
+  column,
+  libraries = NULL
 )
 {
-  results <- getResults(study, modelID = modelID)
+  results <- getResults(study, modelID = modelID, libraries = libraries)
   results <- list(results)
   names(results) <- modelID
 
@@ -60,7 +61,7 @@ getResultsIntersection <- function(
   )
 
   # The column Set_Membership needs to go between the feature and result columns
-  features <- getFeatures(study, modelID = modelID)
+  features <- getFeatures(study, modelID = modelID, libraries = libraries)
   if (isEmpty(features)) {
     intersectionTable <- intersection
     columns <- colnames(intersectionTable)
@@ -205,15 +206,16 @@ getEnrichmentsIntersection <- function(
   notTests,
   sigValue,
   operator,
-  type
+  type,
+  libraries = NULL
 )
 {
   if (type == "nominal") {
-    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type, libraries = libraries)
     Enrichment.Results.Adjusted <- NULL
   } else if (type == "adjusted") {
     Enrichment.Results <- NULL
-    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type, libraries = libraries)
   } else {
     stop(sprintf("Argument `type` must be \"nominal\" or \"adjusted\", not \"%s\"",
                  type))
@@ -327,14 +329,15 @@ getResultsUpset <- function(
   sigValue,
   operator,
   column,
-  legacy = FALSE
+  legacy = FALSE,
+  libraries = NULL
 )
 {
   if (!requireNamespace("UpSetR", quietly = TRUE)) {
     stop("Install the package \"UpSetR\" to run getResultsUpset()")
   }
 
-  results <- getResults(study, modelID = modelID)
+  results <- getResults(study, modelID = modelID, libraries = libraries)
 
   if (legacy) {
     results <- list(results)
@@ -538,7 +541,8 @@ getEnrichmentsUpset <- function(
   sigValue,
   operator,
   type,
-  tests = NULL
+  tests = NULL,
+  libraries = NULL
 )
 {
   if (!requireNamespace("UpSetR", quietly = TRUE)) {
@@ -546,11 +550,11 @@ getEnrichmentsUpset <- function(
   }
 
   if (type == "nominal") {
-    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results <- formatEnrichmentResults(study, modelID, annotationID, type, libraries = libraries)
     Enrichment.Results.Adjusted <- NULL
   } else if (type == "adjusted") {
     Enrichment.Results <- NULL
-    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type)
+    Enrichment.Results.Adjusted <- formatEnrichmentResults(study, modelID, annotationID, type, libraries = libraries)
   } else {
     stop(sprintf("Argument `type` must be \"nominal\" or \"adjusted\", not \"%s\"",
                  type))
@@ -670,8 +674,8 @@ EnrichmentUpsetPlot <- function(
 }
 
 # Format enrichment table as if it was in PhosphoProt Enrichment.Results objects
-formatEnrichmentResults <- function(study, modelID, annotationID, type) {
-  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID, type)
+formatEnrichmentResults <- function(study, modelID, annotationID, type,libraries = NULL) {
+  enrichmentsTable <- getEnrichmentsTable(study, modelID, annotationID, type, libraries = libraries)
   Enrichment.Results <- vector("list", 1)
   names(Enrichment.Results) <- modelID
   Enrichment.Results[[1]] <- vector("list", 1)
@@ -692,10 +696,11 @@ formatEnrichmentResults <- function(study, modelID, annotationID, type) {
 #' @export
 getUpsetCols <- function(
   study,
-  modelID
+  modelID,
+  libraries = NULL
 )
 {
-  results <- getResults(study, modelID = modelID)
+  results <- getResults(study, modelID = modelID, libraries = libraries)
   if (isEmpty(results)) return(character())
   colsAll <- lapply(results, function(x) colnames(x[, -1, drop = FALSE]))
   colsCommon <- Reduce(intersect, colsAll)

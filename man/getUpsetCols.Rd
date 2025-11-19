@@ -4,13 +4,16 @@
 \alias{getUpsetCols}
 \title{getUpsetCols}
 \usage{
-getUpsetCols(study, modelID)
+getUpsetCols(study, modelID, libraries = NULL)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Either an object of class \code{onStudy},
 or the name of an installed study package.}
 
 \item{modelID}{Filter by modelID}
+
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 Returns a character vector with the names of the common columns

@@ -11,7 +11,8 @@ getEnrichmentsUpset(
   sigValue,
   operator,
   type,
-  tests = NULL
+  tests = NULL,
+  libraries = NULL
 )
 }
 \arguments{
@@ -30,6 +31,9 @@ column}
 \item{type}{Type of p-value: (\code{"nominal"} or \code{"adjusted"})}
 
 \item{tests}{Restrict UpSet plot to only include these tests}
+
+\item{libraries}{Character vector of library directories to search for study
+packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
 No return value. This function is called for the side effect of
