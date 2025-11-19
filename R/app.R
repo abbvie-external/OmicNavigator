@@ -80,8 +80,8 @@ getStudyMeta <- function(study, libraries = NULL) {
 #'
 #' @export
 getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID = NULL, libraries = NULL) {
-  results <- getResults(study, modelID, testID)
-  features <- getFeatures(study, modelID, quiet = TRUE)
+  results <- getResults(study, modelID, testID, libraries = libraries)
+  features <- getFeatures(study, modelID, quiet = TRUE, libraries = libraries)
 
   if (isEmpty(results)) return(data.frame())
   if (isEmpty(features)) return(results)
@@ -96,7 +96,8 @@ getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID 
 
   if (!is.null(annotationID) && !is.null(termID)) {
     termFeatures <- getNodeFeatures(study, annotationID, termID, libraries = libraries)
-    annotationIDfeatureID <- getAnnotations(study, annotationID = annotationID)[["featureID"]]
+    annotations <- getAnnotations(study, annotationID = annotationID, libraries = libraries)
+    annotationIDfeatureID <- annotations[["featureID"]]
     featureIDcolumn <- which(colnames(resultsTable) == annotationIDfeatureID)
     resultsTable <- resultsTable[resultsTable[[featureIDcolumn]] %in% termFeatures, ]
   }
@@ -167,7 +168,12 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
     geneSetSize = lengths(termsVec)
   )
 
-  enrichments <- getEnrichments(study, modelID = modelID, annotationID = annotationID)
+  enrichments <- getEnrichments(
+    study,
+    modelID = modelID,
+    annotationID = annotationID,
+    libraries = libraries
+  )
   if (isEmpty(enrichments)) return(list())
   enrichmentsTable <- combineListIntoTable(enrichments, "testID")
   setDT(enrichmentsTable)
