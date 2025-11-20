@@ -22,7 +22,7 @@ getResultsModels <- function(study, libraries = NULL) {
   # Check for available tooltips added via addModels(). If not available, use
   # the modelID itself for the tooltip
   for (modelID in resultsModels) {
-    modelDisplay <- getModels(study, modelID = modelID, quiet = TRUE)
+    modelDisplay <- getModels(study, modelID = modelID, quiet = TRUE, libraries = libraries)
     # The tooltip is either added as a single string per modelID, or as a named
     # list with other metadata fields, where the field "description" is the
     # metadata field
@@ -52,7 +52,7 @@ getResultsTests <- function(study, modelID, libraries = NULL) {
   # Check for available tooltips added via addTests(). If not available, use the
   # testID itself for the tooltip
   for (testID in resultsTests) {
-    testDisplay <- getTests(study, modelID = modelID, testID = testID, quiet = TRUE)
+    testDisplay <- getTests(study, modelID = modelID, testID = testID, quiet = TRUE, libraries = libraries)
     # The tooltip is either added as a single string per testID, or as a named
     # list with other metadata fields, where the field "description" is the
     # metadata field
@@ -87,7 +87,7 @@ getEnrichmentsModels <- function(study, libraries = NULL) {
   # Check for available tooltips added via addModels(). If not available, use
   # the modelID itself for the tooltip
   for (modelID in enrichmentsModels) {
-    modelDisplay <- getModels(study, modelID = modelID, quiet = TRUE)
+    modelDisplay <- getModels(study, modelID = modelID, quiet = TRUE, libraries = libraries)
     # The tooltip is either added as a single string per modelID, or as a named
     # list with other metadata fields, where the field "description" is the
     # metadata field
@@ -116,7 +116,7 @@ getEnrichmentsAnnotations <- function(study, modelID, libraries = NULL) {
   # Check for available tooltips added via addAnnotations(). If not available,
   # use the annotationID itself for the tooltip
   for (annotationID in modelAnnotations) {
-    annotationDisplay <- getAnnotations(study, annotationID = annotationID, quiet = TRUE)
+    annotationDisplay <- getAnnotations(study, annotationID = annotationID, quiet = TRUE, libraries = libraries)
     annotationDisplay <- annotationDisplay[["description"]]
     if (isEmpty(annotationDisplay)) annotationDisplay <- annotationID
     dropdown[[annotationID]] <- annotationDisplay
