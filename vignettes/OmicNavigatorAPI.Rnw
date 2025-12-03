@@ -88,37 +88,132 @@ local({
 })
 @
 
-\section{List studies}
-\label{sec:list-studies}
+\section{Dropdowns for differential analsysis tab}
+\label{sec:dropdowns-differential}
+
+\subsection{Studies}
+\label{sec:get-results-studies}
 
 \textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
 
-List all the available studies.
+Return the installed studies with differential expression results available. To
+obtain a tooltip description of the study, use \texttt{getStudyMeta()} (Section
+\ref{sec:get-study-meta}).
 
-<<list-studies, eval=FALSE>>=
-studies <- getInstalledStudies()
+<<get-results-studies, eval=FALSE>>=
+studies <- getResultsStudies()
 @
 
-<<list-studies-hidden, echo=FALSE>>=
-studies <- getInstalledStudies(libraries = .tmplib)
+<<get-results-studies-hidden, echo=FALSE>>=
+studies <- getResultsStudies(libraries = .tmplib)
 @
 
-<<list-studies-json>>=
+<<get-results-studies-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 @
 
-Or limit to those studies that have particular elements.
+\textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
+single string instead of a list of strings.
 
-<<list-studies-filtered, eval=FALSE>>=
-studies <- getInstalledStudies(hasElements = c("enrichments", "plots"))
+\subsection{Models}
+\label{sec:get-results-models}
+
+For a given study, return the models with differential expression results
+available.
+
+<<get-results-models, eval=FALSE>>=
+models <- getResultsModels(study = "ABC")
 @
 
-<<list-studies-filtered-hidden, echo=FALSE>>=
-studies <- getInstalledStudies(hasElements = c("enrichments", "plots"), libraries = .tmplib)
+<<get-results-models-hidden, echo=FALSE>>=
+models <- getResultsModels(study = "ABC", libraries = .tmplib)
 @
 
-<<list-studies-filtered-json>>=
+<<get-results-models-json>>=
+toJSON(models, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\subsection{Tests}
+\label{sec:get-results-tests}
+
+For a given study and model, return the tests with differential expression
+results available.
+
+<<get-results-tests, eval=FALSE>>=
+tests <- getResultsTests(study = "ABC", modelID = "model_01")
+@
+
+<<get-results-tests-hidden, echo=FALSE>>=
+tests <- getResultsTests(study = "ABC", modelID = "model_01", libraries = .tmplib)
+@
+
+<<get-results-tests-json>>=
+toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Dropdowns for enrichment analsysis tab}
+\label{sec:dropdowns-enrichment}
+
+\subsection{Studies}
+\label{sec:get-enrichments-studies}
+
+\textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
+
+Return the installed studies with enrichments available. To obtain a tooltip
+description of the study, use \texttt{getStudyMeta()} (Section
+\ref{sec:get-study-meta}).
+
+<<get-enrichments-studies, eval=FALSE>>=
+studies <- getEnrichmentsStudies()
+@
+
+<<get-enrichments-studies-hidden, echo=FALSE>>=
+studies <- getEnrichmentsStudies(libraries = .tmplib)
+@
+
+<<get-enrichments-studies-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
+single string instead of a list of strings.
+
+\subsection{Models}
+\label{sec:get-enrichments-models}
+
+For a given study, return the models with enrichments available.
+
+<<get-enrichments-models, eval=FALSE>>=
+models <- getEnrichmentsModels(study = "ABC")
+@
+
+<<get-enrichments-models-hidden, echo=FALSE>>=
+models <- getEnrichmentsModels(study = "ABC", libraries = .tmplib)
+@
+
+<<get-enrichments-models-json>>=
+toJSON(models, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\subsection{Annotations}
+\label{sec:get-enrichments-annotations}
+
+For a given study and model, return the annotations with enrichments available.
+
+<<get-enrichments-annotations, eval=FALSE>>=
+annotations <- getEnrichmentsAnnotations(study = "ABC", modelID = "model_01")
+@
+
+<<get-enrichments-annotations-hidden, echo=FALSE>>=
+annotations <- getEnrichmentsAnnotations(
+  study = "ABC",
+  modelID = "model_01",
+  libraries = .tmplib
+)
+@
+
+<<get-enrichments-annotations-json>>=
+toJSON(annotations, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Study metadata}
@@ -132,47 +227,6 @@ email, and any extra custom metadata added by the analyst.
 <<study-metadata>>=
 studyMeta <- getStudyMeta(study = "ABC")
 toJSON(studyMeta, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Models}
-\label{sec:models}
-
-For a given study, return the models and their descriptions.
-
-<<models>>=
-models <- getModels(study = "ABC")
-toJSON(models, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Tests}
-\label{sec:tests}
-
-For a given study and model, return the tests and their descriptions.
-
-<<tests>>=
-tests <- getTests(study = "ABC", modelID = "model_01")
-toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Annotations}
-\label{sec:annotations}
-
-For a given study, return the annotations and their metadata.
-
-<<annotations>>=
-annotations <- getAnnotations(study = "ABC")
-names(annotations)
-# Full output not shown
-@
-
-Limit to a specific annotation with the \texttt{annotationID}.
-
-<<annotations-annotationID>>=
-annotations <- getAnnotations(study = "ABC", annotationID = "annotation_01")
-# Truncating the terms for display purposes only
-annotationsTrunc <- annotations
-annotationsTrunc[["terms"]] <- annotationsTrunc[["terms"]][1:3]
-toJSON(annotationsTrunc, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Plots}
@@ -324,9 +378,10 @@ Display the custom plots provided by the user with \texttt{plotStudy()}. Provide
 study, model, feature, test, and plot, \texttt{plotStudy()} generates the custom plot.
 
 The featureID is obtained from the first column returned by
-\texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining arguments
-are obtained from the output from \texttt{getModels()}(Section \ref{sec:models})
-and \texttt{getTests()} (Section \ref{sec:tests}).
+\texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining
+arguments are obtained from the output from \texttt{getResultsModels()} (Section
+\ref{sec:get-results-models}) and \texttt{getResultsTests()} (Section
+\ref{sec:get-results-tests}).
 
 <<plotStudy-plotBase, fig=TRUE>>=
 plotStudy(
@@ -504,9 +559,10 @@ returns the data required to create the barcode and violin plots.
 
 The \texttt{termID} is obtained from \texttt{getEnrichmentsTable()} (Section
 \ref{sec:enrichments-table}). The remaining arguments are obtained from the
-output from \texttt{getModels()}(Section \ref{sec:models}), \texttt{getTests()}
-(Section \ref{sec:tests}), and \texttt{getAnnotations()}
-(Section \ref{sec:annotations}).
+output from \texttt{getEnrichmentsModels()}(Section
+\ref{sec:get-enrichments-models}), \texttt{getResultsTests()} (Section
+\ref{sec:get-results-tests}), and \texttt{getEnrichmentsAnnotations()} (Section
+\ref{sec:get-enrichments-annotations}).
 
 The elements of the \texttt{data} array are sorted by the value of \texttt{statistic} (highest
 to lowest).

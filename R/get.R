@@ -10,6 +10,10 @@
 #' @return Returns a character vector of the installed OmicNavigator study
 #'   packages
 #'
+#' @seealso
+#'   \code{\link{getResultsStudies}},
+#'   \code{\link{getEnrichmentsStudies}}
+#'
 #' @export
 getInstalledStudies <- function(hasElements = NULL, libraries = NULL) {
   pkgsAll <- rownames(installed.packages(lib.loc = libraries))
