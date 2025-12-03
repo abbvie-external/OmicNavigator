@@ -23,3 +23,7 @@ packages
 \description{
 Get installed OmicNavigator studies
 }
+\seealso{
+\code{\link{getResultsStudies}},
+\code{\link{getEnrichmentsStudies}}
+}

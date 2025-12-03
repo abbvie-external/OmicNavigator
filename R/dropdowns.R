@@ -1,9 +1,48 @@
-
+#' Get installed OmicNavigator studies that have results
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Differential Analysis tab with the list of available studies with results
+#' data.
+#'
+#' Internally, \code{getResultsStudies} calls \code{\link{getInstalledStudies}}
+#' with \code{hasElements = "results"}.
+#'
+#' @inherit getInstalledStudies
+#'
+#' @seealso
+#'   \code{\link{getInstalledStudies}},
+#'   \code{\link{getEnrichmentsStudies}}
+#'
 #' @export
 getResultsStudies <- function(libraries = NULL) {
   getInstalledStudies(hasElements = "results", libraries = libraries)
 }
 
+#' Get the models for the results of an installed OmicNavigator study
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Differential Analysis tab with the list of available models for the selected
+#' study.
+#'
+#' The models correspond to those used when adding the results with
+#' \code{\link{addResults}}. Any optional tooltips correspond to the
+#' descriptions added with \code{\link{addModels}}.
+#'
+#' @param study An OmicNavigator study. Only accepts name of installed study
+#'   package.
+#' @inherit getInstalledStudies
+#'
+#' @return A named list. The names are the modelIDs, and each list element is a
+#'   single character vector with the modelID description to be used as a
+#'   tooltip in the app. If no custom description was provided by the user, the
+#'   tooltip text is simply the modelID.
+#'
+#' @seealso
+#'   \code{\link{getResultsStudies}},
+#'   \code{\link{getEnrichmentsModels}},
+#'   \code{\link{addResults}},
+#'   \code{\link{addModels}}
+#'
 #' @export
 getResultsModels <- function(study, libraries = NULL) {
   if (!is.character(study)) {
@@ -34,6 +73,32 @@ getResultsModels <- function(study, libraries = NULL) {
   return(dropdown)
 }
 
+#' Get the tests for the results of an installed OmicNavigator study
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Differential Analysis tab with the list of available tests for the selected
+#' model and study.
+#'
+#' The tests correspond to those used when adding the results with
+#' \code{\link{addResults}}. Any optional tooltips correspond to the
+#' descriptions added with \code{\link{addTests}}.
+#'
+#' @param study An OmicNavigator study. Only accepts name of installed study
+#'   package.
+#' @inherit getInstalledStudies
+#' @inherit shared-get
+#'
+#' @return A named list. The names are the testIDs, and each list element is a
+#'   single character vector with the testID description to be used as a
+#'   tooltip in the app. If no custom description was provided by the user, the
+#'   tooltip text is simply the testID.
+#'
+#' @seealso
+#'   \code{\link{getResultsStudies}},
+#'   \code{\link{getResultsModels}},
+#'   \code{\link{addResults}},
+#'   \code{\link{addTests}}
+#'
 #' @export
 getResultsTests <- function(study, modelID, libraries = NULL) {
   if (!is.character(study)) {
@@ -64,11 +129,51 @@ getResultsTests <- function(study, modelID, libraries = NULL) {
   return(dropdown)
 }
 
+#' Get installed OmicNavigator studies that have enrichments
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Enrichment Analysis tab with the list of available studies with enrichments
+#' data.
+#'
+#' Internally, \code{getEnrichmentsStudies} calls
+#' \code{\link{getInstalledStudies}} with \code{hasElements = "enrichments"}.
+#'
+#' @inherit getInstalledStudies
+#'
+#' @seealso
+#'   \code{\link{getInstalledStudies}},
+#'   \code{\link{getResultsStudies}}
+#'
 #' @export
 getEnrichmentsStudies <- function(libraries = NULL) {
   getInstalledStudies(hasElements = "enrichments", libraries = libraries)
 }
 
+#' Get the models for the enrichments of an installed OmicNavigator study
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Enrichment Analysis tab with the list of available models for the selected
+#' study.
+#'
+#' The models correspond to those used when adding the results with
+#' \code{\link{addEnrichments}}. Any optional tooltips correspond to the
+#' descriptions added with \code{\link{addModels}}.
+#'
+#' @param study An OmicNavigator study. Only accepts name of installed study
+#'   package.
+#' @inherit getInstalledStudies
+#'
+#' @return A named list. The names are the modelIDs, and each list element is a
+#'   single character vector with the modelID description to be used as a
+#'   tooltip in the app. If no custom description was provided by the user, the
+#'   tooltip text is simply the modelID.
+#'
+#' @seealso
+#'   \code{\link{getEnrichmentsStudies}},
+#'   \code{\link{getResultsModels}},
+#'   \code{\link{addEnrichments}},
+#'   \code{\link{addModels}}
+#'
 #' @export
 getEnrichmentsModels <- function(study, libraries = NULL) {
   if (!is.character(study)) {
@@ -99,6 +204,32 @@ getEnrichmentsModels <- function(study, libraries = NULL) {
   return(dropdown)
 }
 
+#' Get the annotations for the enrichments of an installed OmicNavigator study
+#'
+#' This is the API endpoint the app uses to populate the dropdown menu in the
+#' Enrichment Analysis tab with the list of available annotations for the
+#' selected model and study.
+#'
+#' The annotations correspond to those used when adding the enrichments with
+#' \code{\link{addEnrichments}}. Any optional tooltips correspond to the
+#' descriptions added with \code{\link{addAnnotations}}.
+#'
+#' @param study An OmicNavigator study. Only accepts name of installed study
+#'   package.
+#' @inherit getInstalledStudies
+#' @inherit shared-get
+#'
+#' @return A named list. The names are the annotationIDs, and each list element is a
+#'   single character vector with the annotationID description to be used as a
+#'   tooltip in the app. If no custom description was provided by the user, the
+#'   tooltip text is simply the annotationID.
+#'
+#' @seealso
+#'   \code{\link{getEnrichmentsStudies}},
+#'   \code{\link{getEnrichmentsModels}},
+#'   \code{\link{addEnrichments}},
+#'   \code{\link{addAnnotations}}
+#'
 #' @export
 getEnrichmentsAnnotations <- function(study, modelID, libraries = NULL) {
   if (!is.character(study)) {
