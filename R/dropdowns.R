@@ -1,3 +1,19 @@
+#' Shared parameters for dropdown functions
+#'
+#' @name shared-dropdowns
+#'
+#' @param study An OmicNavigator study. Only accepts name of installed study
+#'   package.
+#' @param modelID The modelID selected by the user in the app
+#'
+#' @return A named list. The names are the identifiers to be displayed in the
+#'   dropdown menu, and each list element is a single character vector with the
+#'   description to be used as a tooltip in the app. If no custom description
+#'   was provided by the user, the tooltip text is simply the identifier.
+#'
+#' @keywords internal
+NULL
+
 #' Get installed OmicNavigator studies that have results
 #'
 #' This is the API endpoint the app uses to populate the dropdown menu in the
@@ -7,7 +23,7 @@
 #' Internally, \code{getResultsStudies} calls \code{\link{getInstalledStudies}}
 #' with \code{hasElements = "results"}.
 #'
-#' @inherit getInstalledStudies
+#' @inherit getInstalledStudies params return
 #'
 #' @seealso
 #'   \code{\link{getInstalledStudies}},
@@ -28,14 +44,8 @@ getResultsStudies <- function(libraries = NULL) {
 #' \code{\link{addResults}}. Any optional tooltips correspond to the
 #' descriptions added with \code{\link{addModels}}.
 #'
-#' @param study An OmicNavigator study. Only accepts name of installed study
-#'   package.
-#' @inherit getInstalledStudies
-#'
-#' @return A named list. The names are the modelIDs, and each list element is a
-#'   single character vector with the modelID description to be used as a
-#'   tooltip in the app. If no custom description was provided by the user, the
-#'   tooltip text is simply the modelID.
+#' @inherit shared-dropdowns params return
+#' @inherit getInstalledStudies params
 #'
 #' @seealso
 #'   \code{\link{getResultsStudies}},
@@ -83,15 +93,8 @@ getResultsModels <- function(study, libraries = NULL) {
 #' \code{\link{addResults}}. Any optional tooltips correspond to the
 #' descriptions added with \code{\link{addTests}}.
 #'
-#' @param study An OmicNavigator study. Only accepts name of installed study
-#'   package.
-#' @inherit getInstalledStudies
-#' @inherit shared-get
-#'
-#' @return A named list. The names are the testIDs, and each list element is a
-#'   single character vector with the testID description to be used as a
-#'   tooltip in the app. If no custom description was provided by the user, the
-#'   tooltip text is simply the testID.
+#' @inherit shared-dropdowns params return
+#' @inherit getInstalledStudies params
 #'
 #' @seealso
 #'   \code{\link{getResultsStudies}},
@@ -138,7 +141,7 @@ getResultsTests <- function(study, modelID, libraries = NULL) {
 #' Internally, \code{getEnrichmentsStudies} calls
 #' \code{\link{getInstalledStudies}} with \code{hasElements = "enrichments"}.
 #'
-#' @inherit getInstalledStudies
+#' @inherit getInstalledStudies params return
 #'
 #' @seealso
 #'   \code{\link{getInstalledStudies}},
@@ -159,14 +162,8 @@ getEnrichmentsStudies <- function(libraries = NULL) {
 #' \code{\link{addEnrichments}}. Any optional tooltips correspond to the
 #' descriptions added with \code{\link{addModels}}.
 #'
-#' @param study An OmicNavigator study. Only accepts name of installed study
-#'   package.
-#' @inherit getInstalledStudies
-#'
-#' @return A named list. The names are the modelIDs, and each list element is a
-#'   single character vector with the modelID description to be used as a
-#'   tooltip in the app. If no custom description was provided by the user, the
-#'   tooltip text is simply the modelID.
+#' @inherit shared-dropdowns params return
+#' @inherit getInstalledStudies params
 #'
 #' @seealso
 #'   \code{\link{getEnrichmentsStudies}},
@@ -214,15 +211,8 @@ getEnrichmentsModels <- function(study, libraries = NULL) {
 #' \code{\link{addEnrichments}}. Any optional tooltips correspond to the
 #' descriptions added with \code{\link{addAnnotations}}.
 #'
-#' @param study An OmicNavigator study. Only accepts name of installed study
-#'   package.
-#' @inherit getInstalledStudies
-#' @inherit shared-get
-#'
-#' @return A named list. The names are the annotationIDs, and each list element is a
-#'   single character vector with the annotationID description to be used as a
-#'   tooltip in the app. If no custom description was provided by the user, the
-#'   tooltip text is simply the annotationID.
+#' @inherit shared-dropdowns params return
+#' @inherit getInstalledStudies params
 #'
 #' @seealso
 #'   \code{\link{getEnrichmentsStudies}},

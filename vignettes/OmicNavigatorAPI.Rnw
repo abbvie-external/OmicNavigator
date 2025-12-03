@@ -88,12 +88,17 @@ local({
 })
 @
 
-\section{Studies for differential analsysis tab}
+\section{Dropdowns for differential analsysis tab}
+\label{sec:dropdowns-differential}
+
+\subsection{Studies}
 \label{sec:get-results-studies}
 
 \textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
 
-Return the installed studies with differential expression results available.
+Return the installed studies with differential expression results available. To
+obtain a tooltip description of the study, use \texttt{getStudyMeta()} (Section
+\ref{sec:get-study-meta}).
 
 <<get-results-studies, eval=FALSE>>=
 studies <- getResultsStudies()
@@ -110,7 +115,7 @@ toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 \textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
 single string instead of a list of strings.
 
-\section{Models for differential analsysis tab}
+\subsection{Models}
 \label{sec:get-results-models}
 
 For a given study, return the models with differential expression results
@@ -128,7 +133,7 @@ models <- getResultsModels(study = "ABC", libraries = .tmplib)
 toJSON(models, auto_unbox = TRUE, pretty = TRUE)
 @
 
-\section{Tests for differential analsysis tab}
+\subsection{Tests}
 \label{sec:get-results-tests}
 
 For a given study and model, return the tests with differential expression
@@ -146,12 +151,17 @@ tests <- getResultsTests(study = "ABC", modelID = "model_01", libraries = .tmpli
 toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
 @
 
-\section{Studies for enrichment analsysis tab}
+\section{Dropdowns for enrichment analsysis tab}
+\label{sec:dropdowns-enrichment}
+
+\subsection{Studies}
 \label{sec:get-enrichments-studies}
 
 \textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
 
-Return the installed studies with enrichments available.
+Return the installed studies with enrichments available. To obtain a tooltip
+description of the study, use \texttt{getStudyMeta()} (Section
+\ref{sec:get-study-meta}).
 
 <<get-enrichments-studies, eval=FALSE>>=
 studies <- getEnrichmentsStudies()
@@ -168,7 +178,7 @@ toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 \textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
 single string instead of a list of strings.
 
-\section{Models for enrichment analsysis tab}
+\subsection{Models}
 \label{sec:get-enrichments-models}
 
 For a given study, return the models with enrichments available.
@@ -185,7 +195,7 @@ models <- getEnrichmentsModels(study = "ABC", libraries = .tmplib)
 toJSON(models, auto_unbox = TRUE, pretty = TRUE)
 @
 
-\section{Annotations for enrichment analsysis tab}
+\subsection{Annotations}
 \label{sec:get-enrichments-models}
 
 For a given study and model, return the annotations with enrichments available.

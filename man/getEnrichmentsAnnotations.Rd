@@ -10,16 +10,16 @@ getEnrichmentsAnnotations(study, modelID, libraries = NULL)
 \item{study}{An OmicNavigator study. Only accepts name of installed study
 package.}
 
-\item{modelID}{Filter by modelID}
+\item{modelID}{The modelID selected by the user in the app}
 
 \item{libraries}{Character vector of library directories to search for study
 packages. If \code{NULL}, uses \code{.libPaths}.}
 }
 \value{
-A named list. The names are the annotationIDs, and each list element is a
-single character vector with the annotationID description to be used as a
-tooltip in the app. If no custom description was provided by the user, the
-tooltip text is simply the annotationID.
+A named list. The names are the identifiers to be displayed in the
+dropdown menu, and each list element is a single character vector with the
+description to be used as a tooltip in the app. If no custom description
+was provided by the user, the tooltip text is simply the identifier.
 }
 \description{
 This is the API endpoint the app uses to populate the dropdown menu in the
