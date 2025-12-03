@@ -88,37 +88,122 @@ local({
 })
 @
 
-\section{List studies}
-\label{sec:list-studies}
+\section{Studies for differential analsysis tab}
+\label{sec:get-results-studies}
 
 \textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
 
-List all the available studies.
+Return the installed studies with differential expression results available.
 
-<<list-studies, eval=FALSE>>=
-studies <- getInstalledStudies()
+<<get-results-studies, eval=FALSE>>=
+studies <- getResultsStudies()
 @
 
-<<list-studies-hidden, echo=FALSE>>=
-studies <- getInstalledStudies(libraries = .tmplib)
+<<get-results-studies-hidden, echo=FALSE>>=
+studies <- getResultsStudies(libraries = .tmplib)
 @
 
-<<list-studies-json>>=
+<<get-results-studies-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
 @
 
-Or limit to those studies that have particular elements.
+\textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
+single string instead of a list of strings.
 
-<<list-studies-filtered, eval=FALSE>>=
-studies <- getInstalledStudies(hasElements = c("enrichments", "plots"))
+\section{Models for differential analsysis tab}
+\label{sec:get-results-models}
+
+For a given study, return the models with differential expression results
+available.
+
+<<get-results-models, eval=FALSE>>=
+models <- getResultsModels(study = "ABC")
 @
 
-<<list-studies-filtered-hidden, echo=FALSE>>=
-studies <- getInstalledStudies(hasElements = c("enrichments", "plots"), libraries = .tmplib)
+<<get-results-models-hidden, echo=FALSE>>=
+models <- getResultsModels(study = "ABC", libraries = .tmplib)
 @
 
-<<list-studies-filtered-json>>=
+<<get-results-models-json>>=
+toJSON(models, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Tests for differential analsysis tab}
+\label{sec:get-results-tests}
+
+For a given study and model, return the tests with differential expression
+results available.
+
+<<get-results-tests, eval=FALSE>>=
+tests <- getResultsTests(study = "ABC", modelID = "model_01")
+@
+
+<<get-results-tests-hidden, echo=FALSE>>=
+tests <- getResultsTests(study = "ABC", modelID = "model_01", libraries = .tmplib)
+@
+
+<<get-results-tests-json>>=
+toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Studies for enrichment analsysis tab}
+\label{sec:get-enrichments-studies}
+
+\textbf{Update: The endpoint \texttt{listStudies()} was removed in OmicNavigator 1.18.0}
+
+Return the installed studies with enrichments available.
+
+<<get-enrichments-studies, eval=FALSE>>=
+studies <- getEnrichmentsStudies()
+@
+
+<<get-enrichments-studies-hidden, echo=FALSE>>=
+studies <- getEnrichmentsStudies(libraries = .tmplib)
+@
+
+<<get-enrichments-studies-json>>=
 toJSON(studies, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\textbf{Warning:} When using \texttt{auto\_unbox}, the returned JSON will be a
+single string instead of a list of strings.
+
+\section{Models for enrichment analsysis tab}
+\label{sec:get-enrichments-models}
+
+For a given study, return the models with enrichments available.
+
+<<get-enrichments-models, eval=FALSE>>=
+models <- getEnrichmentsModels(study = "ABC")
+@
+
+<<get-enrichments-models-hidden, echo=FALSE>>=
+models <- getEnrichmentsModels(study = "ABC", libraries = .tmplib)
+@
+
+<<get-enrichments-models-json>>=
+toJSON(models, auto_unbox = TRUE, pretty = TRUE)
+@
+
+\section{Annotations for enrichment analsysis tab}
+\label{sec:get-enrichments-models}
+
+For a given study and model, return the annotations with enrichments available.
+
+<<get-enrichments-annotations, eval=FALSE>>=
+annotations <- getEnrichmentsAnnotations(study = "ABC", modelID = "model_01")
+@
+
+<<get-enrichments-annotations-hidden, echo=FALSE>>=
+annotations <- getEnrichmentsAnnotations(
+  study = "ABC",
+  modelID = "model_01",
+  libraries = .tmplib
+)
+@
+
+<<get-enrichments-annotations-json>>=
+toJSON(annotations, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Study metadata}
@@ -132,47 +217,6 @@ email, and any extra custom metadata added by the analyst.
 <<study-metadata>>=
 studyMeta <- getStudyMeta(study = "ABC")
 toJSON(studyMeta, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Models}
-\label{sec:models}
-
-For a given study, return the models and their descriptions.
-
-<<models>>=
-models <- getModels(study = "ABC")
-toJSON(models, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Tests}
-\label{sec:tests}
-
-For a given study and model, return the tests and their descriptions.
-
-<<tests>>=
-tests <- getTests(study = "ABC", modelID = "model_01")
-toJSON(tests, auto_unbox = TRUE, pretty = TRUE)
-@
-
-\section{Annotations}
-\label{sec:annotations}
-
-For a given study, return the annotations and their metadata.
-
-<<annotations>>=
-annotations <- getAnnotations(study = "ABC")
-names(annotations)
-# Full output not shown
-@
-
-Limit to a specific annotation with the \texttt{annotationID}.
-
-<<annotations-annotationID>>=
-annotations <- getAnnotations(study = "ABC", annotationID = "annotation_01")
-# Truncating the terms for display purposes only
-annotationsTrunc <- annotations
-annotationsTrunc[["terms"]] <- annotationsTrunc[["terms"]][1:3]
-toJSON(annotationsTrunc, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \section{Plots}
