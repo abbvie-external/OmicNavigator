@@ -196,7 +196,7 @@ toJSON(models, auto_unbox = TRUE, pretty = TRUE)
 @
 
 \subsection{Annotations}
-\label{sec:get-enrichments-models}
+\label{sec:get-enrichments-annotations}
 
 For a given study and model, return the annotations with enrichments available.
 
@@ -378,9 +378,10 @@ Display the custom plots provided by the user with \texttt{plotStudy()}. Provide
 study, model, feature, test, and plot, \texttt{plotStudy()} generates the custom plot.
 
 The featureID is obtained from the first column returned by
-\texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining arguments
-are obtained from the output from \texttt{getModels()}(Section \ref{sec:models})
-and \texttt{getTests()} (Section \ref{sec:tests}).
+\texttt{getResultsTable()} (Section \ref{sec:results-table}). The remaining
+arguments are obtained from the output from \texttt{getResultsModels()} (Section
+\ref{sec:get-results-models}) and \texttt{getResultsTests()} (Section
+\ref{sec:get-results-tests}).
 
 <<plotStudy-plotBase, fig=TRUE>>=
 plotStudy(
@@ -558,9 +559,10 @@ returns the data required to create the barcode and violin plots.
 
 The \texttt{termID} is obtained from \texttt{getEnrichmentsTable()} (Section
 \ref{sec:enrichments-table}). The remaining arguments are obtained from the
-output from \texttt{getModels()}(Section \ref{sec:models}), \texttt{getTests()}
-(Section \ref{sec:tests}), and \texttt{getAnnotations()}
-(Section \ref{sec:annotations}).
+output from \texttt{getEnrichmentsModels()}(Section
+\ref{sec:get-enrichments-models}), \texttt{getResultsTests()} (Section
+\ref{sec:get-results-tests}), and \texttt{getEnrichmentsAnnotations()} (Section
+\ref{sec:get-enrichments-annotations}).
 
 The elements of the \texttt{data} array are sorted by the value of \texttt{statistic} (highest
 to lowest).
