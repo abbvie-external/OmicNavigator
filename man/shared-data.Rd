@@ -16,7 +16,7 @@ F1000Research 2018, 5:1408
 \doi{10.12688/f1000research.9005.3}
 
 Sheridan, J.M., Ritchie, M.E., Best, S.A. et al.
-\href{https://bmccancer.biomedcentral.com/articles/10.1186/s12885-015-1187-z}{A pooled shRNA screen for regulators of primary mammary stem and progenitor cells identifies roles for \emph{Asap1} and \emph{Prox1}.}
+A pooled shRNA screen for regulators of primary mammary stem and progenitor cells identifies roles for \emph{Asap1} and \emph{Prox1}.
 BMC Cancer 2015, 15:221
 \doi{10.1186/s12885-015-1187-z}
 }
