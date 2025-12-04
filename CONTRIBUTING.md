@@ -223,14 +223,13 @@ uploads the tarball and PDFs as release assets.
 Designed for quick feedback. It is triggered by a push to any branch other than
 the "main" branch.
 
-* `rhub-yaml` - Workflow for [R-hub v2][rhubv2]. It runs `R CMD check` on multiple
-platforms attempting to closely match the setup of CRAN machines. The easiest
-way to run this workflow is to use the manual `workflow_dispatch` trigger via
-the GitHub UI at
-https://github.com/abbvie-external/OmicNavigator/actions/workflows/rhub.yaml. If
-you don't have write-access, you can instead trigger the runs on your fork of
-the repository. Alternatively, you can trigger the runs from your local R
-console via `rhub::rhub_check()`, but this requires a valid GitHub PAT (run
+* `rhub-yaml` - Workflow for [R-hub v2][r-hub-v2]. It runs `R CMD check` on
+multiple platforms attempting to closely match the setup of CRAN machines. The
+easiest way to run this workflow is to use the manual `workflow_dispatch`
+trigger via the GitHub UI on the [R-hub workflow page][r-hub-workflow]. If you
+don't have write-access, you can instead trigger the runs on your fork of the
+repository. Alternatively, you can trigger the runs from your local R console
+via `rhub::rhub_check()`, but this requires a valid GitHub PAT (run
 `rhub::rhub_doctor()` for assistance).
 
 If you wish to skip all automated CI, e.g. you are trying something experimental
@@ -239,7 +238,8 @@ name. Also note that the continuous integration jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
 
-[rhubv2]: https://r-hub.github.io/rhub/reference/rhubv2.html
+[r-hub-v2]: https://r-hub.github.io/rhub/reference/rhubv2.html
+[r-hub-workflow]: https://github.com/abbvie-external/OmicNavigator/actions/workflows/rhub.yaml
 
 ## Run OmicNavigator with Docker
 
@@ -346,26 +346,35 @@ git checkout main
 
 ## CRAN submission
 
-Run the following additional tests prior to CRAN submission, and then update
-`cran-comments.md` accordingly.
+After [tagging a new release](#tag-a-new-release), follow these steps to
+submit to CRAN:
 
-```R
-devtools::check_win_devel()
-rhub::rhub_doctor()
-rhub::rhub_check(platforms = "r-devel-linux-x86_64-debian-gcc")
-rhub::rhub_check(platforms = "r-devel-windows-x86_64")
-```
+* Build the R package tarball. Be sure to first delete the web app if you had
+downloaded it for local testing.
 
-Next build the tarball (first delete `inst/www/` if you have the app installed
-locally), and [submit the tarball][cran].
+    ```sh
+    rm -r inst/www/
+    R CMD build .
+    ```
+
+* Run `R CMD check` with R-devel via [win-builder][]. Not only does this test
+the package with R-devel (a requirement for CRAN submission), but it also runs
+the nit-picky checks for spelling errors and invalid URLs. Upload the package
+tarball via the [win-builder upload page][win-builder-upload] and then check
+your email in ~20 minutes. Alternatively, you can rebuild the package and upload
+directly from the R console via `devtools::check_win_devel()`.
+
+* (optional) Check the package on multiple CRAN-like platforms. Go to the
+[R-hub GitHub Actions workflow page][r-hub-workflow] and click on "Run workflow"
+(twice).
+
+* Go to the [CRAN submission page][cran]. Enter the name and email of the
+current package maintainer (role `cre` in `DESCRIPTION`). Select the local R
+package tarball. Finally click "Upload the package".
+
+* Check your email and follow the instructions. The package maintainer has to
+confirm before the package is officially submitted.
 
 [cran]: https://cran.r-project.org/submit.html
-
-```sh
-rm -r inst/www/
-R CMD build .
-```
-
-Enter the name and email of the current package maintainer (role `cre` in
-`DESCRIPTION`). Copy-paste the contents of `cran-comments.md` into the box
-"Optional comment". Finally click "Upload the package".
+[win-builder]: https://win-builder.r-project.org
+[win-builder-upload]: https://win-builder.r-project.org/upload.aspx
