@@ -189,7 +189,8 @@ functions but still display the test results.
 * Note that the tests wrapped in `at_home()` are only executed when running
 `tinytest::test_all()` or `tinytest::run_test_file()`. They are skipped when
 running `test_package()` (which is what is called by `R CMD check`), and thus
-these tests are not run in GitHub Actions or on CRAN servers.
+these tests are not run in GitHub Actions or on CRAN servers. To skip them
+when running locally, you can use the argument `at_home = FALSE`.
 
 Lastly, if you are making a large contribution, it can be helpful to evaluate
 the comprehensiveness of your tests by calculating the test coverage. The covr
@@ -222,11 +223,23 @@ uploads the tarball and PDFs as release assets.
 Designed for quick feedback. It is triggered by a push to any branch other than
 the "main" branch.
 
+* `rhub-yaml` - Workflow for [R-hub v2][rhubv2]. It runs `R CMD check` on multiple
+platforms attempting to closely match the setup of CRAN machines. The easiest
+way to run this workflow is to use the manual `workflow_dispatch` trigger via
+the GitHub UI at
+https://github.com/abbvie-external/OmicNavigator/actions/workflows/rhub.yaml. If
+you don't have write-access, you can instead trigger the runs on your fork of
+the repository. Alternatively, you can trigger the runs from your local R
+console via `rhub::rhub_check()`, but this requires a valid GitHub PAT (run
+`rhub::rhub_doctor()` for assistance).
+
 If you wish to skip all automated CI, e.g. you are trying something experimental
 that you know will break the tests, you can put "skip" anywhere in the branch
 name. Also note that the continuous integration jobs are only triggered if a
 file that affects the behavior of the package has been modified. For example, if
 you only edit documentation files like `README.md`, the tests won't be run.
+
+[rhubv2]: https://r-hub.github.io/rhub/reference/rhubv2.html
 
 ## Run OmicNavigator with Docker
 
