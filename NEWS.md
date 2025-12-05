@@ -1,3 +1,7 @@
+# 1.18.9
+
+* The release tarball includes version 2.2.8 of the web app
+
 * Add support for adding an R object to a study as an RDS file (see
 `?addObjects`)
 * New dropdown menu endpoints to be used by the app
