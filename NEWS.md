@@ -1,3 +1,9 @@
+* Add support for adding an R object to a study as an RDS file (see
+`?addObjects`)
+* New dropdown menu endpoints to be used by the app
+* Various improvements to documentation and input checking
+* Minor bug fixes
+
 # 1.18.8
 
 * The release tarball includes version 2.2.7 of the web app
