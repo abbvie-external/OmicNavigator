@@ -10,6 +10,9 @@ library(OmicNavigator)
 tmplib <- tempfile()
 dir.create(tmplib)
 
+tmplibSpace <- tempfile("a space")
+dir.create(tmplibSpace)
+
 # Minimal study ----------------------------------------------------------------
 
 testStudyMinObj <- OmicNavigator:::testStudyMinimal()
@@ -393,6 +396,82 @@ expect_error_xl(
   "Only installed study packages are supported"
 )
 
+# jq ---------------------------------------------------------------------------
+
+# The results of `getEnrichmentsAnnotations()` should be identical whether or
+# not `jq` is used
+
+expect_equal_xl(
+  getEnrichmentsAnnotations(
+    study = testStudyMinName,
+    modelID = "model_01",
+    useJqIfAvailable = TRUE,
+    libraries = tmplib
+  ),
+  getEnrichmentsAnnotations(
+    study = testStudyMinName,
+    modelID = "model_01",
+    useJqIfAvailable = FALSE,
+    libraries = tmplib
+  )
+)
+
+expect_equal_xl(
+  getEnrichmentsAnnotations(
+    study = testStudyName,
+    modelID = "model_01",
+    useJqIfAvailable = TRUE,
+    libraries = tmplib
+  ),
+  getEnrichmentsAnnotations(
+    study = testStudyName,
+    modelID = "model_01",
+    useJqIfAvailable = FALSE,
+    libraries = tmplib
+  )
+)
+
+expect_identical_xl(
+  getEnrichmentsAnnotations(
+    study = emptyStudyName,
+    modelID = "model_01",
+    useJqIfAvailable = TRUE,
+    libraries = tmplib
+  ),
+  getEnrichmentsAnnotations(
+    study = emptyStudyName,
+    modelID = "model_01",
+    useJqIfAvailable = FALSE,
+    libraries = tmplib
+  )
+)
+
+# getAnnotationDisplayJq() can handle a space in the file path
+
+testStudySpaceName <- "testDropdownsSpace"
+testStudySpaceObj <- OmicNavigator:::testStudy(name = testStudySpaceName)
+suppressMessages(installStudy(testStudySpaceObj, library = tmplibSpace))
+
+expect_equal_xl(
+  getEnrichmentsAnnotations(
+    study = testStudySpaceName,
+    modelID = "model_01",
+    useJqIfAvailable = TRUE,
+    libraries = tmplibSpace
+  ),
+  list(
+    annotation_01 = "Terms from annotation_01",
+    annotation_02 = "Terms from annotation_02",
+    annotation_03 = "Terms from annotation_03"
+  )
+)
+
+# The package option "OmicNavigator.useJqIfAvailable" should be set when the
+# package is loaded
+
+expect_true_xl(is.logical(getOption("OmicNavigator.useJqIfAvailable")))
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
+unlink(tmplibSpace, recursive = TRUE, force = TRUE)

@@ -211,6 +211,14 @@ getEnrichmentsModels <- function(study, libraries = NULL) {
 #' \code{\link{addEnrichments}}. Any optional tooltips correspond to the
 #' descriptions added with \code{\link{addAnnotations}}.
 #'
+#' @param useJqIfAvailable Use \code{jq} to obtain the description tooltip of
+#'   each annotationID. If explicitly set to \code{FALSE} (or if \code{jq} is
+#'   not available), then the slower \code{\link{getAnnotations}} is used. This
+#'   can be controlled using the package option
+#'   \code{OmicNavigator.useJqIfAvailable}. The default is \code{TRUE}. To
+#'   disable the use of \code{jq}, add
+#'   \code{options(OmicNavigator.useJqIfAvailable = FALSE)} to your script or to
+#'   your \code{.Rprofile}.
 #' @inherit shared-dropdowns params return
 #' @inherit getInstalledStudies params
 #'
@@ -221,7 +229,12 @@ getEnrichmentsModels <- function(study, libraries = NULL) {
 #'   \code{\link{addAnnotations}}
 #'
 #' @export
-getEnrichmentsAnnotations <- function(study, modelID, libraries = NULL) {
+getEnrichmentsAnnotations <- function(
+    study,
+    modelID,
+    useJqIfAvailable = getOption("OmicNavigator.useJqIfAvailable", default = TRUE),
+    libraries = NULL
+) {
   if (!is.character(study)) {
     stop("Only installed study packages are supported")
   }
@@ -237,11 +250,45 @@ getEnrichmentsAnnotations <- function(study, modelID, libraries = NULL) {
   # Check for available tooltips added via addAnnotations(). If not available,
   # use the annotationID itself for the tooltip
   for (annotationID in modelAnnotations) {
-    annotationDisplay <- getAnnotations(study, annotationID = annotationID, quiet = TRUE, libraries = libraries)
-    annotationDisplay <- annotationDisplay[["description"]]
+    if (useJqIfAvailable && nchar(Sys.which("jq")) > 0) {
+      annotationDisplay <- getAnnotationDisplayJq(
+        onDirectory = onDirectory,
+        annotationID = annotationID
+      )
+    } else {
+      annotationDisplay <- getAnnotations(
+        study = study,
+        annotationID = annotationID,
+        quiet = TRUE,
+        libraries = libraries
+      )
+      annotationDisplay <- annotationDisplay[["description"]]
+    }
     if (isEmpty(annotationDisplay)) annotationDisplay <- annotationID
     dropdown[[annotationID]] <- annotationDisplay
   }
 
   return(dropdown)
+}
+
+# Use jq to efficiently extract "description" from potentially large JSON file
+#
+# onDirectory - path to OmicNavigator directory from getDirectory()
+# annotationID - the annotationID for getting the description
+getAnnotationDisplayJq <- function(onDirectory, annotationID) {
+  executable <- "jq"
+  flags <- "--raw-output"
+  filters <- ".description"
+  jsonfile <- paste0(annotationID, ".json")
+  jsonpath <- file.path(onDirectory, "annotations", jsonfile)
+
+  if (!file.exists(jsonpath)) return(list())
+
+  annotationDisplay <- system2(
+    command = executable,
+    args = c(flags, filters, shQuote(jsonpath)),
+    stdout = TRUE
+  )
+
+  return(annotationDisplay)
 }
