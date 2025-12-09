@@ -27,16 +27,16 @@ Useful links:
 
 }
 \author{
-\strong{Maintainer}: John Blischak \email{jdblischak@gmail.com} (\href{https://orcid.org/0000-0003-2634-9879}{ORCID})
+\strong{Maintainer}: Brett Engelmann \email{brett.engelmann@abbvie.com}
 
 Authors:
 \itemize{
   \item Terrence Ernst (Web application)
+  \item John Blischak \email{jdblischak@gmail.com} (\href{https://orcid.org/0000-0003-2634-9879}{ORCID})
   \item Paul Nordlund (Web application)
   \item Justin Moore (UpSet-related functions and web application)
   \item Joe Dalen (Barcode functionality and web application)
   \item Akshay Bhamidipati (Web application)
-  \item Brett Engelmann \email{brett.engelmann@abbvie.com}
   \item Marco Curado (Improved plotting capabilities)
   \item Joe LoGrasso (Support for plotly)
 }
