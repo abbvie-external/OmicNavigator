@@ -39,7 +39,8 @@ appPackages <- c(
 .onLoad <- function(libname, pkgname) {
   # Default options
   onOptions <- list(
-    OmicNavigator.prefix = OmicNavigatorPrefix
+    OmicNavigator.prefix = OmicNavigatorPrefix,
+    OmicNavigator.useJqIfAvailable = TRUE
   )
 
   # Only set defaults for OmicNavigator options that have not been set by user
@@ -92,6 +93,17 @@ appPackages <- c(
 #'
 #' \preformatted{
 #' options(OmicNavigator.prefix = "OmicNavigatorStudy")
+#' }
+#'
+#' By default OmicNavigator will attempt to use the command-line tool \code{jq}
+#' to obtain the description of each annotationID when the app calls
+#' \code{\link{getEnrichmentsAnnotations}}. If this causes a problem, you can
+#' disable this behavior via the package option
+#' \code{OmicNavigator.useJqIfAvailable}. To do so, add the following line to
+#' your \code{.Rprofile} file.
+#'
+#' \preformatted{
+#' options(OmicNavigator.useJqIfAvailable = FALSE)
 #' }
 #'
 #' @importFrom data.table ":=" "%chin%" .N as.data.table chmatch data.table
