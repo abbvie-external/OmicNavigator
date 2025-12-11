@@ -260,28 +260,45 @@ checkAssays <- function(assays) {
   checkList(assays)
 
   for (i in seq_along(assays)) {
-    stopifnot(
-      inherits(assays[[i]], "data.frame"),
-      nrow(assays[[i]]) > 0,
-      ncol(assays[[i]]) > 0
-    )
-    # Warn if row names are unlikely to be the featureIDs
-    rows <- row.names(assays[[i]])
-    if (identical(rows, as.character(seq_along(rows)))) {
-      warning(
-        "The row names of the assays data frame should be the featureIDs.\n",
-        sprintf("Problematic modelID: %s", names(assays)[i])
+    if (is.list(assays[[i]]) && !is.data.frame(assays[[i]])) {
+      # support multiple transformations
+      for (j in seq_along(assays[[i]])) {
+        checkAssaysDataFrame(
+          assaysDataFrame = assays[[i]][[j]],
+          modelID = names(assays)[i]
+        )
+      }
+    } else {
+      checkAssaysDataFrame(
+        assaysDataFrame = assays[[i]],
+        modelID = names(assays)[i]
       )
-    }
-    # All the columns must be numeric
-    colsAllNum <- all(vapply(assays[[i]], is.numeric, logical(1)))
-    if (!colsAllNum) {
-      stop("The columns of the assays data frame must all be numeric.\n",
-           sprintf("Problematic modelID: %s", names(assays)[i]))
     }
   }
 
   return(NULL)
+}
+
+checkAssaysDataFrame <- function(assaysDataFrame, modelID) {
+  stopifnot(
+    inherits(assaysDataFrame, "data.frame"),
+    nrow(assaysDataFrame) > 0,
+    ncol(assaysDataFrame) > 0
+  )
+  # Warn if row names are unlikely to be the featureIDs
+  rows <- row.names(assaysDataFrame)
+  if (identical(rows, as.character(seq_along(rows)))) {
+    warning(
+      "The row names of the assays data frame should be the featureIDs.\n",
+      sprintf("Problematic modelID: %s", modelID)
+    )
+  }
+  # All the columns must be numeric
+  colsAllNum <- all(vapply(assaysDataFrame, is.numeric, logical(1)))
+  if (!colsAllNum) {
+    stop("The columns of the assays data frame must all be numeric.\n",
+         sprintf("Problematic modelID: %s", modelID))
+  }
 }
 
 checkMetaAssays <- function(metaAssays) {
