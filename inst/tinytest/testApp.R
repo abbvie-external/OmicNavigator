@@ -171,6 +171,64 @@ expect_equal_xl(
   length(termFeatures)
 )
 
+# getResultsTable (minimal study filtered by annotationID/termID) --------------
+
+# Needs to support a minimal study with no annotations terms. Should return an
+# empty table.
+
+minimalStudyObj <- OmicNavigator:::testStudyMinimal()
+
+minimalResultsTable <- getResultsTable(
+  study = minimalStudyObj,
+  modelID = "model_01",
+  testID = "test_01",
+  annotationID = "annotation_01",
+  termID = "term_01"
+)
+
+expect_identical_xl(minimalResultsTable, data.frame())
+
+# Minimal study with features but no terms. Still return empty data frame.
+
+minimalStudyObjFeatures <- addFeatures(
+  study = minimalStudyObj,
+  features = OmicNavigator:::testFeatures()
+)
+
+minimalResultsTableFeatures <- getResultsTable(
+  study = minimalStudyObjFeatures,
+  modelID = "model_01",
+  testID = "test_01",
+  annotationID = "annotation_01",
+  termID = "term_01"
+)
+
+expect_identical_xl(minimalResultsTableFeatures, data.frame())
+
+# Minimal study with terms but no features. Should return filtered results.
+
+minimalStudyObjTerms <- addAnnotations(
+  study = minimalStudyObj,
+  annotations = OmicNavigator:::testAnnotations()
+)
+
+minimalResultsTableTerms <- getResultsTable(
+  study = minimalStudyObjTerms,
+  modelID = "model_01",
+  testID = "test_01",
+  annotationID = "annotation_01",
+  termID = "term_01"
+)
+
+expect_identical_xl(
+  sort(minimalResultsTableTerms[[1]]),
+  sort(getNodeFeatures(
+    study = minimalStudyObjTerms,
+    annotationID = "annotation_01",
+    termID = "term_01"
+  ))
+)
+
 # getEnrichmentsTable ----------------------------------------------------------
 
 enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)

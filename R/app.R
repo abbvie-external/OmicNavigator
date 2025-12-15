@@ -81,25 +81,33 @@ getStudyMeta <- function(study, libraries = NULL) {
 #' @export
 getResultsTable <- function(study, modelID, testID, annotationID = NULL, termID = NULL, libraries = NULL) {
   results <- getResults(study, modelID, testID, libraries = libraries)
-  features <- getFeatures(study, modelID, quiet = TRUE, libraries = libraries)
-
   if (isEmpty(results)) return(data.frame())
-  if (isEmpty(features)) return(results)
 
-  # Results must be first argument to preserve input order
-  resultsTable <- merge(results, features, by = 1,
-                        all.x = TRUE, all.y = FALSE, sort = FALSE)
-  # Rearrange columns so that features are listed first
-  columnsOrder <- c(colnames(features),
-                    setdiff(colnames(results), colnames(features)))
-  resultsTable <- resultsTable[, columnsOrder]
+  # Add feature columns if available
+  features <- getFeatures(study, modelID, quiet = TRUE, libraries = libraries)
+  if (isEmpty(features)) {
+    resultsTable <- results
+  } else {
+    # Results must be first argument to preserve input order
+    resultsTable <- merge(results, features, by = 1,
+                          all.x = TRUE, all.y = FALSE, sort = FALSE)
+    # Rearrange columns so that features are listed first
+    columnsOrder <- c(colnames(features),
+                      setdiff(colnames(results), colnames(features)))
+    resultsTable <- resultsTable[, columnsOrder]
+  }
 
+  # Filter by annotationID/termID if provided
   if (!is.null(annotationID) && !is.null(termID)) {
     termFeatures <- getNodeFeatures(study, annotationID, termID, libraries = libraries)
-    annotations <- getAnnotations(study, annotationID = annotationID, libraries = libraries)
-    annotationIDfeatureID <- annotations[["featureID"]]
-    featureIDcolumn <- which(colnames(resultsTable) == annotationIDfeatureID)
-    resultsTable <- resultsTable[resultsTable[[featureIDcolumn]] %in% termFeatures, ]
+    if (isEmpty(termFeatures)) {
+      return(data.frame())
+    } else {
+      annotations <- getAnnotations(study, annotationID = annotationID, libraries = libraries)
+      annotationIDfeatureID <- annotations[["featureID"]]
+      featureIDcolumn <- which(colnames(resultsTable) == annotationIDfeatureID)
+      resultsTable <- resultsTable[resultsTable[[featureIDcolumn]] %in% termFeatures, ]
+    }
   }
 
   return(resultsTable)
