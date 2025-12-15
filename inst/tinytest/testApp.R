@@ -171,6 +171,21 @@ expect_equal_xl(
   length(termFeatures)
 )
 
+# Needs to support a minimal study with no annotations terms. Should return an
+# empty table.
+
+minimalStudyObj <- OmicNavigator:::testStudyMinimal()
+
+minimalResultsTable <- getResultsTable(
+  study = minimalStudyObj,
+  modelID = "model_01",
+  testID = "test_01",
+  annotationID = "annotation_01",
+  termID = "term_01"
+)
+
+expect_identical_xl(minimalResultsTable, data.frame())
+
 # getEnrichmentsTable ----------------------------------------------------------
 
 enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)
