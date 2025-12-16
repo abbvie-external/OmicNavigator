@@ -1,3 +1,14 @@
+# 1.19.0
+
+* Add support for adding an R object to a study as an RDS file (see
+`?addObjects`)
+* New dropdown menu endpoints to be used by the app
+* Various improvements to documentation and input checking
+* Minor bug fixes
+* Previous patch releases to app included many updates to enrichment tab of app, including
+support for multi-feature plotting, frozen term and description columns, 
+and updated barcode plot styling
+
 # 1.18.11
 
 * The release tarball includes version 2.3.0 of the web app
@@ -9,12 +20,6 @@
 # 1.18.9
 
 * The release tarball includes version 2.2.8 of the web app
-
-* Add support for adding an R object to a study as an RDS file (see
-`?addObjects`)
-* New dropdown menu endpoints to be used by the app
-* Various improvements to documentation and input checking
-* Minor bug fixes
 
 # 1.18.8
 
