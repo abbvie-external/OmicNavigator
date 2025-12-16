@@ -245,7 +245,7 @@ the design diagrammed in Figure \ref{fig:results-2}.
 Furthermore they performed enrichment analysis with one annotation database:
 the Broad Institute's MSigDB c2 collection, which was converted converted
 from human to mouse gene identifiers by
-\href{http://bioinf.wehi.edu.au/software/MSigDB/}{WEHI Bioinformatics}.
+\href{https://bioinf.wehi.edu.au/software/MSigDB/}{WEHI Bioinformatics}.
 
 \begin{figure}[H]
   \includegraphics{images/enrichments-rna}
@@ -1449,7 +1449,7 @@ The app's text is displayed in one of the following fonts. It will choose the
 first font it finds installed on the machine:
 
 \begin{enumerate}
-  \item \href{https://www.fontsquirrel.com/fonts/lato}{Lato}
+  \item Lato
   \item Arial
   \item Helvetica
   \item Any sans-serif font
