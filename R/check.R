@@ -262,6 +262,7 @@ checkAssays <- function(assays) {
   for (i in seq_along(assays)) {
     if (isList(assays[[i]])) {
       # support multiple transformations
+      checkList(assays[[i]])
       for (j in seq_along(assays[[i]])) {
         checkAssaysDataFrame(
           assaysDataFrame = assays[[i]][[j]],

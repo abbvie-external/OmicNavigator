@@ -41,6 +41,15 @@ expect_error_xl(
   "The columns of the assays data frame must all be numeric.*model_04"
 )
 
+expect_error_xl(
+  OmicNavigator:::checkAssays(
+    assays = list(
+      model_04 = list(assaysDataFrame, assaysDataFrame + 1)
+    )
+  ),
+  "must be named"
+)
+
 # sanitizeAssays() -------------------------------------------------------------
 
 assaysClasses <- assaysWithTransformations
