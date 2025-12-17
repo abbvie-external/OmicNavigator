@@ -12,6 +12,8 @@ dir.create(tmplib)
 
 testStudyName <- "transformations"
 testStudyObj <- OmicNavigator:::testStudy(testStudyName)
+plots <- OmicNavigator:::testPlots()
+testStudyObj <- addPlots(testStudyObj, plots)
 
 assaysDataFrame <- OmicNavigator:::testAssays(n = 1)[[1]]
 assaysWithTransformations <- list(
@@ -80,6 +82,18 @@ expect_identical_xl(
     a2 = assaysDataFrame + 1
   )
 )
+
+# validatePlots() --------------------------------------------------------------
+
+# Only checks assays for model_04 if results has a model_04
+testStudyObj <- addResults(
+  testStudyObj,
+  results = OmicNavigator:::testResults(nModels = 4)
+)
+
+expect_true_xl(OmicNavigator:::validatePlots(testStudyObj))
+
+expect_true_xl(validateStudy(testStudyObj))
 
 # Teardown ---------------------------------------------------------------------
 

@@ -106,6 +106,12 @@ writeJson <- function(x, file, auto_unbox = TRUE, pretty = TRUE, ...) {
 
 isEmpty <- function(x) {length(x) == 0}
 
+# Required to differentiate between a list and a data frame because is.list()
+# returns TRUE for a data frame. Note that this is much more stringent than
+# is.list() because it requires the object to be assigned the class "list",
+# which for example, a typical S3 object like "ONstudy" does not have.
+isList <- function(x) inherits(x, "list")
+
 combineListIntoTable <- function(listObj, newColumnName = "newColumnName") {
   stopifnot(
     is.list(listObj),

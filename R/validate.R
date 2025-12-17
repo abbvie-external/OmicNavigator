@@ -317,7 +317,12 @@ validatePlots <- function(study) {
 
     # featureID column of results must be row names of assays
     tests <- names(study[["results"]][[modelID]])
-    rows <- row.names(assays)
+    if (isList(assays)) {
+      # Support multiple assay transformations
+      rows <- row.names(assays[[1]])
+    } else {
+      rows <- row.names(assays)
+    }
     for (j in seq_along(tests)) {
       testID <- tests[j]
       results <- getResults(study, modelID, testID)
@@ -340,7 +345,12 @@ validatePlots <- function(study) {
       next
     }
     # Column names of assays must be in first column of samples table
-    cols <- colnames(assays)
+    if (isList(assays)) {
+      # Support multiple assay transformations
+      cols <- colnames(assays[[1]])
+    } else {
+      cols <- colnames(assays)
+    }
     colsInSamples <- cols %in% samples[, 1]
     if (sum(colsInSamples) == 0) {
       stop("The column names of the assays table do not match the sampleID column in the samples table\n",

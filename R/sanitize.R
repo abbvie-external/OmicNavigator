@@ -24,7 +24,7 @@ sanitizeModels <- function(models) {
 
 sanitizeAssays <- function(assays) {
   for (i in seq_along(assays)) {
-    if (is.list(assays[[i]]) && !is.data.frame(assays[[i]])) {
+    if (isList(assays[[i]])) {
       # support multiple transformations
       for (j in seq_along(assays[[i]])) {
         assays[[i]][[j]] <- as.data.frame(assays[[i]][[j]])
