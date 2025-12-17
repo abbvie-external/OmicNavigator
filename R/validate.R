@@ -34,6 +34,7 @@ validateStudy <- function(study) {
   validateResults(study)
   validateEnrichments(study)
   validateEnrichmentsLinkouts(study)
+  validateAssays(study)
   validatePlots(study)
   validateMapping(study)
   validateMetaAssays(study)
@@ -258,6 +259,71 @@ validateEnrichmentsLinkouts <- function(study) {
                    annotationID),
            "You can only add linkouts with addEnrichmentsLinkouts() for\n",
            "annotationIDs that have been added for at least one model with addEnrichments()")
+    }
+  }
+
+  return(invisible(TRUE))
+}
+
+# Primary purpose is to ensure that transformations have the same dimensions,
+# row names, and column names
+validateAssays <- function(study) {
+  assays <- study[["assays"]]
+
+  # Assays aren't required
+  if (isEmpty(assays)) return(NA)
+
+  for (i in seq_along(assays)) {
+    if (!isList(assays[[i]])) next
+
+    modelID <- names(assays)[i]
+    rowNum <- nrow(assays[[i]][[1]])
+    colNum <- ncol(assays[[i]][[1]])
+    rowNames <- row.names(assays[[i]][[1]])
+    colNames <- names(assays[[i]][[1]])
+
+    # require that all following transformations match the first data frame
+    for (j in seq_along(assays[[i]])[-1]) {
+      rowNumJ <- nrow(assays[[i]][[j]])
+      colNumJ <- ncol(assays[[i]][[j]])
+      rowNamesJ <- row.names(assays[[i]][[j]])
+      colNamesJ <- names(assays[[i]][[j]])
+
+      if (!identical(rowNumJ, rowNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same number of rows",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNumJ, colNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same number of columns",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(rowNamesJ, rowNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same row names",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNamesJ, colNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same column names",
+            modelID
+          )
+        )
+      }
     }
   }
 

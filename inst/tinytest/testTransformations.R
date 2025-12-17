@@ -95,6 +95,23 @@ expect_true_xl(OmicNavigator:::validatePlots(testStudyObj))
 
 expect_true_xl(validateStudy(testStudyObj))
 
+# validateAssays() -------------------------------------------------------------
+
+expect_true_xl(OmicNavigator:::validateAssays(testStudyObj))
+
+testStudyObjInvalidAssays <- testStudyObj
+row.names(testStudyObjInvalidAssays[["assays"]][["model_04"]][["a2"]])[1] <- "a"
+
+expect_error_xl(
+  OmicNavigator:::validateAssays(testStudyObjInvalidAssays),
+  "modelID model_04: all assay transformations must have the same row names"
+)
+
+expect_error_xl(
+  validateStudy(testStudyObjInvalidAssays),
+  "modelID model_04: all assay transformations must have the same row names"
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
