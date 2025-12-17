@@ -4,13 +4,27 @@
 \alias{getEnrichmentsAnnotations}
 \title{Get the annotations for the enrichments of an installed OmicNavigator study}
 \usage{
-getEnrichmentsAnnotations(study, modelID, libraries = NULL)
+getEnrichmentsAnnotations(
+  study,
+  modelID,
+  useJqIfAvailable = getOption("OmicNavigator.useJqIfAvailable", default = TRUE),
+  libraries = NULL
+)
 }
 \arguments{
 \item{study}{An OmicNavigator study. Only accepts name of installed study
 package.}
 
 \item{modelID}{The modelID selected by the user in the app}
+
+\item{useJqIfAvailable}{Use \code{jq} to obtain the description tooltip of
+each annotationID. If explicitly set to \code{FALSE} (or if \code{jq} is
+not available), then the slower \code{\link{getAnnotations}} is used. This
+can be controlled using the package option
+\code{OmicNavigator.useJqIfAvailable}. The default is \code{TRUE}. To
+disable the use of \code{jq}, add
+\code{options(OmicNavigator.useJqIfAvailable = FALSE)} to your script or to
+your \code{.Rprofile}.}
 
 \item{libraries}{Character vector of library directories to search for study
 packages. If \code{NULL}, uses \code{.libPaths}.}
