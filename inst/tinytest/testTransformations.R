@@ -112,6 +112,26 @@ expect_error_xl(
   "modelID model_04: all assay transformations must have the same row names"
 )
 
+# exportStudy() ----------------------------------------------------------------
+
+exportStudy(testStudyObj, type = "package", path = tmplib)
+
+exportedAssaysDir <- file.path(
+  tmplib,
+  OmicNavigator:::studyToPkg(testStudyName),
+  "inst",
+  "OmicNavigator",
+  "assays"
+)
+
+expect_true_xl(
+  file.exists(file.path(exportedAssaysDir, "model_04-a1.txt"))
+)
+
+expect_true_xl(
+  file.exists(file.path(exportedAssaysDir, "model_04-a2.txt"))
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
