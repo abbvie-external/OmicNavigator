@@ -12,6 +12,7 @@ dir.create(tmplib)
 
 testStudyName <- "transformations"
 testStudyObj <- OmicNavigator:::testStudy(testStudyName)
+testStudyPkg <- OmicNavigator:::studyToPkg(testStudyName)
 plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
 
@@ -127,7 +128,7 @@ exportStudy(testStudyObj, type = "package", path = tmplib)
 
 exportedAssaysDir <- file.path(
   tmplib,
-  OmicNavigator:::studyToPkg(testStudyName),
+  testStudyPkg,
   "inst",
   "OmicNavigator",
   "assays"
@@ -139,6 +140,14 @@ expect_true_xl(
 
 expect_true_xl(
   file.exists(file.path(exportedAssaysDir, "model_04-a2.txt"))
+)
+
+# installStudy() ---------------------------------------------------------------
+
+installStudy(testStudyObj, library = tmplib)
+
+expect_true_xl(
+  testStudyPkg %in% installed.packages(lib.loc = tmplib)
 )
 
 # Teardown ---------------------------------------------------------------------
