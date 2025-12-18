@@ -550,6 +550,10 @@ getElements.character <- function(
     return(list())
   }
 
+  if (elements %in% c("assays", "metaAssays")) {
+    elementsFiles <- supportAssaysTransformations(elementsFiles)
+  }
+
   filters <- Filter(function(x) !is.null(x), filters)
 
   for (i in seq_along(filters)) {
@@ -595,4 +599,23 @@ getFiles <- function(path, fileType = "txt") {
   } else {
     path
   }
+}
+
+# If an id/filename contains triple dashes (---), add another level of nesting
+supportAssaysTransformations <- function(x) {
+  if (!any(grepl("---", names(x)))) return(x)
+
+  splits <- strsplit(names(x), split = "---")
+  models <- vapply(splits, function(e) e[1], character(1))
+  result <- vector("list", length = length(unique(models)))
+  names(result) <- unique(models)
+  for (i in seq_along(splits)) {
+    if (length(splits[[i]]) == 1) {
+      result[[ splits[[i]] ]] <- x[[i]]
+    } else {
+      result[[ splits[[i]][[1]] ]][[ splits[[i]][[2]] ]] <- x[[i]]
+    }
+  }
+
+  return(result)
 }

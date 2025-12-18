@@ -168,7 +168,7 @@ exportElementsWrite <- function(
       if (isList(x[[i]])) {
         # Support multiple data frames per modelID
         for (j in seq_along(x[[i]])) {
-          fileNameJ <- paste0(fileName, "-", names(x[[i]])[j], ".txt")
+          fileNameJ <- paste0(fileName, "---", names(x[[i]])[j], ".txt")
           writeTable(x[[i]][[j]], file = fileNameJ, row.names = hasRowNames)
         }
       } else {

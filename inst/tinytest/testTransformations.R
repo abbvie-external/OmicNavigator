@@ -135,11 +135,11 @@ exportedAssaysDir <- file.path(
 )
 
 expect_true_xl(
-  file.exists(file.path(exportedAssaysDir, "model_04-a1.txt"))
+  file.exists(file.path(exportedAssaysDir, "model_04---a1.txt"))
 )
 
 expect_true_xl(
-  file.exists(file.path(exportedAssaysDir, "model_04-a2.txt"))
+  file.exists(file.path(exportedAssaysDir, "model_04---a2.txt"))
 )
 
 # installStudy() ---------------------------------------------------------------
@@ -148,6 +148,24 @@ installStudy(testStudyObj, library = tmplib)
 
 expect_true_xl(
   testStudyPkg %in% installed.packages(lib.loc = tmplib)
+)
+
+
+# getAssays() from study package -----------------------------------------------
+
+expect_equal_xl(
+  getAssays(testStudyName, libraries = tmplib),
+  testStudyObj[["assays"]]
+)
+
+expect_equal_xl(
+  getAssays(testStudyName, modelID = "model_01", libraries = tmplib),
+  testStudyObj[["assays"]][["model_01"]]
+)
+
+expect_equal_xl(
+  getAssays(testStudyName, modelID = "model_04", libraries = tmplib),
+  testStudyObj[["assays"]][["model_04"]]
 )
 
 # Teardown ---------------------------------------------------------------------
