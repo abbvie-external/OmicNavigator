@@ -168,6 +168,15 @@ expect_equal_xl(
   testStudyObj[["assays"]][["model_04"]]
 )
 
+# importStudy() ----------------------------------------------------------------
+
+testStudyImported <- importStudy(testStudyName, libraries = tmplib)
+
+expect_equal_xl(
+  testStudyImported[["assays"]],
+  testStudyObj[["assays"]]
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
