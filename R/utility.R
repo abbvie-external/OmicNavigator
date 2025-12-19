@@ -211,6 +211,16 @@ capitalize <- function(x) {
   return(final)
 }
 
+stopIfDashes <- function(x) {
+  invalidDashes <- grepl("---", x)
+  if (any(invalidDashes)) {
+    stop(
+      "Names cannot include triple dashes (---): ",
+      paste(x[invalidDashes], collapse = ", ")
+    )
+  }
+}
+
 # Filesystem -------------------------------------------------------------------
 
 # Rename file by first copying and then deleting original

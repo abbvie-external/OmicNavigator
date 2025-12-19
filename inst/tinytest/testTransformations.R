@@ -51,6 +51,28 @@ expect_error_xl(
   "must be named"
 )
 
+expect_error_xl(
+  OmicNavigator:::checkAssays(
+    assays = list(
+      model_01 = assaysDataFrame,
+      `model---02` = list(a1 = assaysDataFrame, a2 = assaysDataFrame + 1)
+    )
+  ),
+  "---",
+  info = "modelID cannot have --- because this is used in filenames to separate transformations"
+)
+
+expect_error_xl(
+  OmicNavigator:::checkAssays(
+    assays = list(
+      model_01 = assaysDataFrame,
+      model_02 = list(`a---1` = assaysDataFrame, `a---2` = assaysDataFrame + 1)
+    )
+  ),
+  "---",
+  info = "assayID cannot have --- because this is used in filenames to separate transformations"
+)
+
 # sanitizeAssays() -------------------------------------------------------------
 
 assaysClasses <- assaysWithTransformations
