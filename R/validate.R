@@ -472,6 +472,7 @@ validateMetaAssays <- function(study) {
     # Need to re-pull in case using modelID "default"
     modelMetaAssays <- getMetaAssays(study, modelID, quiet = TRUE)
     if (isEmpty(modelMetaAssays)) next
+    if (isList(modelMetaAssays)) modelMetaAssays <- modelMetaAssays[[1]]
 
     # Validate that column names match samples
     modelSamples <- getSamples(study, modelID, quiet = TRUE)
@@ -500,6 +501,61 @@ validateMetaAssays <- function(study) {
         message("Validation: ",
                 "Some of the metaFeatureIDs in the metaFeatures table are missing from the rows in the metaAssays table\n",
                 sprintf("modelID: %s", modelID))
+      }
+    }
+  }
+
+  # Confirm that transformations have the same dimensions and names
+  for (i in seq_along(metaAssays)) {
+    if (!isList(metaAssays[[i]])) next
+
+    modelID <- names(metaAssays)[i]
+    rowNum <- nrow(metaAssays[[i]][[1]])
+    colNum <- ncol(metaAssays[[i]][[1]])
+    rowNames <- row.names(metaAssays[[i]][[1]])
+    colNames <- names(metaAssays[[i]][[1]])
+
+    # require that all following transformations match the first data frame
+    for (j in seq_along(metaAssays[[i]])[-1]) {
+      rowNumJ <- nrow(metaAssays[[i]][[j]])
+      colNumJ <- ncol(metaAssays[[i]][[j]])
+      rowNamesJ <- row.names(metaAssays[[i]][[j]])
+      colNamesJ <- names(metaAssays[[i]][[j]])
+
+      if (!identical(rowNumJ, rowNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same number of rows",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNumJ, colNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same number of columns",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(rowNamesJ, rowNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same row names",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNamesJ, colNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same column names",
+            modelID
+          )
+        )
       }
     }
   }

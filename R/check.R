@@ -305,23 +305,50 @@ checkAssaysDataFrame <- function(assaysDataFrame, modelID) {
     stop("The columns of the assays data frame must all be numeric.\n",
          sprintf("Problematic modelID: %s", modelID))
   }
+
+  return(NULL)
 }
 
 checkMetaAssays <- function(metaAssays) {
   checkList(metaAssays)
 
+  # modelID cannot have --- because this is used in filenames to separate
+  # transformations
+  stopIfDashes(names(metaAssays))
+
   for (i in seq_along(metaAssays)) {
-    stopifnot(
-      inherits(metaAssays[[i]], "data.frame"),
-      nrow(metaAssays[[i]]) > 0,
-      ncol(metaAssays[[i]]) > 0
-    )
-    # All the columns must be numeric
-    colsAllNum <- all(vapply(metaAssays[[i]], is.numeric, logical(1)))
-    if (!colsAllNum) {
-      stop("The columns of the metaAssays data frame must all be numeric.\n",
-           sprintf("Problematic modelID: %s", names(metaAssays)[i]))
+    if (isList(metaAssays[[i]])) {
+      # support multiple transformations
+      checkList(metaAssays[[i]])
+      stopIfDashes(names(metaAssays[[i]]))
+      for (j in seq_along(metaAssays[[i]])) {
+        checkMetaAssaysDataFrame(
+          metaAssaysDataFrame = metaAssays[[i]][[j]],
+          modelID = names(metaAssays)[i]
+        )
+      }
+    } else {
+      checkMetaAssaysDataFrame(
+        metaAssaysDataFrame = metaAssays[[i]],
+        modelID = names(metaAssays)[i]
+      )
     }
+  }
+
+  return(NULL)
+}
+
+checkMetaAssaysDataFrame <- function(metaAssaysDataFrame, modelID) {
+  stopifnot(
+    inherits(metaAssaysDataFrame, "data.frame"),
+    nrow(metaAssaysDataFrame) > 0,
+    ncol(metaAssaysDataFrame) > 0
+  )
+  # All the columns must be numeric
+  colsAllNum <- all(vapply(metaAssaysDataFrame, is.numeric, logical(1)))
+  if (!colsAllNum) {
+    stop("The columns of the metaAssays data frame must all be numeric.\n",
+         sprintf("Problematic modelID: %s", modelID))
   }
 
   return(NULL)

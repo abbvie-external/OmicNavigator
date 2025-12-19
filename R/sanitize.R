@@ -126,6 +126,17 @@ sanitizeMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
 }
 
 sanitizeMetaAssays <- function(metaAssays) {
+  for (i in seq_along(metaAssays)) {
+    if (isList(metaAssays[[i]])) {
+      # support multiple transformations
+      for (j in seq_along(metaAssays[[i]])) {
+        metaAssays[[i]][[j]] <- as.data.frame(metaAssays[[i]][[j]])
+      }
+    } else {
+      metaAssays[[i]] <- as.data.frame(metaAssays[[i]])
+    }
+  }
+
   return(metaAssays)
 }
 

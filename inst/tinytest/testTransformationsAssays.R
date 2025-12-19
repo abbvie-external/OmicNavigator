@@ -1,4 +1,4 @@
-# Test support for multiple transformations for assays and metaAssays
+# Test support for multiple transformations for assays
 
 # Setup ------------------------------------------------------------------------
 
@@ -171,7 +171,6 @@ installStudy(testStudyObj, library = tmplib)
 expect_true_xl(
   testStudyPkg %in% installed.packages(lib.loc = tmplib)
 )
-
 
 # getAssays() from study package -----------------------------------------------
 
