@@ -94,8 +94,16 @@ minimal [TinyTex](https://yihui.org/tinytex/) distribution.
 ```R
 install.packages("tinytex")
 tinytex::install_tinytex()
-tinytex:::install_yihui_pkgs()
+tinytex::tlmgr_install(c("grfext", "parskip"))
+tinytex::tlmgr(c('info', '--list', '--only-installed', '--data', 'name'))
 ```
+
+**macOS users**: When you run `install_tinytex()`, there will be a dialog box
+from [osascript][] requesting you to enter your user password. This is safe to
+do. It is required to make the directory `/usr/local/bin` writable so that
+TinyTeX can be installed there.
+
+[osascript]: https://github.com/rstudio/tinytex/issues/24#issuecomment-433223324
 
 To install the app for local testing, the easiest method is to install it once
 in the source directory, so that the app is always installed whenever you build
