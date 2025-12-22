@@ -287,6 +287,10 @@ Follow these steps to tag a new release:
 * Push the tag to GitHub
 
     ```sh
+    # Assumes the main repository is the remote "origin"
+    git remote -v
+
+    git push origin
     git push origin --tags
     ```
 
@@ -375,6 +379,14 @@ package tarball. Finally click "Upload the package".
 * Check your email and follow the instructions. The package maintainer has to
 confirm before the package is officially submitted.
 
+* To check the status of the submission, you can momitor the CRAN review process
+using the [cransays dashboard][cransays] or the R package [foghorn][].
+    ```R
+    foghorn::cran_incoming("OmicNavigator")
+    ```
+
 [cran]: https://cran.r-project.org/submit.html
+[cransays]: https://r-hub.github.io/cransays/articles/dashboard.html
+[foghorn]: https://cran.r-project.org/package=foghorn
 [win-builder]: https://win-builder.r-project.org
 [win-builder-upload]: https://win-builder.r-project.org/upload.aspx
