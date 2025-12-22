@@ -292,3 +292,33 @@ getAnnotationDisplayJq <- function(onDirectory, annotationID) {
 
   return(annotationDisplay)
 }
+
+#' Does an annotationID have terms available?
+#'
+#' Only populate the enrichments table with links to the barcode view if the
+#' annotationID has terms avaialble.
+#'
+#' @inherit shared-dropdowns params
+#' @param annotationID The annotationID (selected in the app) to check for
+#'   available terms
+#' @inherit getInstalledStudies params
+#'
+#' @return \code{TRUE} if the annotationID has terms available; otherwise
+#'   \code{FALSE}.
+#'
+#' @seealso
+#'   \code{\link{getEnrichmentsAnnotations}},
+#'   \code{\link{addAnnotations}}
+#'
+#' @export
+hasTerms <- function(study, annotationID, libraries = NULL) {
+  annotations <- getAnnotations(
+    study = study,
+    annotationID = annotationID,
+    quiet = TRUE,
+    libraries = libraries
+  )
+  terms <- annotations[["terms"]]
+
+  return(!isEmpty(terms))
+}

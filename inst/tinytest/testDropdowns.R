@@ -471,6 +471,24 @@ expect_equal_xl(
 
 expect_true_xl(is.logical(getOption("OmicNavigator.useJqIfAvailable")))
 
+# hasTerms() -------------------------------------------------------------------
+
+expect_false_xl(
+  hasTerms(
+    study = testStudyMinName,
+    annotationID = "annotation_01",
+    libraries = tmplib
+  )
+)
+
+expect_true_xl(
+  hasTerms(
+    study = testStudyName,
+    annotationID = "annotation_01",
+    libraries = tmplib
+  )
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)

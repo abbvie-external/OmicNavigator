@@ -216,6 +216,23 @@ annotations <- getEnrichmentsAnnotations(
 toJSON(annotations, auto_unbox = TRUE, pretty = TRUE)
 @
 
+An annotation can have enrichments results but not the list of features in each
+term. To determine if an annotation has terms, and thus to populate the
+enrichments table with links to the barcode view, use
+\texttt{hasTerms()}.
+
+<<has-annotations-terms, eval=FALSE>>=
+hasTerms(study = "ABC", annotationID = "annotation_01")
+@
+
+<<has-annotations-terms-hidden, echo=FALSE>>=
+hasTerms(
+  study = "ABC",
+  annotationID = "annotation_01",
+  libraries = .tmplib
+)
+@
+
 \section{Study metadata}
 \label{sec:get-study-meta}
 
