@@ -413,12 +413,21 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       stop(sprintf("No assays available for modelID \"%s\"\n", model_i),
            "Add assays data with addAssays()")
     } else {
-      featureIDAvailable <- featureID %in% rownames(assays)
-      if (any(!featureIDAvailable)) {
-        stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                     featureID[!featureIDAvailable][1], model_i))
+      if (isList(assays)) {
+        featureIDAvailable <- featureID %in% row.names(assays[[1]])
+        if (any(!featureIDAvailable)) {
+          stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                       featureID[!featureIDAvailable][1], model_i))
+        }
+        assaysPlotting <- lapply(assays, function(x) x[featureID, , drop = FALSE])
+      } else {
+        featureIDAvailable <- featureID %in% row.names(assays)
+        if (any(!featureIDAvailable)) {
+          stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                       featureID[!featureIDAvailable][1], model_i))
+        }
+        assaysPlotting <- assays[featureID, , drop = FALSE]
       }
-      assaysPlotting <- assays[featureID, , drop = FALSE]
     }
 
     samples <- getSamples(study, modelID = model_i, quiet = TRUE,
@@ -426,9 +435,14 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(samples) || isEmpty(assays)) {
       samplesPlotting <- samples
     } else {
-      samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,
+      if (isList(assaysPlotting)) {
+        sampleID <- colnames(assaysPlotting[[1]])
+      } else {
+        sampleID <- colnames(assaysPlotting)
+      }
+      samplesPlotting <- samples[match(sampleID, samples[[1]], nomatch = 0), ,
                                  drop = FALSE]
-      if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
+      if (!identical(samplesPlotting[[1]], sampleID)) {
         warning("Not all of the sampleIDs have metadata")
       }
       row.names(samplesPlotting) <- NULL # reset row numbers after filtering

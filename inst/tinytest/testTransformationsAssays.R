@@ -198,6 +198,84 @@ expect_equal_xl(
   testStudyObj[["assays"]]
 )
 
+# getPlottingData() from study object ------------------------------------------
+
+plottingDataFromObj <- getPlottingData(
+  study = testStudyObj,
+  modelID = "model_04",
+  featureID = "feature_0010"
+)
+
+expect_equal_xl(
+  plottingDataFromObj[["assays"]][["a1"]],
+  testStudyObj[["assays"]][["model_04"]][["a1"]]["feature_0010", , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromObj[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]]["feature_0010", , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromObj[["features"]],
+  subset(getFeatures(testStudyObj, modelID = "model_04"), customID == "feature_0010"),
+  check.attributes = FALSE # subset() doesn't reset the row number
+)
+
+expect_equal_xl(
+  plottingDataFromObj[["samples"]],
+  getSamples(testStudyObj, modelID = "model_04")
+)
+
+# getPlottingData() multiFeature -----------------------------------------------
+
+multiFeature <- c("feature_0010", "feature_0026")
+plottingDataMultiFeature <- getPlottingData(
+  study = testStudyObj,
+  modelID = "model_04",
+  featureID = multiFeature
+)
+
+expect_equal_xl(
+  plottingDataMultiFeature[["assays"]][["a1"]],
+  testStudyObj[["assays"]][["model_04"]][["a1"]][multiFeature, ]
+)
+
+expect_equal_xl(
+  plottingDataMultiFeature[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]][multiFeature, ]
+)
+
+expect_equal_xl(
+  plottingDataMultiFeature[["features"]],
+  subset(getFeatures(testStudyObj, modelID = "model_04"), customID %in% multiFeature),
+  check.attributes = FALSE # subset() doesn't reset the row number
+)
+
+expect_equal_xl(
+  plottingDataMultiFeature[["samples"]],
+  getSamples(testStudyObj, modelID = "model_04")
+)
+
+# getPlottingData() from study package -----------------------------------------
+
+plottingDataFromPkg <- getPlottingData(
+  study = testStudyName,
+  modelID = "model_04",
+  featureID = "feature_0010",
+  libraries = tmplib
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["assays"]][["a1"]],
+  testStudyObj[["assays"]][["model_04"]][["a1"]]["feature_0010", , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]]["feature_0010", , drop = FALSE]
+)
+
 # Teardown ---------------------------------------------------------------------
 
 unlink(tmplib, recursive = TRUE, force = TRUE)
