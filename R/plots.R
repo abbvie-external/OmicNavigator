@@ -320,7 +320,8 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   filtered to only include the row(s) corresponding to the input featureID(s)
 #'   (see \code{\link{getAssays}}). If multiple featureIDs are requested, the
 #'   rows are reordered to match the order of this input. The column order is
-#'   unchanged.}
+#'   unchanged. If there are multiple transformations available, the full list
+#'   of filtered data frames is returned.}
 #'
 #'   \item{\code{samples}}{A data frame that contains the sample metadata for
 #'   the given modelID (see \code{\link{getSamples}}). The rows are reordered to
@@ -354,7 +355,8 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   measurements, filtered to only include the row(s) corresponding to the
 #'   input featureID(s) (see \code{\link{getMetaAssays}}). If multiple
 #'   featureIDs are requested, the rows are reordered to match the order of this
-#'   input. The column order is unchanged.}
+#'   input. The column order is unchanged. If there are multiple transformations
+#'   available, the full list of filtered data frames is returned.}
 #'
 #' If the study has objects available that map to the input modelID(s),
 #' then \code{objects} is returned. It is not possible to filter by featureID(s)
