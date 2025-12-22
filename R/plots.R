@@ -477,9 +477,16 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(metaAssays)) {
       metaAssaysPlotting <- metaAssays
     } else {
-      metaAssaysPlotting <- metaAssays[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
-      if (nrow(metaAssaysPlotting) == 0) {
-        warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
+      if (isList(metaAssays)) {
+        metaAssaysPlotting <- lapply(
+          metaAssays,
+          function(x) x[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
+        )
+      } else {
+        metaAssaysPlotting <- metaAssays[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
+        if (nrow(metaAssaysPlotting) == 0) {
+          warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
+        }
       }
     }
 

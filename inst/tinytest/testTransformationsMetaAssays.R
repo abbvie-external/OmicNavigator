@@ -16,6 +16,12 @@ testStudyPkg <- OmicNavigator:::studyToPkg(testStudyName)
 plots <- OmicNavigator:::testPlots()
 testStudyObj <- addPlots(testStudyObj, plots)
 
+# Need normal assays for model_04 to test getPlottingData()
+testStudyObj <- addAssays(
+  study = testStudyObj,
+  assays = OmicNavigator:::testAssays(n = 4)
+)
+
 metaAssaysDataFrame <- OmicNavigator:::testMetaAssays(n = 1)[[1]]
 metaAssaysWithTransformations <- list(
   model_01 = metaAssaysDataFrame,
@@ -193,6 +199,74 @@ testStudyImported <- importStudy(testStudyName, libraries = tmplib)
 expect_equal_xl(
   testStudyImported[["metaAssays"]],
   testStudyObj[["metaAssays"]]
+)
+
+# getPlottingData() from study object ------------------------------------------
+
+plottingDataFromObj <- getPlottingData(
+  study = testStudyObj,
+  modelID = "model_04",
+  featureID = "feature_0010"
+)
+
+expectedMetaFeatures <- subset(
+  testStudyObj[["metaFeatures"]][["default"]],
+  customID == "feature_0010",
+  select = "metaFeatureID"
+)[[1]]
+
+expect_equal_xl(
+  plottingDataFromObj[["metaAssays"]][["a1"]],
+  testStudyObj[["metaAssays"]][["model_04"]][["a1"]][expectedMetaFeatures, , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromObj[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]][expectedMetaFeatures, , drop = FALSE]
+)
+
+# getPlottingData() from study package -----------------------------------------
+
+plottingDataFromPkg <- getPlottingData(
+  study = testStudyName,
+  modelID = "model_04",
+  featureID = "feature_0010",
+  libraries = tmplib
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["metaAssays"]][["a1"]],
+  testStudyObj[["metaAssays"]][["model_04"]][["a1"]][expectedMetaFeatures, , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]][expectedMetaFeatures, , drop = FALSE]
+)
+
+# getPlottingData() multiFeature -----------------------------------------------
+
+multiFeature <- c("feature_0010", "feature_0026")
+plottingDataMultiFeature <- getPlottingData(
+  study = testStudyObj,
+  modelID = "model_04",
+  featureID = multiFeature
+)
+
+expectedMetaFeatures <- subset(
+  testStudyObj[["metaFeatures"]][["default"]],
+  customID %in% multiFeature,
+  select = "metaFeatureID"
+)[[1]]
+
+expect_identical_xl(
+  sort(row.names(plottingDataMultiFeature[["metaAssays"]][["a1"]])),
+  sort(row.names(testStudyObj[["metaAssays"]][["model_04"]][["a1"]][expectedMetaFeatures, , drop = FALSE]))
+)
+
+expect_identical_xl(
+  sort(row.names(plottingDataMultiFeature[["metaAssays"]][["a2"]])),
+  sort(row.names(testStudyObj[["metaAssays"]][["model_04"]][["a2"]][expectedMetaFeatures, , drop = FALSE]))
 )
 
 # Teardown ---------------------------------------------------------------------

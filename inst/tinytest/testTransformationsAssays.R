@@ -227,6 +227,25 @@ expect_equal_xl(
   getSamples(testStudyObj, modelID = "model_04")
 )
 
+# getPlottingData() from study package -----------------------------------------
+
+plottingDataFromPkg <- getPlottingData(
+  study = testStudyName,
+  modelID = "model_04",
+  featureID = "feature_0010",
+  libraries = tmplib
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["assays"]][["a1"]],
+  testStudyObj[["assays"]][["model_04"]][["a1"]]["feature_0010", , drop = FALSE]
+)
+
+expect_equal_xl(
+  plottingDataFromPkg[["assays"]][["a2"]],
+  testStudyObj[["assays"]][["model_04"]][["a2"]]["feature_0010", , drop = FALSE]
+)
+
 # getPlottingData() multiFeature -----------------------------------------------
 
 multiFeature <- c("feature_0010", "feature_0026")
@@ -255,25 +274,6 @@ expect_equal_xl(
 expect_equal_xl(
   plottingDataMultiFeature[["samples"]],
   getSamples(testStudyObj, modelID = "model_04")
-)
-
-# getPlottingData() from study package -----------------------------------------
-
-plottingDataFromPkg <- getPlottingData(
-  study = testStudyName,
-  modelID = "model_04",
-  featureID = "feature_0010",
-  libraries = tmplib
-)
-
-expect_equal_xl(
-  plottingDataFromPkg[["assays"]][["a1"]],
-  testStudyObj[["assays"]][["model_04"]][["a1"]]["feature_0010", , drop = FALSE]
-)
-
-expect_equal_xl(
-  plottingDataFromPkg[["assays"]][["a2"]],
-  testStudyObj[["assays"]][["model_04"]][["a2"]]["feature_0010", , drop = FALSE]
 )
 
 # Teardown ---------------------------------------------------------------------
