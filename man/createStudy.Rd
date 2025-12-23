@@ -101,7 +101,9 @@ annotation databases. Each list element should be another list of tests
 of these elements should be a data frame with enrichment results. Each
 table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
-adjusting for multiple testing). Any additional columns are ignored.}
+adjusting for multiple testing). Any additional columns are ignored and
+removed. The first column should be "termID", and it should only contain
+unique values.}
 
 \item{metaFeatures}{The metadata variables that describe the meta-features in
 the study. The input object is a list of data frames (one per model). The

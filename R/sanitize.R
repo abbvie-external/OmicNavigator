@@ -52,7 +52,19 @@ sanitizeEnrichments <- function(enrichments) {
   for (i in seq_along(enrichments)) {
     for (j in seq_along(enrichments[[i]])) {
       for (k in seq_along(enrichments[[i]][[j]])) {
-        enrichments[[i]][[j]][[k]] <- as.data.frame(enrichments[[i]][[j]][[k]])
+        theTable <- enrichments[[i]][[j]][[k]]
+        theTable <- as.data.frame(theTable)
+        columnsCurrent <- names(theTable)
+        columnsToKeep <- c("termID", "description", "nominal", "adjusted")
+        columnsToRemove <- !columnsCurrent %in% columnsToKeep
+        if (any(columnsToRemove)) {
+          warning(
+            "The following columns were removed from the enrichments table: ",
+            paste(columnsCurrent[columnsToRemove], collapse = ", ")
+          )
+        }
+        theTable <- theTable[, columnsToKeep]
+        enrichments[[i]][[j]][[k]] <- theTable
       }
     }
   }

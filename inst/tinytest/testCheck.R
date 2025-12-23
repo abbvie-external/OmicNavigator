@@ -527,6 +527,45 @@ expect_error_xl(
   "Column 'adjusted' from enrichments must be numeric"
 )
 
+# Results for each annotationID/termID/testID must be unique
+enrichmentswithDups <- OmicNavigator:::testEnrichments(
+  nModels = 1,
+  nAnnotations = 1,
+  nTests = 1
+)
+enrichmentswithDups[["model_01"]][["annotation_01"]][["test_01"]] <- rbind(
+  enrichmentswithDups[["model_01"]][["annotation_01"]][["test_01"]],
+  enrichmentswithDups[["model_01"]][["annotation_01"]][["test_01"]][1, ]
+)
+
+expect_error_xl(
+  addEnrichments(study, enrichments = enrichmentswithDups),
+  "The first column, \"termID\", must contain unique values"
+)
+
+# Duplicate columns are removed with warning to user
+enrichmentswithExtraCols <- OmicNavigator:::testEnrichments(
+  nModels = 1,
+  nAnnotations = 1,
+  nTests = 1
+)
+
+enrichmentswithExtraCols[["model_01"]][["annotation_01"]][["test_01"]] <- cbind(
+  enrichmentswithExtraCols[["model_01"]][["annotation_01"]][["test_01"]],
+  extra1 = "remove me",
+  extra2 = "remove me too"
+)
+
+expect_warning_xl(
+  studyExtraCols <- addEnrichments(study, enrichments = enrichmentswithExtraCols),
+  "The following columns were removed from the enrichments table: extra1, extra2"
+)
+
+expect_identical_xl(
+  colnames(studyExtraCols[["enrichments"]][["model_01"]][["annotation_01"]][["test_01"]]),
+  c("termID", "description", "nominal", "adjusted")
+)
+
 # checkMetaFeatures ------------------------------------------------------------
 
 expect_error_xl(

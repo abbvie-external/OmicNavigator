@@ -360,7 +360,9 @@ addResults <- function(study, results, reset = FALSE) {
 #'   of these elements should be a data frame with enrichment results. Each
 #'   table must contain the following columns: "termID", "description",
 #'   "nominal" (the nominal statistics), and "adjusted" (the statistics after
-#'   adjusting for multiple testing). Any additional columns are ignored.
+#'   adjusting for multiple testing). Any additional columns are ignored and
+#'   removed. The first column should be "termID", and it should only contain
+#'   unique values.
 #' @inherit shared-add
 #'
 #' @seealso \code{\link{getEnrichments}}

@@ -396,8 +396,7 @@ checkEnrichments <- function(enrichments) {
         if ("adjusted" %in% colnames(test) && !is.numeric(test$adjusted)) {
           stop("Column 'adjusted' from enrichments must be numeric")
         }
-        enrichments[[i]][[j]][[k]] <-
-          test[, c("termID", "description", "nominal", "adjusted")]
+        hasUniqueIdColumn(test)
       }
     }
   }

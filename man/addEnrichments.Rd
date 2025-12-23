@@ -18,7 +18,9 @@ annotation databases. Each list element should be another list of tests
 of these elements should be a data frame with enrichment results. Each
 table must contain the following columns: "termID", "description",
 "nominal" (the nominal statistics), and "adjusted" (the statistics after
-adjusting for multiple testing). Any additional columns are ignored.}
+adjusting for multiple testing). Any additional columns are ignored and
+removed. The first column should be "termID", and it should only contain
+unique values.}
 
 \item{reset}{Reset the data prior to adding the new data (default:
 \code{FALSE}). The default is to add to or modify any previously added data

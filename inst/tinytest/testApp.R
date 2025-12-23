@@ -231,14 +231,20 @@ expect_identical_xl(
 
 # getEnrichmentsTable ----------------------------------------------------------
 
-enrichmentsTable <- getEnrichmentsTable(testStudyName, testModelName, testAnnotationName)
+enrichmentsTable <- getEnrichmentsTable(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName
+)
 
 expect_identical_xl(
   class(enrichmentsTable),
   "data.frame"
 )
 
-expect_true_xl(all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable)))
+expect_true_xl(
+  all(names(getTests(testStudyName, testModelName)) %in% colnames(enrichmentsTable))
+)
 
 expect_error_xl(
   getEnrichmentsTable(1),
@@ -248,6 +254,30 @@ expect_error_xl(
 expect_equal_xl(
   enrichmentsTable,
   getEnrichmentsTable(testStudyObj, testModelName, testAnnotationName)
+)
+
+perTestenrichments <- getEnrichments(
+  study = testStudyObj,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  testID = testTestName
+)
+
+expect_equal_xl(
+  enrichmentsTable[[testTestName]],
+  perTestenrichments[["nominal"]]
+)
+
+enrichmentsTableAdj <- getEnrichmentsTable(
+  study = testStudyName,
+  modelID = testModelName,
+  annotationID = testAnnotationName,
+  type = "adjusted"
+)
+
+expect_equal_xl(
+  enrichmentsTableAdj[[testTestName]],
+  perTestenrichments[["adjusted"]]
 )
 
 # getEnrichmentsNetwork --------------------------------------------------------
