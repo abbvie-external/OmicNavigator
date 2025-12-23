@@ -240,8 +240,6 @@ getEnrichmentsNetwork <- function(study, modelID, annotationID, libraries = NULL
 
 #' Get the features in a network node
 #'
-#' @param study An OmicNavigator study. Only accepts name of installed study
-#'   package.
 #' @inheritParams shared-get
 #'
 #' @return Returns a character vector with the features in the termID
@@ -278,7 +276,6 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' Get the shared features in a network link
 #'
 #' @param termID1,termID2 Linked terms to find overlapping features
-#' @inheritParams getNodeFeatures
 #' @inheritParams shared-get
 #'
 #' @return Returns a character vector with the features included in both termIDs
@@ -289,6 +286,10 @@ getNodeFeatures <- function(study, annotationID, termID, libraries = NULL) {
 #' @export
 getLinkFeatures <- function(study, annotationID, termID1, termID2, libraries = NULL) {
 
+  # Note: this is potentially super-inefficient for studies with many annotation
+  # terms since it requires loading them twice. However, the app no longer calls
+  # getLinkFeatures() (and no other functions call it), so this isn't worth
+  # refactoring.
   nodeFeatures1 <- getNodeFeatures(study, annotationID, termID1, libraries = libraries)
   nodeFeatures2 <- getNodeFeatures(study, annotationID, termID2, libraries = libraries)
 
