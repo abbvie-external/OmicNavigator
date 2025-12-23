@@ -221,11 +221,11 @@ term. To determine if an annotation has terms, and thus to populate the
 enrichments table with links to the barcode view, use
 \texttt{hasTerms()}.
 
-<<has-annotations-terms, eval=FALSE>>=
+<<has-terms, eval=FALSE>>=
 hasTerms(study = "ABC", annotationID = "annotation_01")
 @
 
-<<has-annotations-terms-hidden, echo=FALSE>>=
+<<has-terms-hidden, echo=FALSE>>=
 hasTerms(
   study = "ABC",
   annotationID = "annotation_01",
