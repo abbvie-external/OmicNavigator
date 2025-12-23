@@ -26,7 +26,15 @@ Returns the original \code{onStudy} object passed to the argument
 \code{study}, but modified to include the newly added data
 }
 \description{
-Add assays
+Add assays to the models of an OmicNavigator study.
+}
+\details{
+If you want to add multiple transformations of your assays for a given
+modelID, you can add another layer of nesting. Instead of passing a data
+frame for that modelID, you can pass a named list of data frames. Each
+transformation should have identical row and column names. If your data
+doesn't fit this restriction, you should probably use multiple models
+instead.
 }
 \seealso{
 \code{\link{getAssays}}

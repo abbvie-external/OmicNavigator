@@ -24,7 +24,14 @@ sanitizeModels <- function(models) {
 
 sanitizeAssays <- function(assays) {
   for (i in seq_along(assays)) {
-    assays[[i]] <- as.data.frame(assays[[i]])
+    if (isList(assays[[i]])) {
+      # support multiple transformations
+      for (j in seq_along(assays[[i]])) {
+        assays[[i]][[j]] <- as.data.frame(assays[[i]][[j]])
+      }
+    } else {
+      assays[[i]] <- as.data.frame(assays[[i]])
+    }
   }
 
   return(assays)
@@ -119,6 +126,17 @@ sanitizeMetaFeaturesLinkouts <- function(metaFeaturesLinkouts) {
 }
 
 sanitizeMetaAssays <- function(metaAssays) {
+  for (i in seq_along(metaAssays)) {
+    if (isList(metaAssays[[i]])) {
+      # support multiple transformations
+      for (j in seq_along(metaAssays[[i]])) {
+        metaAssays[[i]][[j]] <- as.data.frame(metaAssays[[i]][[j]])
+      }
+    } else {
+      metaAssays[[i]] <- as.data.frame(metaAssays[[i]])
+    }
+  }
+
   return(metaAssays)
 }
 

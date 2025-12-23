@@ -320,7 +320,8 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   filtered to only include the row(s) corresponding to the input featureID(s)
 #'   (see \code{\link{getAssays}}). If multiple featureIDs are requested, the
 #'   rows are reordered to match the order of this input. The column order is
-#'   unchanged.}
+#'   unchanged. If there are multiple transformations available, the full list
+#'   of filtered data frames is returned.}
 #'
 #'   \item{\code{samples}}{A data frame that contains the sample metadata for
 #'   the given modelID (see \code{\link{getSamples}}). The rows are reordered to
@@ -354,7 +355,8 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
 #'   measurements, filtered to only include the row(s) corresponding to the
 #'   input featureID(s) (see \code{\link{getMetaAssays}}). If multiple
 #'   featureIDs are requested, the rows are reordered to match the order of this
-#'   input. The column order is unchanged.}
+#'   input. The column order is unchanged. If there are multiple transformations
+#'   available, the full list of filtered data frames is returned.}
 #'
 #' If the study has objects available that map to the input modelID(s),
 #' then \code{objects} is returned. It is not possible to filter by featureID(s)
@@ -413,12 +415,21 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       stop(sprintf("No assays available for modelID \"%s\"\n", model_i),
            "Add assays data with addAssays()")
     } else {
-      featureIDAvailable <- featureID %in% rownames(assays)
-      if (any(!featureIDAvailable)) {
-        stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                     featureID[!featureIDAvailable][1], model_i))
+      if (isList(assays)) {
+        featureIDAvailable <- featureID %in% row.names(assays[[1]])
+        if (any(!featureIDAvailable)) {
+          stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                       featureID[!featureIDAvailable][1], model_i))
+        }
+        assaysPlotting <- lapply(assays, function(x) x[featureID, , drop = FALSE])
+      } else {
+        featureIDAvailable <- featureID %in% row.names(assays)
+        if (any(!featureIDAvailable)) {
+          stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
+                       featureID[!featureIDAvailable][1], model_i))
+        }
+        assaysPlotting <- assays[featureID, , drop = FALSE]
       }
-      assaysPlotting <- assays[featureID, , drop = FALSE]
     }
 
     samples <- getSamples(study, modelID = model_i, quiet = TRUE,
@@ -426,9 +437,14 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(samples) || isEmpty(assays)) {
       samplesPlotting <- samples
     } else {
-      samplesPlotting <- samples[match(colnames(assaysPlotting), samples[[1]], nomatch = 0), ,
+      if (isList(assaysPlotting)) {
+        sampleID <- colnames(assaysPlotting[[1]])
+      } else {
+        sampleID <- colnames(assaysPlotting)
+      }
+      samplesPlotting <- samples[match(sampleID, samples[[1]], nomatch = 0), ,
                                  drop = FALSE]
-      if (!identical(samplesPlotting[[1]], colnames(assaysPlotting))) {
+      if (!identical(samplesPlotting[[1]], sampleID)) {
         warning("Not all of the sampleIDs have metadata")
       }
       row.names(samplesPlotting) <- NULL # reset row numbers after filtering
@@ -463,9 +479,16 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     if (isEmpty(metaAssays)) {
       metaAssaysPlotting <- metaAssays
     } else {
-      metaAssaysPlotting <- metaAssays[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
-      if (nrow(metaAssaysPlotting) == 0) {
-        warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
+      if (isList(metaAssays)) {
+        metaAssaysPlotting <- lapply(
+          metaAssays,
+          function(x) x[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
+        )
+      } else {
+        metaAssaysPlotting <- metaAssays[unique(metaFeaturesPlotting[[2]]), , drop = FALSE]
+        if (nrow(metaAssaysPlotting) == 0) {
+          warning(sprintf("Could not find metaAssays for featureID \"%s\"", featureID))
+        }
       }
     }
 

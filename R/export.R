@@ -165,8 +165,16 @@ exportElementsWrite <- function(
   for (i in seq_along(x)) {
     fileName <- file.path(path, names(x)[i])
     if (fileType == "txt") {
-      fileName <- paste0(fileName, ".txt")
-      writeTable(x[[i]], file = fileName, row.names = hasRowNames)
+      if (isList(x[[i]])) {
+        # Support multiple data frames per modelID
+        for (j in seq_along(x[[i]])) {
+          fileNameJ <- paste0(fileName, "---", names(x[[i]])[j], ".txt")
+          writeTable(x[[i]][[j]], file = fileNameJ, row.names = hasRowNames)
+        }
+      } else {
+        fileName <- paste0(fileName, ".txt")
+        writeTable(x[[i]], file = fileName, row.names = hasRowNames)
+      }
     } else if (fileType == "json") {
       fileName <- paste0(fileName, ".json")
       writeJson(x[[i]], file = fileName, ...)

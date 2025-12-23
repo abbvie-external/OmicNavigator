@@ -248,6 +248,15 @@ addModels <- function(study, models, reset = FALSE) {
 
 #' Add assays
 #'
+#' Add assays to the models of an OmicNavigator study.
+#'
+#' If you want to add multiple transformations of your assays for a given
+#' modelID, you can add another layer of nesting. Instead of passing a data
+#' frame for that modelID, you can pass a named list of data frames. Each
+#' transformation should have identical row and column names. If your data
+#' doesn't fit this restriction, you should probably use multiple models
+#' instead.
+#'
 #' @param assays The assays from the study. The input object is a list of data
 #'   frames (one per model). The row names should correspond to the featureIDs
 #'   (\code{\link{addFeatures}}). The column names should correspond to the
@@ -714,6 +723,13 @@ addMetaFeaturesLinkouts <- function(study, metaFeaturesLinkouts, reset = FALSE) 
 #'
 #' Experimental. Add metaAssay measurements that map to the metaFeatureIDs in
 #' the metaFeatures table.
+#'
+#' If you want to add multiple transformations of your metaAssays for a given
+#' modelID, you can add another layer of nesting. Instead of passing a data
+#' frame for that modelID, you can pass a named list of data frames. Each
+#' transformation should have identical row and column names. If your data
+#' doesn't fit this restriction, you should probably use multiple models
+#' instead.
 #'
 #' @param metaAssays The metaAssays from the study. The input object is a list
 #'   of data frames (one per model). The row names should correspond to the
