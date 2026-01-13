@@ -1,3 +1,7 @@
+# 1.19.1
+
+* The release tarball includes version 2.3.1 of the web app
+
 # 1.19.0
 
 * Add support for adding an R object to a study as an RDS file (see
