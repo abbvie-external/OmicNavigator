@@ -246,13 +246,22 @@ getMappingPlottingData <- function(study = study, modelID = modelID, featureID =
     )
   }
   if (!all(featureID %in% model_features)) {
-    message(
+    stop(
       sprintf(
-        "The provided features list contains at least one feature not present in model '%s' from mapping object.",
+        "At least one feature is not present in the first model passed, '%s'.",
         modelID[1]
-      ),
+      )
+    )
+  }
+
+  secondary_mapping  <- mapping[which(mapping[, modelID[1]] %in% featureID), ]
+  secondary_mapping[, modelID[1]]  <- NULL
+  secondary_features <- data.frame(secondary_mapping[rowSums(is.na(secondary_mapping)) != ncol(secondary_mapping),])
+  if (nrow(secondary_features) == 0) {
+    stop(
       sprintf(
-        "\nOnly features available in the mapping object will be shown."
+        "The features are only present in the first model passed, '%s'.",
+        modelID[1]
       )
     )
   }
@@ -390,6 +399,53 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
     mapping_features <- mappingPlottingData$mapping_features
     testID_all <- mappingPlottingData$testID_all
     modelID <- mappingPlottingData$modelID
+
+    # Error if test passed to testID associated with modelID[1] is not available in study object
+    incomplete_test_matches_sec_models = NULL
+    incomplete_test_matches = list()
+    current_model_tests <- testID[modelID %in% modelID[1]]
+    for (i_current_model_tests in current_model_tests) {
+      tmp <- getResults(study, modelID = modelID[1], testID = i_current_model_tests)
+      if (isEmpty(tmp)) {
+        stop(
+          sprintf("Test '%s' from testID is not available in selected model '%s'.",
+                  i_current_model_tests,
+                  modelID[1])
+        )
+      } else { rm(tmp) }
+    }
+
+    # Warning if at least one test from modelID[1] is not available in secondary models
+    for (ii in unique(modelID)) {
+      if (ii == modelID[1]) next
+      secondary_model_tests = testID[modelID %in% ii]
+      for (i_secondary_model_tests in secondary_model_tests) {
+        tmp <- suppressMessages(getResults(study, modelID = ii, testID = i_secondary_model_tests))
+        if (isEmpty(tmp)) {
+          secondary_model_tests <- secondary_model_tests[!secondary_model_tests %in% i_secondary_model_tests]
+        } else { rm(tmp) }
+      }
+      if (isEmpty(secondary_model_tests)) secondary_model_tests <- NULL
+      incomplete_test_matches_sec_models = !current_model_tests %in% secondary_model_tests
+
+      if (any(incomplete_test_matches_sec_models)) {
+        incomplete_test_matches[[ii]] = current_model_tests[incomplete_test_matches_sec_models]
+      }
+    }
+
+
+    if (!isEmpty(incomplete_test_matches)) {
+      unmatched_tests <- NULL
+      for (inames in names(incomplete_test_matches)) {
+        unmatched_tests <- c(unmatched_tests, incomplete_test_matches[[inames]])
+      }
+      unmatched_tests <- paste0(unique(unmatched_tests), collapse=", ")
+      warning(
+        sprintf("At least one test from model '%s' is not available in other model(s). Test(s) impacted: %s",
+                modelID[1],
+                unmatched_tests)
+      )
+    }
   }
 
   for (ii in 1:length(modelID)) {
@@ -413,10 +469,30 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       stop(sprintf("No assays available for modelID \"%s\"\n", model_i),
            "Add assays data with addAssays()")
     } else {
-      featureIDAvailable <- featureID %in% rownames(assays)
-      if (any(!featureIDAvailable)) {
-        stop(sprintf("The feature \"%s\" is not available for modelID \"%s\"",
-                     featureID[!featureIDAvailable][1], model_i))
+      # only necessary for singleModel plots - for multiModel the check is done at getMappingPlottingData
+      if (length(modelID) == 1) {
+        if (!is.null(testID)) {
+          featID_tmp <- NULL
+          for (i_testID in testID) {
+            tmp <- getResults(study, modelID = model_i, testID = i_testID, quiet = TRUE,
+                              libraries = libraries)
+            if (is.data.frame(tmp)) {
+              featID_tmp <- unique(c(featID_tmp, tmp[[1]]))
+            }
+          }
+          featureIDAvailable <- featureID %in% featID_tmp
+          if (any(!featureIDAvailable)) {
+            stop(sprintf("At least one feature is not available in the results object for modelID \"%s\": \"%s\"",
+                         model_i, featureID[!featureIDAvailable][1]))
+          }
+        }
+        if (is.null(testID) || (!is.null(testID) && !is.data.frame(tmp))) {
+          featureIDAvailable <- featureID %in% rownames(assays)
+          if (any(!featureIDAvailable)) {
+            stop(sprintf("At least one feature is not available in the assay object for modelID \"%s\": \"%s\"",
+                         model_i, featureID[!featureIDAvailable][1]))
+          }
+        }
       }
       assaysPlotting <- assays[featureID, , drop = FALSE]
     }
@@ -477,6 +553,16 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
       for (i in seq_along(testID)) {
         results <- getResults(study, modelID = model_i, testID = testID[i], quiet = TRUE,
                               libraries = libraries)
+
+        if (length(modelID) > 1) {
+          if (model_i %in% names(incomplete_test_matches)) {
+            if (testID %in% incomplete_test_matches[[model_i]]) {
+              resultsPlotting[[i]] <- NULL
+              next
+            }
+          }
+        }
+
         if (isEmpty(results)) {
           stop(sprintf("The test result (testID) \"%s\" is not available for modelID \"%s\" ", testID[i], model_i))
         }
@@ -500,7 +586,7 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
           samples = samplesPlotting,
           features = featuresPlotting
         )
-        if (!isEmpty(testID)) {
+        if (!isEmpty(testID) && !isEmpty(resultsPlotting)) {
           temp_model <- c(temp_model, list(results = setNames(list(resultsPlotting), testID)))
         }
         if (!isEmpty(metaAssaysPlotting)) {
@@ -513,9 +599,11 @@ getPlottingData <- function(study, modelID, featureID, testID = NULL, libraries 
         plottingData <- c(plottingData, setNames(list(temp_model), model_i))
 
       } else if (sum(modelID %in% model_i) > 1 & exists("resultsPlotting")) {
-        resultsPlotting <- list(resultsPlotting)
-        names(resultsPlotting) <- testID
-        plottingData[[model_i]]$results <- c(plottingData[[model_i]]$results, resultsPlotting)
+        if (!isEmpty(resultsPlotting)) {
+          resultsPlotting <- list(resultsPlotting)
+          names(resultsPlotting) <- testID
+          plottingData[[model_i]]$results <- c(plottingData[[model_i]]$results, resultsPlotting)
+        }
       }
 
       if (ii == length(modelID)) {
