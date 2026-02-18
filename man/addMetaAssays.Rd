@@ -26,6 +26,14 @@ data you no longer want to include in the study.}
 Experimental. Add metaAssay measurements that map to the metaFeatureIDs in
 the metaFeatures table.
 }
+\details{
+If you want to add multiple transformations of your metaAssays for a given
+modelID, you can add another layer of nesting. Instead of passing a data
+frame for that modelID, you can pass a named list of data frames. Each
+transformation should have identical row and column names. If your data
+doesn't fit this restriction, you should probably use multiple models
+instead.
+}
 \seealso{
 \code{\link{getMetaAssays}},
 \code{\link{addAssays}},

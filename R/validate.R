@@ -34,6 +34,7 @@ validateStudy <- function(study) {
   validateResults(study)
   validateEnrichments(study)
   validateEnrichmentsLinkouts(study)
+  validateAssays(study)
   validatePlots(study)
   validateMapping(study)
   validateMetaAssays(study)
@@ -264,6 +265,71 @@ validateEnrichmentsLinkouts <- function(study) {
   return(invisible(TRUE))
 }
 
+# Primary purpose is to ensure that transformations have the same dimensions,
+# row names, and column names
+validateAssays <- function(study) {
+  assays <- study[["assays"]]
+
+  # Assays aren't required
+  if (isEmpty(assays)) return(NA)
+
+  for (i in seq_along(assays)) {
+    if (!isList(assays[[i]])) next
+
+    modelID <- names(assays)[i]
+    rowNum <- nrow(assays[[i]][[1]])
+    colNum <- ncol(assays[[i]][[1]])
+    rowNames <- row.names(assays[[i]][[1]])
+    colNames <- names(assays[[i]][[1]])
+
+    # require that all following transformations match the first data frame
+    for (j in seq_along(assays[[i]])[-1]) {
+      rowNumJ <- nrow(assays[[i]][[j]])
+      colNumJ <- ncol(assays[[i]][[j]])
+      rowNamesJ <- row.names(assays[[i]][[j]])
+      colNamesJ <- names(assays[[i]][[j]])
+
+      if (!identical(rowNumJ, rowNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same number of rows",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNumJ, colNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same number of columns",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(rowNamesJ, rowNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same row names",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNamesJ, colNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all assay transformations must have the same column names",
+            modelID
+          )
+        )
+      }
+    }
+  }
+
+  return(invisible(TRUE))
+}
+
 validatePlots <- function(study) {
   plots <- study[["plots"]]
 
@@ -317,7 +383,12 @@ validatePlots <- function(study) {
 
     # featureID column of results must be row names of assays
     tests <- names(study[["results"]][[modelID]])
-    rows <- row.names(assays)
+    if (isList(assays)) {
+      # Support multiple assay transformations
+      rows <- row.names(assays[[1]])
+    } else {
+      rows <- row.names(assays)
+    }
     for (j in seq_along(tests)) {
       testID <- tests[j]
       results <- getResults(study, modelID, testID)
@@ -340,7 +411,12 @@ validatePlots <- function(study) {
       next
     }
     # Column names of assays must be in first column of samples table
-    cols <- colnames(assays)
+    if (isList(assays)) {
+      # Support multiple assay transformations
+      cols <- colnames(assays[[1]])
+    } else {
+      cols <- colnames(assays)
+    }
     colsInSamples <- cols %in% samples[, 1]
     if (sum(colsInSamples) == 0) {
       stop("The column names of the assays table do not match the sampleID column in the samples table\n",
@@ -396,6 +472,7 @@ validateMetaAssays <- function(study) {
     # Need to re-pull in case using modelID "default"
     modelMetaAssays <- getMetaAssays(study, modelID, quiet = TRUE)
     if (isEmpty(modelMetaAssays)) next
+    if (isList(modelMetaAssays)) modelMetaAssays <- modelMetaAssays[[1]]
 
     # Validate that column names match samples
     modelSamples <- getSamples(study, modelID, quiet = TRUE)
@@ -424,6 +501,61 @@ validateMetaAssays <- function(study) {
         message("Validation: ",
                 "Some of the metaFeatureIDs in the metaFeatures table are missing from the rows in the metaAssays table\n",
                 sprintf("modelID: %s", modelID))
+      }
+    }
+  }
+
+  # Confirm that transformations have the same dimensions and names
+  for (i in seq_along(metaAssays)) {
+    if (!isList(metaAssays[[i]])) next
+
+    modelID <- names(metaAssays)[i]
+    rowNum <- nrow(metaAssays[[i]][[1]])
+    colNum <- ncol(metaAssays[[i]][[1]])
+    rowNames <- row.names(metaAssays[[i]][[1]])
+    colNames <- names(metaAssays[[i]][[1]])
+
+    # require that all following transformations match the first data frame
+    for (j in seq_along(metaAssays[[i]])[-1]) {
+      rowNumJ <- nrow(metaAssays[[i]][[j]])
+      colNumJ <- ncol(metaAssays[[i]][[j]])
+      rowNamesJ <- row.names(metaAssays[[i]][[j]])
+      colNamesJ <- names(metaAssays[[i]][[j]])
+
+      if (!identical(rowNumJ, rowNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same number of rows",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNumJ, colNum)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same number of columns",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(rowNamesJ, rowNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same row names",
+            modelID
+          )
+        )
+      }
+
+      if (!identical(colNamesJ, colNames)) {
+        stop(
+          sprintf(
+            "modelID %s: all metaAssay transformations must have the same column names",
+            modelID
+          )
+        )
       }
     }
   }
