@@ -635,11 +635,52 @@ expect_error_xl(
   getResultsUpset(
     study = testStudyName,
     modelID = testModelName,
-    sigValue = c(0, 0),
-    operator = c("<", ">"),
-    column = c("beta", "beta")
+    sigValue = 500,
+    operator = ">",
+    column = "beta"
   ),
   "There were no features remaining after applying the filters."
+)
+
+# Support multiple filters using the same column
+sameColumnResultsTest01 <- getResultsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  anchor = "test_01",
+  mustTests = c(),
+  notTests = c(),
+  sigValue = c(-1, 1),
+  operator = c(">", "<"),
+  column = c("beta", "beta")
+)
+
+sameColumnResultsTest02 <- getResultsIntersection(
+  study = testStudyObj,
+  modelID = testModelName,
+  anchor = "test_02",
+  mustTests = c(),
+  notTests = c(),
+  sigValue = c(-1, 1),
+  operator = c(">", "<"),
+  column = c("beta", "beta")
+)
+
+sameColumnResultsUpset <- getResultsUpset(
+  study = testStudyName,
+  modelID = testModelName,
+  sigValue = c(-1, 1),
+  operator = c(">", "<"),
+  column = c("beta", "beta")
+)
+
+expect_equal_xl(
+  sum(sameColumnResultsUpset[["New_data"]][["test_01"]]),
+  nrow(sameColumnResultsTest01)
+)
+
+expect_equal_xl(
+  sum(sameColumnResultsUpset[["New_data"]][["test_02"]]),
+  nrow(sameColumnResultsTest02)
 )
 
 # Results table with differing number of features
@@ -730,7 +771,6 @@ expect_equal_xl(
   sum(resultsUpsetAbsTwo[["New_data"]][["test_01"]] & resultsUpsetAbsTwo[["New_data"]][["test_01"]]),
   sum(resultsUpsetAbsTwoLegacy[["New_data"]][["test_01"]] & resultsUpsetAbsTwoLegacy[["New_data"]][["test_01"]])
 )
-
 
 # getEnrichmentsUpset ----------------------------------------------------------
 
