@@ -1,3 +1,10 @@
+# 1.19.4
+
+* Do not pass duplicate key columns to `as.data.table()`. This prevents an
+error in `getResultsUpset()` identified in a reverse dependency check for the
+development version of {data.table}. The results returned by `getResultsUpset()`
+are unchanged.
+
 # 1.19.3
 
 * The release tarball includes version 2.3.3 of the web app
