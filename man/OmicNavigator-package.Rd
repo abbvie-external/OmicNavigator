@@ -42,6 +42,7 @@ Useful links:
 
 Authors:
 \itemize{
+  \item Brett Engelmann \email{brett.engelmann@abbvie.com}
   \item Terrence Ernst (Web application)
   \item John Blischak \email{jdblischak@gmail.com} (\href{https://orcid.org/0000-0003-2634-9879}{ORCID})
   \item Paul Nordlund (Web application)
